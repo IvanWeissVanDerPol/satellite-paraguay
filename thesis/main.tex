@@ -1,0 +1,51 @@
+% SatelliteCV-Paraguay thesis
+% Master file — compile with: make thesis-pdf
+
+\documentclass[12pt,a4paper]{book}
+
+% Preamble
+\input{preamble}
+
+% Title page info
+\title{\Huge SatelliteCV-Paraguay \\
+\Large Multi-Temporal Earth Observation of Paraguay: \\
+Six Papers from One Python Package}
+\author{Iván Weiss Van der Pol}
+\date{July 2026}
+
+\begin{document}
+
+% Title page
+\maketitle
+
+% Front matter
+\frontmatter
+\input{chapters/00_abstract}
+\input{chapters/00_acknowledgments}
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Main matter
+\mainmatter
+\input{chapters/01_introduction}
+\input{chapters/02_literature_review}
+\input{chapters/03_methodology}
+\input{chapters/04_p0011_yvytu}
+\input{chapters/05_p0100_yvyra}
+\input{chapters/06_p0025_yrupe}
+\input{chapters/07_p0012_yvy}
+\input{chapters/08_p0026_kai}
+\input{chapters/09_p0035_tatakua}
+\input{chapters/10_integration}
+\input{chapters/11_conclusions}
+
+% Back matter
+\backmatter
+\bibliographystyle{plain}
+\bibliography{references}
+\appendix
+\input{chapters/appendix_a_setup}
+\input{chapters/appendix_b_ethics}
+
+\end{document}

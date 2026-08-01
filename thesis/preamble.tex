@@ -1,0 +1,86 @@
+% Thesis preamble — LaTeX packages + custom commands
+
+% Encoding + language
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english, spanish, guarani]{babel}
+
+% Page geometry
+\usepackage[a4paper, margin=1in]{geometry}
+
+% Fonts
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% Graphics + tables
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+
+% Code listings
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!50!black},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{black!30}
+}
+
+% Bibliography
+\usepackage{natbib}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={SatelliteCV-Paraguay},
+    pdfauthor={Iván Weiss Van der Pol}
+}
+
+% Headers + footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textit{SatelliteCV-Paraguay}}
+\fancyhead[R]{\thepage}
+
+% Custom commands
+\newcommand{\yvy}{\textit{Yvy}}      % Indigenous territory
+\newcommand{\yvytu}{\textit{Yvytu}}   % Chaco deforestation
+\newcommand{\yvyra}{\textit{Yvyra}}   % Carbon credits
+\newcommand{\yrupe}{\textit{Yrupe}}   % Soybean yield
+\newcommand{\kai}{\textit{Kai}}       % Wildlife poaching
+\newcommand{\tatakua}{\textit{Tatakua}} % Air quality
+
+\newcommand{\papertitle}[1]{\section*{\Huge #1}}
+
+\titleformat{\chapter}[display]
+  {\Huge\bfseries}
+  {\chaptertitlename\ \thechapter:}{1em}
+  {\Huge}
+
+\usepackage{titlesec}
+
+% Floating objects
+\usepackage{float}

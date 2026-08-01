@@ -1,56 +1,96 @@
 # SatelliteCV-Paraguay — Makefile
-# This is the entry point for autonomous execution.
+# Entry point for all common tasks.
 
-.PHONY: help install bootstrap verify test data-catalog clean dashboard run-paper-% notebook-paper-% autonomous
+.PHONY: help install bootstrap verify test lint format notebook-paper-% run-paper-% dashboard report autonomous clean docker-build docs pre-commit-install pre-commit-run
 
 help:
 	@echo "SatelliteCV-Paraguay — Make targets"
 	@echo ""
 	@echo "Setup:"
-	@echo "  make install          — Install all dependencies (pip install -e .)"
-	@echo "  make bootstrap        — Full bootstrap: install + data catalog + sample download"
-	@echo "  make verify           — Verify all imports + data + tests"
+	@echo "  make install               — Install all dependencies (pip install -e .)"
+	@echo "  make bootstrap             — Full bootstrap: install + data catalog + sample download"
+	@echo "  make verify                — Verify all imports + data + tests"
+	@echo "  make pre-commit-install    — Install pre-commit hooks"
+	@echo "  make pre-commit-run        — Run pre-commit on all files"
 	@echo ""
 	@echo "Data:"
-	@echo "  make data-catalog     — Generate data catalog from paraguay-geodata/"
-	@echo "  make data-local       — Copy local Paraguay data to data/external/"
-	@echo "  make data-sentinel    — Download sample Sentinel-2 tiles"
-	@echo "  make data-mapbiomas   — Download MapBiomas Paraguay"
-	@echo "  make data-all         — Download all data sources"
+	@echo "  make data-catalog          — Generate data catalog from paraguay-geodata/"
+	@echo "  make data-local            — Copy local Paraguay data to data/external/"
+	@echo "  make data-sentinel         — Download sample Sentinel-2 tiles"
+	@echo "  make data-mapbiomas        — Download MapBiomas Paraguay"
+	@echo "  make data-all              — Download all data sources"
+	@echo ""
+	@echo "Code quality:"
+	@echo "  make lint                  — Run black + flake8 + isort + mypy"
+	@echo "  make format                — Auto-format with black + isort"
+	@echo "  make test                  — Run pytest"
+	@echo "  make test-fast             — Skip slow tests"
+	@echo "  make test-coverage         — With coverage report"
 	@echo ""
 	@echo "Papers (run individual paper pipelines):"
-	@echo "  make run-paper-1      — Run P0011 Yvytu (deforestation)"
-	@echo "  make run-paper-2      — Run P0100 Yvyra (carbon)"
-	@echo "  make run-paper-3      — Run P0025 Yrupe (yield)"
-	@echo "  make run-paper-4      — Run P0012 Yvy (indigenous)"
-	@echo "  make run-paper-5      — Run P0026 Kai (poaching)"
-	@echo "  make run-paper-6      — Run P0035 Tatakua (air quality)"
-	@echo "  make run-all-papers   — Run all 6 paper pipelines"
+	@echo "  make run-paper-1           — P0011 Yvytu (deforestation)"
+	@echo "  make run-paper-2           — P0100 Yvyra (carbon)"
+	@echo "  make run-paper-3           — P0025 Yrupe (yield)"
+	@echo "  make run-paper-4           — P0012 Yvy (indigenous)"
+	@echo "  make run-paper-5           — P0026 Kai (poaching)"
+	@echo "  make run-paper-6           — P0035 Tatakua (air quality)"
+	@echo "  make run-all-papers        — Run all 6 paper pipelines"
+	@echo ""
+	@echo "Baselines:"
+	@echo "  make baselines-1           — P0011 baselines (Random Forest, U-Net, etc.)"
+	@echo "  make baselines-2           — P0100 baselines (Linear, RF, persistence)"
+	@echo "  make baselines-3           — P0035 baselines (mean, persistence, trend)"
 	@echo ""
 	@echo "Notebooks:"
-	@echo "  make notebook-paper-1 — Open notebook for P0011"
-	@echo "  make notebook-all     — Open all notebooks"
+	@echo "  make notebook-paper-1     — Open P0011 notebook"
+	@echo "  make notebook-all          — Open all notebooks"
+	@echo "  make notebook-eda          — Open EDA notebooks"
 	@echo ""
 	@echo "Validation:"
-	@echo "  make validate-paper-1 — Validate P0011 predictions"
-	@echo "  make validate-all     — Validate all papers"
+	@echo "  make validate-paper-1      — Validate P0011 predictions"
+	@echo "  make validate-all          — Validate all papers"
 	@echo ""
 	@echo "Deployment:"
-	@echo "  make dashboard        — Run Streamlit dashboard"
-	@echo "  make report           — Generate final report"
+	@echo "  make dashboard             — Run Streamlit dashboard"
+	@echo "  make api                   — Run FastAPI server"
+	@echo "  make report                — Generate final report"
+	@echo ""
+	@echo "Thesis:"
+	@echo "  make thesis-pdf            — Compile thesis to PDF (requires pdflatex)"
+	@echo ""
+	@echo "Docker:"
+	@echo "  make docker-build          — Build Docker image"
+	@echo "  make docker-run            — Run in Docker container"
+	@echo "  make docker-compose-up     — Start docker-compose stack"
 	@echo ""
 	@echo "Autonomous execution:"
-	@echo "  make autonomous       — Run full 30-day autonomous plan"
+	@echo "  make autonomous            — Run full 30-day autonomous plan"
 
 install:
 	pip install -e .
 	pip install -r requirements.txt
+
+pre-commit-install:
+	pre-commit install
+	@echo "Pre-commit hooks installed"
+
+pre-commit-run:
+	pre-commit run --all-files
 
 bootstrap: install
 	python scripts/bootstrap.py
 
 verify:
 	python scripts/verify.py
+
+lint:
+	black --check --diff src/ tests/ scripts/
+	isort --check-only --diff src/ tests/ scripts/
+	flake8 src/ tests/ scripts/ --max-line-length=120 --extend-ignore=E203,W503,F401,F841
+
+format:
+	black src/ tests/ scripts/ --line-length=120
+	isort src/ tests/ scripts/ --profile=black --line-length=120
 
 data-catalog:
 	python scripts/data_catalog.py
@@ -87,11 +127,23 @@ run-paper-6:
 
 run-all-papers: run-paper-1 run-paper-2 run-paper-3 run-paper-4 run-paper-5 run-paper-6
 
+baselines-1:
+	python -m src.baselines.p0011_yvytu_baselines
+
+baselines-2:
+	python -m src.baselines.p0100_yvyra_baselines
+
+baselines-3:
+	python -m src.baselines.p0035_tatakua_baselines
+
 notebook-paper-1:
 	jupyter notebook notebooks/p0011_yvytu.ipynb
 
 notebook-all:
 	jupyter notebook notebooks/
+
+notebook-eda:
+	jupyter notebook notebooks/eda_paraguay_geodata.ipynb
 
 validate-paper-1:
 	python scripts/validate.py --paper 1
@@ -102,8 +154,15 @@ validate-all:
 dashboard:
 	streamlit run dashboard/app.py
 
+api:
+	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+
 report:
 	python scripts/generate_report.py
+
+thesis-pdf:
+	cd thesis && pdflatex main.tex && pdflatex main.tex && bibtex main && pdflatex main.tex
+	@echo "Thesis PDF: thesis/main.pdf"
 
 test:
 	pytest tests/ -v
@@ -114,8 +173,21 @@ test-fast:
 test-coverage:
 	pytest tests/ -v --cov=src --cov-report=html
 
+docker-build:
+	docker build -t satellite-paraguay:latest .
+
+docker-run:
+	docker run -it --rm -v $(PWD)/data:/app/data -v /root/paraguay-geodata:/paraguay-geodata:ro satellite-paraguay:latest
+
+docker-compose-up:
+	docker-compose up -d
+
 autonomous:
 	./run-autonomous.sh
+
+docs:
+	@echo "Docs are in docs/"
+	ls docs/
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true

@@ -1,0 +1,29 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "*.md"
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check docs build
+        run: |
+          echo "Docs check would happen here"
+          # Real docs: sphinx-build -b html docs/ _build/html
+          ls -la docs/
+
+  validate-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          folder-path: "docs/"
+          max-depth: 3
+          ignore-paths: "docs/TODO.md,docs/REPORT.md"

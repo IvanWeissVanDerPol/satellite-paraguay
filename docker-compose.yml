@@ -1,0 +1,77 @@
+# docker-compose.yml — full stack for SatelliteCV-Paraguay
+#
+# Usage:
+#   docker-compose up -d       # start all services
+#   docker-compose logs -f      # follow logs
+#   docker-compose down         # stop all
+
+version: "3.9"
+
+services:
+  satellite-paraguay:
+    build:
+      context: .
+      target: dev
+    image: satellite-paraguay:dev
+    container_name: satellite-paraguay
+    working_dir: /app
+    volumes:
+      # Mount local data
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+      # Mount paraguay-geodata (external)
+      - /root/paraguay-geodata:/paraguay-geodata:ro
+    environment:
+      - PYTHONPATH=/app
+      - PARAGUAY_GEODATA_PATH=/paraguay-geodata/exports/web/data
+    ports:
+      - "8501:8501"  # Streamlit
+      - "8000:8000"  # FastAPI
+    stdin_open: true
+    tty: true
+    command: bash
+
+  dashboard:
+    build:
+      context: .
+      target: prod
+    image: satellite-paraguay:prod
+    container_name: satellite-paraguay-dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data:ro
+      - ./outputs:/app/outputs:ro
+    environment:
+      - PYTHONPATH=/app
+    command: streamlit run dashboard/app.py --server.port=8501 --server.address=0.0.0.0
+
+  api:
+    build:
+      context: .
+      target: prod
+    image: satellite-paraguay:prod
+    container_name: satellite-paraguay-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./models:/app/models:ro
+    environment:
+      - PYTHONPATH=/app
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - satellite-paraguay
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.8.1
+    container_name: satellite-paraguay-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow:/mlflow
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri /mlflow
+
+volumes:
+  mlflow:

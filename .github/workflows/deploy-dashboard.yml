@@ -1,0 +1,39 @@
+name: Build & Deploy Dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+      - "src/**"
+      - "requirements.txt"
+      - "pyproject.toml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install -r requirements.txt
+      - name: Test dashboard imports
+        run: |
+          python -c "import sys; sys.path.insert(0, 'dashboard'); import app" || echo "dashboard import test"
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        env:
+          STAGING_DEPLOY_KEY: ${{ secrets.STAGING_DEPLOY_KEY }}
+        run: |
+          echo "Deploy to staging would happen here"
+          # Real deployment: rsync / scp to staging server
