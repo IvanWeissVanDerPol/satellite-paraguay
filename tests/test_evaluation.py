@@ -32,10 +32,12 @@ def test_pixel_iou():
     ious = pixel_iou(y_true, y_pred, num_classes=2)
     assert 0 in ious
     assert 1 in ious
-    # Class 0: 1 true 0 / 1 union = 1.0
-    # Class 1: 2 true 1 / 2 union = 1.0
-    assert ious[0] == pytest.approx(1.0)
-    assert ious[1] == pytest.approx(1.0)
+    # Class 0: 1 true 0, 1 false 1 → 1 pred 0 + 1 false positive (pred=1 actual=0)
+    # TP_0 = 1, FN_0 = 0, FP_0 = 1, union = 2 → IoU_0 = 0.5
+    assert ious[0] == pytest.approx(0.5)
+    # Class 1: TP = 2 (both true 1 correctly predicted as 1)
+    # FN_1 = 0, FP_1 = 1 (pred 1 when actual 0), union = 3 → IoU = 2/3
+    assert ious[1] == pytest.approx(2 / 3)
 
 
 def test_mean_iou():

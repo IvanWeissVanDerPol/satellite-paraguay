@@ -60,10 +60,22 @@ def load_indigenous_territories(data_dir: Path = DEFAULT_DATA_DIR) -> gpd.GeoDat
 
 
 def load_tile_index(data_dir: Path = DEFAULT_DATA_DIR) -> pd.DataFrame:
-    """Load 7,912 tile index (10x10 km grid)."""
+    """Load 7,912 tile index (10x10 km grid).
+
+    Handles two formats:
+    1. Legacy: list of dicts [{tile_id, ...}, ...]
+    2. New: {version, generated_at_utc, tiles: [...]}
+    """
     f = data_dir / "tile_index.json"
     with open(f) as fp:
-        tiles = json.load(fp)
+        data = json.load(fp)
+
+    if isinstance(data, dict):
+        # New format: metadata wrapper
+        tiles = data.get("tiles", data)
+    else:
+        tiles = data
+
     return pd.DataFrame(tiles)
 
 

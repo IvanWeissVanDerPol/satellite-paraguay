@@ -78,10 +78,10 @@ pre-commit-run:
 	pre-commit run --all-files
 
 bootstrap: install
-	python scripts/bootstrap.py
+	python3 scripts/bootstrap.py
 
 verify:
-	python scripts/verify.py
+	python3 scripts/verify.py
 
 lint:
 	black --check --diff src/ tests/ scripts/
@@ -93,48 +93,48 @@ format:
 	isort src/ tests/ scripts/ --profile=black --line-length=120
 
 data-catalog:
-	python scripts/data_catalog.py
+	python3 scripts/data_catalog.py
 
 data-local:
 	mkdir -p data/external
 	cp -r /root/paraguay-geodata/exports/web/data/* data/external/ || echo "Already copied"
 
 data-sentinel:
-	python scripts/download_sentinel_sample.py
+	python3 scripts/download_sentinel_sample.py
 
 data-mapbiomas:
-	python scripts/download_mapbiomas.py
+	python3 scripts/download_mapbiomas.py
 
 data-all: data-local data-sentinel data-mapbiomas
 
 run-paper-1:
-	python -m src.papers.p0011_yvytu_deforestation.pipeline
+	python3 -m src.papers.p0011_yvytu_deforestation.pipeline
 
 run-paper-2:
-	python -m src.papers.p0100_yvyra_carbon_credits.pipeline
+	python3 -m src.papers.p0100_yvyra_carbon_credits.pipeline
 
 run-paper-3:
-	python -m src.papers.p0025_yrupe_yield.pipeline
+	python3 -m src.papers.p0025_yrupe_yield.pipeline
 
 run-paper-4:
-	python -m src.papers.p0012_yvy_indigenous.pipeline
+	python3 -m src.papers.p0012_yvy_indigenous.pipeline
 
 run-paper-5:
-	python -m src.papers.p0026_kai_poaching.pipeline
+	python3 -m src.papers.p0026_kai_poaching.pipeline
 
 run-paper-6:
-	python -m src.papers.p0035_tatakua_air_quality.pipeline
+	python3 -m src.papers.p0035_tatakua_air_quality.pipeline
 
 run-all-papers: run-paper-1 run-paper-2 run-paper-3 run-paper-4 run-paper-5 run-paper-6
 
 baselines-1:
-	python -m src.baselines.p0011_yvytu_baselines
+	python3 -m src.baselines.p0011_yvytu_baselines
 
 baselines-2:
-	python -m src.baselines.p0100_yvyra_baselines
+	python3 -m src.baselines.p0100_yvyra_baselines
 
 baselines-3:
-	python -m src.baselines.p0035_tatakua_baselines
+	python3 -m src.baselines.p0035_tatakua_baselines
 
 notebook-paper-1:
 	jupyter notebook notebooks/p0011_yvytu.ipynb
@@ -146,10 +146,10 @@ notebook-eda:
 	jupyter notebook notebooks/eda_paraguay_geodata.ipynb
 
 validate-paper-1:
-	python scripts/validate.py --paper 1
+	python3 scripts/validate.py --paper 1
 
 validate-all:
-	python scripts/validate.py --all
+	python3 scripts/validate.py --all
 
 dashboard:
 	streamlit run dashboard/app.py
@@ -158,7 +158,7 @@ api:
 	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 report:
-	python scripts/generate_report.py
+	python3 scripts/generate_report.py
 
 thesis-pdf:
 	cd thesis && pdflatex main.tex && pdflatex main.tex && bibtex main && pdflatex main.tex
