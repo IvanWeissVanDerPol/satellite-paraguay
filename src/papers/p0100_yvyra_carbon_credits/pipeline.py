@@ -13,11 +13,11 @@ import numpy as np
 import pandas as pd
 import requests
 
-from ..satellite_io import download_via_gee
-from ..foundation_models import load_alphaearth, compute_tile_embeddings
-from ..paraguay_admin import get_tile_bbox, load_catastro_parcels
-from ..parcel_analysis import get_parcels_in_tile
-from ..evaluation import regression_metrics, print_metrics
+from ...satellite_io import download_via_gee
+from ...foundation_models import load_alphaearth, compute_tile_embeddings
+from ...paraguay_admin import get_tile_bbox, load_catastro_parcels
+from ...parcel_analysis import get_parcels_in_tile
+from ...evaluation import regression_metrics, print_metrics
 
 
 VERRA_API_URL = "https://api.verra.org/v1/projects"

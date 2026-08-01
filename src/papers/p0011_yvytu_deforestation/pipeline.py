@@ -12,15 +12,15 @@ from typing import Optional, Dict, List
 import numpy as np
 import torch
 
-from ..satellite_io import download_via_gee, compute_ndvi
-from ..foundation_models import load_prithvi, compute_tile_embeddings
-from ..paraguay_admin import load_tile_index, get_tile_bbox
-from ..timeseries import (
+from ...satellite_io import download_via_gee, compute_ndvi
+from ...foundation_models import load_prithvi, compute_tile_embeddings
+from ...paraguay_admin import load_tile_index, get_tile_bbox
+from ...timeseries import (
     compute_ndvi_timeseries,
     detect_changes_bfast,
     compute_trend,
 )
-from ..evaluation import (
+from ...evaluation import (
     pixel_f1_score,
     mean_iou,
     benchmark_against_mapbiomas,
@@ -55,7 +55,7 @@ class YvytuPipeline:
 
     def select_tiles(self) -> List[str]:
         """Select Chaco tiles for analysis."""
-        from ..paraguay_admin import list_tiles_in_region
+        from ...paraguay_admin import list_tiles_in_region
         return list_tiles_in_region(self.config["chaco_bbox"])
 
     def download_data(self, tile_id: str) -> Path:

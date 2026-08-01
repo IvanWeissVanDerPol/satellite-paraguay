@@ -12,10 +12,10 @@ from typing import Optional, Dict
 import numpy as np
 import json
 
-from ..satellite_io import download_via_gee, compute_ndvi
-from ..foundation_models import load_dinov2
-from ..paraguay_admin import get_tile_bbox
-from ..evaluation import regression_metrics, print_metrics
+from ...satellite_io import download_via_gee, compute_ndvi
+from ...foundation_models import load_dinov2
+from ...paraguay_admin import get_tile_bbox
+from ...evaluation import regression_metrics, print_metrics
 
 
 class YrupePipeline:

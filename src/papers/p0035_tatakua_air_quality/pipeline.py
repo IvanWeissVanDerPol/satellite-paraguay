@@ -12,7 +12,7 @@ from typing import Optional, Dict
 import numpy as np
 import requests
 
-from ..evaluation import regression_metrics, print_metrics
+from ...evaluation import regression_metrics, print_metrics
 
 OPENAQ_API = "https://api.openaq.org/v2/measurements"
 

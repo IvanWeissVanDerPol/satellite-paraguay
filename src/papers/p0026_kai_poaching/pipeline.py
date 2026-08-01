@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import Optional, Dict
 import numpy as np
 
-from ..paraguay_admin import get_tile_bbox, list_tiles_in_region
-from ..evaluation import detection_map, print_metrics
+from ...paraguay_admin import get_tile_bbox, list_tiles_in_region
+from ...evaluation import detection_map, print_metrics
 
 
 class KaiPipeline:

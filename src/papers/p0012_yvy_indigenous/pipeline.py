@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import Optional, Dict
 import numpy as np
 
-from ..paraguay_admin import load_indigenous_territories, load_catastro_parcels
-from ..parcel_analysis import detect_parcel_conflicts
+from ...paraguay_admin import load_indigenous_territories, load_catastro_parcels
+from ...parcel_analysis import detect_parcel_conflicts
 
 
 class YvyPipeline:
