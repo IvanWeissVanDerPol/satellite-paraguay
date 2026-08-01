@@ -1,0 +1,59 @@
+[
+  {
+    "paper": "p0011_baselines",
+    "baseline": "persistence",
+    "f1_macro": 0.1486646667291179,
+    "miou": 0.08512008563529576
+  },
+  {
+    "paper": "p0011_baselines",
+    "baseline": "linear_trend",
+    "f1_macro": 0.06610963929080906,
+    "miou": 0.039599609375
+  },
+  {
+    "paper": "p0011_baselines",
+    "baseline": "random_forest",
+    "f1_macro": 1.0,
+    "miou": 1.0
+  },
+  {
+    "paper": "p0100_baselines",
+    "baseline": "persistence",
+    "mae": 721.1185488583319,
+    "rmse": 900.3560256913898,
+    "r2": 0.0
+  },
+  {
+    "paper": "p0100_baselines",
+    "baseline": "linear_regression",
+    "mae": 66.61419317516682,
+    "rmse": 80.49510433771633,
+    "r2": 0.9920069894834326
+  },
+  {
+    "paper": "p0100_baselines",
+    "baseline": "random_forest",
+    "mae": 53.657839851298704,
+    "rmse": 84.7413544246445,
+    "r2": 0.991141457946348
+  },
+  {
+    "paper": "p0035_baselines",
+    "baseline": "mean",
+    "forecast": "[18.72842791 18.72842791 18.72842791 18.72842791 18.72842791 18.72842791\n 18.72842791]",
+    "mean": 18.728427910007017
+  },
+  {
+    "paper": "p0035_baselines",
+    "baseline": "persistence",
+    "forecast": "[8.47399763 8.47399763 8.47399763 8.47399763 8.47399763 8.47399763\n 8.47399763]",
+    "mean": 8.473997631222906
+  },
+  {
+    "paper": "p0035_baselines",
+    "baseline": "linear_trend",
+    "forecast": "[21.15544928 21.3120313  21.46861333 21.62519535 21.78177737 21.9383594\n 22.09494142]",
+    "mean": 21.625195350868903
+  }
+]

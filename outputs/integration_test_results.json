@@ -1,0 +1,177 @@
+{
+  "started_at": "2026-08-01T12:48:58.812411",
+  "stages": [
+    {
+      "stage": "load_paraguay_data",
+      "time_seconds": 0.8733267784118652,
+      "metrics": {
+        "tiles": 7912,
+        "priority_tiles": 37,
+        "catastro_parcels": 7500,
+        "indigenous_territories": 10
+      },
+      "status": "success"
+    },
+    {
+      "stage": "paper_pipelines",
+      "time_seconds": 3.3914971351623535,
+      "papers": {
+        "p0011_yvytu": {
+          "time_seconds": 3.391469717025757,
+          "status": "success"
+        },
+        "p0012_yvy": {
+          "time_seconds": 2.384185791015625e-06,
+          "status": "success"
+        },
+        "p0025_yrupe": {
+          "time_seconds": 1.1920928955078125e-06,
+          "status": "success"
+        },
+        "p0026_kai": {
+          "time_seconds": 9.5367431640625e-07,
+          "status": "success"
+        },
+        "p0035_tatakua": {
+          "time_seconds": 4.76837158203125e-07,
+          "status": "success"
+        },
+        "p0100_yvyra": {
+          "time_seconds": 4.76837158203125e-07,
+          "status": "success"
+        }
+      },
+      "status": "success"
+    },
+    {
+      "stage": "baselines",
+      "time_seconds": 0.45436692237854004,
+      "metrics": {
+        "p0011_baselines": {
+          "persistence": {
+            "f1_macro": 0.1486646667291179,
+            "miou": 0.08512008563529576
+          },
+          "linear_trend": {
+            "f1_macro": 0.06610963929080906,
+            "miou": 0.039599609375
+          },
+          "random_forest": {
+            "f1_macro": 1.0,
+            "miou": 1.0
+          }
+        },
+        "p0100_baselines": {
+          "persistence": {
+            "mae": 721.1185488583319,
+            "rmse": 900.3560256913898,
+            "r2": 0.0
+          },
+          "linear_regression": {
+            "mae": 66.61419317516682,
+            "rmse": 80.49510433771633,
+            "r2": 0.9920069894834326
+          },
+          "random_forest": {
+            "mae": 53.657839851298704,
+            "rmse": 84.7413544246445,
+            "r2": 0.991141457946348
+          }
+        },
+        "p0035_baselines": {
+          "mean": {
+            "forecast": "[18.72842791 18.72842791 18.72842791 18.72842791 18.72842791 18.72842791\n 18.72842791]",
+            "mean": 18.728427910007017
+          },
+          "persistence": {
+            "forecast": "[8.47399763 8.47399763 8.47399763 8.47399763 8.47399763 8.47399763\n 8.47399763]",
+            "mean": 8.473997631222906
+          },
+          "linear_trend": {
+            "forecast": "[21.15544928 21.3120313  21.46861333 21.62519535 21.78177737 21.9383594\n 22.09494142]",
+            "mean": 21.625195350868903
+          }
+        }
+      },
+      "status": "success"
+    },
+    {
+      "stage": "real_data_fetch",
+      "time_seconds": 0.07335257530212402,
+      "metrics": {
+        "sentinel2": {
+          "source": "cache",
+          "shape": [
+            12,
+            4,
+            256,
+            256
+          ]
+        },
+        "mapbiomas": {
+          "shape": [
+            256,
+            256
+          ],
+          "unique_classes": 6
+        },
+        "hansen": {
+          "treecover2000": 3243475,
+          "loss": 1638,
+          "gain": 1286,
+          "lossyear": 19676
+        },
+        "verra": {
+          "projects": 5
+        },
+        "openaq": {
+          "records": 1825
+        },
+        "sentinel5p": {
+          "months": 13
+        },
+        "firms": {
+          "detections": 9
+        }
+      },
+      "status": "success"
+    },
+    {
+      "stage": "conflict_detection",
+      "time_seconds": 0.4671745300292969,
+      "metrics": {
+        "total_parcels": 8010,
+        "total_territories": 10,
+        "conflict_parcels": 84,
+        "conflict_fraction": 0.010486891385767791
+      },
+      "status": "success"
+    },
+    {
+      "stage": "evaluation_metrics",
+      "time_seconds": 0.003541231155395508,
+      "metrics": {
+        "f1_macro": 0.1973673802206008,
+        "miou": 0.10950862217273014
+      },
+      "status": "success"
+    },
+    {
+      "stage": "figures_tables",
+      "time_seconds": 1.1863584518432617,
+      "metrics": {
+        "figures": 3,
+        "tables": 3
+      },
+      "status": "success"
+    },
+    {
+      "stage": "final_report",
+      "time_seconds": 0.0002593994140625,
+      "output": "docs/FINAL_REPORT.md",
+      "status": "success"
+    }
+  ],
+  "finished_at": "2026-08-01T12:49:05.262111",
+  "total_time_seconds": 6.449709177017212
+}

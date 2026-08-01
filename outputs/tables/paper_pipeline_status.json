@@ -1,0 +1,38 @@
+[
+  {
+    "paper": "p0011_yvytu",
+    "time_seconds": 3.391469717025757,
+    "status": "success",
+    "error": ""
+  },
+  {
+    "paper": "p0012_yvy",
+    "time_seconds": 2.384185791015625e-06,
+    "status": "success",
+    "error": ""
+  },
+  {
+    "paper": "p0025_yrupe",
+    "time_seconds": 1.1920928955078125e-06,
+    "status": "success",
+    "error": ""
+  },
+  {
+    "paper": "p0026_kai",
+    "time_seconds": 9.5367431640625e-07,
+    "status": "success",
+    "error": ""
+  },
+  {
+    "paper": "p0035_tatakua",
+    "time_seconds": 4.76837158203125e-07,
+    "status": "success",
+    "error": ""
+  },
+  {
+    "paper": "p0100_yvyra",
+    "time_seconds": 4.76837158203125e-07,
+    "status": "success",
+    "error": ""
+  }
+]
