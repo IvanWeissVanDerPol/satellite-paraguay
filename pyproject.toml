@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "satellite-paraguay"
+version = "0.1.0"
+description = "Multi-temporal earth observation of Paraguay — 6 papers from one Python package"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Iván Weiss Van der Pol", email = "ivan@example.com" }
+]
+keywords = ["earth-observation", "paraguay", "sentinel-2", "remote-sensing", "satellite", "thesis"]
+
+[tool.setuptools]
+packages = [
+    "src",
+    "src.satellite_io",
+    "src.paraguay_admin",
+    "src.foundation_models",
+    "src.parcel_analysis",
+    "src.timeseries",
+    "src.evaluation",
+    "src.papers",
+    "src.papers.p0011_yvytu_deforestation",
+    "src.papers.p0100_yvyra_carbon_credits",
+    "src.papers.p0025_yrupe_yield",
+    "src.papers.p0012_yvy_indigenous",
+    "src.papers.p0026_kai_poaching",
+    "src.papers.p0035_tatakua_air_quality",
+]
+
+[tool.setuptools.package-data]
+"src" = ["*.json", "*.yaml", "*.yml"]
+
+[project.urls]
+"Repository" = "https://github.com/IvanWeissVanDerPol/satellite-paraguay"
+"Documentation" = "https://github.com/IvanWeissVanDerPol/satellite-paraguay/blob/main/README.md"

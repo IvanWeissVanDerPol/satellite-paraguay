@@ -1,0 +1,32 @@
+paper_id: p0025_yrupe
+name: Yrupe — Soybean yield
+target_journal: Computers and Electronics in Agriculture
+
+data:
+  satellite: sentinel2
+  start_date: '2018-09-01'
+  end_date: '2025-04-30'
+  caaguazu_bbox:
+    min_lon: -56.0
+    max_lon: -55.0
+    min_lat: -25.5
+    max_lat: -24.5
+
+model:
+  segmentation: delineate_anything_v2
+  timeseries: gru  # or lstm
+  hidden_dim: 128
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+
+evaluation:
+  metric: r2
+  min_r2: 0.80
+  use_inbio_ground_truth: true
+
+deployment:
+  streamlit: true
+  cost_max_usd: 300

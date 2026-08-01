@@ -1,0 +1,40 @@
+paper_id: p0011_yvytu
+name: Yvytu — Chaco deforestation
+target_journal: Remote Sensing of Environment
+
+data:
+  satellite: sentinel2
+  start_date: '2018-01-01'
+  end_date: '2025-12-31'
+  max_cloud_cover: 20
+  chaco_bbox:
+    min_lon: -62.0
+    max_lon: -57.0
+    min_lat: -24.0
+    max_lat: -19.0
+
+model:
+  foundation: prithvi  # IBM-NASA
+  finetune: false
+  layers: 12
+  hidden_dim: 768
+  drop: 0.1
+
+training:
+  epochs: 30
+  batch_size: 16
+  learning_rate: 0.0001
+  optimizer: adamw
+  scheduler: cosine
+  warmup_steps: 100
+
+evaluation:
+  metric: f1_macro
+  benchmark_mapbiomas: true
+  benchmark_hansen: true
+  min_f1: 0.85
+
+deployment:
+  streamlit: true
+  api: true
+  cost_max_usd: 200

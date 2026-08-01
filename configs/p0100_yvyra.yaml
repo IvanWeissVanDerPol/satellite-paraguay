@@ -1,0 +1,38 @@
+paper_id: p0100_yvyra
+name: Yvyra — Carbon credits
+target_journal: Nature Climate Change
+
+data:
+  satellite: sentinel2
+  start_date: '2015-01-01'
+  end_date: '2025-12-31'
+  min_lon: -62.5
+  max_lon: -54.5
+  min_lat: -27.5
+  max_lat: -19.0
+
+model:
+  foundation: alphaearth  # Google
+  finetune: false
+  layers: 12
+  hidden_dim: 1024
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.0001
+
+evaluation:
+  metric: r2
+  min_r2: 0.82
+  use_verra_api: true
+  use_gold_standard_api: true
+
+external_apis:
+  verra_vcs: https://api.verra.org/v1/projects
+  gold_standard: https://api.goldstandard.org/projects
+
+deployment:
+  streamlit: true
+  api: true
+  cost_max_usd: 500

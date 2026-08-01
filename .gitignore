@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+build/
+dist/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Mypy
+.mypy_cache/
+
+# Data (large)
+data/raw/*.tif
+data/raw/*.tiff
+data/raw/*/*.tif
+data/processed/*.tif
+data/cache/embeddings/*.npy
+data/cache/timeseries/*.npz
+
+# Logs
+logs/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# DVC
+.dvc/cache
+.dvc/tmp
+
+# Weights
+models/checkpoints/*.pt
+models/checkpoints/*.pth
+models/fine_tuned/*.pt
+models/fine_tuned/*.pth
+
+# Outputs (regenerable)
+outputs/predictions/*.npy
+outputs/figures/*.png
+outputs/figures/*.pdf
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Secrets
+.env
+*.env
+secrets.yaml
+
+# Papers (drafts)
+papers/drafts/*.pdf
+papers/figures/*.pdf

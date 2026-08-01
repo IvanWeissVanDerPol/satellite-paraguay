@@ -1,0 +1,32 @@
+paper_id: p0026_kai
+name: Kai — Wildlife poaching
+target_journal: Conservation Biology
+
+data:
+  satellite: sentinel2
+  drone: optional
+  start_date: '2020-01-01'
+  end_date: '2025-12-31'
+  defensores_bbox:
+    min_lon: -61.0
+    max_lon: -58.0
+    min_lat: -22.5
+    max_lat: -20.0
+
+model:
+  detector: yolov8m  # pretrained on COCO
+  transfer_from: yolov8m.pt
+  finetune: true
+
+training:
+  epochs: 50
+  batch_size: 16
+  learning_rate: 0.001
+
+evaluation:
+  metric: map_at_0.5
+  min_map: 0.70
+
+deployment:
+  streamlit: true
+  cost_max_usd: 200

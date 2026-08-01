@@ -1,0 +1,26 @@
+paper_id: p0012_yvy
+name: Yvy — Indigenous territory
+target_journal: World Development
+
+data:
+  vlm_model: llava-v1.6-34b  # open-source, free alternative to GPT-4V
+  use_paid_api: false  # explicit: stay free
+
+ethics:
+  care_principles: true
+  irb_required: false  # only if using personal data
+  community_consultation: required
+  inab_protocol: yes  # Instituto Nacional del Indígena (INDI)
+
+model:
+  vlm: llava-v1.6-34b
+  cartography: detectron2
+  finetune: false
+
+evaluation:
+  metric: f1_macro
+  min_f1: 0.80
+
+deployment:
+  streamlit: true
+  cost_max_usd: 0  # explicitly free

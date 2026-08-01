@@ -1,0 +1,33 @@
+paper_id: p0035_tatakua
+name: Tatakua — Air quality
+target_journal: Atmospheric Environment
+
+data:
+  ground: openaq
+  satellite: sentinel5p
+  start_date: '2023-01-01'
+  end_date: '2025-12-31'
+  asuncion_bbox:
+    min_lon: -57.7
+    max_lon: -57.4
+    min_lat: -25.4
+    max_lat: -25.2
+  pollutants: [pm25, pm10, no2, o3, so2, co]
+
+model:
+  forecast: lstm  # or timesfm
+  hidden_dim: 128
+  layers: 2
+
+training:
+  epochs: 30
+  batch_size: 32
+  learning_rate: 0.001
+
+evaluation:
+  metric: mae
+  max_mae_ug_per_m3: 5
+
+deployment:
+  streamlit: true
+  cost_max_usd: 100
