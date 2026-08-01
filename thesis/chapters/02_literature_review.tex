@@ -1,0 +1,67 @@
+% Chapter 2: Literature Review
+
+\chapter{Literature Review}
+
+\section{Foundation Models for Earth Observation}
+
+Recent advances in self-supervised learning have produced foundation models
+for satellite imagery \citep{jakubik2023foundation, satmae2024}. Prithvi
+(IBM-NASA), AlphaEarth (Google), and DINOv2 (Meta) have demonstrated
+state-of-the-art performance on land cover classification, change detection,
+and semantic segmentation tasks. However, most evaluation has been on
+high-resource regions (Europe, US, China); performance in Latin America,
+particularly Paraguay, remains under-explored.
+
+\section{Carbon Credit Verification}
+
+Verra VCS \citep{verra2024} and Gold Standard \citep{goldstandard2024} are the
+world's largest voluntary carbon markets. Recent work \citep{lamahewage2026alphaearth}
+demonstrates that foundation models can estimate forest biomass with
+$R^2 > 0.82$ matching ground-based estimates. However, automated verification
+remains challenging for projects with sparse ground truth, particularly
+smallholder projects in developing countries.
+
+\section{Indigenous Data Governance}
+
+The CARE Principles for Indigenous Data Governance \citep{carroll2020care}
+provide a framework for ethical use of indigenous community data. CARE
+(Collective Benefit, Authority to Control, Responsibility, Ethics)
+complements the FAIR principles and emphasizes community ownership.
+
+\section{Low-Resource Language NLP}
+
+Multilingual NLP for low-resource languages is an active research area
+\citep{aguerotorales2023jopara, chiruzzo2023guaspa, kellert2025spanish}.
+Spanish-Guaraní code-switching (jopara) is a unique phenomenon that has
+received attention \citep{mozillacv2024} but remains challenging for
+modern LLMs.
+
+\section{Air Quality Forecasting}
+
+Deep learning approaches \citep{openaq2024} have improved PM2.5 forecasting.
+Sentinel-5P atmospheric data \citep{esacopernicus2024} provides global
+observations of NO$_2$, SO$_2$, CO, O$_3$, and CH$_4$.
+
+\section{Deforestation Monitoring}
+
+Multi-temporal satellite analysis has become the standard for deforestation
+detection \citep{hansen2013high}. MapBiomas Paraguay
+\citep{mapbiomas2024paraguay} provides annual land cover maps. NASA FIRMS
+\citep{nasafirms2024} provides real-time fire alerts.
+
+\section{Gran Chaco Conservation}
+
+The Gran Chaco is the largest dry forest in South America
+\citep{rivas2026gran_chaco}. Defensores del Chaco National Park
+\citep{defensores2024} protects key biodiversity. Chagas disease
+\citep{who2022chagas, sandon2025chagas} remains a public health concern
+linked to deforestation and land-use change.
+
+\section{Latin American Thesis Research}
+
+Paraguay-specific Earth observation research is sparse compared to
+neighboring countries (Brazil, Argentina). Notable exceptions include
+the work of Cristaldo et al. \citep{cristaldo2024paraguay} on Paraguay
+cartography and Agüero-Torales et al. \citep{aguerotorales2023jopara} on
+Jopara NLP. This thesis addresses this gap by providing the first
+comprehensive multi-paper analysis using foundation models for Paraguay.

@@ -1,0 +1,83 @@
+% Chapter 10: Integration — the unified platform
+
+\chapter{Integration: The Unified Platform}
+
+The six papers presented in this thesis share a common Python package
+(\texttt{satellite-paraguay}) that enables efficient execution, cross-paper
+insights, and a unified deployment platform.
+
+\section{Shared Infrastructure}
+
+All six papers use the same:
+
+\begin{itemize}
+    \item Paraguay admin boundary data (18 deptos, 268 distritos, 7,912 tiles)
+    \item Sentinel-2 imagery ingestion pipeline
+    \item MapBiomas + Hansen ground truth
+    \item OpenAQ + Sentinel-5P atmospheric data
+    \item Catastro + indigenous territory conflict detection
+    \item MLflow experiment tracking
+    \item FastAPI endpoints
+    \item Streamlit dashboard
+\end{itemize}
+
+This shared infrastructure reduces duplication and enables efficient execution.
+Each paper's specific additions are in \texttt{src/papers/PXXXX\_name/}.
+
+\section{Cross-Paper Insights}
+
+Combining the six papers yields insights that no individual paper could:
+
+\begin{enumerate}
+    \item \textbf{Deforestation (P0011) + Carbon Credits (P0100):} Deforested
+    areas can be cross-referenced with Verra projects to verify claims.
+    \item \textbf{Yield (P0025) + Air Quality (P0035):} Crop residue burning
+    (a major P0025 issue) drives PM2.5 spikes in Asunción (P0035 finding).
+    \item \textbf{Indigenous (P0012) + Deforestation (P0011):} Indigenous
+    territories face higher deforestation pressure than non-indigenous areas
+    \citep{fao2024paraguay}.
+    \item \textbf{Wildlife (P0026) + FIRMS:} NASA FIRMS fire alerts can be
+    used to find poaching camps (validated via P0026 satellite imagery).
+\end{enumerate}
+
+\section{Deployment Architecture}
+
+The package is deployed in three ways:
+
+\begin{enumerate}
+    \item \textbf{Command-line:} \texttt{make run-paper-1} etc.
+    \item \textbf{API:} \texttt{make api} → FastAPI on port 8000
+    \item \textbf{Dashboard:} \texttt{make dashboard} → Streamlit on port 8501
+\end{enumerate}
+
+Docker support is included for all three.
+
+\section{Stakeholder Integration}
+
+The thesis engages with multiple stakeholders (see \texttt{docs/STAKEHOLDERS.md}):
+
+\begin{itemize}
+    \item Cristaldo Lab (FADA-UNA) — primary advisor
+    \item INFONA — forestry data (P0011, P0100)
+    \item INDI — indigenous territories (P0012)
+    \item SENEPA — public health (P0031)
+    \item UN-Habitat — indigenous atlas (P0012)
+    \item WWF Paraguay, Guyra — wildlife (P0026)
+\end{itemize}
+
+\section{Open-Source Contribution}
+
+The complete code, data catalog, models, and documentation are released
+under open-source licenses. We expect this to support future Paraguayan
+researchers and serve as a template for similar efforts in other Latin
+American countries.
+
+\section{Lessons Learned}
+
+\begin{itemize}
+    \item Foundation models can be fine-tuned for Paraguay with limited data
+    \item The CARE Principles framework is essential for indigenous data work
+    \item Multi-modal approaches (vision + language + time-series) are powerful
+    \item Local data (paraguay-geodata) is critical for Paraguay-specific work
+    \item Open data + open models enables world-class research at low cost
+\end{itemize}

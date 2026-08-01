@@ -127,7 +127,7 @@ def get_best_run(
 # ============================================
 
 def log_p0011_experiment(f1_macro, miou, params):
-    """Log P0011 Yvytu experiment."""
+    """Log P0011 Yvutu experiment."""
     return log_experiment(
         run_name=f"yvytu_{params.get('model', 'unknown')}",
         params=params,
@@ -157,6 +157,54 @@ def log_p0100_experiment(r2, rmse, mae, params):
             "paper": "P0100",
             "advisor": "Cristaldo",
             "target_journal": "Nature Climate Change",
+        },
+    )
+
+
+def log_p0025_experiment(r2, rmse, mae, params):
+    """Log P0025 Yrupe experiment."""
+    return log_experiment(
+        run_name=f"yrupe_{params.get('model', 'unknown')}",
+        params=params,
+        metrics={
+            "r2": r2,
+            "rmse": rmse,
+            "mae": mae,
+        },
+        tags={
+            "paper": "P0025",
+            "target_journal": "Computers and Electronics in Agriculture",
+        },
+    )
+
+
+def log_p0026_experiment(map50, map50_95, epochs, params):
+    """Log P0026 Kai experiment."""
+    return log_experiment(
+        run_name=f"kai_{params.get('model', 'unknown')}",
+        params={**params, "epochs": epochs},
+        metrics={
+            "map50": map50,
+            "map50_95": map50_95,
+        },
+        tags={
+            "paper": "P0026",
+            "target_journal": "Conservation Biology",
+        },
+    )
+
+
+def log_p0035_experiment(val_mae, epochs, params):
+    """Log P0035 Tatakua experiment."""
+    return log_experiment(
+        run_name=f"tatakua_{params.get('horizon', 'unknown')}d",
+        params={**params, "epochs": epochs},
+        metrics={
+            "val_mae_ug_per_m3": val_mae,
+        },
+        tags={
+            "paper": "P0035",
+            "target_journal": "Atmospheric Environment",
         },
     )
 

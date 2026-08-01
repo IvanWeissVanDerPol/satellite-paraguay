@@ -1,0 +1,62 @@
+[
+  {
+    "name": "P0011: Sentinel-2 fetch (1 tile, synthetic)",
+    "time_seconds": 0.06978559494018555,
+    "status": "success",
+    "result_size": "{'data': array([[[[0.09134708, 0.09134708, 0.09134708, ..., 0.09134708,\n          0.09134708, 0.09134708],\n         [0.09134708, 0.09134708, 0.09134708, ..., 0.09134708,\n          0.09134708, 0.091347"
+  },
+  {
+    "name": "P0011: MapBiomas fetch",
+    "time_seconds": 0.0003254413604736328,
+    "status": "error",
+    "error": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+  },
+  {
+    "name": "P0011: Hansen fetch",
+    "time_seconds": 0.0014536380767822266,
+    "status": "success",
+    "result_size": "{'treecover2000': array([[81, 74, 83, ..., 15, 19, 23],\n       [82, 77, 78, ..., 22, 12, 18],\n       [80, 79, 83, ..., 11, 20, 17],\n       ...,\n       [84, 83, 81, ..., 33, 15, 21],\n       [82, 76, 75"
+  },
+  {
+    "name": "P0100: Verra Paraguay projects",
+    "time_seconds": 0.0073964595794677734,
+    "status": "error",
+    "error": "The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+  },
+  {
+    "name": "P0035: OpenAQ Asunci\u00f3n (1 year)",
+    "time_seconds": 0.012864828109741211,
+    "status": "error",
+    "error": "The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+  },
+  {
+    "name": "P0035: Sentinel-5P NO2 (1 year)",
+    "time_seconds": 0.0009467601776123047,
+    "status": "success",
+    "result_size": "{'2024-01-01T00:00:00': 0.0, '2024-02-01T00:00:00': 0.0, '2024-03-01T00:00:00': 0.0, '2024-04-01T00:00:00': 9.40564716391216e-06, '2024-05-01T00:00:00': 3.0489648113461644e-05, '2024-06-01T00:00:00': "
+  },
+  {
+    "name": "P0026: FIRMS fires (7 days)",
+    "time_seconds": 0.0011599063873291016,
+    "status": "error",
+    "error": "The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+  },
+  {
+    "name": "P0012: Catastro-Indigenous conflicts",
+    "time_seconds": 0.5652964115142822,
+    "status": "success",
+    "result_size": "{'total_parcels': 8010, 'total_indigenous_territories': 10, 'conflict_parcels': 84, 'conflict_fraction': 0.010486891385767791, 'buffer_m': 100, 'conflicts':            id dpto  dist  ...  cod_dist  ov"
+  },
+  {
+    "name": "P0011: All baselines (RF + U-Net + persistence)",
+    "time_seconds": 0.6250200271606445,
+    "status": "success",
+    "result_size": "{'persistence': {'f1_macro': 0.13909443087940385, 'miou': 0.07892159956803782}, 'linear_trend': {'f1_macro': 0.06474319623490894, 'miou': 0.038623046875}, 'random_forest': {'f1_macro': 1.0, 'miou': 1."
+  },
+  {
+    "name": "P0011: Yvutu pipeline (no real data)",
+    "time_seconds": 0.010647296905517578,
+    "status": "error",
+    "error": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+  }
+]

@@ -1,0 +1,38 @@
+stages:
+  download_sentinel:
+    cmd: python scripts/download_sentinel_sample.py
+    deps:
+      - scripts/download_sentinel_sample.py
+      - src/satellite_io/real_download.py
+    outs:
+      - data/raw/sentinel2/
+
+  train_baselines_p0011:
+    cmd: python scripts/train_prithvi_yvutu.py --epochs 2 --max-tiles 5
+    deps:
+      - scripts/train_prithvi_yvutu.py
+      - src/satellite_io/real_download.py
+      - src/satellite_io/mapbiomas.py
+      - src/satellite_io/hansen.py
+    outs:
+      - models/prithvi_yvutu/best.pt
+    metrics:
+      - outputs/metrics/p0011_metrics.json
+
+  train_lstm_p0035:
+    cmd: python scripts/train_lstm_tatakua.py --epochs 5
+    deps:
+      - scripts/train_lstm_tatakua.py
+      - src/external/openaq_client.py
+      - src/external/sentinel5p_client.py
+    outs:
+      - models/lstm_tatakua/best.pt
+    metrics:
+      - outputs/metrics/p0035_metrics.json
+
+  profile:
+    cmd: python scripts/profile_performance.py
+    deps:
+      - scripts/profile_performance.py
+    metrics:
+      - outputs/performance_report.json

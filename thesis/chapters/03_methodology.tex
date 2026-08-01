@@ -1,0 +1,102 @@
+% Chapter 3: Methodology — shared infrastructure
+
+\chapter{Methodology}
+
+This thesis builds a shared Python infrastructure (\texttt{satellite-paraguay})
+that supports six peer-reviewed papers. This chapter describes the shared
+components.
+
+\section{Repository Structure}
+
+The Python package is organized as follows:
+
+\begin{itemize}
+    \item \texttt{src/satellite\_io} — Sentinel-2, Landsat, Planet download
+    \item \texttt{src/paraguay\_admin} — 18 departamentos + 7,912 tiles
+    \item \texttt{src/foundation\_models} — Prithvi, AlphaEarth, DINOv2
+    \item \texttt{src/parcel\_analysis} — Catastro intersection + indigenous conflict
+    \item \texttt{src/timeseries} — Multi-temporal stacking + change detection
+    \item \texttt{src/evaluation} — F1, IoU, mAP, MAE, R$^2$ metrics
+    \item \texttt{src/papers/} — 6 paper-specific pipelines
+    \item \texttt{api/main.py} — FastAPI endpoint
+    \item \texttt{dashboard/app.py} — Streamlit dashboard
+\end{itemize}
+
+\section{Data Sources}
+
+The package integrates 14+ datasets (see \texttt{data/datasheets/}):
+
+\begin{itemize}
+    \item \textbf{Local:} paraguay-geodata (549 MB) — Catastro, OSM, climate, indigenous
+    \item \textbf{Sentinel-2:} ESA Copernicus, 10m, 5-day
+    \item \textbf{Landsat:} NASA, 30m, 16-day
+    \item \textbf{MapBiomas Paraguay:} 30m, annual, 1985-2024
+    \item \textbf{Hansen GFC:} 30m, annual, 2000-2023
+    \item \textbf{OpenAQ:} Hourly air quality, global
+    \item \textbf{Sentinel-5P:} Atmospheric NO$_2$, O$_3$, SO$_2$, CO
+    \item \textbf{NASA FIRMS:} Real-time fire alerts
+    \item \textbf{Verra VCS:} Carbon credit registry
+    \item \textbf{GBIF:} Biodiversity observations
+\end{itemize}
+
+\section{Foundation Models}
+
+We use pre-trained foundation models that are fine-tuned on Paraguay data:
+
+\begin{itemize}
+    \item \textbf{Prithvi (IBM-NASA):} Vision Transformer pre-trained on HLS data \citep{jakubik2023foundation}
+    \item \textbf{AlphaEarth (Google DeepMind):} Earth observation embeddings \citep{lamahewage2026alphaearth}
+    \item \textbf{DINOv2 (Meta):} Self-supervised vision features \citep{oquab2024dinov2}
+    \item \textbf{LLaVA-1.6:} Vision-language model for indigenous place names \citep{liu2024llavanext}
+    \item \textbf{YOLOv8:} Object detection for wildlife poaching \citep{jocher2023yolov8}
+    \item \textbf{TimesFM:} Time-series foundation model \citep{timesfm2024}
+    \item \textbf{Whisper:} Speech recognition for clinical scribe \citep{whisper2022}
+\end{itemize}
+
+\section{Baselines}
+
+Each paper includes baseline comparisons:
+
+\begin{itemize}
+    \item P0011 Yvutu: Random Forest, U-Net from scratch, persistence
+    \item P0100 Yvyra: Linear regression, Random Forest, persistence
+    \item P0025 Yrupe: Persistence, mean, simple regression
+    \item P0035 Tatakua: Mean forecast, persistence, linear trend
+    \item P0026 Kai: YOLOv8n pretrained (no fine-tune)
+    \item P0012 Yvy: Catastro-only baseline (no AI)
+\end{itemize}
+
+\section{Evaluation Framework}
+
+We use standard metrics from the literature:
+
+\begin{itemize}
+    \item \textbf{Segmentation:} F1 macro, mean IoU
+    \item \textbf{Detection:} mAP@0.5, mAP@0.5:0.95
+    \item \textbf{Regression:} R$^2$, MAE, RMSE
+    \item \textbf{Classification:} Accuracy, F1, AUC
+\end{itemize}
+
+\section{Reproducibility}
+
+We ensure reproducibility via:
+
+\begin{itemize}
+    \item Random seeds for all libraries (\texttt{set\_seed(42)})
+    \item Environment capture (\texttt{capture\_environment})
+    \item Git commit hash + branch tracking
+    \item MLflow experiment tracking
+    \item DVC data versioning
+\end{itemize}
+
+\section{Ethical Considerations}
+
+The package follows ethical principles:
+
+\begin{itemize}
+    \item \textbf{CARE Principles} for indigenous data (\texttt{C}, \texttt{A}, \texttt{R}, \texttt{E})
+    \item \textbf{FAIR} data principles
+    \item \textbf{Open-source licensing} (Apache 2.0, MIT, GPL-3.0)
+    \item \textbf{Citation guidelines} for all sources
+    \item \textbf{Risk register} with mitigations
+\end{itemize}
