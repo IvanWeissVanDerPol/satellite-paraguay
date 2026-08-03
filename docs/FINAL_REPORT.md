@@ -1,19 +1,19 @@
 # SatelliteCV-Paraguay — Final Integration Report
 
-**Date:** 2026-08-01T12:49:05.262111
-**Total time:** 6.45s
+**Date:** 2026-08-03T16:28:47.223845
+**Total time:** 7.68s
 
 ## Stages
 
 | # | Stage | Time (s) | Status |
 |---|-------|----------|--------|
-| 1 | load_paraguay_data | 0.87 | success |
-| 2 | paper_pipelines | 3.39 | success |
-| 3 | baselines | 0.45 | success |
-| 4 | real_data_fetch | 0.07 | success |
-| 5 | conflict_detection | 0.47 | success |
+| 1 | load_paraguay_data | 1.01 | success |
+| 2 | paper_pipelines | 3.44 | success |
+| 3 | baselines | 0.65 | success |
+| 4 | real_data_fetch | 0.17 | success |
+| 5 | conflict_detection | 0.53 | success |
 | 6 | evaluation_metrics | 0.00 | success |
-| 7 | figures_tables | 1.19 | success |
+| 7 | figures_tables | 1.87 | success |
 
 ## Paraguay Data Loaded
 

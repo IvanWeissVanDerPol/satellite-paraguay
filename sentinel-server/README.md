@@ -1,1 +1,0 @@
-# Sentinel-server\n\n**Cron-runner for Sentinel-paraguay mega-project.**\n\n## Includes\n- Cron jobs to run all 6 pipelines periodically (weekly)\n- Email notifications on failure\n- Reports to Telegram/Discord\n"}

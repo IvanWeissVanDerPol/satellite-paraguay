@@ -1,0 +1,413 @@
+{
+  "file_counts": {
+    "total": 323,
+    "python": 66,
+    "markdown": 101,
+    "yaml": 12,
+    "tensorboard": 0,
+    "notebook": 7,
+    "weights": 4,
+    "image": 7,
+    "html": 0
+  },
+  "python_loc": 7309,
+  "n_test_files": 4,
+  "n_modules": 26,
+  "n_real_modules": 25,
+  "n_stub_modules": 1,
+  "modules": [
+    {
+      "path": "satellite_io/hansen.py",
+      "loc": 137,
+      "n_classes": 0,
+      "n_functions": 4,
+      "is_stub": false,
+      "signatures": [
+        "def download_hansen_real",
+        "def generate_synthetic_hansen",
+        "def compute_deforestation_year",
+        "def compute_cumulative_deforestation"
+      ]
+    },
+    {
+      "path": "satellite_io/sources.py",
+      "loc": 177,
+      "n_classes": 0,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "def download_sentinel2_tile",
+        "def download_via_gee",
+        "def compute_ndvi",
+        "def cloud_mask_s2",
+        "def download_mapbiomas_paraguay",
+        "def download_hansen_gfc"
+      ]
+    },
+    {
+      "path": "satellite_io/mapbiomas.py",
+      "loc": 186,
+      "n_classes": 0,
+      "n_functions": 3,
+      "is_stub": false,
+      "signatures": [
+        "def download_mapbiomas_paraguay_real",
+        "def generate_synthetic_mapbiomas",
+        "def compute_parcel_statistics_real"
+      ]
+    },
+    {
+      "path": "satellite_io/real_download.py",
+      "loc": 319,
+      "n_classes": 0,
+      "n_functions": 9,
+      "is_stub": false,
+      "signatures": [
+        "def download_sentinel2_gee",
+        "def download_sentinel2_copernicus",
+        "def generate_synthetic_sentinel2",
+        "def fetch_sentinel2_tile",
+        "def cloud_mask_s2",
+        "def atmospheric_correction"
+      ]
+    },
+    {
+      "path": "paraguay_admin/loader.py",
+      "loc": 130,
+      "n_classes": 0,
+      "n_functions": 10,
+      "is_stub": false,
+      "signatures": [
+        "def load_departamentos",
+        "def load_distritos",
+        "def load_catastro_parcels",
+        "def load_catastro_urbanizaciones",
+        "def load_indigenous_territories",
+        "def load_tile_index",
+        "def load_priority_tiles",
+        "def get_country_boundary",
+        "def get_tile_bbox",
+        "def list_tiles_in_region"
+      ]
+    },
+    {
+      "path": "paraguay_admin/real_analysis.py",
+      "loc": 178,
+      "n_classes": 0,
+      "n_functions": 8,
+      "is_stub": false,
+      "signatures": [
+        "def load_catastro_parcels_real",
+        "def load_indigenous_territories_real",
+        "def detect_conflicts_real",
+        "def get_parcels_in_department",
+        "def compute_parcel_summary_stats",
+        "def compute_overlap"
+      ]
+    },
+    {
+      "path": "baselines/p0035_tatakua_baselines.py",
+      "loc": 40,
+      "n_classes": 0,
+      "n_functions": 4,
+      "is_stub": false,
+      "signatures": [
+        "def mean_forecast_baseline",
+        "def persistence_forecast_baseline",
+        "def linear_forecast_baseline",
+        "def run_all_baselines"
+      ]
+    },
+    {
+      "path": "baselines/p0100_yvyra_baselines.py",
+      "loc": 76,
+      "n_classes": 0,
+      "n_functions": 4,
+      "is_stub": false,
+      "signatures": [
+        "def linear_regression_baseline",
+        "def random_forest_regression_baseline",
+        "def persistence_baseline",
+        "def run_all_baselines"
+      ]
+    },
+    {
+      "path": "baselines/p0011_yvytu_baselines.py",
+      "loc": 189,
+      "n_classes": 1,
+      "n_functions": 7,
+      "is_stub": false,
+      "signatures": [
+        "class UNet",
+        "def random_forest_baseline",
+        "def unet_baseline",
+        "def persistence_baseline",
+        "def linear_trend_baseline",
+        "def run_all_baselines",
+        "def forward"
+      ]
+    },
+    {
+      "path": "external/openaq_client.py",
+      "loc": 209,
+      "n_classes": 0,
+      "n_functions": 7,
+      "is_stub": false,
+      "signatures": [
+        "def fetch_openaq_for_location",
+        "def generate_synthetic_openaq_for_station",
+        "def fetch_openaq_asuncion",
+        "def aggregate_by_month",
+        "def generate_synthetic_openaq"
+      ]
+    },
+    {
+      "path": "external/firms_client.py",
+      "loc": 156,
+      "n_classes": 0,
+      "n_functions": 5,
+      "is_stub": false,
+      "signatures": [
+        "def fetch_firms_fires",
+        "def fetch_firms_paraguay",
+        "def compute_fire_clusters",
+        "def generate_synthetic_firms",
+        "def generate_synthetic_firms_paraguay"
+      ]
+    },
+    {
+      "path": "external/sentinel5p_client.py",
+      "loc": 162,
+      "n_classes": 0,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "def fetch_sentinel5p_via_gee",
+        "def fetch_sentinel5p_no2",
+        "def fetch_sentinel5p_o3",
+        "def generate_synthetic_s5p_no2",
+        "def generate_synthetic_s5p_o3",
+        "def aggregate_atmospheric_by_month"
+      ]
+    },
+    {
+      "path": "external/verra_client.py",
+      "loc": 255,
+      "n_classes": 0,
+      "n_functions": 5,
+      "is_stub": false,
+      "signatures": [
+        "def fetch_verra_paraguay",
+        "def fetch_gold_standard_paraguay",
+        "def verify_carbon_credit_real",
+        "def compute_parcel_biomass"
+      ]
+    },
+    {
+      "path": "foundation_models/models.py",
+      "loc": 133,
+      "n_classes": 1,
+      "n_functions": 10,
+      "is_stub": true,
+      "signatures": [
+        "class MockPrithvi",
+        "def load_prithvi",
+        "def load_alphaearth",
+        "def load_dinov2",
+        "def compute_tile_embeddings",
+        "def fuse_embeddings",
+        "def parameters",
+        "def to",
+        "def eval",
+        "def forward"
+      ]
+    },
+    {
+      "path": "parcel_analysis/intersect.py",
+      "loc": 120,
+      "n_classes": 0,
+      "n_functions": 5,
+      "is_stub": false,
+      "signatures": [
+        "def get_parcels_in_tile",
+        "def get_indigenous_in_tile",
+        "def clip_raster_to_parcel",
+        "def compute_parcel_statistics",
+        "def detect_parcel_conflicts"
+      ]
+    },
+    {
+      "path": "evaluation/statistics.py",
+      "loc": 88,
+      "n_classes": 0,
+      "n_functions": 5,
+      "is_stub": false,
+      "signatures": [
+        "def bootstrap_ci",
+        "def mcnemar_test",
+        "def cohens_d",
+        "def paired_ttest",
+        "def generate_confidence_intervals_table"
+      ]
+    },
+    {
+      "path": "evaluation/metrics.py",
+      "loc": 145,
+      "n_classes": 0,
+      "n_functions": 10,
+      "is_stub": false,
+      "signatures": [
+        "def pixel_f1_score",
+        "def pixel_iou",
+        "def mean_iou",
+        "def confusion_matrix_segmentation",
+        "def detection_map",
+        "def regression_metrics",
+        "def classification_metrics",
+        "def benchmark_against_mapbiomas",
+        "def benchmark_against_hansen",
+        "def print_metrics"
+      ]
+    },
+    {
+      "path": "timeseries/analysis.py",
+      "loc": 131,
+      "n_classes": 0,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "def stack_timeseries",
+        "def compute_ndvi_timeseries",
+        "def detect_changes_bfast",
+        "def compute_trend",
+        "def compute_anomaly",
+        "def aggregate_by_department"
+      ]
+    },
+    {
+      "path": "utils/mlflow_tracking.py",
+      "loc": 184,
+      "n_classes": 0,
+      "n_functions": 8,
+      "is_stub": false,
+      "signatures": [
+        "def setup_mlflow",
+        "def log_experiment",
+        "def get_best_run",
+        "def log_p0011_experiment",
+        "def log_p0100_experiment",
+        "def log_p0025_experiment",
+        "def log_p0026_experiment",
+        "def log_p0035_experiment"
+      ]
+    },
+    {
+      "path": "utils/reproducibility.py",
+      "loc": 153,
+      "n_classes": 0,
+      "n_functions": 7,
+      "is_stub": false,
+      "signatures": [
+        "def set_seed",
+        "def get_git_hash",
+        "def get_git_branch",
+        "def get_python_version",
+        "def get_system_info",
+        "def capture_environment",
+        "def verify_reproducibility"
+      ]
+    },
+    {
+      "path": "papers/p0011_yvytu_deforestation/pipeline.py",
+      "loc": 126,
+      "n_classes": 1,
+      "n_functions": 8,
+      "is_stub": false,
+      "signatures": [
+        "class YvytuPipeline",
+        "def run_yvytu_demo",
+        "def load_model",
+        "def select_tiles",
+        "def download_data",
+        "def compute_tile_embeddings",
+        "def detect_deforestation",
+        "def validate"
+      ]
+    },
+    {
+      "path": "papers/p0025_yrupe_yield/pipeline.py",
+      "loc": 65,
+      "n_classes": 1,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "class YrupePipeline",
+        "def run_yrupe_demo",
+        "def load_inbio_data",
+        "def delineate_fields",
+        "def predict_yield",
+        "def validate"
+      ]
+    },
+    {
+      "path": "papers/p0100_yvyra_carbon_credits/pipeline.py",
+      "loc": 86,
+      "n_classes": 1,
+      "n_functions": 7,
+      "is_stub": false,
+      "signatures": [
+        "class YvyraPipeline",
+        "def run_yvyra_demo",
+        "def fetch_verra_projects",
+        "def fetch_gold_standard",
+        "def load_foundation_model",
+        "def verify_carbon_credit",
+        "def validate_predictions"
+      ]
+    },
+    {
+      "path": "papers/p0035_tatakua_air_quality/pipeline.py",
+      "loc": 86,
+      "n_classes": 1,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "class TatakuaPipeline",
+        "def run_tatakua_demo",
+        "def fetch_openaq_data",
+        "def fetch_sentinel5p",
+        "def forecast_pm25",
+        "def validate"
+      ]
+    },
+    {
+      "path": "papers/p0012_yvy_indigenous/pipeline.py",
+      "loc": 85,
+      "n_classes": 1,
+      "n_functions": 5,
+      "is_stub": false,
+      "signatures": [
+        "class YvyPipeline",
+        "def run_yvy_demo",
+        "def load_data",
+        "def detect_conflicts",
+        "def validate_with_vlm"
+      ]
+    },
+    {
+      "path": "papers/p0026_kai_poaching/pipeline.py",
+      "loc": 66,
+      "n_classes": 1,
+      "n_functions": 6,
+      "is_stub": false,
+      "signatures": [
+        "class KaiPipeline",
+        "def run_kai_demo",
+        "def load_model",
+        "def select_tiles",
+        "def detect_poaching",
+        "def fetch_firms_fires"
+      ]
+    }
+  ]
+}

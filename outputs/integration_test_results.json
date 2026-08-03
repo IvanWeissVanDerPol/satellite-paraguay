@@ -1,9 +1,9 @@
 {
-  "started_at": "2026-08-01T12:48:58.812411",
+  "started_at": "2026-08-03T16:28:39.544511",
   "stages": [
     {
       "stage": "load_paraguay_data",
-      "time_seconds": 0.8733267784118652,
+      "time_seconds": 1.0112380981445312,
       "metrics": {
         "tiles": 7912,
         "priority_tiles": 37,
@@ -14,30 +14,30 @@
     },
     {
       "stage": "paper_pipelines",
-      "time_seconds": 3.3914971351623535,
+      "time_seconds": 3.438227415084839,
       "papers": {
         "p0011_yvytu": {
-          "time_seconds": 3.391469717025757,
+          "time_seconds": 3.438120126724243,
           "status": "success"
         },
         "p0012_yvy": {
-          "time_seconds": 2.384185791015625e-06,
+          "time_seconds": 2.86102294921875e-06,
           "status": "success"
         },
         "p0025_yrupe": {
-          "time_seconds": 1.1920928955078125e-06,
+          "time_seconds": 3.0994415283203125e-06,
           "status": "success"
         },
         "p0026_kai": {
-          "time_seconds": 9.5367431640625e-07,
+          "time_seconds": 1.6689300537109375e-06,
           "status": "success"
         },
         "p0035_tatakua": {
-          "time_seconds": 4.76837158203125e-07,
+          "time_seconds": 9.5367431640625e-07,
           "status": "success"
         },
         "p0100_yvyra": {
-          "time_seconds": 4.76837158203125e-07,
+          "time_seconds": 1.1920928955078125e-06,
           "status": "success"
         }
       },
@@ -45,16 +45,16 @@
     },
     {
       "stage": "baselines",
-      "time_seconds": 0.45436692237854004,
+      "time_seconds": 0.6522090435028076,
       "metrics": {
         "p0011_baselines": {
           "persistence": {
-            "f1_macro": 0.1486646667291179,
-            "miou": 0.08512008563529576
+            "f1_macro": 0.14140927212576856,
+            "miou": 0.08041705977749761
           },
           "linear_trend": {
-            "f1_macro": 0.06610963929080906,
-            "miou": 0.039599609375
+            "f1_macro": 0.0674649888370205,
+            "miou": 0.040576171875
           },
           "random_forest": {
             "f1_macro": 1.0,
@@ -97,7 +97,7 @@
     },
     {
       "stage": "real_data_fetch",
-      "time_seconds": 0.07335257530212402,
+      "time_seconds": 0.17255067825317383,
       "metrics": {
         "sentinel2": {
           "source": "cache",
@@ -138,7 +138,7 @@
     },
     {
       "stage": "conflict_detection",
-      "time_seconds": 0.4671745300292969,
+      "time_seconds": 0.531712532043457,
       "metrics": {
         "total_parcels": 8010,
         "total_territories": 10,
@@ -149,7 +149,7 @@
     },
     {
       "stage": "evaluation_metrics",
-      "time_seconds": 0.003541231155395508,
+      "time_seconds": 0.003563404083251953,
       "metrics": {
         "f1_macro": 0.1973673802206008,
         "miou": 0.10950862217273014
@@ -158,7 +158,7 @@
     },
     {
       "stage": "figures_tables",
-      "time_seconds": 1.1863584518432617,
+      "time_seconds": 1.869704008102417,
       "metrics": {
         "figures": 3,
         "tables": 3
@@ -167,11 +167,11 @@
     },
     {
       "stage": "final_report",
-      "time_seconds": 0.0002593994140625,
+      "time_seconds": 0.0007588863372802734,
       "output": "docs/FINAL_REPORT.md",
       "status": "success"
     }
   ],
-  "finished_at": "2026-08-01T12:49:05.262111",
-  "total_time_seconds": 6.449709177017212
+  "finished_at": "2026-08-03T16:28:47.223845",
+  "total_time_seconds": 7.679343938827515
 }

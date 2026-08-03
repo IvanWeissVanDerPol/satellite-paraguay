@@ -4,7 +4,7 @@
   "n_val": 2,
   "n_test": 3,
   "n_months": 24,
-  "total_deforestation_pixels": 12820,
+  "total_deforestation_pixels": 12846,
   "n_tiles_with_deforestation": 10,
   "tile_shape": [
     24,

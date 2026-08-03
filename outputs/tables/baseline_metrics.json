@@ -2,14 +2,14 @@
   {
     "paper": "p0011_baselines",
     "baseline": "persistence",
-    "f1_macro": 0.1486646667291179,
-    "miou": 0.08512008563529576
+    "f1_macro": 0.14140927212576856,
+    "miou": 0.08041705977749761
   },
   {
     "paper": "p0011_baselines",
     "baseline": "linear_trend",
-    "f1_macro": 0.06610963929080906,
-    "miou": 0.039599609375
+    "f1_macro": 0.0674649888370205,
+    "miou": 0.040576171875
   },
   {
     "paper": "p0011_baselines",

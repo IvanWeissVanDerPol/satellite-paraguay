@@ -1,0 +1,106 @@
+{
+  "persistence": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_total": 196608,
+    "n_positive": 2522,
+    "n_negative": 194086,
+    "bootstrap_cis": {
+      "precision": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "recall": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "f1": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      }
+    }
+  },
+  "random_forest": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_total": 196608,
+    "n_positive": 2522,
+    "n_negative": 194086,
+    "bootstrap_cis": {
+      "precision": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "recall": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "f1": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      }
+    }
+  },
+  "unet": {
+    "tp": 2490,
+    "fp": 22605,
+    "fn": 32,
+    "tn": 171481,
+    "n_total": 196608,
+    "n_positive": 2522,
+    "n_negative": 194086,
+    "bootstrap_cis": {
+      "precision": {
+        "mean": 0.09923523286875915,
+        "ci_lower": 0.09537152405195201,
+        "ci_upper": 0.10282931303187888
+      },
+      "recall": {
+        "mean": 0.9873355967839329,
+        "ci_lower": 0.9826017452908463,
+        "ci_upper": 0.9913174961706149
+      },
+      "f1": {
+        "mean": 0.18033895332864144,
+        "ci_lower": 0.1739160273383613,
+        "ci_upper": 0.1862855608758646
+      }
+    }
+  },
+  "yvutu": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_total": 196608,
+    "n_positive": 2522,
+    "n_negative": 194086,
+    "bootstrap_cis": {
+      "precision": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "recall": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      },
+      "f1": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0
+      }
+    }
+  }
+}
