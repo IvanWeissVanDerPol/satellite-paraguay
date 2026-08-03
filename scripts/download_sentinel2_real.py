@@ -70,7 +70,7 @@ search_kwargs = {
 if args.months:
     search_kwargs["datetime"] = f"{args.months[0]}-01/{args.months[-1]}-28"
 
-items = list(catalog.search(**search_kwargs))
+items = list(catalog.search(**search_kwargs).items())
 print(f"\nFound {len(items)} scenes")
 
 # Filter by months if specified
