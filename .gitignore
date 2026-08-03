@@ -74,3 +74,10 @@ secrets.yaml
 # Papers (drafts)
 papers/drafts/*.pdf
 papers/figures/*.pdf
+
+# Large rasters (downloaded, gitignored)
+data/hansen/
+data/sentinel2/
+data/mapbiomas/
+data/boundaries/*.geojson
+outputs/p0011/figures/deforestation_timeline.gif
