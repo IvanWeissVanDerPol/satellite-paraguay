@@ -1,0 +1,8 @@
+# Helm chart — Chart.yaml
+
+apiVersion: v2
+name: satellite-paraguay
+description: Multi-temporal Earth observation of Paraguay
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
