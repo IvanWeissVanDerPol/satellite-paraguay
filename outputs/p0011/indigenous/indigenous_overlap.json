@@ -1,0 +1,128 @@
+{
+  "data_source": "Hansen GFC v1.11 + IWGIA/AVINA/INDI public references",
+  "n_territories": 10,
+  "disclaimer": "Territories are approximate bboxes, not legal boundaries",
+  "territories": [
+    {
+      "name": "Carmelo Peralta (Enlhet)",
+      "people": "Enlhet Norte",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 720.0,
+      "polygon_area_km2": 3457.0,
+      "pixels_in_window": 4800000,
+      "loss_pixels": 2373509,
+      "loss_pct": 49.44810416666667,
+      "loss_ha": 148344.3125,
+      "co2e_mt": 24581.4133213141
+    },
+    {
+      "name": "Bah\u00eda Negra (Ayoreo)",
+      "people": "Ayoreo, \u00d1andeva",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 420.0,
+      "polygon_area_km2": 3249.0,
+      "pixels_in_window": 4480000,
+      "loss_pixels": 2214614,
+      "loss_pct": 49.433348214285715,
+      "loss_ha": 138413.375,
+      "co2e_mt": 22935.80604967949
+    },
+    {
+      "name": "Santa Teresita (Nivacl\u00e9)",
+      "people": "Nivacl\u00e9",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 850.0,
+      "polygon_area_km2": 1821.0,
+      "pixels_in_window": 2560000,
+      "loss_pixels": 1189332,
+      "loss_pct": 46.45828125,
+      "loss_ha": 74333.25,
+      "co2e_mt": 12317.400721153848
+    },
+    {
+      "name": "Xakmaraq Kelygmaky (Nivacl\u00e9)",
+      "people": "Nivacl\u00e9",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 2400.0,
+      "polygon_area_km2": 14796.0,
+      "pixels_in_window": 17760000,
+      "loss_pixels": 4790895,
+      "loss_pct": 26.975760135135136,
+      "loss_ha": 299430.9375,
+      "co2e_mt": 49617.24188701923
+    },
+    {
+      "name": "La Patria (Chulupi/Nivacl\u00e9)",
+      "people": "Nivacl\u00e9, Manjuy",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 1800.0,
+      "polygon_area_km2": 11504.0,
+      "pixels_in_window": 11200000,
+      "loss_pixels": 2900751,
+      "loss_pct": 25.8995625,
+      "loss_ha": 181296.9375,
+      "co2e_mt": 30041.832271634612
+    },
+    {
+      "name": "Ayoreo-Totobiegosode",
+      "people": "Ayoreo",
+      "status": "Voluntary isolation",
+      "claimed_area_km2": 5500.0,
+      "polygon_area_km2": 11464.0,
+      "pixels_in_window": 8640000,
+      "loss_pixels": 1990866,
+      "loss_pct": 23.042430555555555,
+      "loss_ha": 124429.125,
+      "co2e_mt": 20618.544110576924
+    },
+    {
+      "name": "Yby Ya\u00fa (Guaran\u00ed)",
+      "people": "Pa\u0129 Tavyter\u00e3",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 380.0,
+      "polygon_area_km2": 2851.0,
+      "pixels_in_window": 4000000,
+      "loss_pixels": 813987,
+      "loss_pct": 20.349675,
+      "loss_ha": 50874.1875,
+      "co2e_mt": 8430.113762019231
+    },
+    {
+      "name": "Mby\u00e1 Guaran\u00ed Itakyry",
+      "people": "Mby\u00e1 Guaran\u00ed",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 240.0,
+      "polygon_area_km2": 3946.0,
+      "pixels_in_window": 5600000,
+      "loss_pixels": 1091791,
+      "loss_pct": 19.496267857142858,
+      "loss_ha": 68236.9375,
+      "co2e_mt": 11307.210476762823
+    },
+    {
+      "name": "Yalve Sanga (Enlhet)",
+      "people": "Enlhet",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 540.0,
+      "polygon_area_km2": 1826.0,
+      "pixels_in_window": 2560000,
+      "loss_pixels": 411603,
+      "loss_pct": 16.0782421875,
+      "loss_ha": 25725.1875,
+      "co2e_mt": 4262.795492788462
+    },
+    {
+      "name": "Angait\u00e9 - Filadelfia",
+      "people": "Angait\u00e9",
+      "status": "Permanent settlement",
+      "claimed_area_km2": 380.0,
+      "polygon_area_km2": 2289.0,
+      "pixels_in_window": 3200000,
+      "loss_pixels": 230689,
+      "loss_pct": 7.20903125,
+      "loss_ha": 14418.0625,
+      "co2e_mt": 2389.1468950320514
+    }
+  ],
+  "generated_at": "2026-08-03T19:55:07Z"
+}

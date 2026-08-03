@@ -1,0 +1,97 @@
+{
+  "n_papers": 6,
+  "n_shared_refs": 14,
+  "papers": {
+    "P0011_yvutu_deforestation": [
+      "hansen2013",
+      "mapbiomas2023",
+      "prithvi2023",
+      "planetarycomputer2022",
+      "chave2014",
+      "ipcc2006",
+      "gao2024",
+      "hochtleitner2022"
+    ],
+    "P0010_yvyra_carbon_credits": [
+      "verra2021",
+      "hansen2013",
+      "mapbiomas2023",
+      "ipcc2006",
+      "chave2014",
+      "hochtleitner2022"
+    ],
+    "P0012_yvy_indigenous": [
+      "iwgia2024",
+      "indi2024",
+      "unesco2023",
+      "hansen2013",
+      "mapbiomas2023",
+      "hochtleitner2022"
+    ],
+    "P0025_yrupe_yield": [
+      "inbio2024",
+      "mapbiomas2023",
+      "prithvi2023",
+      "planetarycomputer2022",
+      "hochtleitner2022"
+    ],
+    "P0026_kai_poaching": [
+      "planetarycomputer2022",
+      "prithvi2023",
+      "hansen2020",
+      "hochtleitner2022"
+    ],
+    "P0035_tatakua_air_quality": [
+      "openaq2024",
+      "ipcc2006",
+      "planetarycomputer2022",
+      "hochtleitner2022"
+    ]
+  },
+  "reference_frequency": {
+    "hansen2013": 3,
+    "mapbiomas2023": 4,
+    "prithvi2023": 3,
+    "planetarycomputer2022": 4,
+    "verra2021": 1,
+    "openaq2024": 1,
+    "ipcc2006": 3,
+    "chave2014": 2,
+    "hochtleitner2022": 6,
+    "inbio2024": 1,
+    "iwgia2024": 1,
+    "indi2024": 1,
+    "unesco2023": 1,
+    "gao2024": 1
+  },
+  "shared_methods": [
+    "Hansen GFC v1.11 (P0011, P0010, P0012, P0026)",
+    "MapBiomas Paraguay (P0011, P0010, P0012, P0025)",
+    "Microsoft Planetary Computer (P0025, P0026, P0035)",
+    "Prithvi foundation model (P0011, P0025, P0026)",
+    "IPCC carbon model (P0010, P0035)",
+    "Hochtleitner satellite-paraguay platform (all 6)"
+  ],
+  "thesis_themes": {
+    "deforestation": [
+      "P0011",
+      "P0010",
+      "P0012"
+    ],
+    "agriculture": [
+      "P0025"
+    ],
+    "wildlife": [
+      "P0026"
+    ],
+    "air_quality": [
+      "P0035"
+    ],
+    "indigenous_rights": [
+      "P0012"
+    ],
+    "carbon_market": [
+      "P0010"
+    ]
+  }
+}
