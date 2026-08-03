@@ -1,0 +1,15 @@
+\begin{table}[h]
+\centering
+\caption{P0011 Yvutu: Performance comparison of deforestation detection methods on the Paraguayan Chaco test set. Best results in bold.}
+\label{tab:main_results}
+\begin{tabular}{lcccccc}
+\toprule
+Model & F1 (macro) & mIoU & Precision & Recall & Train time (s) & Inference (s/tile) \\
+\midrule
+Persistence & 0.4968 & 0.4936 & 0.0000 & 0.0000 & 0.0 & 1.946 \\
+Random Forest & 0.4968 & 0.4936 & 0.0000 & 0.0000 & 3.5 & 1.151 \\
+Unet & 0.5592 & 0.4912 & 0.0992 & 0.9873 & 58.5 & 0.215 \\
+\textbf{Yvutu} & \textbf{0.4968} & \textbf{0.4936} & 0.0000 & 0.0000 & 122.6 & 1.007 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,58 @@
+{
+  "persistence": {
+    "f1_macro": 0.49677241012147616,
+    "miou": 0.4935862223307292,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_test_pixels": 196608,
+    "n_test_deforestation": 2522,
+    "training_time_seconds": 0.0,
+    "inference_time_per_tile_seconds": 1.946347951889038
+  },
+  "random_forest": {
+    "f1_macro": 0.49677241012147616,
+    "miou": 0.4935862223307292,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_test_pixels": 196608,
+    "n_test_deforestation": 2522,
+    "training_time_seconds": 3.4522018432617188,
+    "inference_time_per_tile_seconds": 1.1507339477539062
+  },
+  "unet": {
+    "f1_macro": 0.5592030741172982,
+    "miou": 0.491240976433993,
+    "precision": 0.09922295277943813,
+    "recall": 0.9873116574147502,
+    "tp": 2490,
+    "fp": 22605,
+    "fn": 32,
+    "tn": 171481,
+    "n_test_pixels": 196608,
+    "n_test_deforestation": 2522,
+    "training_time_seconds": 58.505916357040405,
+    "inference_time_per_tile_seconds": 0.21454858779907227
+  },
+  "yvutu": {
+    "f1_macro": 0.49677241012147616,
+    "miou": 0.4935862223307292,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 2522,
+    "tn": 194086,
+    "n_test_pixels": 196608,
+    "n_test_deforestation": 2522,
+    "training_time_seconds": 122.64311742782593,
+    "inference_time_per_tile_seconds": 1.0073967774709065
+  }
+}

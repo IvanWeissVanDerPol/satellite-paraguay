@@ -1,0 +1,10 @@
+{
+  "n_tiles_total": 15,
+  "n_tiles_with_deforestation": 10,
+  "n_tiles_with_no_deforestation": 5,
+  "total_deforestation_pixels": 12820,
+  "total_forest_pixels": 978057,
+  "mean_deforestation_per_tile": 854.6666666666666,
+  "median_deforestation_per_tile": 901.0,
+  "total_events": 21
+}

@@ -1,0 +1,15 @@
+{
+  "n_tiles": 15,
+  "n_train": 10,
+  "n_val": 2,
+  "n_test": 3,
+  "n_months": 24,
+  "total_deforestation_pixels": 12820,
+  "n_tiles_with_deforestation": 10,
+  "tile_shape": [
+    24,
+    4,
+    256,
+    256
+  ]
+}
