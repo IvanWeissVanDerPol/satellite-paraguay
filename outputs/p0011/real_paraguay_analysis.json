@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-08-03T19:24:22Z",
+  "data_sources": [
+    "Hansen GFC v1.11",
+    "MapBiomas Paraguay Collection 2"
+  ],
+  "coverage": "Paraguay (lat -20 to -30, lon -50 to -70)",
+  "annual_loss": {
+    "2001": 6970455,
+    "2002": 7009883,
+    "2003": 10488145,
+    "2004": 13145398,
+    "2005": 11717028,
+    "2006": 8674726,
+    "2007": 14118229,
+    "2008": 15798012,
+    "2009": 10729786,
+    "2010": 13601757,
+    "2011": 15541738,
+    "2012": 16616853,
+    "2013": 12531492,
+    "2014": 11525744,
+    "2015": 8781287,
+    "2016": 11932492,
+    "2017": 14189519,
+    "2018": 9980179,
+    "2019": 9248744,
+    "2020": 10561692,
+    "2021": 11623896,
+    "2022": 11317789,
+    "2023": 9943764
+  },
+  "total_loss_2001_2023": 266048608,
+  "forest_baseline_2000": 1141304502,
+  "carbon_loss": {
+    "total_loss_pixels": 266048608,
+    "total_loss_ha": 16628038.0,
+    "carbon_tons": 751459409.6153846,
+    "co2e_tons": 2755351168.589743,
+    "assumed_mean_treecover": 50.0,
+    "biomass_model": "AGB = 100 * tc^2 / (100 + tc^2) Mg/ha (Chave et al. 2014)",
+    "carbon_fraction": "0.47 (IPCC default)",
+    "co2e_conversion": "44/12 stoichiometric"
+  },
+  "region_comparison": {
+    "chaco": {
+      "loss_pixels": 129088146,
+      "total_pixels": 1600000000,
+      "loss_pct": 8.068009125,
+      "mean_treecover": 19.186628054375
+    },
+    "east": {
+      "loss_pixels": 136960462,
+      "total_pixels": 1600000000,
+      "loss_pct": 8.560028875,
+      "mean_treecover": 29.246251201875
+    }
+  },
+  "tiles_processed": [
+    "20S_060W",
+    "20S_070W"
+  ]
+}

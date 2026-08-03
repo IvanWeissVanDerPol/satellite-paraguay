@@ -1,0 +1,208 @@
+{
+  "data_source": "Hansen GFC v1.11 + geoBoundaries Paraguay ADM1 simplified",
+  "tiles_analyzed": [
+    "20S_060W"
+  ],
+  "n_departments": 18,
+  "departments": [
+    {
+      "rank": 1,
+      "department": "ALTO PARAGUAY",
+      "total_pixels": 66876074,
+      "loss_pixels": 19055344,
+      "loss_pct": 28.49351473592783,
+      "loss_ha": 1190959.0,
+      "loss_km2": 11909.59,
+      "carbon_mt": 53822.18557692308,
+      "co2e_mt": 197348.0137820513
+    },
+    {
+      "rank": 2,
+      "department": "BOQUERON",
+      "total_pixels": 7656202,
+      "loss_pixels": 1841668,
+      "loss_pct": 24.054589991225413,
+      "loss_ha": 115104.25,
+      "loss_km2": 1151.0425,
+      "carbon_mt": 5201.826682692308,
+      "co2e_mt": 19073.36450320513
+    },
+    {
+      "rank": 3,
+      "department": "CANINDEYU",
+      "total_pixels": 21423328,
+      "loss_pixels": 4270405,
+      "loss_pct": 19.93343424513689,
+      "loss_ha": 266900.3125,
+      "loss_km2": 2669.003125,
+      "carbon_mt": 12061.841045673078,
+      "co2e_mt": 44226.750500801296
+    },
+    {
+      "rank": 4,
+      "department": "SAN PEDRO",
+      "total_pixels": 29645152,
+      "loss_pixels": 5644669,
+      "loss_pct": 19.040782789712125,
+      "loss_ha": 352791.8125,
+      "loss_km2": 3527.918125,
+      "carbon_mt": 15943.476141826923,
+      "co2e_mt": 58459.41252003205
+    },
+    {
+      "rank": 5,
+      "department": "AMAMBAY",
+      "total_pixels": 17675247,
+      "loss_pixels": 2875416,
+      "loss_pct": 16.268038573944683,
+      "loss_ha": 179713.5,
+      "loss_km2": 1797.135,
+      "carbon_mt": 8121.667788461539,
+      "co2e_mt": 29779.44855769231
+    },
+    {
+      "rank": 6,
+      "department": "CAAGUAZU",
+      "total_pixels": 18494000,
+      "loss_pixels": 2432901,
+      "loss_pct": 13.155082729533904,
+      "loss_ha": 152056.3125,
+      "loss_km2": 1520.563125,
+      "carbon_mt": 6871.775661057692,
+      "co2e_mt": 25196.510757211538
+    },
+    {
+      "rank": 7,
+      "department": "CONCEPCION",
+      "total_pixels": 26106533,
+      "loss_pixels": 3271062,
+      "loss_pct": 12.529668340104754,
+      "loss_ha": 204441.375,
+      "loss_km2": 2044.41375,
+      "carbon_mt": 9239.177524038461,
+      "co2e_mt": 33876.98425480769
+    },
+    {
+      "rank": 8,
+      "department": "CAAZAPA",
+      "total_pixels": 13804566,
+      "loss_pixels": 1618981,
+      "loss_pct": 11.727865982892906,
+      "loss_ha": 101186.3125,
+      "loss_km2": 1011.863125,
+      "carbon_mt": 4572.84296875,
+      "co2e_mt": 16767.090885416666
+    },
+    {
+      "rank": 9,
+      "department": "PRESIDENTE HAYES",
+      "total_pixels": 98957160,
+      "loss_pixels": 11317220,
+      "loss_pct": 11.436484232166727,
+      "loss_ha": 707326.25,
+      "loss_km2": 7073.2625,
+      "carbon_mt": 31965.705528846156,
+      "co2e_mt": 117207.58693910259
+    },
+    {
+      "rank": 10,
+      "department": "ALTO PARANA",
+      "total_pixels": 20393451,
+      "loss_pixels": 1603585,
+      "loss_pct": 7.863235114056959,
+      "loss_ha": 100224.0625,
+      "loss_km2": 1002.240625,
+      "carbon_mt": 4529.356670673076,
+      "co2e_mt": 16607.641125801278
+    },
+    {
+      "rank": 11,
+      "department": "GUAIRA",
+      "total_pixels": 5574231,
+      "loss_pixels": 426843,
+      "loss_pct": 7.6574329266225245,
+      "loss_ha": 26677.6875,
+      "loss_km2": 266.776875,
+      "carbon_mt": 1205.6262620192308,
+      "co2e_mt": 4420.629627403847
+    },
+    {
+      "rank": 12,
+      "department": "ITAPUA",
+      "total_pixels": 23052493,
+      "loss_pixels": 1486264,
+      "loss_pct": 6.447302684356091,
+      "loss_ha": 92891.5,
+      "loss_km2": 928.915,
+      "carbon_mt": 4197.98125,
+      "co2e_mt": 15392.597916666666
+    },
+    {
+      "rank": 13,
+      "department": "CORDILLERA",
+      "total_pixels": 6865317,
+      "loss_pixels": 305292,
+      "loss_pct": 4.446874048204911,
+      "loss_ha": 19080.75,
+      "loss_km2": 190.8075,
+      "carbon_mt": 862.303125,
+      "co2e_mt": 3161.778125
+    },
+    {
+      "rank": 14,
+      "department": "CENTRAL",
+      "total_pixels": 3467012,
+      "loss_pixels": 101413,
+      "loss_pct": 2.925083616670493,
+      "loss_ha": 6338.3125,
+      "loss_km2": 63.383125,
+      "carbon_mt": 286.44296875,
+      "co2e_mt": 1050.2908854166667
+    },
+    {
+      "rank": 15,
+      "department": "PARAGUARI",
+      "total_pixels": 12416589,
+      "loss_pixels": 342296,
+      "loss_pct": 2.756763552373361,
+      "loss_ha": 21393.5,
+      "loss_km2": 213.935,
+      "carbon_mt": 966.8216346153846,
+      "co2e_mt": 3545.01266025641
+    },
+    {
+      "rank": 16,
+      "department": "ASUNCION",
+      "total_pixels": 184561,
+      "loss_pixels": 3408,
+      "loss_pct": 1.8465439610752001,
+      "loss_ha": 213.0,
+      "loss_km2": 2.13,
+      "carbon_mt": 9.62596153846154,
+      "co2e_mt": 35.29519230769231
+    },
+    {
+      "rank": 17,
+      "department": "MISIONES",
+      "total_pixels": 11863049,
+      "loss_pixels": 121866,
+      "loss_pct": 1.0272738484010309,
+      "loss_ha": 7616.625,
+      "loss_km2": 76.16625,
+      "carbon_mt": 344.21286057692305,
+      "co2e_mt": 1262.1138221153847
+    },
+    {
+      "rank": 18,
+      "department": "\u00d1EEMBUCU",
+      "total_pixels": 16952205,
+      "loss_pixels": 48288,
+      "loss_pct": 0.2848479003173923,
+      "loss_ha": 3018.0,
+      "loss_km2": 30.18,
+      "carbon_mt": 136.39038461538465,
+      "co2e_mt": 500.09807692307703
+    }
+  ],
+  "generated_at": "2026-08-03T19:36:08Z"
+}

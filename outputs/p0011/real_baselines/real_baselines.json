@@ -1,0 +1,62 @@
+{
+  "data": "real Hansen GFC v1.11 + MapBiomas Paraguay 2023",
+  "region": "central Paraguay (window 8000,12000 in tile 20S_060W)",
+  "n_tiles": 40,
+  "tile_size": 128,
+  "features": [
+    "treecover",
+    "cumulative_loss",
+    "forest_class",
+    "pasture_class",
+    "agriculture_class"
+  ],
+  "models": {
+    "persistence": {
+      "model": "persistence",
+      "tp": 0,
+      "fp": 0,
+      "fn": 22352,
+      "tn": 633008,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.9658935546875,
+      "iou": 0.0,
+      "n_samples": 655360
+    },
+    "random_forest": {
+      "model": "random_forest",
+      "tp": 13,
+      "fp": 35,
+      "fn": 1388,
+      "tn": 48564,
+      "precision": 0.2708333333333333,
+      "recall": 0.009279086366880799,
+      "f1": 0.017943409247757072,
+      "accuracy": 0.97154,
+      "iou": 0.009052924791086351,
+      "n_samples": 50000
+    },
+    "unet": {
+      "model": "unet",
+      "tp": 0,
+      "fp": 0,
+      "fn": 5496,
+      "tn": 191112,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "accuracy": 0.9720458984375,
+      "iou": 0.0,
+      "n_samples": 196608
+    }
+  },
+  "mcnemar": {
+    "persistence_vs_unet": {
+      "p_value": 1.0,
+      "significant": false,
+      "discordant_pairs": 0
+    }
+  },
+  "generated_at": "2026-08-03T19:30:38Z"
+}
