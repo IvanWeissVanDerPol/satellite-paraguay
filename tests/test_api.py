@@ -1,80 +1,109 @@
-# Tests for FastAPI app.
+"""Tests for FastAPI endpoints."""
 import sys
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import pytest
+from fastapi.testclient import TestClient
 
-@pytest.fixture
-def client():
-    """Create a test client."""
-    try:
-        from fastapi.testclient import TestClient
-    except ImportError:
-        pytest.skip("fastapi not installed")
+from src.api.main import app
 
-    from api.main import app
-    return TestClient(app)
+client = TestClient(app)
 
 
-def test_health(client):
-    """Health endpoint."""
+def test_health():
+    """Health endpoint returns healthy."""
     response = client.get("/health")
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "healthy"
+    assert "endpoints" in data
 
 
-def test_info(client):
-    """Info endpoint."""
-    response = client.get("/info")
+def test_summary():
+    """Summary endpoint returns expected fields."""
+    response = client.get("/summary")
     assert response.status_code == 200
     data = response.json()
-    assert "papers" not in data  # /info returns endpoints
-    assert "/health" in data["endpoints"]
+    assert data["title"] == "Multi-Temporal Satellite Computer Vision for Paraguay"
+    assert "findings" in data
+    assert data["findings"]["indigenous_disparity"] == 3.3
+    assert data["findings"]["verra_discrepancy_pct"] == 35
 
 
-def test_predict_deforestation(client):
-    """Deforestation endpoint."""
-    import numpy as np
-    np.random.seed(42)
-    # Use small array to avoid JSON payload size issues
-    ndvi = np.random.rand(6, 16, 16).astype(np.float32).tolist()
-    dates = [f"2024-{m:02d}-01" for m in range(1, 7)]
-
-    response = client.post("/predict/deforestation", json={
-        "tile_id": "-54.267_-21.164",
-        "ndvi_timeseries": ndvi,
-        "dates": dates,
-    })
-    # 200 success, 422 validation error, 500 internal — all acceptable
-    assert response.status_code in [200, 422, 500]
+def test_departments():
+    """Departments endpoint returns list."""
+    response = client.get("/departments")
+    assert response.status_code == 200
+    depts = response.json()
+    assert isinstance(depts, list)
+    assert len(depts) >= 5
+    assert any(d["name"] == "Alto Paraguay" for d in depts)
 
 
-def test_predict_carbon(client):
-    """Carbon verification endpoint."""
-    response = client.post("/predict/carbon", json={
-        "project_id": "VCS-001",
-        "tile_id": "-54.267_-21.164",
-    })
-    assert response.status_code in [200, 500]
+def test_territories():
+    """Territories endpoint returns list."""
+    response = client.get("/territories")
+    assert response.status_code == 200
+    territories = response.json()
+    assert isinstance(territories, list)
+    assert len(territories) >= 6
+    # Verify headline finding
+    carmelo = next(t for t in territories if t["name"] == "Carmelo Peralta")
+    assert carmelo["loss_pct"] > 49  # ~49.45%
 
 
-def test_predict_yield(client):
-    """Yield prediction endpoint."""
-    response = client.post("/predict/yield", json={
-        "tile_id": "-55.5_-25.0",
-        "ndvi_series": [0.3, 0.5, 0.7, 0.6],
-    })
-    assert response.status_code in [200, 500]
+def test_verra():
+    """Verra endpoint returns 5 projects."""
+    response = client.get("/verra")
+    assert response.status_code == 200
+    projects = response.json()
+    assert len(projects) == 5
+    # Verify discrepancy is positive
+    for p in projects:
+        assert p["hansen_co2e_mt"] > p["verra_co2e_mt"]
+        assert p["discrepancy_pct"] > 0
 
 
-def test_predict_air_quality(client):
-    """Air quality forecast endpoint."""
-    response = client.post("/predict/air-quality", json={
-        "historical_pm25": [10.0, 12.0, 15.0, 13.0, 11.0],
-        "days_ahead": 7,
-    })
-    assert response.status_code in [200, 500]
+def test_models():
+    """Models endpoint returns expected metrics."""
+    response = client.get("/models")
+    assert response.status_code == 200
+    models = response.json()
+    assert any(m["name"] == "persistence" for m in models)
+    assert any(m["name"] == "prithvi_lite" for m in models)
+
+
+def test_carbon():
+    """Carbon endpoint returns annual data."""
+    response = client.get("/carbon")
+    assert response.status_code == 200
+    data = response.json()
+    # May be empty if not yet run, but should be a list
+    assert isinstance(data, list)
+
+
+def test_uncertainty():
+    """Uncertainty endpoint returns bootstrap CIs."""
+    response = client.get("/uncertainty")
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+
+
+def test_docs_available():
+    """OpenAPI docs are available."""
+    response = client.get("/docs")
+    assert response.status_code == 200
+
+
+def test_openapi_schema():
+    """OpenAPI schema is valid."""
+    response = client.get("/openapi.json")
+    assert response.status_code == 200
+    schema = response.json()
+    assert "paths" in schema
+    assert "/health" in schema["paths"]
+    assert "/departments" in schema["paths"]
+    assert "/territories" in schema["paths"]
