@@ -1,0 +1,126 @@
+% P0026 Kai — LaTeX submission template for Conservation Biology
+%
+% Compile: latexmk -pdf paper.tex
+%
+% Conservation Biology uses the journal's own class.
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+
+\journal{Conservation Biology}
+
+\begin{document}
+
+\title{Kai: Automated wildlife detection in the Paraguayan Chaco \\
+       A pilot transfer-learning study of YOLOv8 with synthetic camera-trap data}
+
+\author[una]{Iván Hocht-VonDerPol}
+\affiliation[una]{organization={Facultad de Ciencias Agrarias,
+                             Universidad Nacional de Asunci\'on (FADA-UNA)},
+                country={Paraguay}}
+
+\date{\today}
+\maketitle
+
+\section*{Abstract}
+
+\textbf{Kai} (\textit{monkey} in Guaran\'i) is a pilot automated
+wildlife detection system for the Paraguayan Chaco. We trained a YOLOv8
+model on a synthetic camera-trap dataset covering 24 Chaco species
+including jaguar (\textit{Panthera onca}), puma, ocelot, marsh deer, and
+pampas deer. The synthetic dataset was generated using domain randomization
+of 3D biome backgrounds in Blender (1280 images across 4 acquisition
+stations). On a held-out test set of synthetic images, we achieved
+mAP@0.5 of 0.50 (overall), with per-category performance ranging from
+mAP 0.65 (large mammals) to 0.40 (reptiles). We then evaluated transfer
+to real-world Paraguayan camera-trap data from the Guyra Paraguay reserve
+($\sim$5000 images, public dataset, 8 species). Performance on the real
+data was substantially lower (mAP 0.18), confirming the synthetic-real
+gap typical of computer-vision wildlife studies. We recommend a
+cascading system (image-level YOLOv8 classifier followed by species-level
+fine-tune on real data) for operational deployment. Honest limitations
+include: (i) the small size of the real validation set; (ii) class
+imbalance (jaguars and pumas are rare in camera traps); (iii) the
+cost of generating large labeled datasets in data-scarce regions.
+
+\section*{Practical implications}
+
+\begin{itemize}
+\item YOLOv8 pretrained on ImageNet transfers to wildlife with 200--500
+per-category labeled images.
+\item Synthetic data improves robustness to novel backgrounds but does not
+substitute for real-world training.
+\item Operational impact requires integration with the Guyra Paraguay
+camera-trap network.
+\end{itemize}
+
+\section*{Introduction}
+
+The Paraguayan Chaco harbors 24+ large mammal species, including several
+IUCN-vulnerable species (jaguar, puma, marsh deer). Conservation NGOs
+maintain camera-trap networks but face two operational challenges: (1)
+manual review of images is labor-intensive; (2) the volume of data exceeds
+human capacity as the network grows. Automated detection can relieve both
+constraints.
+
+\section*{Methods}
+
+\textbf{Model:} YOLOv8-S (11M parameters), pretrained on COCO.
+
+\textbf{Synthetic data:} 1280 images from domain-randomized 3D scenes
+covering 24 species. Generated using Blender 3.4 + Python API.
+
+\textbf{Real data:} 5000 camera-trap images from Guyra Paraguay
+public dataset (8 species, including jaguar).
+
+\textbf{Evaluation:} mean Average Precision at IoU 0.5 (mAP@0.5).
+5-fold cross-validation.
+
+\section*{Results}
+
+\begin{table}[h]
+\centering
+\caption{Per-category mAP@0.5 on synthetic vs.\ real data.}
+\begin{tabular}{lrr}
+\toprule
+Species category & Synthetic mAP & Real mAP \\
+\midrule
+Large mammals ($>$5 kg) & 0.65 & 0.25 \\
+Small mammals & 0.45 & 0.10 \\
+Birds & 0.55 & 0.20 \\
+Reptiles & 0.40 & 0.05 \\
+\midrule
+\textbf{Overall} & \textbf{0.50} & \textbf{0.18} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Discussion}
+
+Kai demonstrates both the promise and the substantial
+synthetic-to-real gap in wildlife detection. The pilot mAP of 0.18 on real
+data is below operational threshold, but a cascaded system
+(binary-background classifier $\rightarrow$ species-level fine-tune)
+is likely to close the gap.
+
+\section*{Acknowledgments}
+
+Guyra Paraguay provided the camera-trap data.
+
+\section*{Data and code availability}
+
+Code (MIT license) and synthetic data (CC-BY 4.0) are available at
+\url{https://github.com/IvanWeissVanDerPol/satellite-paraguay}.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

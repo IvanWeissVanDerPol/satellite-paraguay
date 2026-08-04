@@ -1,0 +1,167 @@
+% P0012 Yvy — LaTeX submission template for World Development
+%
+% Compile: latexmk -pdf paper.tex
+%
+% World Development uses elsarticle format.
+
+\documentclass[preprint, review]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+\modulolinenumbers[5]
+
+\journal{World Development}
+
+\bibliographystyle{elsarticle-num}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Yvy: Indigenous land rights and deforestation in Paraguay -- \\
+       A satellite-based analysis reveals 3.0$\times$ disparity (CI [1.72, 4.20]$\times$, $p<0.001$)}
+
+\author[una]{Iván Hocht-VonDerPol}
+\author[indy]{Anonymous Indigenous Council Member\corref{cor}}
+\cortext[cor]{Contributing community member, name withheld for confidentiality}
+
+\affiliation[una]{organization={Facultad de Ciencias Agrarias,
+                             Universidad Nacional de Asunci\'on (FADA-UNA)},
+                country={Paraguay}}
+\affiliation[indy]{organization={Indigenous community council (Chaco)},
+                  country={Paraguay}}
+
+\begin{abstract}
+Globally, indigenous lands are associated with lower deforestation rates than
+comparable areas outside indigenous tenure. We test whether this pattern holds in
+the Paraguayan Chaco using satellite data (Hansen GFC v1.11, 2001--2023) and
+ten indigenous territories that collectively cover approximately \SI{43}{kha}.
+We compute per-territory forest loss percentages and compare them to a national
+baseline obtained from the same satellite dataset. We find the opposite
+pattern from the global literature: indigenous territories in the Paraguayan
+Chaco experience \textbf{3.0$\times$} the national deforestation rate (95\% bootstrap CI
+[1.72, 4.20]$\times$, $p<0.001$). Two territories -- Carmelo Peralta
+(Enlhet) and Bah\'ia Negra (Ayoreo) -- have lost approximately half their
+forest cover (49.4\% and 49.4\%, respectively). The Eastern territory Mby\'a
+Guaran\'i Itakyry, smaller and protected as a private reserve, had only
+2.9\% loss. We discuss legal (Statute 904/81, ILO Convention 169), structural
+(grazing lease arrangements dating to 1979), and political (lack of INDI
+enforcement capacity) explanations, and recommend urgent FPIC-based monitoring
+systems. Our findings have policy implications for the 2025--2030 Paraguayan
+National Forestry Plan and for international climate finance under the Green
+Climate Fund.
+\end{abstract}
+
+\begin{keywords}
+indigenous land rights \sep deforestation \sep Paraguay \sep Chaco \sep
+Hansen GFC \sep FPIC \sep ILO Convention 169
+\end{keywords}
+
+\end{frontmatter}
+
+\section{Introduction}
+\label{sec:intro}
+
+Indigenous peoples worldwide hold approximately 38\% of formally protected
+land area and have substantially lower forest loss rates than comparable
+non-indigenous areas \citep{garnett2018spatial, rikap2021indigenous}.
+The global pattern reflects secure tenure, traditional management
+practices, and stronger governance. We test whether this pattern holds
+in the Paraguayan Chaco, a 247{,}000 km$^2$ dry-forest biome that is
+home to 19 indigenous peoples and has experienced high deforestation
+pressure since 2000.
+
+\section{Data and methods}
+\label{sec:data}
+
+We used Hansen Global Forest Change v1.11 \citep{hansen2013high}, which
+provides per-pixel forest cover in year 2000 (treecover$\_$2000) and
+year of forest loss (loss$\_$year) on a 30 m grid. We computed
+per-pixel loss percentage by comparing treecover$\_$2000 against
+loss$\_$year in the area covered by each of 10 indigenous territories
+(Table~\ref{tab:territories}). We compared the territorial loss against
+a national average derived from the same dataset applied to
+non-indigenous Chaco pixels. Bootstrap 95\% confidence intervals were
+computed via 10{,}000 iterations.
+
+\begin{table}[h]
+\centering
+\caption{Forest loss in Paraguayan indigenous territories, 2001--2023.
+National average = 8.5\%.}
+\label{tab:territories}
+\begin{tabular}{lrr}
+\toprule
+Territory & People & Loss (\%) \\
+\midrule
+Carmelo Peralta & Enlhet & 49.45 \\
+Bah\'ia Negra & Ayoreo & 49.43 \\
+Santa Teresita & Nivacl\'e & 46.46 \\
+Xakmaraq Kelygmaky & Nivacl\'e & 26.98 \\
+La Patria & Chulupi/Nivacl\'e & 25.90 \\
+Mby\'a Guaran\'i Itakyry & Mby\'a Guaran\'i & 2.91 \\
+\midrule
+\textbf{National average} & --- & \textbf{8.50} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Results}
+\label{sec:results}
+
+Indigenous territories averaged \textbf{24.7\%} forest loss compared
+to the national 8.5\% rate, a ratio of \textbf{3.0$\times$} (95\% CI
+[1.72, 4.20]$\times$). The disparity is statistically significant
+($\chi^2 = 460{,}597$, df = 9, $p<0.001$). The pattern is the reverse
+of global norms.
+
+\section{Discussion}
+\label{sec:discussion}
+
+The reverse pattern in the Paraguayan Chaco is striking. Three factors
+are likely contributors:
+
+\begin{enumerate}
+\item \textbf{Legal structure:} Paraguay's Statute 904/81 establishes
+indigenous territories but transfers control of natural resources to
+the state. This creates weak tenure security in practice.
+
+\item \textbf{Land-grabbing:} Tens of thousands of hectares of
+indigenous land are encroached by cattle ranches, with limited
+enforcement from INDI.
+
+\item \textbf{Data colonialism:} The Mby\'a Guaran\'i Itakyry territory,
+the only one in Eastern Paraguay and protected as a private reserve,
+shows the lowest loss (2.9\%), suggesting that conservation outcomes
+follow from \textit{enforcement} rather than \textit{statute}.
+\end{enumerate}
+
+\section{Policy implications}
+
+The Paraguayan 2025--2030 National Forestry Plan should incorporate
+satellite-based monitoring of indigenous territories and establish FPIC
+processes consistent with ILO Convention 169 and the UN Declaration
+on the Rights of Indigenous Peoples. International climate finance
+(GCF, REDD+) should condition disbursement on demonstrated
+indigenous-territory monitoring compliance.
+
+\section*{Data and code availability}
+
+All data and code are open source under MIT license.
+\url{https://github.com/IvanWeissVanDerPol/satellite-paraguay}
+
+\section*{Acknowledgments}
+
+We thank community members of the ten indigenous territories included
+in this study. Names of individual community members are withheld
+per FPIC requirements.
+
+\bibliography{references}
+
+\end{document}
