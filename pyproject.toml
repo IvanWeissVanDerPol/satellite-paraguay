@@ -119,6 +119,8 @@ filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",
     "ignore::UserWarning",
+    "ignore::RuntimeWarning:scipy",
+    "ignore::RuntimeWarning",
 ]  # Filter harmless deprecation warnings
 log_cli = true
 log_cli_level = "INFO"

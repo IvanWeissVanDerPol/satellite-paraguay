@@ -69,7 +69,12 @@ def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> 
     if b01 + b10 == 0:
         chi2, p_value = 0.0, 1.0
     else:
-        chi2, p_value = stats.mcnemar([[0, b01], [b10, 0]], exact=False, correction=True)
+        from scipy.stats import binomtest
+        # Use exact binomial test for McNemar's test (more compatible)
+        n_disagree = b01 + b10
+        result = binomtest(b01, n_disagree, p=0.5)
+        chi2 = (abs(b01 - b10) - 1) ** 2 / n_disagree if n_disagree > 0 else 0
+        p_value = result.pvalue if n_disagree > 0 else 1.0
 
     return {
         "chi2": float(chi2),
@@ -86,6 +91,8 @@ def cohens_d(group1: np.ndarray, group2: np.ndarray) -> float:
     n1, n2 = len(group1), len(group2)
     var1, var2 = group1.var(ddof=1), group2.var(ddof=1)
     pooled_std = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
+    if pooled_std == 0:
+        return 0.0  # identical groups -> no effect
     return (group1.mean() - group2.mean()) / pooled_std
 
 
