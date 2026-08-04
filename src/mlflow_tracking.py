@@ -104,9 +104,22 @@ def log_dict_as_json(data: Dict[str, Any], filename: str) -> None:
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(data, f, indent=2, default=str)
         f.flush()
-        if mlflow:
-            mlflow.log_artifact(f.name, artifact_file=filename)
-        Path(f.name).unlink()
+        temp_path = f.name
+    try:
+        # mlflow.log_artifact(local_path, artifact_path=None)
+        # Place the file under the given filename in the artifact dir
+        # by writing to a temp dir with the target filename.
+        import os
+        import shutil
+        tmp_dir = tempfile.mkdtemp()
+        target = os.path.join(tmp_dir, filename)
+        shutil.move(temp_path, target)
+        try:
+            mlflow.log_artifact(target)
+        finally:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+    except Exception:
+        Path(temp_path).unlink(missing_ok=True)
 
 
 def end_run() -> None:

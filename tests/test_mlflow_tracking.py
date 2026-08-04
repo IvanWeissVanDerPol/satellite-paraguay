@@ -163,13 +163,11 @@ class TestLogArtifact:
 class TestLogDictAsJson:
     """Tests for log_dict_as_json function."""
 
-    @pytest.mark.skip(reason="Source bug: log_artifact doesn't accept artifact_file kwarg")
     def test_logs_dict(self):
         from src.mlflow_tracking import log_dict_as_json, start_run
         with start_run("test_dict"):
             log_dict_as_json({"key": "value", "number": 42}, "test.json")
 
-    @pytest.mark.skip(reason="Source bug: log_artifact doesn't accept artifact_file kwarg")
     def test_logs_nested_dict(self):
         from src.mlflow_tracking import log_dict_as_json, start_run
         nested = {"a": {"b": {"c": 1}}, "list": [1, 2, 3]}

@@ -241,6 +241,9 @@ def generate_synthetic_sentinel2(
     # Stack (T, bands, H, W)
     arr = np.zeros((T, len(bands), H, W), dtype=np.float32)
 
+    # Build index mapping band name -> array index
+    band_to_idx = {b: i for i, b in enumerate(bands)}
+
     for t, ndvi_base in enumerate(monthly_ndvi):
         # Add spatial + temporal noise
         spatial = base_pattern + rng.normal(0, 0.05, (H, W))
@@ -252,10 +255,15 @@ def generate_synthetic_sentinel2(
         b4 = 0.05 + 0.1 * (1 - ndvi_t)  # More red where less vegetation
         b8 = b4 * (1 + ndvi_t) / (1 - ndvi_t + 0.01)
 
-        arr[t, 0] = 0.08 + 0.02 * rng.uniform()  # B2 Blue
-        arr[t, 1] = 0.07 + 0.02 * rng.uniform()  # B3 Green
-        arr[t, 2] = b4  # B4 Red
-        arr[t, 3] = np.clip(b8, 0, 0.5)  # B8 NIR
+        # Fill known bands; leave unknowns as defaults
+        if "B2" in band_to_idx:
+            arr[t, band_to_idx["B2"]] = 0.08 + 0.02 * rng.uniform()  # B2 Blue
+        if "B3" in band_to_idx:
+            arr[t, band_to_idx["B3"]] = 0.07 + 0.02 * rng.uniform()  # B3 Green
+        if "B4" in band_to_idx:
+            arr[t, band_to_idx["B4"]] = b4  # B4 Red
+        if "B8" in band_to_idx:
+            arr[t, band_to_idx["B8"]] = np.clip(b8, 0, 0.5)  # B8 NIR
 
     return {
         "data": arr,

@@ -340,23 +340,23 @@ class TestFetchSentinel2TileCache:
                 sys.modules["ee"] = saved
 
     def test_custom_bands_passed_through(self, tmp_path, monkeypatch):
-        """Custom bands should be passed (known bug: synthetic hardcodes indexes)."""
+        """Custom bands should be honored (regression test)."""
         from src.satellite_io import real_download
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
         try:
             with patch("src.satellite_io.real_download.download_sentinel2_copernicus", return_value=None):
-                # Generate_sentinel2 has known bug: hardcodes B2/B3/B4/B8 indices
-                # so custom short band lists will IndexError. This documents the bug.
-                with pytest.raises(IndexError):
-                    real_download.fetch_sentinel2_tile(
-                        tile_id="T_CUSTOM_2",
-                        bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
-                        start_date="2024-01-01",
-                        end_date="2024-03-01",
-                        bands=["B4", "B8"],
-                    )
+                result = real_download.fetch_sentinel2_tile(
+                    tile_id="T_CUSTOM_2",
+                    bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                    start_date="2024-01-01",
+                    end_date="2024-03-01",
+                    bands=["B4", "B8"],
+                )
+                # Synthetic fallback now handles custom band lists
+                assert "bands" in result
+                assert result["bands"] == ["B4", "B8"]
         finally:
             if saved is None:
                 sys.modules.pop("ee", None)
