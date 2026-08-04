@@ -1,7 +1,7 @@
 # SatelliteCV-Paraguay — Makefile
 # Entry point for all common tasks.
 
-.PHONY: help install bootstrap verify test lint format notebook-paper-% run-paper-% dashboard report autonomous clean docker-build docs pre-commit-install pre-commit-run
+.PHONY: help install bootstrap verify test test-fast test-coverage test-property test-performance test-integration lint format notebook-paper-% run-paper-% dashboard api observability report autonomous clean docker-build docs pre-commit-install pre-commit-run audit-deps mutation reproduce cron-install
 
 help:
 	@echo "SatelliteCV-Paraguay — Make targets"
@@ -65,9 +65,19 @@ help:
 	@echo ""
 	@echo "Autonomous execution:"
 	@echo "  make autonomous            — Run full 30-day autonomous plan"
+	@echo ""
+	@echo "Testing & automation:"
+	@echo "  make test-property         — Property-based tests (hypothesis)"
+	@echo "  make test-performance      — Performance benchmarks"
+	@echo "  make test-integration      — Integration tests"
+	@echo "  make audit-deps            — Dependency audit"
+	@echo "  make mutation              — Mutation testing (slow)"
+	@echo "  make reproduce             — Reproducibility verification"
+	@echo "  make cron-install          — Install crontab"
+	@echo "  make observability         — Run observability dashboard"
 
 install:
-	pip install -e .
+	pip install -e ".[dev]"
 	pip install -r requirements.txt
 
 pre-commit-install:
@@ -168,10 +178,35 @@ test:
 	pytest tests/ -v
 
 test-fast:
-	pytest tests/ -v -m "not slow"
+	pytest tests/ -v -m "not slow and not gpu and not performance and not network"
 
 test-coverage:
-	pytest tests/ -v --cov=src --cov-report=html
+	pytest tests/ -v --cov=src --cov=scripts --cov-report=html --cov-report=xml --cov-fail-under=30
+
+test-property:
+	pytest tests/test_properties.py -m property -v --no-cov --hypothesis-seed=42
+
+test-performance:
+	pytest tests/test_performance.py -m performance --no-cov --benchmark-only --benchmark-autosave
+
+test-integration:
+	pytest tests/test_integration.py -m integration --no-cov -v
+
+audit-deps:
+	python3 scripts/audit_dependencies.py
+
+mutation:
+	python3 scripts/mutation_testing.py
+
+reproduce:
+	python3 scripts/verify_reproducibility.py
+
+cron-install:
+	@echo "Installing crontab..."
+	@crontab scripts/crontab.txt || echo "Failed to install. Run: crontab scripts/crontab.txt"
+
+observability:
+	streamlit run src/observability_dashboard.py
 
 docker-build:
 	docker build -t satellite-paraguay:latest .
