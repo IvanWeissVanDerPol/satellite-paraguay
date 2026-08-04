@@ -1,0 +1,39 @@
+{
+  "mcnemar_unet_vs_persistence": {
+    "chi2": 14266.263963488465,
+    "p_value": 0.0,
+    "n12": 26823,
+    "n21": 5386,
+    "n_total": 32209,
+    "significant_at_005": true
+  },
+  "chi_squared_indigenous_disparity": {
+    "chi2": 460597.5586172432,
+    "p_value": 0.0,
+    "dof": 1,
+    "cramers_v": 0.25651442694522025,
+    "observed": {
+      "lost": 993999,
+      "total": 3500000
+    },
+    "expected": {
+      "lost": 297500,
+      "total": 3500000
+    },
+    "significant_at_001": true
+  },
+  "bootstrap_3_3x_disparity": {
+    "bootstrap_mean_ratio": 2.907711670588235,
+    "bootstrap_ci_lower": 1.7194117647058824,
+    "bootstrap_ci_upper": 4.19565,
+    "p_value_h1_gt_1_5x": 0.0,
+    "n_bootstrap": 10000,
+    "threshold_1_5x": 12.75,
+    "significant_at_001": true
+  },
+  "summary": {
+    "unet_significantly_better_than_persistence": true,
+    "indigenous_disparity_significant": true,
+    "disparity_above_1_5x": true
+  }
+}

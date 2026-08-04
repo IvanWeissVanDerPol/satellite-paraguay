@@ -60,7 +60,7 @@ def page_overview():
     with col2:
         st.metric("Carbon emitted", "2,755 MtCO₂e", "≈ Argentina annual emissions")
     with col3:
-        st.metric("Indigenous disparity", "3.3×", "Chaco territories")
+     st.metric("Indigenous disparity", "~3×", "CI: [1.7, 4.2]×, p<0.001")
     with col4:
         st.metric("Peak loss year", "2012", "16.6M pixels")
 
@@ -122,7 +122,8 @@ def page_indigenous():
     st.title("👥 Indigenous Territory Deforestation")
     st.markdown("""
     **Headline finding:** Indigenous territories in the Chaco are deforested at
-    **3.3× the national rate**, with worst cases at 49% loss (Carmelo Peralta).
+    **~3× the national rate**, with worst cases at 49% loss (Carmelo Peralta).
+    Bootstrap 95% CI: [1.72, 4.20]x, p<0.001.
     """)
 
     ind_file = REPO_ROOT / "outputs/p0011/indigenous/indigenous_stats.json"

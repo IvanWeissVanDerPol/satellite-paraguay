@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><title>Annual CO2e Loss Paraguay</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>body { font-family: sans-serif; margin: 20px; }</style>
+</head>
+<body>
+<h1>Annual CO₂e Loss (Chave 2014 AGB model)</h1>
+<div id="chart"></div>
+<script>
+  const data = [{
+    x: [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+    y: [0.10022079477294611, 0.967460852829168, 0.3657897767551175, 0.5081112860665157, 0.08158768943530542, 0.04762544980428153, 0.5480022281969281, 0.14306506995344226, 0.30071808765208163, 0.2789191643698991, 0.7622554136061794, 0.3457484810718542, 0.14411698477845689, 0.1862862479721532, 0.07812523946026562, 0.030838409409575294, 0.014361683980584659, 0.02887228751709419, 0.029709456955852295, 0.058317586999395814, 0.3922591978115455, 0.08625937666411236, 0.05119585833274978],
+    type: 'bar',
+    name: 'CO₂e loss (Mt)',
+    marker: { color: '#ff7f0e' }
+  }];
+  const layout = {
+    title: 'Annual Carbon Loss Paraguay',
+    xaxis: { title: 'Year' },
+    yaxis: { title: 'CO₂e (Mt)' },
+    hovermode: 'x unified',
+    height: 500
+  };
+  Plotly.newPlot('chart', data, layout);
+</script>
+</body></html>

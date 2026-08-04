@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html><head><title>Indigenous Territories Deforestation</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>body { font-family: sans-serif; margin: 0; } #map { height: 100vh; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  const map = L.map('map').setView([-22.0, -60.0], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+  L.marker([-22.95, -59.85], {
+    title: "Carmelo Peralta (Enlhet)"
+  }).bindPopup(
+    `<b>Carmelo Peralta</b><br>People: Enlhet<br>Loss: 49.45%`
+  ).addTo(map),
+  L.marker([-20.25, -58.18], {
+    title: "Bahía Negra (Ayoreo)"
+  }).bindPopup(
+    `<b>Bahía Negra</b><br>People: Ayoreo<br>Loss: 49.43%`
+  ).addTo(map),
+  L.marker([-21.85, -60.45], {
+    title: "Santa Teresita (Nivaclé)"
+  }).bindPopup(
+    `<b>Santa Teresita</b><br>People: Nivaclé<br>Loss: 46.46%`
+  ).addTo(map),
+  L.marker([-23.35, -60.15], {
+    title: "Xakmaraq Kelygmaky (Nivaclé)"
+  }).bindPopup(
+    `<b>Xakmaraq Kelygmaky</b><br>People: Nivaclé<br>Loss: 26.98%`
+  ).addTo(map),
+  L.marker([-22.15, -60.05], {
+    title: "La Patria (Chulupi)"
+  }).bindPopup(
+    `<b>La Patria</b><br>People: Chulupi<br>Loss: 25.9%`
+  ).addTo(map),
+  L.marker([-24.95, -55.15], {
+    title: "Mbyá Guaraní Itakyry (Mbyá Guaraní)"
+  }).bindPopup(
+    `<b>Mbyá Guaraní Itakyry</b><br>People: Mbyá Guaraní<br>Loss: 2.91%`
+  ).addTo(map)
+</script>
+</body></html>
