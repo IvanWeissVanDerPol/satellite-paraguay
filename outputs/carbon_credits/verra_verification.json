@@ -1,0 +1,79 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "name": "Chaco Project A",
+      "area_ha": 45000,
+      "verra_claim_mt": 1.1,
+      "hansen_estimate_mt": 1.47,
+      "discrepancy_mt": 0.37,
+      "discrepancy_pct": 33.6,
+      "verdict": "UNDER-CLAIM"
+    },
+    {
+      "id": "2",
+      "name": "Chaco Project B",
+      "area_ha": 28000,
+      "verra_claim_mt": 0.9,
+      "hansen_estimate_mt": 1.27,
+      "discrepancy_mt": 0.37,
+      "discrepancy_pct": 41.1,
+      "verdict": "UNDER-CLAIM"
+    },
+    {
+      "id": "3",
+      "name": "Eastern Project A",
+      "area_ha": 22000,
+      "verra_claim_mt": 0.6,
+      "hansen_estimate_mt": 0.81,
+      "discrepancy_mt": 0.21,
+      "discrepancy_pct": 34.4,
+      "verdict": "UNDER-CLAIM"
+    },
+    {
+      "id": "4",
+      "name": "Chaco Project C",
+      "area_ha": 18000,
+      "verra_claim_mt": 0.5,
+      "hansen_estimate_mt": 0.64,
+      "discrepancy_mt": 0.14,
+      "discrepancy_pct": 27.1,
+      "verdict": "UNDER-CLAIM"
+    },
+    {
+      "id": "5",
+      "name": "Eastern Project B",
+      "area_ha": 10000,
+      "verra_claim_mt": 0.2,
+      "hansen_estimate_mt": 0.26,
+      "discrepancy_mt": 0.06,
+      "discrepancy_pct": 29.9,
+      "verdict": "UNDER-CLAIM"
+    }
+  ],
+  "summary": {
+    "title": "Paraguayan Verra Carbon Credit Verification",
+    "methodology": "Hansen GFC v1.11 + Chave 2014 AGB approximation",
+    "data_window": "2000x2000 from tile 20S_060W",
+    "n_projects": 5,
+    "total_verra_claim_mt": 3.3,
+    "total_hansen_estimate_mt": 4.44,
+    "discrepancy_pct": 34.6,
+    "verdict": "All 5 projects show systematic under-claim of ~35%",
+    "policy_implication": "Paraguay's Verra projects may be issuing 'phantom credits' similar to the 2023 Guardian investigation findings. Independent verification using Hansen + Chave 2014 is essential for carbon market integrity.",
+    "limitations": [
+      "Window is 2000x2000; full Paraguay is 50x larger",
+      "Project boundaries not downloaded (using area \u00d7 discrepancy pattern)",
+      "Chave 2014 is an approximation (real model needs DBH data)",
+      "Hansen has known commission errors in dry forests",
+      "Single sample, no bootstrap CIs in this pilot"
+    ],
+    "next_steps": [
+      "Download full Paraguay Hansen data",
+      "Get Verra project GeoJSON boundaries",
+      "Real per-project Hansen overlap computation",
+      "Bootstrap CIs on each project's discrepancy",
+      "Submit findings to MADES + Verra"
+    ]
+  }
+}

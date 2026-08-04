@@ -1,0 +1,160 @@
+{
+  "yearly_stats": {
+    "2015": {
+      "forest_pct": 25.51,
+      "savanna_pct": 55.59,
+      "pasture_pct": 14.88,
+      "water_pct": 0.22,
+      "n_forest": 1020345,
+      "n_savanna": 2223714,
+      "n_pasture": 595067,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2016": {
+      "forest_pct": 25.47,
+      "savanna_pct": 55.56,
+      "pasture_pct": 14.96,
+      "water_pct": 0.22,
+      "n_forest": 1018643,
+      "n_savanna": 2222236,
+      "n_pasture": 598247,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2017": {
+      "forest_pct": 25.45,
+      "savanna_pct": 55.52,
+      "pasture_pct": 15.0,
+      "water_pct": 0.22,
+      "n_forest": 1018068,
+      "n_savanna": 2220995,
+      "n_pasture": 600063,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2018": {
+      "forest_pct": 25.41,
+      "savanna_pct": 55.5,
+      "pasture_pct": 15.07,
+      "water_pct": 0.22,
+      "n_forest": 1016553,
+      "n_savanna": 2219934,
+      "n_pasture": 602639,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2019": {
+      "forest_pct": 25.37,
+      "savanna_pct": 55.46,
+      "pasture_pct": 15.14,
+      "water_pct": 0.22,
+      "n_forest": 1014838,
+      "n_savanna": 2218515,
+      "n_pasture": 605773,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2020": {
+      "forest_pct": 25.33,
+      "savanna_pct": 55.29,
+      "pasture_pct": 15.36,
+      "water_pct": 0.22,
+      "n_forest": 1013048,
+      "n_savanna": 2211691,
+      "n_pasture": 614387,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2021": {
+      "forest_pct": 24.81,
+      "savanna_pct": 54.8,
+      "pasture_pct": 16.36,
+      "water_pct": 0.22,
+      "n_forest": 992598,
+      "n_savanna": 2192156,
+      "n_pasture": 654372,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2022": {
+      "forest_pct": 24.72,
+      "savanna_pct": 54.64,
+      "pasture_pct": 16.63,
+      "water_pct": 0.22,
+      "n_forest": 988645,
+      "n_savanna": 2185479,
+      "n_pasture": 665002,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    },
+    "2023": {
+      "forest_pct": 24.66,
+      "savanna_pct": 54.55,
+      "pasture_pct": 16.77,
+      "water_pct": 0.22,
+      "n_forest": 986238,
+      "n_savanna": 2182141,
+      "n_pasture": 670747,
+      "n_water": 8934,
+      "total_pixels": 4000000
+    }
+  },
+  "yearly_changes": {
+    "2016": {
+      "forest_change_pct": -0.04,
+      "pasture_change_pct": 0.08
+    },
+    "2017": {
+      "forest_change_pct": -0.02,
+      "pasture_change_pct": 0.04
+    },
+    "2018": {
+      "forest_change_pct": -0.04,
+      "pasture_change_pct": 0.07
+    },
+    "2019": {
+      "forest_change_pct": -0.04,
+      "pasture_change_pct": 0.07
+    },
+    "2020": {
+      "forest_change_pct": -0.04,
+      "pasture_change_pct": 0.22
+    },
+    "2021": {
+      "forest_change_pct": -0.52,
+      "pasture_change_pct": 1.0
+    },
+    "2022": {
+      "forest_change_pct": -0.09,
+      "pasture_change_pct": 0.27
+    },
+    "2023": {
+      "forest_change_pct": -0.06,
+      "pasture_change_pct": 0.14
+    }
+  },
+  "real_mapbiomas_comparison": {
+    "metric": "2023 forest/pasture/agriculture %",
+    "mapbiomas_real": {
+      "forest_pct": 53.01,
+      "pasture_pct": 45.66,
+      "agriculture_pct": 1.08
+    },
+    "our_pseudo_mapbiomas": {
+      "forest_pct": 24.66,
+      "pasture_pct": 16.77
+    },
+    "differences": {
+      "forest_diff": -28.35,
+      "pasture_diff": -28.89
+    }
+  },
+  "methodology": "Pseudo-MapBiomas derived from Hansen treecover + lossyear",
+  "limitations": [
+    "Pasture/agriculture classes are proxies (we use pasture for all converted)",
+    "Water class is a proxy (low treecover)",
+    "No temporal MapBiomas available (only 2023)",
+    "Real MapBiomas classification methodology is more sophisticated"
+  ]
+}
