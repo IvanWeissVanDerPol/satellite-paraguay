@@ -1,0 +1,15 @@
+{
+  "hansen_cumulative_loss_pixels": 673625,
+  "hansen_cumulative_loss_pct": 16.840625,
+  "mapbiomas_2023_forest_pct": 53.0054,
+  "mapbiomas_2023_pasture_pct": 45.6631,
+  "mapbiomas_2023_agri_pct": 1.085,
+  "interpretation": "Hansen cumulative loss 2001-2023 in window: 16.84% of pixels. MapBiomas 2023 shows current land cover; loss = initial forest - current forest - regrowth. For Paraguay, regrowth is small, so Hansen \u2248 initial forest - current forest.",
+  "limitations": [
+    "Different time periods: Hansen 2001-2023 vs MapBiomas 2023",
+    "Different resolutions: Hansen 25 m, MapBiomas 30 m",
+    "Different methodologies: pixel-based vs classification",
+    "Window size: 2000x2000 may not be representative of country",
+    "No INPE PRODES for Paraguay (only Brazil)"
+  ]
+}
