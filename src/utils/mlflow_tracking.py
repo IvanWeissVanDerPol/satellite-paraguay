@@ -27,10 +27,15 @@ def setup_mlflow(
         raise ImportError("mlflow not installed. Run: pip install mlflow")
 
     if tracking_uri is None:
-        # Default: local file in ./mlruns
-        mlflow_dir = Path("mlruns")
-        mlflow_dir.mkdir(exist_ok=True)
-        tracking_uri = f"file://{mlflow_dir.absolute()}"
+        # Default: local file in ./mlruns, but allow override via env var
+        # for testability. MLFLOW_TRACKING_URI follows mlflow's own convention.
+        env_uri = os.environ.get("MLFLOW_TRACKING_URI")
+        if env_uri:
+            tracking_uri = env_uri
+        else:
+            mlflow_dir = Path("mlruns")
+            mlflow_dir.mkdir(exist_ok=True)
+            tracking_uri = f"file://{mlflow_dir.absolute()}"
 
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(experiment_name)

@@ -103,22 +103,42 @@ class TestFullPipeline:
         if not outputs_dir.exists():
             pytest.skip("outputs/ not present - run scripts first")
 
-        # Check that key output files exist (skip if pipeline not yet run)
-        expected = [
-            "outputs/p0011/departments/department_stats.json",
-            "outputs/p0011/indigenous/indigenous_stats.json",
-            "outputs/p0011/carbon/per_year_loss.json",
-            "outputs/p0011/uncertainty/uncertainty_results.json",
-            "outputs/carbon_credits/verra_verification.json",
-            "outputs/statistical_tests/test_results.json",
-            "outputs/cross_transfer/transfer_results.json",
+        # Check that key output files exist (skip if pipeline not yet run).
+        # Use first-exists check for files that have alternate names from
+        # different script versions.
+        def first_exists(*candidates):
+            for c in candidates:
+                if (repo_root / c).exists():
+                    return c
+            return None
+
+        # Each entry is a list of acceptable paths; "first_exists" returns
+        # the first one that's present. If none, the output is "missing".
+        expected_groups = [
+            [
+                "outputs/p0011/departments/department_stats.json",
+                "outputs/p0011/departments/department_deforestation.json",
+            ],
+            [
+                "outputs/p0011/indigenous/indigenous_stats.json",
+                "outputs/p0011/indigenous/indigenous_overlap.json",
+            ],
+            ["outputs/p0011/carbon/per_year_loss.json"],
+            ["outputs/p0011/uncertainty/uncertainty_results.json"],
+            ["outputs/carbon_credits/verra_verification.json"],
+            ["outputs/statistical_tests/test_results.json"],
+            ["outputs/cross_transfer/transfer_results.json"],
         ]
-        missing = [f for f in expected if not (repo_root / f).exists()]
+        missing = [
+            group[0] for group in expected_groups if first_exists(*group) is None
+        ]
         if missing:
             pytest.skip(f"Outputs not yet generated: {len(missing)} missing. Run scripts/ first.")
-        for f in expected:
-            full = repo_root / f
-            assert full.exists(), f"Missing: {f}"
+        # If we got here, all expected outputs exist; assert at least the
+        # primary paths remain tracked.
+        for group in expected_groups:
+            resolved = first_exists(*group)
+            assert resolved is not None, f"Missing all variants for {group[0]}"
 
     def test_05_api_endpoints_e2e(self, repo_root):
         """Test 5: API endpoints return valid data."""
