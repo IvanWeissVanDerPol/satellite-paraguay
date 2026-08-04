@@ -81,3 +81,4 @@ data/sentinel2/
 data/mapbiomas/
 data/boundaries/*.geojson
 outputs/p0011/figures/deforestation_timeline.gif
+mlruns/
