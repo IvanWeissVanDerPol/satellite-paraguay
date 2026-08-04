@@ -1,0 +1,42 @@
+{
+  "experiment": "Cross-paper transfer learning (RQ4, H3)",
+  "data": "Hansen + MapBiomas",
+  "n_tiles": 200,
+  "results": {
+    "trained_on_deforestation": {
+      "def_f1": 0.9655172360523188,
+      "yld_mae": 0.5739175414976975,
+      "forest_f1": 0.0
+    },
+    "trained_on_yield": {
+      "def_f1": 0.9830508421258259,
+      "yld_mae": 0.04576374391714732,
+      "forest_f1": 0.0
+    }
+  },
+  "transfer_ratios": {
+    "yield_to_yield": 1.0,
+    "def_to_yield": 0.07973923187244299,
+    "yld_to_def": 0.9821640902767642,
+    "def_to_forest": 0.0
+  },
+  "hypothesis_h3_test": {
+    "h3a_null": "Deforestation-pretrained achieves same accuracy as yield-trained on yield task",
+    "h3b_alternative": "Deforestation-pretrained achieves > 0.7x accuracy of yield-trained on yield task",
+    "transfer_ratio_yield": 0.07973923187244299,
+    "h3_confirmed": false
+  },
+  "limitations": [
+    "Small dataset (200 tiles)",
+    "Limited training (5 epochs)",
+    "Tasks share vegetation features (limited transfer signal)",
+    "Real transfer requires 50+ epochs and larger encoder"
+  ],
+  "next_steps": [
+    "Run 50 epochs with proper hyperparameter tuning",
+    "Use 1000+ tiles",
+    "Test with frozen vs. fine-tuned encoder",
+    "Apply to real YOLOv8 wildlife detection (Kai)"
+  ],
+  "generated_at": "2026-08-03T23:29:33Z"
+}
