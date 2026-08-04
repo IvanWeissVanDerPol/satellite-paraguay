@@ -1,0 +1,47 @@
+{
+  "captured_at": "2026-08-04 01:19:53",
+  "results": [
+    {
+      "page": "Overview",
+      "file": "outputs/screenshots/01_overview.png",
+      "size_bytes": 118014,
+      "status": "ok"
+    },
+    {
+      "page": "Departments",
+      "file": "outputs/screenshots/02_departments.png",
+      "size_bytes": 96130,
+      "status": "ok"
+    },
+    {
+      "page": "Indigenous Territories",
+      "file": "outputs/screenshots/03_indigenous.png",
+      "size_bytes": 94459,
+      "status": "ok"
+    },
+    {
+      "page": "Carbon & Verra",
+      "file": "outputs/screenshots/04_carbon.png",
+      "size_bytes": 78981,
+      "status": "ok"
+    },
+    {
+      "page": "Models",
+      "file": "outputs/screenshots/05_models.png",
+      "size_bytes": 83707,
+      "status": "ok"
+    },
+    {
+      "page": "Uncertainty",
+      "file": "outputs/screenshots/06_uncertainty.png",
+      "size_bytes": 66210,
+      "status": "ok"
+    },
+    {
+      "page": "References",
+      "file": "outputs/screenshots/07_references.png",
+      "size_bytes": 96073,
+      "status": "ok"
+    }
+  ]
+}

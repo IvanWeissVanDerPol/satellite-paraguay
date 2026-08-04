@@ -97,12 +97,21 @@ def page_departments():
     st.markdown("Real Hansen GFC v1.11 data for Paraguay's 18 departments.")
 
     # Load department stats if available
-    dept_file = REPO_ROOT / "outputs/p0011/departments/department_stats.json"
-    if dept_file.exists():
-        data = json.loads(dept_file.read_text())
-        df = pd.DataFrame(data.get("departments", []))
+    dept_files = [
+        REPO_ROOT / "outputs/p0011/departments/department_stats.json",
+        REPO_ROOT / "outputs/p0011/departments/department_deforestation.json",
+    ]
+    dept_data = None
+    for f in dept_files:
+        if f.exists():
+            dept_data = json.loads(f.read_text())
+            break
+    if dept_data is not None:
+        if "departments" in dept_data:
+            df = pd.DataFrame(dept_data["departments"])
+        else:
+            df = pd.DataFrame(dept_data)
         st.dataframe(df, use_container_width=True)
-
         if "loss_pct" in df.columns and len(df) > 0:
             st.bar_chart(df.set_index("name")["loss_pct"])
     else:
@@ -126,13 +135,36 @@ def page_indigenous():
     Bootstrap 95% CI: [1.72, 4.20]x, p<0.001.
     """)
 
-    ind_file = REPO_ROOT / "outputs/p0011/indigenous/indigenous_stats.json"
-    if ind_file.exists():
-        data = json.loads(ind_file.read_text())
-        df = pd.DataFrame(data.get("territories", []))
-        st.dataframe(df, use_container_width=True)
-        if "loss_pct" in df.columns:
-            st.bar_chart(df.set_index("name")["loss_pct"])
+    ind_file = REPO_ROOT / "outputs/p0011/indigenous/indigenous_overlap.json"
+    ind_files_alt = [
+        REPO_ROOT / "outputs/p0011/indigenous/indigenous_stats.json",
+        REPO_ROOT / "outputs/p0011/indigenous/indigenous_overlap.json",
+    ]
+    ind_data = None
+    for f in ind_files_alt:
+        if f.exists():
+            ind_data = json.loads(f.read_text())
+            break
+    if ind_data is not None:
+        # Try common structures
+        if "territories" in ind_data:
+            df = pd.DataFrame(ind_data["territories"])
+        elif isinstance(ind_data, list):
+            df = pd.DataFrame(ind_data)
+        else:
+            df = pd.DataFrame()
+            for k, v in ind_data.items():
+                if isinstance(v, dict):
+                    df[k] = v
+                elif isinstance(v, list):
+                    df = pd.DataFrame(v)
+                    break
+        if not df.empty:
+            st.dataframe(df, use_container_width=True)
+            if "loss_pct" in df.columns:
+                st.bar_chart(df.set_index("name")["loss_pct"])
+            elif "loss_percentage" in df.columns:
+                st.bar_chart(df.set_index("name")["loss_percentage"])
     else:
         st.warning("Indigenous analysis not yet run. Run: `python3 scripts/indigenous_overlap_analysis.py`")
 
