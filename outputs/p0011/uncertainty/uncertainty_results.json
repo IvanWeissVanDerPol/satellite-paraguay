@@ -1,0 +1,169 @@
+{
+  "pixel_bootstrap": {
+    "mean": 673626.646,
+    "ci_lower_95": 672146.9,
+    "ci_upper_95": 675108.675,
+    "ci_lower_90": 672369.35,
+    "ci_upper_90": 674888.7,
+    "std": 757.5219420478855,
+    "n_bootstrap": 1000,
+    "method": "parametric (assumes pixel independence)"
+  },
+  "block_bootstrap": {
+    "mean": 673706.32,
+    "ci_lower_95": 565687.3,
+    "ci_upper_95": 780831.0499999999,
+    "block_size": 100,
+    "n_blocks": 400,
+    "n_bootstrap": 1000
+  },
+  "agb_sensitivity": {
+    "low": {
+      "agb_mg_per_ha": 18,
+      "area_ha": 42101.5625,
+      "carbon_mt": 0.35617921875,
+      "co2e_mt": 1.30599046875
+    },
+    "mid": {
+      "agb_mg_per_ha": 56,
+      "area_ha": 42101.5625,
+      "carbon_mt": 1.108113125,
+      "co2e_mt": 4.0630814583333335
+    },
+    "high": {
+      "agb_mg_per_ha": 156,
+      "area_ha": 42101.5625,
+      "carbon_mt": 3.0868865625,
+      "co2e_mt": 11.3185840625
+    }
+  },
+  "annual_loss_ci": {
+    "2001": {
+      "mean": 14580.492,
+      "ci_lower_95": 14347.925,
+      "ci_upper_95": 14804.075
+    },
+    "2002": {
+      "mean": 88901.939,
+      "ci_lower_95": 88382.65,
+      "ci_upper_95": 89473.15
+    },
+    "2003": {
+      "mean": 43034.417,
+      "ci_lower_95": 42642.975,
+      "ci_upper_95": 43438.125
+    },
+    "2004": {
+      "mean": 75700.043,
+      "ci_lower_95": 75190.825,
+      "ci_upper_95": 76205.025
+    },
+    "2005": {
+      "mean": 9339.983,
+      "ci_lower_95": 9129.975,
+      "ci_upper_95": 9529.05
+    },
+    "2006": {
+      "mean": 5094.598,
+      "ci_lower_95": 4957.975,
+      "ci_upper_95": 5226.05
+    },
+    "2007": {
+      "mean": 74671.825,
+      "ci_lower_95": 74125.925,
+      "ci_upper_95": 75216.125
+    },
+    "2008": {
+      "mean": 22213.414,
+      "ci_lower_95": 21916.975,
+      "ci_upper_95": 22501.05
+    },
+    "2009": {
+      "mean": 41636.023,
+      "ci_lower_95": 41251.975,
+      "ci_upper_95": 42035.025
+    },
+    "2010": {
+      "mean": 37303.016,
+      "ci_lower_95": 36920.975,
+      "ci_upper_95": 37666.3
+    },
+    "2011": {
+      "mean": 95311.693,
+      "ci_lower_95": 94736.9,
+      "ci_upper_95": 95920.05
+    },
+    "2012": {
+      "mean": 47083.638,
+      "ci_lower_95": 46630.9,
+      "ci_upper_95": 47474.175
+    },
+    "2013": {
+      "mean": 17078.532,
+      "ci_lower_95": 16827.975,
+      "ci_upper_95": 17337.025
+    },
+    "2014": {
+      "mean": 18203.414,
+      "ci_lower_95": 17924.975,
+      "ci_upper_95": 18465.15
+    },
+    "2015": {
+      "mean": 7331.0,
+      "ci_lower_95": 7166.975,
+      "ci_upper_95": 7505.025
+    },
+    "2016": {
+      "mean": 3238.826,
+      "ci_lower_95": 3123.925,
+      "ci_upper_95": 3353.05
+    },
+    "2017": {
+      "mean": 1896.855,
+      "ci_lower_95": 1813.925,
+      "ci_upper_95": 1983.025
+    },
+    "2018": {
+      "mean": 2597.297,
+      "ci_lower_95": 2497.975,
+      "ci_upper_95": 2703.025
+    },
+    "2019": {
+      "mean": 3223.332,
+      "ci_lower_95": 3109.975,
+      "ci_upper_95": 3336.0
+    },
+    "2020": {
+      "mean": 8616.944,
+      "ci_lower_95": 8435.925,
+      "ci_upper_95": 8793.0
+    },
+    "2021": {
+      "mean": 40216.753,
+      "ci_lower_95": 39826.8,
+      "ci_upper_95": 40614.05
+    },
+    "2022": {
+      "mean": 10661.144,
+      "ci_lower_95": 10462.975,
+      "ci_upper_95": 10862.025
+    },
+    "2023": {
+      "mean": 5750.445,
+      "ci_lower_95": 5605.0,
+      "ci_upper_95": 5899.025
+    }
+  },
+  "methodology": {
+    "window": "5000x5000 from tile 20S_060W",
+    "n_bootstrap": 1000,
+    "block_size": 100,
+    "agb_source": "Chave et al. 2014 approximation"
+  },
+  "key_findings": [
+    "Total loss: 673,627 \u00b1 1,481 pixels (95% CI)",
+    "Block bootstrap shows wider CIs due to spatial autocorrelation",
+    "AGB sensitivity: CO2e ranges from 1.31 to 11.32 Mt",
+    "Annual loss varies from 1,897 to 95,312 pixels"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Hansen Deforestation Validation Field Plot Design",
+  "version": "1.0",
+  "n_plots": 64,
+  "stratification": "department \u00d7 forest \u00d7 loss",
+  "departments": 6,
+  "strata": 4,
+  "expected_field_season": "2026-09 to 2027-03 (rainy season avoided)",
+  "estimated_cost_usd": 25000,
+  "team_size": "3-4 fieldworkers + 1 supervisor",
+  "duration_weeks": 12,
+  "expected_outputs": [
+    "Hansen precision/recall validation",
+    "Above-ground biomass estimates",
+    "MapBiomas land cover verification",
+    "Permanent monitoring network",
+    "Photo dataset for ML training"
+  ],
+  "data_collection_protocol": [
+    "GPS coordinates (WGS84, decimal degrees, \u00b15 m)",
+    "Plot size: 50\u00d750 m (0.25 ha)",
+    "Photo from plot center + 4 corners (5 photos total)",
+    "Species list (all trees > 5 cm DBH)",
+    "DBH measurement for all trees",
+    "Height measurement for 5 tallest trees",
+    "Soil sample (top 30 cm, 1 kg)",
+    "Phenology assessment (leaf-on/off)",
+    "Time: 2-3 hours per plot"
+  ],
+  "data_storage": {
+    "raw_data": "INFONA cloud storage (encrypted)",
+    "anonymized_data": "GitHub (satellite-paraguay)",
+    "photos": "Zenodo (CC-BY-SA)"
+  },
+  "ir_approval": "Required (etica/IRB_protocol_paraguay_UNA.md)",
+  "indigenous_territory_clearance": "FPIC required if plots in territories",
+  "next_steps": [
+    "Submit IRB protocol to UNA",
+    "Recruit fieldworkers (4 positions)",
+    "Acquire field equipment (GPS, dendrometers, scales)",
+    "Coordinate with INFONA for access",
+    "Schedule field season 2026-09",
+    "Validate Hansen + MapBiomas with results"
+  ]
+}
