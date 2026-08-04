@@ -269,7 +269,7 @@ class TestFetchOpenaqWithApiKey:
 class TestFetchAsuncionExtended:
     """Extended tests for fetch_openaq_asuncion."""
 
-    def test_fetch_asuncion_with_api_key(self, tmp_path, monkeypatch):
+    def test_fetch_asuncion_basic(self, tmp_path, monkeypatch):
         from src.external import openaq_client
         monkeypatch.setattr(openaq_client, "CACHE_DIR", tmp_path)
 
@@ -278,5 +278,5 @@ class TestFetchAsuncionExtended:
 
         monkeypatch.setattr(openaq_client, "_request_with_retry", fake_request)
 
-        result = openaq_client.fetch_openaq_asuncion(parameter="pm25", api_key="test_key")
+        result = openaq_client.fetch_openaq_asuncion(parameter="pm25", days=30)
         assert result is not None
