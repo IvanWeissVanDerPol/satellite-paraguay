@@ -213,3 +213,186 @@ class TestCloudMaskS2:
 
         mask = cloud_mask_s2(scl_path)
         assert not mask.any()  # nothing masked
+
+
+
+class TestComputeNDVI:
+    """Tests for compute_ndvi function."""
+
+    def test_compute_ndvi(self, tmp_path):
+        from src.satellite_io.sources import compute_ndvi
+        red_path = tmp_path / "red.tif"
+        nir_path = tmp_path / "nir.tif"
+        out_path = tmp_path / "ndvi.tif"
+        red_path.write_text("dummy")
+        nir_path.write_text("dummy")
+
+        mock_src = MagicMock()
+        mock_src.__enter__ = MagicMock(return_value=mock_src)
+        mock_src.__exit__ = MagicMock(return_value=False)
+        mock_src.read.return_value = np.array([[0.2, 0.3], [0.4, 0.5]])
+        mock_src.profile = {"driver": "GTiff", "dtype": "uint8"}
+
+        with patch("src.satellite_io.sources.rasterio.open", return_value=mock_src):
+            ndvi = compute_ndvi(red_path, nir_path, out_path)
+        assert ndvi.shape == (2, 2)
+
+
+class TestCloudMaskS2:
+    """Tests for cloud_mask_s2 function."""
+
+    def test_cloud_mask(self, tmp_path):
+        from src.satellite_io.sources import cloud_mask_s2
+        scl_path = tmp_path / "scl.tif"
+        scl_path.write_text("dummy")
+
+        mock_src = MagicMock()
+        mock_src.__enter__ = MagicMock(return_value=mock_src)
+        mock_src.__exit__ = MagicMock(return_value=False)
+        # SCL: vegetation (4), bare soil (5), water (6), cloud (8)
+        mock_src.read.return_value = np.array([[4, 5, 6, 8, 9]], dtype=np.uint8)
+
+        with patch("src.satellite_io.sources.rasterio.open", return_value=mock_src):
+            mask = cloud_mask_s2(scl_path)
+        # mask True for clouds/shadows/no-data
+        assert mask.shape == (1, 5)
+
+
+class TestDownloadMapbiomas:
+    """Tests for download_mapbiomas_paraguay function."""
+
+    def test_returns_path(self, tmp_path):
+        from src.satellite_io.sources import download_mapbiomas_paraguay
+        result = download_mapbiomas_paraguay(output_dir=tmp_path)
+        assert isinstance(result, Path)
+
+
+class TestDownloadHansenGfc:
+    """Tests for download_hansen_gfc function."""
+
+    def test_returns_path(self, tmp_path):
+        from src.satellite_io.sources import download_hansen_gfc
+        result = download_hansen_gfc(output_dir=tmp_path)
+        assert isinstance(result, Path)
+
+
+class TestModuleConstants:
+    def test_default_output_dir(self):
+        from src.satellite_io import sources
+        assert sources.DEFAULT_OUTPUT_DIR is not None
+
+
+
+class TestDownloadViaGee:
+    """Tests for download_via_gee function."""
+
+    def test_sentinel2_path(self, tmp_path, monkeypatch):
+        from src.satellite_io.sources import download_via_gee
+        # Mock ee module
+        mock_ee = MagicMock()
+        mock_ee.Geometry.Rectangle.return_value = "mock_region"
+        mock_ee.ImageCollection.return_value = mock_ee
+        mock_ee.filterBounds.return_value = mock_ee
+        mock_ee.filterDate.return_value = mock_ee
+        mock_ee.filter.return_value = mock_ee
+        mock_ee.median.return_value = mock_ee
+        mock_ee.clip.return_value = mock_ee
+        mock_ee.Initialize.return_value = None
+        mock_ee.Filter.lt.return_value = "mock_filter"
+        mock_image = MagicMock()
+        mock_image.getDownloadURL.return_value = "http://example.com/test.tif"
+        # When .median().clip() is called, return mock_image
+        mock_ee.median.return_value.clip.return_value = mock_image
+
+        with patch.dict("sys.modules", {"ee": mock_ee}):
+            result = download_via_gee(
+                tile_id="T_001",
+                bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                satellite="sentinel2",
+                start_date="2024-01-01",
+                end_date="2024-06-01",
+                output_dir=tmp_path,
+            )
+        assert result is not None
+
+    def test_landsat9_path(self, tmp_path):
+        from src.satellite_io.sources import download_via_gee
+        mock_ee = MagicMock()
+        mock_ee.Geometry.Rectangle.return_value = "mock_region"
+        mock_ee.ImageCollection.return_value = mock_ee
+        mock_ee.filterBounds.return_value = mock_ee
+        mock_ee.filterDate.return_value = mock_ee
+        mock_ee.median.return_value = mock_ee
+        mock_ee.clip.return_value = mock_ee
+        mock_ee.Initialize.return_value = None
+        mock_image = MagicMock()
+        mock_image.getDownloadURL.return_value = "http://example.com/test.tif"
+        mock_ee.median.return_value.clip.return_value = mock_image
+
+        with patch.dict("sys.modules", {"ee": mock_ee}):
+            result = download_via_gee(
+                tile_id="T_001",
+                bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                satellite="landsat9",
+                output_dir=tmp_path,
+            )
+        assert result is not None
+
+    def test_unknown_satellite_raises(self, tmp_path):
+        from src.satellite_io.sources import download_via_gee
+        mock_ee = MagicMock()
+        mock_ee.Geometry.Rectangle.return_value = "mock_region"
+        mock_ee.Initialize.return_value = None
+
+        with patch.dict("sys.modules", {"ee": mock_ee}):
+            with pytest.raises(ValueError):
+                download_via_gee(
+                    tile_id="T_001",
+                    bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                    satellite="invalid_satellite",
+                    output_dir=tmp_path,
+                )
+
+    def test_ee_import_error(self):
+        from src.satellite_io.sources import download_via_gee
+        # Block ee import
+        import sys as _sys
+        saved = _sys.modules.get("ee")
+        _sys.modules["ee"] = None
+        try:
+            with pytest.raises(ImportError):
+                download_via_gee(
+                    tile_id="T_001",
+                    bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                )
+        finally:
+            if saved is None:
+                _sys.modules.pop("ee", None)
+            else:
+                _sys.modules["ee"] = saved
+
+    def test_download_url_failure_falls_back(self, tmp_path):
+        """When getDownloadURL fails, returns the path anyway."""
+        from src.satellite_io.sources import download_via_gee
+        mock_ee = MagicMock()
+        mock_ee.Geometry.Rectangle.return_value = "mock_region"
+        mock_ee.ImageCollection.return_value = mock_ee
+        mock_ee.filterBounds.return_value = mock_ee
+        mock_ee.filterDate.return_value = mock_ee
+        mock_ee.filter.return_value = mock_ee
+        mock_ee.median.return_value = mock_ee
+        mock_ee.clip.return_value = mock_ee
+        mock_ee.Initialize.return_value = None
+        mock_ee.Filter.lt.return_value = "mock_filter"
+        mock_image = MagicMock()
+        mock_image.getDownloadURL.side_effect = Exception("GEE error")
+        mock_ee.median.return_value.clip.return_value = mock_image
+
+        with patch.dict("sys.modules", {"ee": mock_ee}):
+            result = download_via_gee(
+                tile_id="T_001",
+                bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                output_dir=tmp_path,
+            )
+        # Should still return a path
+        assert result is not None
