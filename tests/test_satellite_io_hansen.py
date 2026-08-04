@@ -213,3 +213,61 @@ class TestDownloadHansenReal:
         assert isinstance(result, dict)
         assert "treecover2000" in result
         assert "loss" in result
+
+
+
+class TestDownloadHansenReal:
+    """Tests for download_hansen_real function."""
+
+    def test_cache_hit(self, tmp_path, monkeypatch):
+        """When cache exists, return cached data."""
+        from src.satellite_io import hansen as hansen_mod
+        # Create a cache file
+        cache_file = tmp_path / "hansen_2018_2023.npz"
+        arr1 = np.zeros((10, 10), dtype=np.uint8)
+        arr2 = np.ones((10, 10), dtype=np.uint8)
+        np.savez_compressed(cache_file, treecover2000=arr1, loss=arr2)
+
+        monkeypatch.setattr(hansen_mod, "CACHE_DIR", tmp_path)
+
+        result = hansen_mod.download_hansen_real(
+            bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+            use_gee=False,
+        )
+        assert result is not None
+        assert "treecover2000" in result
+
+    def test_gee_fails_falls_back(self, tmp_path, monkeypatch):
+        """When GEE import fails, falls back to synthetic data."""
+        from src.satellite_io import hansen as hansen_mod
+        monkeypatch.setattr(hansen_mod, "CACHE_DIR", tmp_path)
+
+        # Block ee import
+        import sys as _sys
+        saved = _sys.modules.get("ee")
+        _sys.modules["ee"] = None
+        try:
+            result = hansen_mod.download_hansen_real(
+                bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                use_gee=True,
+            )
+            # GEE unavailable -> falls back to synthetic
+            assert result is not None
+            assert "treecover2000" in result
+        finally:
+            if saved is None:
+                _sys.modules.pop("ee", None)
+            else:
+                _sys.modules["ee"] = saved
+
+    def test_use_gee_false_returns_synthetic(self, tmp_path, monkeypatch):
+        """When use_gee=False, generate synthetic data directly."""
+        from src.satellite_io import hansen as hansen_mod
+        monkeypatch.setattr(hansen_mod, "CACHE_DIR", tmp_path)
+
+        result = hansen_mod.download_hansen_real(
+            bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+            use_gee=False,
+        )
+        assert result is not None
+        assert "treecover2000" in result

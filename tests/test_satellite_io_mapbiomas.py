@@ -157,3 +157,59 @@ class TestComputeParcelStatistics:
         geom.bounds = (0, 0, 10000, 10000)
         result = compute_parcel_statistics_real(mapbiomas, geom)
         assert result["dominant_class"] == 39
+
+
+
+class TestDownloadMapbiomasReal:
+    """Tests for download_mapbiomas_paraguay_real function."""
+
+    def test_cache_hit(self, tmp_path, monkeypatch):
+        """When cache exists, return cached array."""
+        from src.satellite_io import mapbiomas as mb_mod
+        cache_file = tmp_path / "mapbiomas_py_2022.npy"
+        cached = np.zeros((10, 10), dtype=np.uint8)
+        np.save(cache_file, cached)
+
+        monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
+
+        result = mb_mod.download_mapbiomas_paraguay_real(
+            bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+            use_gee=False,
+        )
+        assert result is not None
+        assert result.shape == (10, 10)
+
+    def test_use_gee_false_returns_synthetic(self, tmp_path, monkeypatch):
+        """When use_gee=False, generate synthetic MapBiomas data."""
+        from src.satellite_io import mapbiomas as mb_mod
+        monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
+
+        result = mb_mod.download_mapbiomas_paraguay_real(
+            bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+            year=2022,
+            use_gee=False,
+        )
+        assert result is not None
+        assert result.ndim == 2
+
+    def test_gee_fails_falls_back_to_synthetic(self, tmp_path, monkeypatch):
+        """When GEE fails, falls back to synthetic data."""
+        from src.satellite_io import mapbiomas as mb_mod
+        monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
+
+        # Block ee import
+        import sys as _sys
+        saved = _sys.modules.get("ee")
+        _sys.modules["ee"] = None
+        try:
+            result = mb_mod.download_mapbiomas_paraguay_real(
+                bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
+                year=2023,
+                use_gee=True,
+            )
+            assert result is not None
+        finally:
+            if saved is None:
+                _sys.modules.pop("ee", None)
+            else:
+                _sys.modules["ee"] = saved
