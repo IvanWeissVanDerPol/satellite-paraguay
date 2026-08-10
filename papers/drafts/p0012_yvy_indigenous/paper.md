@@ -148,3 +148,17 @@ Key references:
 - IWGIA (2024). "Indigenous World 2024."
 - ILO Convention 169 (1989).
 - UN Declaration on the Rights of Indigenous Peoples (2007).
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above and earlier versions of this chapter claimed "**LLaVA-1.6 achieves F1>0.80 on territorial conflict detection**". This figure was never measured. The LLaVA explanation layer in this repo is a stub; no labeled conflict benchmark exists yet; we have not contacted any of the 10 indigenous communities whose territory polygons we analyzed (FPIC engagement is a prerequisite, not an afterthought).
+
+What is real and is the substantive contribution:
+
+- **2.90× deforestation disparity** between indigenous territories and the national rate, with 95% bootstrap CI [1.72, 4.20] and χ²=460,597 (df=9, p<0.001). All 10 of 10 territories exceed the national rate.
+- **Carmelo Peralta (Enlhet Norte) at 49.45% loss** is the worst documented case and warrants urgent community engagement.
+- **Per-territory heterogeneity** (7.21% Angaité-Filadelfia → 49.45% Carmelo Peralta) means a single "indigenous deforestation rate" is misleading — policy must be territory-specific.
+
+Before any submission to World Development: (a) FPIC engagement must be documented per CARE Principles, (b) the LLaVA layer must be evaluated against a labeled conflict set (or removed from the contribution list), (c) the headline F1>0.80 must not appear in the abstract.

@@ -2,6 +2,38 @@
 
 All notable changes to this repository are documented here.
 
+## [Unreleased] — 2026-08-10
+
+### Honest-reporting pass (autonomous)
+
+The branch `chore/honest-reporting-pass-2026-08-10` updates the six paper
+abstracts and appends a "Honest Reporting Note" to each paper.md so that
+the measured values (per `ACTUAL_RESULTS.md`) replace the literature-benchmark
+headlines that previously opened each abstract. See `WORKLOG_2026-08-10.md`
+for the full change log and the rationale.
+
+### Added
+
+- `LICENSE` — CC-BY-NC-4.0 with data-source carve-outs (Hansen, MapBiomas,
+  Sentinel-2, OpenAQ, Verra, INDI-CARE-controlled).
+- `CITATION.cff` — citation metadata for GitHub "Cite this repository" and
+  Zenodo DOI minting on next release.
+- `references.bib` (repo root) — unified bibliography of 180 unique entries
+  merged from `thesis/references.bib` (120) + `papers/references.bib` (65),
+  with 5 key conflicts flagged under a `% CONFLICTS` section.
+- `scripts/merge_bib.py` — reproducible merger (deterministic, idempotent).
+- `docs/REAL_TODO.md` — 30-item real TODO replacing the stale 345-item
+  `docs/COMPREHENSIVE_TODO.md` (kept for archeology).
+- `WORKLOG_2026-08-10.md` — session log of the autonomous honesty pass.
+
+### Changed
+
+- All six `papers/drafts/<slug>/abstract.md` now cite measured values from
+  `ACTUAL_RESULTS.md` instead of literature-benchmark headlines.
+- All six `papers/drafts/<slug>/paper.md` carry an appended "Honest Reporting
+  Note (added 2026-08-10)" section identifying unsupported claims and the
+  concrete work needed before submission.
+
 ## [Unreleased] — 2026-08-04
 
 ### Added

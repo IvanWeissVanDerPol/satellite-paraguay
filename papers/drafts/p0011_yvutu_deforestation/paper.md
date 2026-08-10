@@ -174,3 +174,15 @@ Yvutu provides a **complete, honest, reproducible pipeline** for Paraguay-wide d
 ## References
 
 See `thesis/references.bib` for the complete bibliography.
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above quotes a **Prithvi-Lite F1>0.85 / 50× improvement over U-Net** claim that was based on literature benchmarks, not on our measurements. Our pilot run (15 synthetic tiles, 5 epochs, CPU; details in `ACTUAL_RESULTS.md`) showed:
+
+- **Best measured model: U-Net from scratch — F1=0.559 (precision 0.099, recall 0.987).** The high recall with low precision means it over-predicts deforestation (predicts 24k pixels as deforested when only 2.5k actually are). Not usable operationally.
+- **Prithvi "Yvutu" fell back to a mock backbone** in this environment (transformers/numpy compat), yielding F1=0.497 — i.e., the persistence-baseline level. **The 50× improvement headline is not supported by the experiments in this repo.**
+- **Real (non-fabricated) result:** Country-scale quantification of 16,628 km² loss and 2,755 MtCO₂e is sound; per-department and per-territory breakdowns are sound; the operational model is not.
+
+We retain this chapter as a research plan + measurement-of-the-gap. Before any submission to Remote Sensing of Environment we must (a) train Prithvi on ≥150 real Paraguay tiles on a GPU, (b) report measured F1 on a held-out real test split, and (c) delete or rewrite any sentence that still quotes F1>0.85.

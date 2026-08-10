@@ -1,0 +1,33 @@
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+Copyright (c) 2026 Iván Weiss Van der Pol (Facultad de Ciencias Exactas y Naturales,
+Universidad Nacional de Asunción)
+
+This work — including source code, scripts, configurations, the thesis manuscript
+draft, and the six paper drafts — is licensed under the Creative Commons
+Attribution-NonCommercial 4.0 International License.
+
+You are free to:
+  - Share — copy and redistribute the material in any medium or format
+  - Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+  - Attribution — You must give appropriate credit to Iván Weiss Van der Pol
+    (Universidad Nacional de Asunción) and indicate if changes were made.
+    You may do so in any reasonable manner, but not in any way that suggests
+    the licensor endorses you or your use.
+  - NonCommercial — You may not use the material for commercial purposes
+    without separate written permission.
+
+Full license text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+Data sources carry their own licenses:
+  - Hansen GFC v1.11: CC BY 4.0 (Hansen et al. 2013, Science)
+  - MapBiomas Paraguay: CC BY-NC-SA 4.0
+  - Sentinel-2 L2A: Copernicus open access (free, no auth)
+  - OpenAQ: CC BY 4.0
+  - Verra VCS registry: Public data, no warranty
+  - Indigenous territory polygons: INDI / FP-UNA partnership (CARE-compliant
+    use only; redistribution requires INDI permission)
+
+SPDX-License-Identifier: CC-BY-NC-4.0

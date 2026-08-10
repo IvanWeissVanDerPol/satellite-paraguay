@@ -109,3 +109,14 @@ The thesis provides preliminary evidence that Verra-claimed carbon credits in Pa
 ## References
 
 See `thesis/references.bib`.
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above drops two aspirational figures that did not survive experimental validation:
+
+- **"AlphaEarth biomass R²=0.82"** — this was a benchmark number from a different AlphaEarth paper on different data. We did not run AlphaEarth fine-tuning in this experiment. It is **not a Yvyra result**.
+- **"50+ projects / within 15% agreement"** — we did not run a 50-project comparison. We verified 5 projects (124,310 ha), and found Hansen loss **exceeds** Verra claims by 33.3-50.0% (mean +35.9%). The "15% agreement" framing inverted the actual direction of the finding.
+
+The substantive finding — **systematic Verra under-claiming averaging ~36% across 5 Paraguayan projects** — is real, statistically supported (bootstrap CI excludes 0), and is the actual contribution of this chapter. The headline metric used in the abstract has been corrected to match. See `ACTUAL_RESULTS.md` for the per-project table.

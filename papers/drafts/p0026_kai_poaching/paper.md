@@ -76,3 +76,17 @@ Satellite-based wildlife detection in Paraguay is feasible but requires Paraguay
 ## References
 
 See `thesis/references.bib`.
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above previously claimed "**mAP@0.5>0.70 poaching-camp detection, deployed with WWF/Guyra, real-time alerts to rangers**". This conflates three different claims that need to be separated:
+
+- **Wildlife detection (animals, not poaching camps):** mAP@0.5 = 0.50 on synthetic validation, **0.18 on real camera-trap data**. A 0.32 absolute gap. Reptile detection is worst at 0.05 real mAP.
+- **Poaching-camp detection:** not implemented. The repo has no training set of camps and no model that detects them.
+- **WWF/Guyra deployment / ranger alerts:** no deployment exists in this repo. The 5,000-image evaluation set from Guyra Paraguay was used **offline**.
+
+The substantive contribution of this chapter is therefore a **synthetic-to-real generalization gap measurement**: a quantified demonstration that YOLOv8-S trained on Blender-synthetic wildlife drops 0.32 mAP on real Paraguayan camera-trap imagery. This finding is useful for the community (it tells park managers how much real labeled data they need to commission), but it is **not** a deployed detection system.
+
+Before any submission to Conservation Biology: (a) remove the WWF/Guyra deployment language unless a deployment letter is attached, (b) rename "poaching detection" to "wildlife detection on synthetic vs real", (c) report mAP@0.5=0.18 as the measured real-data number.

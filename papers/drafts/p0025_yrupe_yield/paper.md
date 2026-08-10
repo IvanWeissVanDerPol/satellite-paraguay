@@ -107,3 +107,17 @@ Cross-domain transfer from deforestation to yield prediction achieves a 0.74× t
 ## References
 
 See `thesis/references.bib`.
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above and earlier versions of this chapter claimed "**GRU on 5,000+ fields achieves R²>0.80 yield prediction**". This was a target, not a measurement. In the pilot experiment actually run:
+
+- **Yrupe multi-task CNN did not converge** in 8 epochs on CPU with synthetic labels. F1=0.497 (i.e., persistence-level), MAE=3.20 t/ha on the constant prediction. R² was not defined because the model output a constant.
+- **Cross-domain transfer ratio = 0.082**, far below the 0.74 figure used in the abstract. The transfer-learning hypothesis (H3) **is not supported** at 5 training epochs on synthetic data.
+- **The "5,000+ fields, deployed dashboard" claim** describes a deployment that does not exist.
+
+The substantive contribution of this chapter is therefore framed as a **failure-mode analysis**: a documented, reproducible demonstration that synthetic labels + CPU + 8 epochs + a multi-task CNN produces degenerate predictions. This is honest and useful (it tells the next researcher what to fix), but it is **not** the R²>0.80 result the abstract originally claimed.
+
+Before any submission to Agricultural Systems: (a) train on real INBIO labels (not synthetic), (b) use a GPU and ≥30 epochs, (c) report measured R², (d) do not assert H3 without measuring it.

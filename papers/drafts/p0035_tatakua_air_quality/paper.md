@@ -99,3 +99,19 @@ LSTM-based air quality forecasting in Paraguay is feasible but requires more tra
 ## References
 
 See `thesis/references.bib`.
+
+---
+
+## Honest Reporting Note (added 2026-08-10)
+
+The abstract above previously claimed "**PM2.5 forecast MAE<5 µg/m³ (R²>0.80), deployed for Ministry of Public Health**". The measured values are:
+
+- **Mean RMSE across 12 stations = 14.7 µg/m³** (target was 8.6 — we are 70% above target).
+- **Mean bias = +3.4 µg/m³** (consistent over-prediction).
+- **Station-level spread:** Asunción 8.2 µg/m³ (closest to target) to Filadelfia/Chaco 18.6 µg/m³ (far from target). The rural Chaco stations are the failure mode.
+- **Peak biomass-burning episode (Sep 2025):** 32% RMSE reduction vs satellite-only baseline — meaningful, but below the 47% claim.
+- **No deployment exists.** The dashboard is local Streamlit; there is no Ministry-of-Health integration.
+
+What IS real and is the contribution: **Tatakua beats persistence by 24% RMSE (19.2 → 14.7 µg/m³), which is a meaningful LSTM signal on Paraguay OpenAQ data, and the rural-station gap is well-characterized.** That is publishable as a baseline paper; the original headline overpromised.
+
+Before any submission to Atmospheric Environment: (a) rewrite headline around the 24% RMSE improvement over persistence, (b) report the rural-station gap as a Discussion section not a footnote, (c) remove the Ministry deployment claim unless a partnership letter exists.
