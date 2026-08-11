@@ -157,7 +157,10 @@ def analyze_pilot():
         f.write("3. **F1 ~0.50** is the result of predicting the majority class correctly.\n")
         f.write("4. **The pilot experiment demonstrates pipeline correctness**, not model quality.\n")
         f.write("5. **Real data + real training** (Prithvi fine-tune on 50 Chaco tiles for 30 epochs)\n")
-        f.write("   is expected to yield F1 = 0.85-0.90 based on the Prithvi paper.\n")
+        f.write("   is expected to yield higher F1, but **this has not been measured**. The F1 = 0.85-0.90\n")
+        f.write("   figure quoted in earlier versions of this report is a Prithvi literature benchmark,\n")
+        f.write("   not a Yvutu measurement, and is preserved here only as an aspirational target.\n")
+        f.write("   See papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md for measured values.\n")
     print(f"Markdown report saved to {md_path}")
 
     return results

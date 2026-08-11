@@ -47,11 +47,11 @@ Yrupe (Chapter 6) demonstrates cross-domain transfer: a deforestation-pretrained
 
 ### 9.2.3 The Wildlife Story
 
-Kai (Chapter 7) demonstrates the limits of transfer learning: a COCO-pretrained YOLOv8 achieves mAP=0.6-0.8 for common species (deer, birds) but only mAP=0.3-0.5 for cryptic species (jaguar, tapir). This suggests that **wildlife detection in the Gran Chaco requires Paraguay-specific training data**, which is currently unavailable.
+Kai (Chapter 7) demonstrates the limits of transfer learning: a COCO-pretrained YOLOv8-S, when fine-tuned on Blender-synthetic wildlife imagery (1,280 images, 24 species), achieves mAP@0.5 = 0.50 on synthetic validation but **drops to 0.18 on 5,000 real camera-trap images from Guyra Paraguay** (a 0.32 absolute gap). Per-category on real data: large mammals 0.25, small mammals 0.10, birds 0.20, reptiles 0.05. This confirms that **wildlife detection in the Gran Chaco requires Paraguay-specific training data**, which is currently unavailable. (Earlier drafts of this chapter reported mAP=0.6-0.8 / 0.3-0.5 ranges; those were aspirational and have been replaced with the measured values from `ACTUAL_RESULTS.md`.)
 
 ### 9.2.4 The Air Quality Story
 
-Tatakua (Chapter 8) shows that LSTM-based air quality forecasting is feasible with limited ground stations, using Sentinel-5P AOD as a complement. The LSTM achieves MAE<5 µg/m³ on PM2.5, comparable to state-of-the-art.
+Tatakua (Chapter 8) shows that LSTM-based air quality forecasting is feasible with limited ground stations, using Sentinel-5P AOD as a complement. **Measured result (see `ACTUAL_RESULTS.md`):** mean RMSE = 14.7 µg/m³ across 12 stations, 24% improvement over persistence (19.2 µg/m³). The MAE<5 µg/m³ figure quoted in earlier drafts of this chapter was aspirational, not measured.
 
 ## 9.3 Cross-Domain Transfer Analysis
 
@@ -108,9 +108,9 @@ The thesis cannot independently verify these claims without access to Verra proj
 
 Across all six papers, we observe the same pattern: **algorithms developed in the Global North perform poorly when applied to Paraguayan data without adaptation**. This is true for:
 
-- Foundation models (Prithvi, F1=0.85 in Amazon vs. F1=0.65 in Chaco)
-- Air quality models (LSTM trained on European data, MAE 8 µg/m³ in Paraguay)
-- Wildlife detection (COCO-trained YOLOv8, low performance on cryptic species)
+- Foundation models (Prithvi literature benchmark F1 ~0.85 on Amazon HLS data vs. our measured 0.50 baseline at the F1=0.017 honest-baseline level; see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`)
+- Air quality models (LSTM trained on European data, MAE 8 µg/m³ in Paraguay vs. our measured 14.7 µg/m³ in Paraguay; see `papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md`)
+- Wildlife detection (COCO-trained YOLOv8, measured mAP@0.5 = 0.18 on real Guyra Paraguay images vs. 0.50 on synthetic; see `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`)
 
 The thesis demonstrates that **local adaptation improves performance** but **funding for local adaptation is limited**.
 

@@ -1,0 +1,53 @@
+{
+  "title": "SatelliteCV-Paraguay (Yvutu): Multi-Temporal Earth Observation of Paraguay",
+  "description": "Thesis substrate and Python package comprising six papers on deforestation (P0011 Yvutu), carbon credit integrity (P0010 Yvyra), indigenous land tenure (P0012 Yvy), soybean yield (P0025 Yrupe), wildlife detection (P0026 Kai), and air quality forecasting (P0035 Tatakua) for Paraguay. Uses Hansen GFC v1.11, Sentinel-2 L2A, MapBiomas Paraguay, OpenAQ, Verra VCS, and TROPOMI as primary data sources.",
+  "version": "0.1.0",
+  "publication_date": "2026-08-10",
+  "license": "CC-BY-NC-4.0",
+  "keywords": [
+    "remote-sensing",
+    "deforestation",
+    "carbon-credits",
+    "paraguay",
+    "gran-chaco",
+    "prithvi",
+    "yolov8",
+    "lstm",
+    "open-science"
+  ],
+  "creators": [
+    {
+      "name": "Weiss Van der Pol, Iván",
+      "affiliation": "Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción",
+      "orcid": "0000-0000-0000-0000"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Cristaldo, Juan Carlos",
+      "affiliation": "Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción",
+      "type": "DataCollector"
+    }
+  ],
+  "access_right": "open",
+  "upload_type": "software",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/IvanWeissVanDerPol/satellite-paraguay",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "communities": [
+    {"identifier": "zenodo"}
+  ],
+  "funding": [
+    {
+      "funder": {
+        "name": "Universidad Nacional de Asunción"
+      },
+      "award": "thesis-research-grant-2026"
+    }
+  ]
+}

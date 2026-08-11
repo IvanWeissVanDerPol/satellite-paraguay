@@ -24,7 +24,7 @@ A rights-aware deployment methodology that integrates Free, Prior, and Informed 
 
 ## 11.2 Answers to Research Questions
 
-**RQ1:** Prithvi-Lite fine-tuned on Paraguayan data achieves F1=0.85+, compared to F1=0.017 for from-scratch. **Foundation models are essential for data-scarce regions.**
+**RQ1:** Yvutu's CPU pilot (15 synthetic tiles, 5 epochs; see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`) showed best measured F1 = 0.559 from a from-scratch U-Net (precision 0.099, recall 0.987 — over-predicts deforestation); the intended Prithvi backbone fell back to a mock (F1 = 0.497). The Prithvi-Lite "F1=0.85+" headline quoted in earlier drafts of this chapter was a literature benchmark, not a Yvutu measurement, and has been removed. **Foundation models remain the promising direction for data-scarce regions** but the measured evidence in this thesis does not yet support the operational claim.
 
 **RQ2:** 16,628 km² of forest lost 2001-2023, concentrated in the Chaco frontier (Alto Paraguay 28.49%). Peak in 2012, partial recovery 2018-2020.
 

@@ -118,9 +118,12 @@ Prithvi \citep{jakubik2023foundation} is a Vision Transformer pretrained on
 600 million HLS patches. SatMAE \citep{cong2022satmae} extends the Masked
 Autoencoder framework to satellite time series. AlphaEarth Foundations
 \citep{alphaearth2025}, released by Google DeepMind, produces
-64-dimensional embeddings per 10 m pixel with strong performance on biomass
-estimation ($R^2 = 0.82$). All three are open-source under Apache 2.0 or
-research-friendly terms.
+64-dimensional embeddings per 10 m pixel with reported strong performance on biomass
+estimation ($R^2 = 0.82$ on AlphaEarth's own benchmark). All three are open-source under Apache 2.0 or
+research-friendly terms. \textbf{Note:} the $R^2 = 0.82$ figure is a literature
+benchmark from \citet{alphaearth2025}; we have not independently reproduced
+biomass estimation with AlphaEarth in this thesis, and we do not claim Yvutu
+inherits this number.
 
 \subsection{Deforestation Detection}
 Hansen GFC \citep{hansen2013high} provides annual forest loss/gain at 30 m

@@ -234,8 +234,8 @@ def model_metrics():
                     iou=0.009, notes="100 trees, 30 features"),
         ModelMetric(name="unet_scratch", f1=0.017, precision=0.379, recall=0.008,
                     iou=0.008, notes="30 channels, 80 train tiles, 20 epochs"),
-        ModelMetric(name="prithvi_lite", f1=0.85, precision=0.85, recall=0.85,
-                    iou=0.74, notes="A100 GPU, 30 epochs, fine-tune"),
+        ModelMetric(name="prithvi_lite", f1=0.497, precision=0.000, recall=0.000,
+                    iou=0.494, notes="A100 GPU PENDING — current value is the mock-backbone fallback (F1=0.497) reported in ACTUAL_RESULTS.md. The f1=0.85 figure in earlier drafts of this file was aspirational."),
     ]
 
 

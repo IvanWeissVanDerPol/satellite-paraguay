@@ -5,7 +5,14 @@ Advisors: Multi (FIA + Lic. Ciencias Atmosféricas)
 Timeline: 8 weeks
 
 Hypothesis: LSTM + OpenAQ + Sentinel-5P atmospheric + TimesFM for PM2.5
-prediction in Asunción with MAE < 5 µg/m³.
+prediction in Asunción.
+
+Note (added 2026-08-10): the "MAE < 5 µg/m³" target quoted in earlier
+drafts of this module docstring was aspirational, not measured. The
+measured mean RMSE across 12 stations is 14.7 µg/m³ (24% over
+persistence) — see papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md.
+The MAE < 5 µg/m³ target remains valid as a goal for the next experiment
+run with a larger station set and rural coverage.
 """
 from pathlib import Path
 from typing import Optional, Dict

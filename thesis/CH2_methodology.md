@@ -143,7 +143,7 @@ Yrupe predicts crop yield from Sentinel-2 + MapBiomas + SRTM features. The pipel
 
 Kai implements wildlife detection using YOLOv8. The pipeline downloads Sentinel-2 imagery of Paraguayan national parks (Defensores del Chaco, Teniente Agripino Enciso) and applies a pretrained YOLOv8 model for animal detection.
 
-Due to limited labeled Paraguay-specific data, Kai currently relies on COCO-pretrained weights and reports baseline metrics (mAP=0.6-0.8 for common species, 0.3-0.5 for cryptic species).
+Due to limited labeled Paraguay-specific data, Kai currently relies on COCO-pretrained weights. **Measured synthetic-vs-real gap (see `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`):** mAP@0.5 = 0.50 on synthetic validation, 0.18 on 5,000 real Guyra Paraguay camera-trap images (a 0.32 absolute decline). Per-category breakdown on real data: large mammals 0.25, small mammals 0.10, birds 0.20, reptiles 0.05. The mAP=0.6-0.8 / 0.3-0.5 ranges quoted in earlier drafts of this chapter were aspirational and have been replaced.
 
 ### 2.2.7 Tatakua (Air Quality, Chapter 8)
 
@@ -153,7 +153,7 @@ Tatakua implements air quality forecasting using LSTM. The pipeline uses OpenAQ 
 - **LSTM-2layer:** 50 epochs on 5,000 timesteps
 - **LSTM-4layer:** Deeper variant
 
-Tatakua achieves MAE<5 µg/m³, comparable to state-of-the-art air quality forecasting.
+**Measured result (see `papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md`):** mean RMSE = 14.7 µg/m³ (bias +3.4) across 12 stations — a 24% improvement over persistence (19.2 µg/m³), but 70% above the MAE<5 µg/m³ target that earlier drafts of this chapter quoted. Rural stations (Filadelfia/Chaco RMSE 18.6 µg/m³) are the dominant failure mode.
 
 ## 2.3 Evaluation Methodology
 

@@ -83,17 +83,29 @@ This thesis makes 6 contributions:
 
 \begin{enumerate}
 \item \textbf{P0011 Yvutu}: First Paraguay-specific Prithvi fine-tuning
-for deforestation detection (F1=0.876 expected).
-\item \textbf{P0010 Yvyra}: First AI carbon credit verifier for Paraguay
-(F1=0.83, R²=0.79).
+for deforestation detection. \textbf{Measured CPU pilot result (see
+\texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):}
+F1 = 0.559 (U-Net from scratch), F1 = 0.497 (Prithvi mock fallback).
+The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
+\item \textbf{P0010 Yvyra}: First AI carbon credit verifier for Paraguay.
+\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
++35.9\% mean Verra under-claim across 5 projects (124,310 ha). The F1 = 0.83
+and R$^2$ = 0.79 figures in earlier drafts were aspirational.
 \item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict
-detector (84 conflicts detected, CARE-compliant).
+detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 figure
+in earlier drafts was aspirational).
 \item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield
-predictor (R²=0.78).
-\item \textbf{P0026 Kai}: First YOLOv8 wildlife poaching detector for
-Defensores del Chaco.
-\item \textbf{P0035 Tataka}: First LSTM air quality forecaster for
-Asunción (MAE=11.72 µg/m³).
+predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):}
+multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer
+ratio 0.082. The R$^2$ = 0.78 figure in earlier drafts was aspirational.
+\item \textbf{P0026 Kai}: First YOLOv8 wildlife detector for Paraguay's
+national parks. \textbf{Measured synthetic-vs-real gap (see
+\texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):}
+mAP@0.5 = 0.50 synthetic, 0.18 real (Guyra 5,000 images).
+\item \textbf{P0035 Tatakua}: First LSTM air quality forecaster for
+Asunción. \textbf{Measured mean RMSE = 14.7 µg/m³ across 12 stations (24\%
+over persistence); the MAE = 11.72 µg/m³ figure in earlier drafts was
+aspirational. See \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}.}
 \end{enumerate}
 
 \chapter{Literature Review}
@@ -187,16 +199,27 @@ paper draft for full details.
 
 \section{Problem}
 
-5 Verra projects in Paraguay totaling 123,000 ha. No satellite-based
+5 Verra projects in Paraguay totaling 124,310 ha. No satellite-based
 verification.
+
+\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
++35.9\% mean Verra under-claim. The R$^2$ = 0.79 figure quoted in earlier drafts
+of this chapter was aspirational (AlphaEarth literature benchmark on different
+data), not a Yvyra measurement.
 
 \section{Method}
 
-Yvyra combines AlphaEarth embeddings with Verra VCS API. R²=0.79 for AGB.
+Yvyra combines Hansen GFC v1.11 with the Verra VCS registry. The
+AlphaEarth embedding component was not run in this thesis; the
+R$^2$ = 0.79 figure in earlier drafts of this chapter was an AlphaEarth
+literature benchmark on different data, not a Yvyra measurement.
 
 \section{Results}
 
-F1=0.83 project verification, R²=0.79 carbon stock.
+\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
+Verra under-claims by +35.9\% (mean) on a per-pixel Chave 2014 AGB comparison
+against Hansen GFC v1.11; range 33.3-50.0\%; 95\% bootstrap CI excludes 0\%.
+The F1 = 0.83 / R$^2$ = 0.79 figures in earlier drafts were aspirational.
 
 \chapter{P0012 Yvy: Indigenous Land Tenure}
 \label{ch:p0012}
