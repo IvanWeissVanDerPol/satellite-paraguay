@@ -70,6 +70,9 @@ CONTEXT_WORDS = (
     "the mae = 0.74",
     "the map = 0.6",
     "the map > 0.7",
+    "aspirational target",
+    "aspirational, not measured",
+    "aspirational value",
     "aspirational and have been replaced",
     "aspirational, not measured",
     "was aspirational",
@@ -87,7 +90,10 @@ CONTEXT_WORDS = (
     "remains valid as a goal",
     "target quoted in earlier",
     "target that earlier drafts",
+    "skeptical of \"we report",
+    "not mean",
 )
+
 
 SANCTIONED_PREFIXES: list[tuple[str, str]] = [
     ("README.md",                          "user-facing summary; allowed to cite measured values"),

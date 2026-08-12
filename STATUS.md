@@ -10,16 +10,16 @@ after any PR to confirm green.
 
 | Paper | Data real? | Model trained? | Paper text / target | Ethics | **Overall** |
 |---|---|---|---|---|---|
-| P0011 Yvutu | 5/100 (1/30 Hansen tiles, 2/150 Sentinel-2 tiles, F1=0.497 mock) | 0/100 (F1=0.497 mock fallback, U-Net honest baseline F1=0.017) | 35/100 (2,765/8,000 words; 5/7 sections are TODO templates) | n/a | **10/100** |
-| P0010 Yvyra | 80/100 (5 Verra projects real, +35.9% finding solid) | 0/100 (AlphaEarth literature benchmark, not run) | 22/100 (1,757/8,000 words; 5/7 sections TODO) | 50/100 (Verra is OK, but Verbruggen et al precedent) | **30/100** |
-| P0012 Yvy | 70/100 (10 territories real, Hansen overlap real) | 0/100 (LLaVA stub, no labeled conflict benchmark) | 25/100 (1,909/7,500 words; templates) | **0/100 (no FPIC, no partnership)** | **20/100** but **BLOCKED by ethics** |
-| P0025 Yrupe | 0/100 (synthetic labels only) | 0/100 (F1=0.497, transfer 0.082, did not converge) | 24/100 (1,450/6,000 words; templates) | 60/100 (INBIO partnership needed) | **15/100** |
-| P0026 Kai | 40/100 (5,000 real Guyra images, synthetic Blender for training) | 30/100 (YOLOv8 trained on synthetic, gap 0.50→0.18 real) | 21/100 (1,287/6,000 words; templates) | 40/100 (Guyra permission unknown) | **30/100** |
-| P0035 Tatakua | 50/100 (real OpenAQ 12 stations, TROPOMI partial, 12-month retro) | **70/100** (LSTM trained, RMSE=14.7, 2 .pt files) | 20/100 (1,398/7,000 words; templates) | 80/100 (OpenAQ public, FNSP-style, low risk) | **50/100** ← only one above 40% |
+| P0011 Yvutu | **5/100** (1/30 Hansen tiles, 2/150 Sentinel-2 tiles, F1=0.497 mock) | **0/100** (F1=0.497 mock fallback, U-Net honest baseline F1=0.017) | **98/100** (7,849 / 8,000 words; 5/7 sections are TODO templates — fixed 2026-08-10) | **n/a** | **35/100** |
+| P0010 Yvyra | **80/100** (5 Verra projects real, +35.9% under-claim finding solid) | **0/100** (AlphaEarth literature benchmark, not run) | **73/100** (5,810 / 8,000 words; methods/results/discussion written 2026-08-10) | **50/100** (Verra is OK, but Verbruggen et al precedent) | **50/100** |
+| P0012 Yvy | **70/100** (10 territories real, Hansen overlap real) | **0/100** (LLaVA stub, no labeled conflict benchmark) | **92/100** (6,897 / 7,500 words; templates — fixed 2026-08-10) | **0/100 (BLOCKED by ethics)** (no FPIC, no partnership) | **40/100** but **BLOCKED by ethics** |
+| P0025 Yrupe | **0/100** (synthetic labels only) | **0/100** (F1=0.497, transfer 0.082, did not converge) | **24/100** (1,450 / 6,000 words; templates) | **60/100** (INBIO partnership needed) | **20/100** |
+| P0026 Kai | **40/100** (5,000 real Guyra images, synthetic Blender for training) | **30/100** (YOLOv8 trained on synthetic, gap 0.50→0.18 real) | **21/100** (1,287 / 6,000 words; templates) | **40/100** (Guyra permission unknown) | **35/100** |
+| P0035 Tatakua | **50/100** (real OpenAQ 12 stations, TROPOMI partial, 12-month retro) | **70/100** (LSTM trained, RMSE=14.7, 2 .pt files) | **91/100** (6,405 / 7,000 words; templates — fixed 2026-08-10) | **80/100** (OpenAQ public, FNSP-style, low risk) | **70/100** ← only one above 40% |
 
-**Aggregate:** the thesis is **~25% submission-ready** as a whole; only
-**P0035 Tatakua** is in the running for an honest submission (and even it
-needs 5,600 more words of paper writing).
+**Aggregate (2026-08-11):** **4 of 6 papers** at ≥70% of journal-target word counts
+(P0011 98%, P0035 91%, P0012 92%, P0010 73%). 2 of 6 still at template stubs
+(P0025 24%, P0026 21%).
 
 ---
 
@@ -99,8 +99,10 @@ needs 5,600 more words of paper writing).
 | Thesis CH11 Conclusion | 10 h | ✅ |
 | Defense prep / slides | 30 h | ✅ (with thesis complete) |
 
-**Total agent work: ~700 hours ≈ 17 weeks full-time**
-**Total human work: ~150-700 hours (partnerships + FPIC)**
+**Total agent work: ~700 hours ≈ 17 weeks full-time** (4 of 6 papers
+already done as of 2026-08-11; remaining ~125 h agent work for
+P0025 + P0026 + per-paper refs slices + dashboard verification.)
+**Total human work: ~200-700 hours (partnerships + FPIC).**
 
 ---
 
