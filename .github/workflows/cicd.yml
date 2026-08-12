@@ -32,6 +32,13 @@ jobs:
         run: flake8 scripts/ tests/ src/
       - name: MyPy
         run: mypy scripts/ src/
+      # Honest-reporting guard (added 2026-08-11): fails the build if any
+      # unsanctioned high-headline numeric claim (F1>0.7, R²>0.7, mAP>0.6,
+      # MAE<5) appears outside ACTUAL_RESULTS.md / README.md / WORKLOG_*.md /
+      # papers/drafts/*/paper.{md,tex} etc. See scripts/check_claims.py
+      # docstring for the sanctioning rules.
+      - name: Honest-Reporting Guard (check_claims.py)
+        run: python3 scripts/check_claims.py
 
   # ====== Multi-Python test matrix ======
   test:

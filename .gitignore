@@ -62,6 +62,10 @@ outputs/predictions/*.npy
 outputs/figures/*.png
 outputs/figures/*.pdf
 
+# Coverage (CI artifact; regenerated each run)
+coverage.xml
+htmlcov/
+
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
@@ -82,3 +86,6 @@ data/mapbiomas/
 data/boundaries/*.geojson
 outputs/p0011/figures/deforestation_timeline.gif
 mlruns/
+
+# Local venv (created 2026-08-11 for tests)
+.venv/

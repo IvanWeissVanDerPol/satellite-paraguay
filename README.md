@@ -1,5 +1,10 @@
 # SatelliteCV-Paraguay (Yvutu)
 
+[![CI/CD](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg)](LICENSE)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://zenodo.org/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](pyproject.toml)
+
 Multi-temporal satellite computer vision for Paraguay. Thesis substrate for
 6 papers on deforestation, carbon credits, indigenous rights, yield prediction,
 wildlife detection, and air quality.

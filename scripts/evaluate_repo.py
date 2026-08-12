@@ -13,7 +13,8 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/root/satellite-paraguay")
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
 
 
 def count_files(root):
@@ -67,14 +68,14 @@ def count_loc(root):
 
 def count_tests():
     """Count test files."""
-    test_dir = Path("/root/satellite-paraguay/tests")
+    test_dir = Path("str(REPO)/tests")
     return list(test_dir.glob("test_*.py"))
 
 
 def analyze_modules():
     """Analyze each module for actual vs stub status."""
     modules = []
-    src_dir = Path("/root/satellite-paraguay/src")
+    src_dir = Path("str(REPO)/src")
     for py_file in src_dir.rglob("*.py"):
         if ".git" in py_file.parts or "__pycache__" in py_file.parts:
             continue
@@ -128,7 +129,7 @@ def main():
     print("SatelliteCV-Paraguay — Real Repo Evaluation")
     print("=" * 70)
 
-    repo = Path("/root/satellite-paraguay")
+    repo = Path(str(Path(__file__).resolve().parent.parent))
 
     # File counts
     counts = count_files(repo)
