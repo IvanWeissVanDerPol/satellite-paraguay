@@ -11,6 +11,7 @@ This catches regressions where:
 - Someone introduces a malformed \\cite command
 - Someone unbalanced an environment
 """
+
 from __future__ import annotations
 
 import re
@@ -48,9 +49,7 @@ class TestLatexSyntaxAndBibResolve:
 
     def test_check_latex_runs_clean(self):
         r = _run_check_latex()
-        assert r.returncode == 0, (
-            f"check_latex.py exited {r.returncode}\nstdout:\n{r.stdout}\nstderr:\n{r.stderr}"
-        )
+        assert r.returncode == 0, f"check_latex.py exited {r.returncode}\nstdout:\n{r.stdout}\nstderr:\n{r.stderr}"
 
     def test_check_latex_reports_all_six_papers(self):
         r = _run_check_latex()
@@ -78,9 +77,7 @@ class TestLatexSyntaxAndBibResolve:
                 cite_keys.add(k.strip())
 
         unresolved = cite_keys - bib_keys
-        assert not unresolved, (
-            f"{paper}: \\cite keys not in references.bib: {sorted(unresolved)}"
-        )
+        assert not unresolved, f"{paper}: \\cite keys not in references.bib: {sorted(unresolved)}"
 
     @pytest.mark.parametrize("paper", PAPERS)
     def test_paper_ref_keys_resolve(self, paper):
@@ -89,9 +86,7 @@ class TestLatexSyntaxAndBibResolve:
         ref_keys = set(re.findall(r"\\ref\{([^}]+)\}", text))
         label_keys = set(re.findall(r"\\label\{([^}]+)\}", text))
         unresolved = ref_keys - label_keys
-        assert not unresolved, (
-            f"{paper}: \\ref keys not defined via \\label: {sorted(unresolved)}"
-        )
+        assert not unresolved, f"{paper}: \\ref keys not defined via \\label: {sorted(unresolved)}"
 
     @pytest.mark.parametrize("paper", PAPERS)
     def test_paper_environments_balanced(self, paper):
@@ -100,9 +95,7 @@ class TestLatexSyntaxAndBibResolve:
         begins = set(re.findall(r"\\begin\{(\w+)\}", text))
         ends = set(re.findall(r"\\end\{(\w+)\}", text))
         unbalanced = begins - ends
-        assert not unbalanced, (
-            f"{paper}: unbalanced environments: {unbalanced}"
-        )
+        assert not unbalanced, f"{paper}: unbalanced environments: {unbalanced}"
 
     def test_master_references_bib_has_at_least_190_entries(self):
         """The master references.bib must have grown beyond the 193 baseline."""
@@ -115,6 +108,4 @@ class TestLatexSyntaxAndBibResolve:
         """Each per-paper references.bib must contain the master entries."""
         text = (REPO / "papers/drafts" / paper / "references.bib").read_text()
         n = len(re.findall(r"@\w+\s*\{", text))
-        assert n >= 160, (
-            f"{paper}/references.bib has only {n} entries (expected >= 160)"
-        )
+        assert n >= 160, f"{paper}/references.bib has only {n} entries (expected >= 160)"

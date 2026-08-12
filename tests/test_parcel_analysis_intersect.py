@@ -3,12 +3,12 @@
 Coverage target: 70%+. Tests intersection helpers using
 synthetic GeoDataFrames and mocks for rasterio.
 """
-import pytest
-import numpy as np
+
+from unittest.mock import MagicMock, patch
+
 import geopandas as gpd
-from pathlib import Path
-from unittest.mock import patch, MagicMock
-from shapely.geometry import box, Polygon
+import numpy as np
+from shapely.geometry import Polygon
 
 
 class TestGetParcelsInTile:
@@ -19,14 +19,16 @@ class TestGetParcelsInTile:
         from src.parcel_analysis.intersect import get_parcels_in_tile
 
         # Create mock parcels
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1", "P2", "P3"],
-            "geometry": [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),  # inside
-                Polygon([(50, 50), (60, 50), (60, 60), (50, 60)]),  # outside
-                Polygon([(5, 5), (15, 5), (15, 15), (5, 15)]),  # inside
-            ],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1", "P2", "P3"],
+                "geometry": [
+                    Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),  # inside
+                    Polygon([(50, 50), (60, 50), (60, 60), (50, 60)]),  # outside
+                    Polygon([(5, 5), (15, 5), (15, 15), (5, 15)]),  # inside
+                ],
+            }
+        )
 
         bbox = {"min_lon": -5, "max_lon": 20, "min_lat": -5, "max_lat": 20}
 
@@ -40,10 +42,12 @@ class TestGetParcelsInTile:
         """No parcels intersect the tile."""
         from src.parcel_analysis.intersect import get_parcels_in_tile
 
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1"],
-            "geometry": [Polygon([(100, 100), (110, 100), (110, 110), (100, 110)])],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1"],
+                "geometry": [Polygon([(100, 100), (110, 100), (110, 110), (100, 110)])],
+            }
+        )
         bbox = {"min_lon": 0, "max_lon": 10, "min_lat": 0, "max_lat": 10}
 
         with patch("src.parcel_analysis.intersect.load_catastro_parcels", return_value=parcels):
@@ -58,13 +62,15 @@ class TestGetIndigenousInTile:
     def test_get_indigenous_intersecting_tile(self, tmp_path):
         from src.parcel_analysis.intersect import get_indigenous_in_tile
 
-        indigenous = gpd.GeoDataFrame({
-            "id": ["I1", "I2"],
-            "geometry": [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
-                Polygon([(50, 50), (60, 50), (60, 60), (50, 60)]),
-            ],
-        })
+        indigenous = gpd.GeoDataFrame(
+            {
+                "id": ["I1", "I2"],
+                "geometry": [
+                    Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
+                    Polygon([(50, 50), (60, 50), (60, 60), (50, 60)]),
+                ],
+            }
+        )
 
         bbox = {"min_lon": -5, "max_lon": 20, "min_lat": -5, "max_lat": 20}
 
@@ -83,7 +89,7 @@ class TestClipRasterToParcel:
         from src.parcel_analysis.intersect import clip_raster_to_parcel
 
         # Mock rasterio
-        arr = np.random.rand(3, 50, 50).astype(np.float32)
+        np.random.rand(3, 50, 50).astype(np.float32)
         profile = {"driver": "GTiff", "dtype": "float32", "height": 50, "width": 50}
 
         mock_src = MagicMock()
@@ -94,14 +100,13 @@ class TestClipRasterToParcel:
         # Mock rasterio_mask to return (clipped_array, transform)
         clipped_arr = np.random.rand(3, 20, 20).astype(np.float32)
         from rasterio.transform import Affine
+
         transform = Affine(1.0, 0.0, 0.0, 0.0, -1.0, 20.0)
 
         with patch("src.parcel_analysis.intersect.rasterio.open", return_value=mock_src):
             with patch("src.parcel_analysis.intersect.rasterio_mask", return_value=(clipped_arr, transform)):
                 parcel_geom = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
-                result_arr, result_profile = clip_raster_to_parcel(
-                    tmp_path / "test.tif", parcel_geom
-                )
+                result_arr, result_profile = clip_raster_to_parcel(tmp_path / "test.tif", parcel_geom)
 
         assert isinstance(result_arr, np.ndarray)
         assert result_profile["height"] == 20
@@ -112,6 +117,7 @@ class TestClipRasterToParcel:
 
         arr = np.random.rand(3, 20, 20).astype(np.float32)
         from rasterio.transform import Affine
+
         transform = Affine(1.0, 0.0, 0.0, 0.0, -1.0, 20.0)
 
         mock_src = MagicMock()
@@ -129,9 +135,7 @@ class TestClipRasterToParcel:
             with patch("src.parcel_analysis.intersect.rasterio_mask", return_value=(arr, transform)):
                 parcel_geom = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
                 output = tmp_path / "out.tif"
-                clip_raster_to_parcel(
-                    tmp_path / "test.tif", parcel_geom, output_path=output
-                )
+                clip_raster_to_parcel(tmp_path / "test.tif", parcel_geom, output_path=output)
 
 
 class TestComputeParcelStatistics:
@@ -141,13 +145,15 @@ class TestComputeParcelStatistics:
         """Find parcel by id and compute stats."""
         from src.parcel_analysis.intersect import compute_parcel_statistics
 
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1", "P2"],
-            "geometry": [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
-                Polygon([(20, 20), (30, 20), (30, 30), (20, 30)]),
-            ],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1", "P2"],
+                "geometry": [
+                    Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
+                    Polygon([(20, 20), (30, 20), (30, 30), (20, 30)]),
+                ],
+            }
+        )
 
         # Mock clipped raster
         arr = np.array([[[10, 20, 30], [40, 50, 60], [70, 80, 90]]], dtype=np.float32)
@@ -163,9 +169,11 @@ class TestComputeParcelStatistics:
         """When no 'id' column, use first parcel."""
         from src.parcel_analysis.intersect import compute_parcel_statistics
 
-        parcels = gpd.GeoDataFrame({
-            "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
+            }
+        )
         arr = np.array([[[10, 20, 30]]], dtype=np.float32)
 
         with patch("src.parcel_analysis.intersect.load_catastro_parcels", return_value=parcels):
@@ -177,10 +185,12 @@ class TestComputeParcelStatistics:
         """All-zero raster returns NaN stats."""
         from src.parcel_analysis.intersect import compute_parcel_statistics
 
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1"],
-            "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1"],
+                "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
+            }
+        )
         arr = np.zeros((1, 5, 5), dtype=np.float32)
 
         with patch("src.parcel_analysis.intersect.load_catastro_parcels", return_value=parcels):
@@ -197,14 +207,18 @@ class TestDetectParcelConflicts:
         """Parcel doesn't overlap any indigenous territory."""
         from src.parcel_analysis.intersect import detect_parcel_conflicts
 
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1"],
-            "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
-        })
-        indigenous = gpd.GeoDataFrame({
-            "id": ["I1"],
-            "geometry": [Polygon([(100, 100), (110, 100), (110, 110), (100, 110)])],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1"],
+                "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
+            }
+        )
+        indigenous = gpd.GeoDataFrame(
+            {
+                "id": ["I1"],
+                "geometry": [Polygon([(100, 100), (110, 100), (110, 110), (100, 110)])],
+            }
+        )
 
         with patch("src.parcel_analysis.intersect.load_catastro_parcels", return_value=parcels):
             with patch("src.parcel_analysis.intersect.load_indigenous_territories", return_value=indigenous):
@@ -217,17 +231,21 @@ class TestDetectParcelConflicts:
         """Parcel overlaps an indigenous territory."""
         from src.parcel_analysis.intersect import detect_parcel_conflicts
 
-        parcels = gpd.GeoDataFrame({
-            "id": ["P1"],
-            "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
-        })
-        indigenous = gpd.GeoDataFrame({
-            "id": ["I1", "I2"],
-            "geometry": [
-                Polygon([(5, 5), (15, 5), (15, 15), (5, 15)]),  # overlaps
-                Polygon([(100, 100), (110, 100), (110, 110), (100, 110)]),  # doesn't
-            ],
-        })
+        parcels = gpd.GeoDataFrame(
+            {
+                "id": ["P1"],
+                "geometry": [Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])],
+            }
+        )
+        indigenous = gpd.GeoDataFrame(
+            {
+                "id": ["I1", "I2"],
+                "geometry": [
+                    Polygon([(5, 5), (15, 5), (15, 15), (5, 15)]),  # overlaps
+                    Polygon([(100, 100), (110, 100), (110, 110), (100, 110)]),  # doesn't
+                ],
+            }
+        )
 
         with patch("src.parcel_analysis.intersect.load_catastro_parcels", return_value=parcels):
             with patch("src.parcel_analysis.intersect.load_indigenous_territories", return_value=indigenous):
@@ -240,4 +258,5 @@ class TestModuleImport:
 
     def test_module_imports(self):
         from src.parcel_analysis import intersect
+
         assert intersect is not None

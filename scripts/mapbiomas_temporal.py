@@ -11,17 +11,17 @@ Outputs:
     outputs/mapbiomas_temporal/yearly_land_cover.csv
     outputs/mapbiomas_temporal/land_cover_changes.json
 """
-import sys
+
+from rasterio.windows import Window
+import rasterio
+import numpy as np
 import json
-import csv
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
 
 OUT_DIR = REPO_ROOT / "outputs/mapbiomas_temporal"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -44,7 +44,7 @@ def mapbiomas_class_from_hansen(treecover, lossyear, year):
     # Forest cover at year
     was_forest_dense = treecover > 60
     was_forest_open = treecover > 30
-    lost_before = lossyear > 0
+    lossyear > 0
     lost_before_y = (lossyear > 0) & (lossyear <= (year - 2000))
 
     forest = was_forest_dense & ~lost_before_y
@@ -99,12 +99,14 @@ def main():
     print(f"\n  {'Year':<6} {'Forest':>10} {'Savanna':>10} {'Pasture':>10} {'Water':>10}")
     print(f"  {'-'*6:<6} {'-'*10:>10} {'-'*10:>10} {'-'*10:>10} {'-'*10:>10}")
     for y, stats in yearly_stats.items():
-        print(f"  {y:<6} {stats['forest_pct']:>9.2f}% {stats['savanna_pct']:>9.2f}% {stats['pasture_pct']:>9.2f}% {stats['water_pct']:>9.2f}%")
+        print(
+            f"  {y:<6} {stats['forest_pct']:>9.2f}% {stats['savanna_pct']:>9.2f}% {stats['pasture_pct']:>9.2f}% {stats['water_pct']:>9.2f}%"  # noqa: E501
+        )
 
     print("\n[3/4] Computing year-on-year changes...")
     changes = {}
     for i in range(1, len(years)):
-        prev = yearly_stats[years[i-1]]
+        prev = yearly_stats[years[i - 1]]
         curr = yearly_stats[years[i]]
         forest_change = curr["forest_pct"] - prev["forest_pct"]
         pasture_change = curr["pasture_pct"] - prev["pasture_pct"]
@@ -120,6 +122,7 @@ def main():
         with rasterio.open(mb_path) as src:
             mb_chunk = src.read(1, window=Window(8000, 8000, 1000, 1000))
         from scipy.ndimage import zoom
+
         mb_full = zoom(mb_chunk, (2.0, 2.0), order=0)
         mb_forest = float((mb_full == 3).mean() * 100)
         mb_pasture = float((mb_full == 15).mean() * 100)
@@ -145,48 +148,63 @@ def main():
         }
         print(f"  Real MapBiomas 2023: forest {mb_forest:.2f}%, pasture {mb_pasture:.2f}%")
         print(f"  Our pseudo 2023:     forest {our_2023['forest_pct']:.2f}%, pasture {our_2023['pasture_pct']:.2f}%")
-        print(f"  Difference: forest {comparison['differences']['forest_diff']:+.2f}%, pasture {comparison['differences']['pasture_diff']:+.2f}%")
+        print(
+            f"  Difference: forest {comparison['differences']['forest_diff']:+.2f}%, pasture {comparison['differences']['pasture_diff']:+.2f}%"  # noqa: E501
+        )
     else:
         comparison = {"mapbiomas_2023": "not available"}
         print("  Real MapBiomas 2023 not available for comparison")
 
     # Save outputs
     (OUT_DIR / "yearly_land_cover.csv").write_text(
-        "\n".join([
-            ",".join(["year", "forest_pct", "savanna_pct", "pasture_pct", "water_pct", "n_forest", "n_pasture"]),
-            *[
-                ",".join([
-                    str(y),
-                    str(stats["forest_pct"]),
-                    str(stats["savanna_pct"]),
-                    str(stats["pasture_pct"]),
-                    str(stats["water_pct"]),
-                    str(stats["n_forest"]),
-                    str(stats["n_pasture"]),
-                ])
-                for y, stats in yearly_stats.items()
-            ],
-        ])
+        "\n".join(
+            [
+                ",".join(["year", "forest_pct", "savanna_pct", "pasture_pct", "water_pct", "n_forest", "n_pasture"]),
+                *[
+                    ",".join(
+                        [
+                            str(y),
+                            str(stats["forest_pct"]),
+                            str(stats["savanna_pct"]),
+                            str(stats["pasture_pct"]),
+                            str(stats["water_pct"]),
+                            str(stats["n_forest"]),
+                            str(stats["n_pasture"]),
+                        ]
+                    )
+                    for y, stats in yearly_stats.items()
+                ],
+            ]
+        )
     )
 
-    (OUT_DIR / "land_cover_changes.json").write_text(json.dumps({
-        "yearly_stats": yearly_stats,
-        "yearly_changes": changes,
-        "real_mapbiomas_comparison": comparison,
-        "methodology": "Pseudo-MapBiomas derived from Hansen treecover + lossyear",
-        "limitations": [
-            "Pasture/agriculture classes are proxies (we use pasture for all converted)",
-            "Water class is a proxy (low treecover)",
-            "No temporal MapBiomas available (only 2023)",
-            "Real MapBiomas classification methodology is more sophisticated",
-        ],
-    }, indent=2))
+    (OUT_DIR / "land_cover_changes.json").write_text(
+        json.dumps(
+            {
+                "yearly_stats": yearly_stats,
+                "yearly_changes": changes,
+                "real_mapbiomas_comparison": comparison,
+                "methodology": "Pseudo-MapBiomas derived from Hansen treecover + lossyear",
+                "limitations": [
+                    "Pasture/agriculture classes are proxies (we use pasture for all converted)",
+                    "Water class is a proxy (low treecover)",
+                    "No temporal MapBiomas available (only 2023)",
+                    "Real MapBiomas classification methodology is more sophisticated",
+                ],
+            },
+            indent=2,
+        )
+    )
 
     print(f"\n  Saved: {OUT_DIR}/yearly_land_cover.csv")
     print(f"  Saved: {OUT_DIR}/land_cover_changes.json")
-    print(f"\n  KEY FINDINGS:")
-    print(f"    Forest 2015 -> 2023: {yearly_stats[2015]['forest_pct']:.2f}% -> {yearly_stats[2023]['forest_pct']:.2f}% ({yearly_stats[2023]['forest_pct'] - yearly_stats[2015]['forest_pct']:+.2f}%)")
-    print(f"    Pasture 2015 -> 2023: {yearly_stats[2015]['pasture_pct']:.2f}% -> {yearly_stats[2023]['pasture_pct']:.2f}% ({yearly_stats[2023]['pasture_pct'] - yearly_stats[2015]['pasture_pct']:+.2f}%)")
+    print("\n  KEY FINDINGS:")
+    print(
+        f"    Forest 2015 -> 2023: {yearly_stats[2015]['forest_pct']:.2f}% -> {yearly_stats[2023]['forest_pct']:.2f}% ({yearly_stats[2023]['forest_pct'] - yearly_stats[2015]['forest_pct']:+.2f}%)"  # noqa: E501
+    )
+    print(
+        f"    Pasture 2015 -> 2023: {yearly_stats[2015]['pasture_pct']:.2f}% -> {yearly_stats[2023]['pasture_pct']:.2f}% ({yearly_stats[2023]['pasture_pct'] - yearly_stats[2015]['pasture_pct']:+.2f}%)"  # noqa: E501
+    )
 
 
 if __name__ == "__main__":

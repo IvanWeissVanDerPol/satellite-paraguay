@@ -3,10 +3,12 @@
 Coverage target: 60%+. The YvytuPipeline class is the main entry point.
 We test it with heavy mocking to avoid loading real models.
 """
-import pytest
-import numpy as np
+
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
+import numpy as np
+import pytest
 
 
 class TestYvytuPipeline:
@@ -16,6 +18,7 @@ class TestYvytuPipeline:
     def pipeline(self):
         """Create a pipeline without auto-loading models."""
         from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline
+
         return YvytuPipeline()
 
     # --- __init__ ---
@@ -42,6 +45,7 @@ class TestYvytuPipeline:
 
     def test_init_with_custom_config(self):
         from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline
+
         cfg = {"custom_key": "value"}
         p = YvytuPipeline(config=cfg)
         assert p.config["custom_key"] == "value"
@@ -107,13 +111,16 @@ class TestYvytuPipeline:
     def test_detect_deforestation_basic(self, pipeline):
         """Test detect_deforestation returns a binary mask."""
         # Synthetic NDVI timeseries: 5 timesteps, 2x2 pixels
-        ndvi = np.array([
-            [[0.9, 0.5], [0.5, 0.5]],
-            [[0.7, 0.5], [0.5, 0.5]],
-            [[0.5, 0.5], [0.5, 0.5]],
-            [[0.3, 0.5], [0.5, 0.5]],
-            [[0.1, 0.5], [0.5, 0.5]],
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.9, 0.5], [0.5, 0.5]],
+                [[0.7, 0.5], [0.5, 0.5]],
+                [[0.5, 0.5], [0.5, 0.5]],
+                [[0.3, 0.5], [0.5, 0.5]],
+                [[0.1, 0.5], [0.5, 0.5]],
+            ],
+            dtype=np.float32,
+        )
         dates = ["2020-01-01", "2020-06-01", "2020-12-01", "2021-06-01", "2021-12-01"]
         result = pipeline.detect_deforestation(
             tile_id="test_tile",

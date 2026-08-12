@@ -6,11 +6,11 @@ Baselines to compare against Prithvi foundation model:
 3. Persistence (no change)
 4. Linear trend
 """
-from pathlib import Path
-from typing import Optional, Tuple
+
+
 import numpy as np
 
-from src.evaluation import pixel_f1_score, mean_iou, print_metrics
+from src.evaluation import mean_iou, pixel_f1_score, print_metrics
 
 
 def random_forest_baseline(
@@ -41,14 +41,17 @@ def random_forest_baseline(
     T, H, W = ndvi_timeseries.shape
 
     # Compute features per pixel
-    features = np.stack([
-        ndvi_timeseries.mean(axis=0),
-        ndvi_timeseries.std(axis=0),
-        ndvi_timeseries.min(axis=0),
-        ndvi_timeseries.max(axis=0),
-        # Linear trend
-        np.polyfit(np.arange(T), ndvi_timeseries.reshape(T, -1), 1)[0].reshape(H, W),
-    ], axis=-1)  # (H, W, 5)
+    features = np.stack(
+        [
+            ndvi_timeseries.mean(axis=0),
+            ndvi_timeseries.std(axis=0),
+            ndvi_timeseries.min(axis=0),
+            ndvi_timeseries.max(axis=0),
+            # Linear trend
+            np.polyfit(np.arange(T), ndvi_timeseries.reshape(T, -1), 1)[0].reshape(H, W),
+        ],
+        axis=-1,
+    )  # (H, W, 5)
 
     X = features.reshape(-1, 5)
     y = ground_truth.reshape(-1)
@@ -82,7 +85,6 @@ def unet_baseline(
     try:
         import torch
         import torch.nn as nn
-        from torch.utils.data import DataLoader, TensorDataset
     except ImportError:
         raise ImportError("PyTorch not installed")
 
@@ -248,18 +250,16 @@ if __name__ == "__main__":
     print("Pass NDVI as .npz and ground-truth as .npy:")
     print("    python -m src.baselines.p0011_yvutu_baselines ndvi.npz gt.npy")
     import sys
+
     if len(sys.argv) >= 3:
         ndvi = np.load(sys.argv[1])["ndvi"]
         gt = np.load(sys.argv[2])
         if ndvi.ndim != 3:
             raise FileNotFoundError(
-                f"NDVI must be (T, H, W); got shape {ndvi.shape}. "
-                "See scripts/download_sentinel2_real.py."
+                f"NDVI must be (T, H, W); got shape {ndvi.shape}. " "See scripts/download_sentinel2_real.py."
             )
         if gt.shape != ndvi.shape[1:]:
-            raise FileNotFoundError(
-                f"ground_truth shape {gt.shape} != NDVI spatial {ndvi.shape[1:]}"
-            )
+            raise FileNotFoundError(f"ground_truth shape {gt.shape} != NDVI spatial {ndvi.shape[1:]}")
         results = run_all_baselines(ndvi, gt)
         print_metrics(results)
     else:

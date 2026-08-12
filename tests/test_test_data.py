@@ -1,9 +1,9 @@
 """Tests for src/utils/test_data.py."""
+
 import json
 import sys
-import pytest
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 
 class TestTestData:
@@ -11,6 +11,7 @@ class TestTestData:
 
     def test_compute_hash(self, tmp_path):
         from src.utils.test_data import compute_hash
+
         f = tmp_path / "test.txt"
         f.write_text("hello")
         h = compute_hash(f)
@@ -18,6 +19,7 @@ class TestTestData:
 
     def test_compute_hash_sha512(self, tmp_path):
         from src.utils.test_data import compute_hash
+
         f = tmp_path / "test.txt"
         f.write_text("hello")
         h = compute_hash(f, "sha512")
@@ -25,12 +27,14 @@ class TestTestData:
 
     def test_index_directory_empty(self, tmp_path):
         from src.utils.test_data import index_directory
+
         # Nonexistent dir
         result = index_directory(tmp_path / "missing")
         assert result == {}
 
     def test_index_directory_with_files(self, tmp_path):
         from src.utils.test_data import index_directory
+
         (tmp_path / "a.txt").write_text("a")
         (tmp_path / "b.txt").write_text("b")
         (tmp_path / "sub").mkdir()
@@ -42,7 +46,8 @@ class TestTestData:
         assert all("hash_sha256" in v for v in result.values())
 
     def test_save_index(self, tmp_path):
-        from src.utils.test_data import save_index, index_directory
+        from src.utils.test_data import index_directory, save_index
+
         (tmp_path / "a.txt").write_text("a")
         index = index_directory(tmp_path)
         index_path = tmp_path / "index.json"
@@ -54,17 +59,20 @@ class TestTestData:
 
     def test_save_index_creates_parent(self, tmp_path):
         from src.utils.test_data import save_index
+
         index_path = tmp_path / "deep" / "nested" / "idx.json"
         save_index({"x.txt": {"hash_sha256": "abc", "size_bytes": 1, "modified": "now"}}, index_path)
         assert index_path.exists()
 
     def test_verify_against_index_no_index(self, tmp_path):
         from src.utils.test_data import verify_against_index
+
         result = verify_against_index(tmp_path, tmp_path / "missing.json")
         assert result == {}
 
     def test_verify_against_index_match(self, tmp_path):
-        from src.utils.test_data import verify_against_index, save_index, index_directory
+        from src.utils.test_data import index_directory, save_index, verify_against_index
+
         (tmp_path / "a.txt").write_text("a")
         index = index_directory(tmp_path)
         index_path = tmp_path / "idx.json"
@@ -74,7 +82,8 @@ class TestTestData:
         assert all(r["status"] == "match" for r in result.values())
 
     def test_verify_against_index_modified(self, tmp_path):
-        from src.utils.test_data import verify_against_index, save_index, index_directory
+        from src.utils.test_data import index_directory, save_index, verify_against_index
+
         (tmp_path / "a.txt").write_text("a")
         index = index_directory(tmp_path)
         index_path = tmp_path / "idx.json"
@@ -87,7 +96,8 @@ class TestTestData:
         assert result["a.txt"]["status"] == "modified"
 
     def test_verify_against_index_missing(self, tmp_path):
-        from src.utils.test_data import verify_against_index, save_index, index_directory
+        from src.utils.test_data import index_directory, save_index, verify_against_index
+
         (tmp_path / "a.txt").write_text("a")
         index = index_directory(tmp_path)
         index_path = tmp_path / "idx.json"
@@ -101,6 +111,7 @@ class TestTestData:
 
     def test_summarize_verification(self):
         from src.utils.test_data import summarize_verification
+
         results = {
             "a": {"status": "match"},
             "b": {"status": "modified"},
@@ -114,10 +125,12 @@ class TestTestData:
 
     def test_summarize_verification_empty(self):
         from src.utils.test_data import summarize_verification
+
         assert summarize_verification({}) == {"match": 0, "modified": 0, "missing": 0}
 
     def test_copy_to_test_data(self, tmp_path):
         from src.utils.test_data import copy_to_test_data
+
         src = tmp_path / "source" / "file.txt"
         src.parent.mkdir()
         src.write_text("data")
@@ -129,6 +142,7 @@ class TestTestData:
 
     def test_copy_to_test_data_creates_dir(self, tmp_path):
         from src.utils.test_data import copy_to_test_data
+
         src = tmp_path / "f.txt"
         src.write_text("x")
         dest = tmp_path / "new" / "nested" / "dir"
@@ -141,23 +155,27 @@ class TestBootstrapMore:
 
     def test_check_data_directory_missing(self):
         from src.utils.bootstrap import check_data_directory
+
         result = check_data_directory(Path("/nonexistent/dir"))
         assert result["ok"] is False
 
     def test_check_data_directory_existing_real(self):
         """Use a known existing directory."""
         from src.utils.bootstrap import check_data_directory
+
         result = check_data_directory(Path("/tmp"))
         assert result["ok"] is True
 
     def test_check_gpu_returns_dict(self):
         from src.utils.bootstrap import check_gpu
+
         result = check_gpu()
         assert "ok" in result
         assert "available" in result
 
     def test_check_network_custom_url(self):
         from src.utils.bootstrap import check_network
+
         # Test with URL that will timeout
         result = check_network(url="http://192.0.2.1/", timeout=1)
         assert result["ok"] is False
@@ -165,7 +183,8 @@ class TestBootstrapMore:
 
     def test_run_all_checks_returns_combined(self, tmp_path):
         """Verify run_all_checks returns combined result for subset."""
-        from src.utils.bootstrap import run_all_checks, setup_directories
+        from src.utils.bootstrap import setup_directories
+
         # Use minimal subset to avoid transformers import bug
         result = {
             "directories": setup_directories(tmp_path),
@@ -180,6 +199,7 @@ class TestCronMonitorMore:
 
     def test_send_webhook_success(self):
         from src.utils.cron_monitor import send_webhook
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         with patch.dict(sys.modules, {"requests": MagicMock()}):
@@ -190,6 +210,7 @@ class TestCronMonitorMore:
 
     def test_send_email_smtp_failure(self):
         from src.utils.cron_monitor import send_email_smtp
+
         with patch("smtplib.SMTP", side_effect=Exception("conn failed")):
             result = send_email_smtp("host", 587, "a@b", ["c@d"], "Subj", "Body")
             assert result is False
@@ -197,6 +218,7 @@ class TestCronMonitorMore:
     def test_send_webhook_no_requests(self):
         """When requests not installed, returns False."""
         from src.utils.cron_monitor import send_webhook
+
         # Don't import requests at all
         saved = sys.modules.get("requests")
         sys.modules["requests"] = None

@@ -6,13 +6,13 @@ Usage:
     python scripts/train_yolov8_kai.py --config configs/p0026_kai.yaml
     python scripts/train_yolov8_kai.py --epochs 100 --batch-size 16 --data data/wildlife.yaml
 """
+
 import argparse
 import logging
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import torch
-import numpy as np
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -43,11 +43,11 @@ def main():
 
     # Load config
     import yaml
-    config = {}
+
     config_path = Path(args.config)
     if config_path.exists():
         with open(config_path) as f:
-            config = yaml.safe_load(f) or {}
+            yaml.safe_load(f) or {}
         logger.info(f"Loaded config from {config_path}")
 
     try:
@@ -72,7 +72,7 @@ def main():
 
     # Train
     logger.info("Starting training...")
-    results = model.train(
+    results = model.train(  # noqa: F841
         data=str(data_yaml),
         epochs=args.epochs,
         batch=args.batch_size,

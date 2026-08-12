@@ -3,17 +3,20 @@ detect_deforestation and validate methods.
 
 Coverage target: 70%+ for the pipeline module.
 """
-import json
-import pytest
-import numpy as np
+
+from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline as YvytuPipeline_Indirect
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
 
 
 @pytest.fixture
 def pipeline():
     """Create a pipeline with mocked dependencies."""
     from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline
+
     p = YvytuPipeline()
     p.model = MagicMock()  # Pretend model loaded
     return p
@@ -114,6 +117,7 @@ class TestPipelineInit:
 
     def test_default_config(self):
         from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline
+
         p = YvytuPipeline()
         assert p.config["tile_size_km"] == 10
         assert "chaco_bbox" in p.config
@@ -122,6 +126,7 @@ class TestPipelineInit:
 
     def test_custom_config(self):
         from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline
+
         custom_config = {
             "tile_size_km": 5,
             "start_date": "2020-01-01",
@@ -138,6 +143,7 @@ class TestRunDemo:
     def test_run_yvytu_demo(self):
         """Smoke test for run_yvytu_demo."""
         from src.papers.p0011_yvytu_deforestation.pipeline import run_yvytu_demo
+
         # Mock load_prithvi to avoid real HF download
         with patch("src.papers.p0011_yvytu_deforestation.pipeline.load_prithvi") as mock_load:
             mock_load.return_value = MagicMock()
@@ -157,4 +163,3 @@ class TestRunDemo:
 
 
 # Helper to access the pipeline class without importing twice
-from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline as YvytuPipeline_Indirect

@@ -3,10 +3,10 @@
 Imports dashboard/app.py with all required modules installed, and runs a
 smoke test against the loaded functions without actually launching
 streamlit (which would block on a TTY)."""
+
 from __future__ import annotations
 
 import importlib.util
-import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -15,14 +15,12 @@ REPO = Path(__file__).resolve().parent.parent
 def test_dashboard_app_imports():
     """dashboard/app.py must import cleanly with all required modules."""
     # Pre-import deps to ensure they're available
-    for mod in ("streamlit", "pandas", "numpy", "plotly",
-                "folium", "streamlit_folium"):
+    for mod in ("streamlit", "pandas", "numpy", "plotly", "folium", "streamlit_folium"):
         try:
             __import__(mod)
         except ImportError as e:
             raise AssertionError(
-                f"Dashboard dep {mod!r} missing: {e}. "
-                f"Run: uv pip install plotly folium streamlit-folium"
+                f"Dashboard dep {mod!r} missing: {e}. " f"Run: uv pip install plotly folium streamlit-folium"
             ) from e
 
     # Now load dashboard/app.py as a module
@@ -53,5 +51,6 @@ def test_streamlit_config():
     cfg = REPO / ".streamlit" / "config.toml"
     if cfg.exists():
         import tomllib
+
         with cfg.open("rb") as f:
             tomllib.load(f)

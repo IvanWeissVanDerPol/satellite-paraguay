@@ -2,16 +2,16 @@
 
 Set random seeds + capture environment for all experiments.
 """
-import os
-import random
-import sys
-from pathlib import Path
-from typing import Optional, Dict
-import json
-import platform
-import subprocess
-from datetime import datetime
 
+import json
+import os
+import platform
+import random
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Optional
 
 # Random seeds
 DEFAULT_SEED = 42
@@ -28,12 +28,14 @@ def set_seed(seed: int = DEFAULT_SEED) -> None:
 
     try:
         import numpy as np
+
         np.random.seed(seed)
     except ImportError:
         pass
 
     try:
         import torch
+
         torch.manual_seed(seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed(seed)
@@ -46,6 +48,7 @@ def set_seed(seed: int = DEFAULT_SEED) -> None:
 
     try:
         import tensorflow as tf
+
         tf.random.set_seed(seed)
     except ImportError:
         pass
@@ -54,11 +57,15 @@ def set_seed(seed: int = DEFAULT_SEED) -> None:
 def get_git_hash() -> Optional[str]:
     """Get current git commit hash."""
     try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "HEAD"],
-            cwd=Path(__file__).parent.parent,
-            stderr=subprocess.DEVNULL,
-        ).decode().strip()
+        return (
+            subprocess.check_output(
+                ["git", "rev-parse", "HEAD"],
+                cwd=Path(__file__).parent.parent,
+                stderr=subprocess.DEVNULL,
+            )
+            .decode()
+            .strip()
+        )
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
 
@@ -66,11 +73,15 @@ def get_git_hash() -> Optional[str]:
 def get_git_branch() -> Optional[str]:
     """Get current git branch."""
     try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-            cwd=Path(__file__).parent.parent,
-            stderr=subprocess.DEVNULL,
-        ).decode().strip()
+        return (
+            subprocess.check_output(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=Path(__file__).parent.parent,
+                stderr=subprocess.DEVNULL,
+            )
+            .decode()
+            .strip()
+        )
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
 
@@ -93,6 +104,7 @@ def get_system_info() -> Dict:
 
     try:
         import torch
+
         info["cuda_available"] = torch.cuda.is_available()
         if torch.cuda.is_available():
             info["cuda_version"] = torch.version.cuda
@@ -106,6 +118,7 @@ def get_system_info() -> Dict:
 
     try:
         import psutil
+
         info["cpu_count"] = psutil.cpu_count()
         info["ram_gb"] = psutil.virtual_memory().total / (1024**3)
     except ImportError:
@@ -133,10 +146,8 @@ def capture_environment(output_path: Path) -> Dict:
     # Add installed packages
     try:
         import pkg_resources
-        info["packages"] = {
-            d.project_name: d.version
-            for d in pkg_resources.working_set
-        }
+
+        info["packages"] = {d.project_name: d.version for d in pkg_resources.working_set}
     except Exception:
         pass
 
@@ -166,6 +177,7 @@ def verify_reproducibility(
     for out in outputs[1:]:
         try:
             import numpy as np
+
             if not np.allclose(out, outputs[0], atol=tolerance):
                 return False
         except Exception:
@@ -182,6 +194,7 @@ if __name__ == "__main__":
     # Test set_seed
     set_seed(42)
     import numpy as np
+
     print(f"np.random.rand(3) after seed 42: {np.random.rand(3)}")
 
     set_seed(42)

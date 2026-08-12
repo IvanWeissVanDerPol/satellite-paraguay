@@ -3,13 +3,13 @@
 Coverage target: 95%+. Tests detect_conflicts_real with actual conflicts,
 departamento fallback, edge cases.
 """
-import json
-import pytest
-import geopandas as gpd
-from pathlib import Path
-from unittest.mock import patch, MagicMock
-from shapely.geometry import Polygon, box
 
+from pathlib import Path
+from unittest.mock import patch
+
+import geopandas as gpd
+import pytest
+from shapely.geometry import box
 
 REAL_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")
 
@@ -20,6 +20,7 @@ class TestDetectConflictsRealWithConflicts:
     def test_detect_conflicts_with_real_data(self):
         """Run detect_conflicts_real with real geodata."""
         from src.paraguay_admin.real_analysis import detect_conflicts_real
+
         # If real data works, this should run
         try:
             result = detect_conflicts_real(
@@ -86,6 +87,7 @@ class TestGetParcelsInDepartment:
     def test_department_column(self):
         """When 'department' column exists."""
         from src.paraguay_admin import real_analysis as ra_mod
+
         parcels = gpd.GeoDataFrame(
             {"id": [1, 2, 3], "department": ["A", "B", "A"]},
             geometry=[box(0, 0, 1, 1), box(1, 0, 2, 1), box(2, 0, 3, 1)],
@@ -98,6 +100,7 @@ class TestGetParcelsInDepartment:
     def test_departamento_column_fallback(self):
         """When 'departamento' column exists (Spanish)."""
         from src.paraguay_admin import real_analysis as ra_mod
+
         parcels = gpd.GeoDataFrame(
             {"id": [1, 2, 3], "departamento": ["X", "Y", "X"]},
             geometry=[box(0, 0, 1, 1), box(1, 0, 2, 1), box(2, 0, 3, 1)],
@@ -110,6 +113,7 @@ class TestGetParcelsInDepartment:
     def test_no_department_column_returns_all(self):
         """When no department column, returns all parcels."""
         from src.paraguay_admin import real_analysis as ra_mod
+
         parcels = gpd.GeoDataFrame(
             {"id": [1, 2]},
             geometry=[box(0, 0, 1, 1), box(1, 0, 2, 1)],
@@ -126,6 +130,7 @@ class TestComputeParcelSummaryStats:
     def test_empty_parcels(self):
         """Empty dataframe returns minimal stats."""
         from src.paraguay_admin.real_analysis import compute_parcel_summary_stats
+
         empty = gpd.GeoDataFrame(
             {"id": []},
             geometry=[],
@@ -137,6 +142,7 @@ class TestComputeParcelSummaryStats:
     def test_basic_stats(self):
         """Non-empty parcels returns full stats."""
         from src.paraguay_admin.real_analysis import compute_parcel_summary_stats
+
         parcels = gpd.GeoDataFrame(
             {"id": [1, 2, 3]},
             geometry=[box(0, 0, 1, 1), box(1, 0, 2, 1), box(2, 0, 3, 1)],

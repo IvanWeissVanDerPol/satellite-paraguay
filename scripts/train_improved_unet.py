@@ -11,22 +11,23 @@ Output:
     outputs/p0011/real_model/improved_unet_metrics.json
     outputs/p0011/real_model/training_curves.png
 """
-import sys
+
+from scipy.ndimage import zoom
+from rasterio.windows import Window
+import torch.nn.functional as F
+import torch.nn as nn
+import torch
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
-from scipy.ndimage import zoom
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import matplotlib.pyplot as plt
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/real_model"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -138,11 +139,18 @@ def make_tiles_with_features(data, tile_size=64, n_per_class=80, seed=42):
 
     # Stack: treecover, forest, pasture, agri, water, savanna, mean_cover_history
     mean_cover_hist = data["cover_t"].mean(axis=0)
-    features_static = np.stack([
-        treecover_norm,
-        is_forest, is_pasture, is_agri, is_water, is_savanna,
-        mean_cover_hist,
-    ], axis=0)
+    features_static = np.stack(
+        [
+            treecover_norm,
+            is_forest,
+            is_pasture,
+            is_agri,
+            is_water,
+            is_savanna,
+            mean_cover_hist,
+        ],
+        axis=0,
+    )
 
     # Per-year cover as additional channels
     cover_yearly = data["cover_t"]  # (23, H, W)
@@ -157,30 +165,34 @@ def make_tiles_with_features(data, tile_size=64, n_per_class=80, seed=42):
         attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        label = data["lossyear"][y:y+tile_size, x:x+tile_size]
+        label = data["lossyear"][y: y + tile_size, x: x + tile_size]
         has_loss = (label > 0).any()
         loss_count = int((label > 0).sum())
 
         if has_loss and n_pos < target:
             # Static features + yearly cover
-            static_tile = features_static[:, y:y+tile_size, x:x+tile_size]
-            yearly_tile = cover_yearly[:, y:y+tile_size, x:x+tile_size]
+            static_tile = features_static[:, y: y + tile_size, x: x + tile_size]
+            yearly_tile = cover_yearly[:, y: y + tile_size, x: x + tile_size]
             full_features = np.concatenate([static_tile, yearly_tile], axis=0)  # (30, ts, ts)
-            tiles.append({
-                "features": full_features.astype(np.float32),
-                "label": (label > 0).astype(np.float32),
-                "n_loss": loss_count,
-            })
+            tiles.append(
+                {
+                    "features": full_features.astype(np.float32),
+                    "label": (label > 0).astype(np.float32),
+                    "n_loss": loss_count,
+                }
+            )
             n_pos += 1
         elif not has_loss and n_neg < target:
-            static_tile = features_static[:, y:y+tile_size, x:x+tile_size]
-            yearly_tile = cover_yearly[:, y:y+tile_size, x:x+tile_size]
+            static_tile = features_static[:, y: y + tile_size, x: x + tile_size]
+            yearly_tile = cover_yearly[:, y: y + tile_size, x: x + tile_size]
             full_features = np.concatenate([static_tile, yearly_tile], axis=0)
-            tiles.append({
-                "features": full_features.astype(np.float32),
-                "label": np.zeros((tile_size, tile_size), dtype=np.float32),
-                "n_loss": 0,
-            })
+            tiles.append(
+                {
+                    "features": full_features.astype(np.float32),
+                    "label": np.zeros((tile_size, tile_size), dtype=np.float32),
+                    "n_loss": 0,
+                }
+            )
             n_neg += 1
 
     print(f"  Tiles: {n_pos} with loss + {n_neg} without = {len(tiles)} total")
@@ -224,7 +236,7 @@ def main():
     n_train = int(len(tiles) * 0.6)
     n_val = int(len(tiles) * 0.2)
     train_tiles = [tiles[i] for i in perm[:n_train]]
-    val_tiles = [tiles[i] for i in perm[n_train:n_train + n_val]]
+    val_tiles = [tiles[i] for i in perm[n_train: n_train + n_val]]
     test_tiles = [tiles[i] for i in perm[n_train + n_val:]]
     print(f"  Split: {len(train_tiles)} train / {len(val_tiles)} val / {len(test_tiles)} test")
 
@@ -235,7 +247,7 @@ def main():
     model = model.to(device)
 
     # Class-weighted loss (positive class is rare)
-    pos_weight = torch.tensor([10.0]).to(device)
+    torch.tensor([10.0]).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=20)
 
@@ -296,10 +308,12 @@ def main():
         val_f1s.append(f1)
 
         if (epoch + 1) % 5 == 0 or epoch == 0:
-            print(f"  Epoch {epoch+1}/{n_epochs}: "
-                  f"train_loss={train_losses[-1]:.4f}, "
-                  f"val_loss={val_loss:.4f}, val_F1={f1:.3f} "
-                  f"(P={precision:.3f}, R={recall:.3f})")
+            print(
+                f"  Epoch {epoch+1}/{n_epochs}: "
+                f"train_loss={train_losses[-1]:.4f}, "
+                f"val_loss={val_loss:.4f}, val_F1={f1:.3f} "
+                f"(P={precision:.3f}, R={recall:.3f})"
+            )
 
     # Test
     print("\n[4/4] Final test set evaluation...")
@@ -325,7 +339,7 @@ def main():
     accuracy = (tp + tn) / (tp + fp + fn + tn)
     iou = tp / (tp + fp + fn + 1e-8)
 
-    print(f"\n  TEST RESULTS:")
+    print("\n  TEST RESULTS:")
     print(f"    TP={tp:,}, FP={fp:,}, FN={fn:,}, TN={tn:,}")
     print(f"    Precision: {precision:.3f}")
     print(f"    Recall:    {recall:.3f}")
@@ -367,7 +381,10 @@ def main():
             "f1": float(f1),
             "iou": float(iou),
             "accuracy": float(accuracy),
-            "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "tn": tn,
         },
         "training_losses": train_losses,
         "val_losses": val_losses,

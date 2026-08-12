@@ -5,11 +5,12 @@ Production-quality replacement for the stub pipeline.
 Usage:
     python scripts/train_prithvi_yvutu.py --config configs/p0011_yvytu.yaml --epochs 30
 """
+
 import argparse
 import logging
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -34,31 +35,43 @@ def main():
 
     # Load config
     import yaml
+
     config = {}
     if Path(args.config).exists():
         with open(args.config) as f:
             config = yaml.safe_load(f) or {}
 
     # Setup
-    from src.satellite_io import fetch_sentinel2_tile, download_mapbiomas_paraguay_real, download_hansen_real, compute_deforestation_year
     from src.paraguay_admin import list_tiles_in_region
-    from src.utils import set_seed, get_git_hash, get_system_info
+    from src.satellite_io import (
+        download_hansen_real,
+        download_mapbiomas_paraguay_real,
+        fetch_sentinel2_tile,
+    )
+    from src.utils import get_git_hash, set_seed
 
     set_seed(42)
     logger.info(f"Git hash: {get_git_hash()}")
     logger.info(f"Device: {args.device}")
 
     # Select Chaco tiles
-    chaco_bbox = config.get("data", {}).get("chaco_bbox", {
-        "min_lon": -62.0, "max_lon": -57.0, "min_lat": -24.0, "max_lat": -19.0,
-    })
+    chaco_bbox = config.get("data", {}).get(
+        "chaco_bbox",
+        {
+            "min_lon": -62.0,
+            "max_lon": -57.0,
+            "min_lat": -24.0,
+            "max_lat": -19.0,
+        },
+    )
     tiles = list_tiles_in_region(chaco_bbox)
-    tiles = tiles[:args.max_tiles]
+    tiles = tiles[: args.max_tiles]
     logger.info(f"Selected {len(tiles)} Chaco tiles")
 
     # Load Prithvi model
     try:
         from transformers import AutoModel
+
         model = AutoModel.from_pretrained("ibm-nasa-geospatial/Prithvi-300M", trust_remote_code=True)
         model = model.to(args.device)
         logger.info("Loaded Prithvi-300M from HuggingFace")
@@ -95,6 +108,7 @@ def main():
             try:
                 # Get tile bbox
                 from src.paraguay_admin import get_tile_bbox
+
                 bbox = get_tile_bbox(tile_id)
 
                 # Fetch Sentinel-2 (cached)
@@ -132,7 +146,7 @@ def main():
                     )
 
                 # Loss on last time step
-                loss = criterion(logs[-1], y)
+                loss = criterion(logits, y)
                 loss.backward()
                 optimizer.step()
 
@@ -149,10 +163,14 @@ def main():
         model.eval()
         val_iou = 0.0
         try:
-            from src.satellite_io import download_hansen_real
-            hansen = download_hansen_real({
-                "min_lon": -60.0, "max_lon": -59.0, "min_lat": -22.0, "max_lat": -21.0,
-            })
+            hansen = download_hansen_real(
+                {
+                    "min_lon": -60.0,
+                    "max_lon": -59.0,
+                    "min_lat": -22.0,
+                    "max_lat": -21.0,
+                }
+            )
             deforestation_mask = (hansen["loss"] > 0).astype(np.int64)
             val_iou = float((deforestation_mask.sum() / deforestation_mask.size))
         except Exception:
@@ -169,22 +187,30 @@ def main():
         if val_iou > best_iou:
             best_iou = val_iou
             ckpt_path = checkpoint_dir / "best.pt"
-            torch.save({
-                "model_state_dict": model.state_dict(),
-                "decoder_state_dict": decoder.state_dict() if not isinstance(model, MockSegmentationModel) else None,
-                "epoch": epoch,
-                "best_iou": best_iou,
-                "config": config,
-            }, ckpt_path)
+            torch.save(
+                {
+                    "model_state_dict": model.state_dict(),
+                    "decoder_state_dict": (
+                        decoder.state_dict() if not isinstance(model, MockSegmentationModel) else None
+                    ),
+                    "epoch": epoch,
+                    "best_iou": best_iou,
+                    "config": config,
+                },
+                ckpt_path,
+            )
             logger.info(f"  Saved best model: {ckpt_path}")
 
     # Final save
     final_path = checkpoint_dir / "final.pt"
-    torch.save({
-        "model_state_dict": model.state_dict(),
-        "epoch": args.epochs,
-        "final_loss": avg_loss,
-    }, final_path)
+    torch.save(
+        {
+            "model_state_dict": model.state_dict(),
+            "epoch": args.epochs,
+            "final_loss": avg_loss,
+        },
+        final_path,
+    )
     logger.info(f"Training complete. Final model: {final_path}")
 
 

@@ -10,16 +10,16 @@ Outputs:
     outputs/figures/interactive/carbon_loss.html
     outputs/figures/interactive/indigenous_map.html
 """
-import sys
+
+from rasterio.windows import Window
+import rasterio
 import json
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
 
 OUT_DIR = REPO_ROOT / "outputs/figures/interactive"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -82,7 +82,7 @@ def carbon_loss_plotly():
     per_year = data.get("per_year", {})
     years = sorted(int(y) for y in per_year)
     co2e = [per_year[str(y)]["co2e_mt"] for y in years]
-    pixels = [per_year[str(y)]["pixels"] for y in years]
+    [per_year[str(y)]["pixels"] for y in years]
 
     fig_html = f"""<!DOCTYPE html>
 <html><head><title>Annual CO2e Loss Paraguay</title>
@@ -129,14 +129,11 @@ def indigenous_folium_map():
         {"name": "Mbyá Guaraní Itakyry", "lat": -24.95, "lon": -55.15, "loss_pct": 2.91, "people": "Mbyá Guaraní"},
     ]
 
-    markers_js = ",\n".join([
-        f"""  L.marker([{t['lat']}, {t['lon']}], {{
+    markers_js = ",\n".join([f"""  L.marker([{t['lat']}, {t['lon']}], {{
     title: "{t['name']} ({t['people']})"
   }}).bindPopup(
     `<b>{t['name']}</b><br>People: {t['people']}<br>Loss: {t['loss_pct']}%`
-  ).addTo(map)"""
-        for t in territories
-    ])
+  ).addTo(map)""" for t in territories])
 
     fig_html = f"""<!DOCTYPE html>
 <html><head><title>Indigenous Territories Deforestation</title>
@@ -234,7 +231,7 @@ def uncertainty_plotly():
   const data = [{{
     type: 'bar',
     x: ['Parametric bootstrap', 'Block bootstrap (spatial)'],
-    y: [{(pix.get('ci_upper_95', 0) - pix.get('ci_lower_95', 0))/2}, {(blk.get('ci_upper_95', 0) - blk.get('ci_lower_95', 0))/2}],
+    y: [{(pix.get('ci_upper_95', 0) - pix.get('ci_lower_95', 0))/2}, {(blk.get('ci_upper_95', 0) - blk.get('ci_lower_95', 0))/2}],  # noqa: E501
     error_y: {{
       type: 'data',
       array: [{pix.get('ci_upper_95', 0) - pix.get('mean', 0)}, {blk.get('ci_upper_95', 0) - blk.get('mean', 0)}],

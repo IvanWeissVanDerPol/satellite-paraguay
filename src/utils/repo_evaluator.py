@@ -2,6 +2,7 @@
 
 Counts files, lines of code, tests, and analyzes module stub status.
 """
+
 import ast
 from pathlib import Path
 from typing import Any, Dict, List
@@ -107,11 +108,7 @@ def analyze_module(py_file: Path, src_dir: Path) -> Dict[str, Any]:
     signatures = extract_signatures(content)
 
     # Count LOC
-    loc = sum(
-        1
-        for line in content.split("\n")
-        if line.strip() and not line.strip().startswith("#")
-    )
+    loc = sum(1 for line in content.split("\n") if line.strip() and not line.strip().startswith("#"))
 
     # Count classes/functions
     try:

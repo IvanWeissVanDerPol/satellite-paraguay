@@ -7,7 +7,7 @@ Pure statistical functions for:
 4. Bootstrap hypothesis test for disparity ratios
 5. Numpy type cleaning for JSON serialization
 """
-import json
+
 from typing import Any, Dict, List, Union
 
 import numpy as np
@@ -23,10 +23,8 @@ def mcnemar_test(
     Returns dict with chi2, p_value, n12, n21, n_total, significant_at_005.
     Uses exact binomial test for small samples.
     """
-    n11 = ((y_pred_a == y_true) & (y_pred_b == y_true)).sum()
     n12 = ((y_pred_a == y_true) & (y_pred_b != y_true)).sum()
     n21 = ((y_pred_a != y_true) & (y_pred_b == y_true)).sum()
-    n22 = ((y_pred_a != y_true) & (y_pred_b != y_true)).sum()
 
     n = n12 + n21
     if n == 0:
@@ -40,6 +38,7 @@ def mcnemar_test(
         }
 
     from scipy.stats import binomtest
+
     result = binomtest(min(int(n12), int(n21)), n=int(n), p=0.5)
     p_value = 2 * result.pvalue
     chi2 = (abs(n12 - n21) - 1) ** 2 / n if n > 0 else 0
@@ -65,16 +64,18 @@ def chi_squared_indigenous(
     """
     from scipy.stats import chi2_contingency
 
-    obs_table = np.array([
+    obs_table = np.array(
         [
-            observed_territories["lost"],
-            observed_territories["total"] - observed_territories["lost"],
-        ],
-        [
-            expected_at_national_rate["lost"],
-            expected_at_national_rate["total"] - expected_at_national_rate["lost"],
-        ],
-    ])
+            [
+                observed_territories["lost"],
+                observed_territories["total"] - observed_territories["lost"],
+            ],
+            [
+                expected_at_national_rate["lost"],
+                expected_at_national_rate["total"] - expected_at_national_rate["lost"],
+            ],
+        ]
+    )
 
     chi2, p_value, dof, expected = chi2_contingency(obs_table)
     n = obs_table.sum()
@@ -108,19 +109,13 @@ def paired_ttest_drought(
     """
     from scipy.stats import ttest_ind
 
-    drought_loss = [
-        annual_loss[y] for y in drought_years if y in annual_loss
-    ]
-    non_drought_loss = [
-        annual_loss[y] for y in non_drought_years if y in annual_loss
-    ]
+    drought_loss = [annual_loss[y] for y in drought_years if y in annual_loss]
+    non_drought_loss = [annual_loss[y] for y in non_drought_years if y in annual_loss]
 
     if len(drought_loss) < 2 or len(non_drought_loss) < 2:
         return {"error": "insufficient data"}
 
-    t_stat, p_value = ttest_ind(
-        drought_loss, non_drought_loss, equal_var=False
-    )
+    t_stat, p_value = ttest_ind(drought_loss, non_drought_loss, equal_var=False)
 
     mean_d = float(np.mean(drought_loss))
     mean_n = float(np.mean(non_drought_loss))

@@ -2,10 +2,12 @@
 
 These tests generate many inputs automatically to find edge cases.
 """
+
 import json
-import pytest
+
 import numpy as np
-from hypothesis import given, settings, strategies as st, HealthCheck
+from hypothesis import HealthCheck, given, settings
+from hypothesis import strategies as st
 
 
 class TestNumpyProperties:
@@ -29,8 +31,7 @@ class TestNumpyProperties:
         np.testing.assert_array_equal(a, b)
 
     @given(
-        values=st.lists(st.floats(min_value=-100, max_value=100, allow_nan=False),
-                        min_size=1, max_size=20),
+        values=st.lists(st.floats(min_value=-100, max_value=100, allow_nan=False), min_size=1, max_size=20),
     )
     def test_mean_in_range(self, values):
         """Mean should be approximately between min and max of values."""
@@ -54,6 +55,7 @@ class TestStatisticsProperties:
     def test_cohens_d_sign(self, a, b):
         """Cohen's d sign reflects which group is higher."""
         from src.evaluation.statistics import cohens_d
+
         # Use differences ≥ 1 to avoid floating point noise
         if abs(a - b) < 1.0:
             return  # Skip close cases
@@ -153,7 +155,8 @@ class TestDictProperties:
         d=st.dictionaries(
             keys=st.text(min_size=1, max_size=10).filter(lambda k: not k.startswith("_")),
             values=st.integers(),
-            min_size=1, max_size=10,
+            min_size=1,
+            max_size=10,
         )
     )
     def test_dict_roundtrip(self, d):
@@ -169,6 +172,7 @@ class TestDateProperties:
     )
     def test_year_range(self, year):
         from datetime import datetime
+
         d = datetime(year, 6, 15)
         assert d.year == year
 

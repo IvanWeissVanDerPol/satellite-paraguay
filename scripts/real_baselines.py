@@ -12,18 +12,19 @@ Outputs:
     outputs/p0011/real_baselines/real_baselines.json
     outputs/p0011/real_baselines/real_confusion_matrices.png
 """
-import sys
+
+from rasterio.windows import Window
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
-import matplotlib.pyplot as plt
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/real_baselines"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -53,7 +54,8 @@ def load_tile_data(tile="20S_060W", window_coords=(8000, 12000, 5000, 5000)):
         mb_chunk = src.read(1, window=Window(10000, 10000, w, h))
         # Resize to match Hansen
         from scipy.ndimage import zoom
-        scale = h / mb_chunk.shape[0]
+
+        h / mb_chunk.shape[0]
         mb_resized = zoom(mb_chunk, (w / mb_chunk.shape[0], h / mb_chunk.shape[1]), order=0)
 
     return {
@@ -82,13 +84,16 @@ def make_tiles(data, tile_size=128, n_tiles=50, seed=42):
 
     # IMPORTANT: don't use cum_loss as a feature (it's the target)
     # Use lossyear itself (single years), or no temporal feature at all
-    features = np.stack([
-        data["treecover"].astype(np.float32) / 100.0,
-        is_forest,
-        is_pasture,
-        is_agri,
-        np.zeros_like(data["treecover"], dtype=np.float32),  # Placeholder for missing slot
-    ], axis=0)
+    features = np.stack(
+        [
+            data["treecover"].astype(np.float32) / 100.0,
+            is_forest,
+            is_pasture,
+            is_agri,
+            np.zeros_like(data["treecover"], dtype=np.float32),  # Placeholder for missing slot
+        ],
+        axis=0,
+    )
 
     # Sample tiles
     tiles = []
@@ -101,24 +106,30 @@ def make_tiles(data, tile_size=128, n_tiles=50, seed=42):
         attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        label_tile = data["lossyear"][y:y+tile_size, x:x+tile_size]
+        label_tile = data["lossyear"][y: y + tile_size, x: x + tile_size]
         has_loss = (label_tile > 0).any()
 
         if has_loss and n_pos < target_per_class:
-            tiles.append({
-                "features": features[:, y:y+tile_size, x:x+tile_size],
-                "label": (label_tile > 0).astype(np.int64),
-                "y0": y, "x0": x,
-                "n_loss": int((label_tile > 0).sum()),
-            })
+            tiles.append(
+                {
+                    "features": features[:, y: y + tile_size, x: x + tile_size],
+                    "label": (label_tile > 0).astype(np.int64),
+                    "y0": y,
+                    "x0": x,
+                    "n_loss": int((label_tile > 0).sum()),
+                }
+            )
             n_pos += 1
         elif not has_loss and n_neg < target_per_class:
-            tiles.append({
-                "features": features[:, y:y+tile_size, x:x+tile_size],
-                "label": np.zeros((tile_size, tile_size), dtype=np.int64),
-                "y0": y, "x0": x,
-                "n_loss": 0,
-            })
+            tiles.append(
+                {
+                    "features": features[:, y: y + tile_size, x: x + tile_size],
+                    "label": np.zeros((tile_size, tile_size), dtype=np.int64),
+                    "y0": y,
+                    "x0": x,
+                    "n_loss": 0,
+                }
+            )
             n_neg += 1
 
     print(f"  Prepared {len(tiles)} tiles ({n_pos} with loss, {n_neg} without)")
@@ -141,7 +152,6 @@ def baseline_random_forest(tiles):
     """Random forest on per-pixel features (with train/test split)."""
     try:
         from sklearn.ensemble import RandomForestClassifier
-        from sklearn.metrics import f1_score, precision_score, recall_score
     except ImportError:
         return None, None, "sklearn not available"
 
@@ -178,7 +188,6 @@ def baseline_unet(tiles, n_epochs=5):
     """Tiny U-Net on real Hansen tiles."""
     import torch
     import torch.nn as nn
-    import torch.nn.functional as F
 
     class TinyUNet(nn.Module):
         def __init__(self, in_ch=5):
@@ -258,7 +267,10 @@ def compute_metrics(y_true, y_pred, model_name):
 
     return {
         "model": model_name,
-        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "tn": tn,
         "precision": precision,
         "recall": recall,
         "f1": f1,
@@ -281,6 +293,7 @@ def mcnemar_test(y_true, pred_a, pred_b):
     # Approx p-value from chi2 with 1 df
     # Using normal approx
     from math import erfc, sqrt
+
     z = sqrt(chi2)
     p = erfc(z / sqrt(2))
 
@@ -301,9 +314,11 @@ def main():
     # Load data
     print("\n[1/4] Loading real data...")
     data = load_tile_data()
-    print(f"  Lossyear: {data['lossyear'].shape}, "
-          f"loss pixels: {(data['lossyear']>0).sum():,} "
-          f"({100*(data['lossyear']>0).mean():.2f}%)")
+    print(
+        f"  Lossyear: {data['lossyear'].shape}, "
+        f"loss pixels: {(data['lossyear']>0).sum():,} "
+        f"({100*(data['lossyear']>0).mean():.2f}%)"
+    )
     print(f"  Treecover: mean={data['treecover'].mean():.1f}%")
     print(f"  MapBiomas forest (class 3): {(data['mapbiomas']==3).sum():,} pixels")
 
@@ -323,9 +338,11 @@ def main():
     print("  Persistence (predict no change)...")
     y_pred, y_true = baseline_persistence(tiles)
     results["persistence"] = compute_metrics(y_true, y_pred, "persistence")
-    print(f"    F1={results['persistence']['f1']:.3f}, "
-          f"Precision={results['persistence']['precision']:.3f}, "
-          f"Recall={results['persistence']['recall']:.3f}")
+    print(
+        f"    F1={results['persistence']['f1']:.3f}, "
+        f"Precision={results['persistence']['precision']:.3f}, "
+        f"Recall={results['persistence']['recall']:.3f}"
+    )
 
     # Random Forest
     print("  Random Forest...")
@@ -334,17 +351,21 @@ def main():
         print(f"    SKIPPED: {err}")
     else:
         results["random_forest"] = compute_metrics(y_true_rf, y_pred_rf, "random_forest")
-        print(f"    F1={results['random_forest']['f1']:.3f}, "
-              f"Precision={results['random_forest']['precision']:.3f}, "
-              f"Recall={results['random_forest']['recall']:.3f}")
+        print(
+            f"    F1={results['random_forest']['f1']:.3f}, "
+            f"Precision={results['random_forest']['precision']:.3f}, "
+            f"Recall={results['random_forest']['recall']:.3f}"
+        )
 
     # U-Net (small)
     print("  U-Net (small, real data)...")
     y_pred_unet, y_true_unet, _ = baseline_unet(tiles, n_epochs=8)
     results["unet"] = compute_metrics(y_true_unet, y_pred_unet, "unet")
-    print(f"    F1={results['unet']['f1']:.3f}, "
-          f"Precision={results['unet']['precision']:.3f}, "
-          f"Recall={results['unet']['recall']:.3f}")
+    print(
+        f"    F1={results['unet']['f1']:.3f}, "
+        f"Precision={results['unet']['precision']:.3f}, "
+        f"Recall={results['unet']['recall']:.3f}"
+    )
 
     # McNemar tests
     print("\n[4/4] Statistical comparisons (McNemar's test)...")
@@ -359,8 +380,7 @@ def main():
         chi2 = mcn.get("chi2", 0.0)
         p = mcn.get("p_value", 1.0)
         sig = mcn.get("significant", False)
-        print(f"  Persistence vs U-Net: chi2={chi2:.2f}, p={p:.4f}, "
-              f"sig={sig}")
+        print(f"  Persistence vs U-Net: chi2={chi2:.2f}, p={p:.4f}, " f"sig={sig}")
 
     # Note: RF used different subsampled test set, can't directly compare
     # Skip the RF vs U-Net comparison since RF and U-Net have different test sets
@@ -371,8 +391,7 @@ def main():
         "region": "central Paraguay (window 8000,12000 in tile 20S_060W)",
         "n_tiles": len(tiles),
         "tile_size": 128,
-        "features": ["treecover", "cumulative_loss", "forest_class",
-                     "pasture_class", "agriculture_class"],
+        "features": ["treecover", "cumulative_loss", "forest_class", "pasture_class", "agriculture_class"],
         "models": results,
         "mcnemar": comparisons,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -405,8 +424,7 @@ def plot_results(results, out_path):
     ax.set_xticks(x)
     ax.set_xticklabels(models, rotation=0)
     ax.set_ylabel("Score")
-    ax.set_title("Real-data Baselines on Hansen GFC + MapBiomas\n"
-                 "Yvutu baseline comparison (central Paraguay)")
+    ax.set_title("Real-data Baselines on Hansen GFC + MapBiomas\n" "Yvutu baseline comparison (central Paraguay)")
     ax.legend()
     ax.grid(True, alpha=0.3, axis="y")
     ax.set_ylim(0, 1)

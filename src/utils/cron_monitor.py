@@ -8,8 +8,7 @@ Detects:
 
 Pure logic, no network. Use send_alert() to forward to webhook/email.
 """
-import argparse
-import json
+
 import re
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
@@ -53,9 +52,7 @@ def detect_errors(content: str) -> List[str]:
     return errors
 
 
-def detect_performance_regression(
-    content: str, expected_seconds: float = 60.0
-) -> Optional[str]:
+def detect_performance_regression(content: str, expected_seconds: float = 60.0) -> Optional[str]:
     """Detect if elapsed time exceeds expected by 2x."""
     m = re.search(
         r"(?:Total time|elapsed|Duration):\s*(\d+\.?\d*)\s*(?:s|sec|seconds)",
@@ -68,9 +65,7 @@ def detect_performance_regression(
     return None
 
 
-def check_output_files(
-    repo_root: Path, expected_outputs: List[str]
-) -> List[str]:
+def check_output_files(repo_root: Path, expected_outputs: List[str]) -> List[str]:
     """Check that expected output files exist relative to repo_root."""
     missing = []
     for path in expected_outputs:
@@ -88,35 +83,41 @@ def analyze_log_file(log_file: Path, repo_root: Path) -> List[Dict[str, Any]]:
     # Check for tracebacks
     traceback = detect_traceback(content)
     if traceback:
-        alerts.append({
-            "severity": "high",
-            "type": "traceback",
-            "log_file": str(log_file.relative_to(repo_root)),
-            "message": "Python traceback detected",
-            "details": traceback[:500],
-        })
+        alerts.append(
+            {
+                "severity": "high",
+                "type": "traceback",
+                "log_file": str(log_file.relative_to(repo_root)),
+                "message": "Python traceback detected",
+                "details": traceback[:500],
+            }
+        )
 
     # Check for errors
     errors = detect_errors(content)
     if errors:
-        alerts.append({
-            "severity": "medium",
-            "type": "errors",
-            "log_file": str(log_file.relative_to(repo_root)),
-            "message": f"{len(errors)} error lines",
-            "details": "\n".join(errors[:5]),
-        })
+        alerts.append(
+            {
+                "severity": "medium",
+                "type": "errors",
+                "log_file": str(log_file.relative_to(repo_root)),
+                "message": f"{len(errors)} error lines",
+                "details": "\n".join(errors[:5]),
+            }
+        )
 
     # Check performance
     perf = detect_performance_regression(content)
     if perf:
-        alerts.append({
-            "severity": "low",
-            "type": "performance",
-            "log_file": str(log_file.relative_to(repo_root)),
-            "message": perf,
-            "details": "",
-        })
+        alerts.append(
+            {
+                "severity": "low",
+                "type": "performance",
+                "log_file": str(log_file.relative_to(repo_root)),
+                "message": perf,
+                "details": "",
+            }
+        )
 
     return alerts
 
@@ -138,13 +139,15 @@ def analyze_logs(
     if expected_outputs:
         missing = check_output_files(repo_root, expected_outputs)
         for m in missing:
-            all_alerts.append({
-                "severity": "medium",
-                "type": "missing_output",
-                "log_file": "",
-                "message": f"Missing expected output: {m}",
-                "details": "",
-            })
+            all_alerts.append(
+                {
+                    "severity": "medium",
+                    "type": "missing_output",
+                    "log_file": "",
+                    "message": f"Missing expected output: {m}",
+                    "details": "",
+                }
+            )
 
     return {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -167,9 +170,7 @@ def send_webhook(url: str, payload: Dict[str, Any]) -> bool:
 
 def build_email_body(alerts: List[Dict[str, Any]]) -> str:
     """Build plaintext email body from alerts."""
-    return "\n".join(
-        f"[{a['severity']}] {a['type']}: {a['message']}" for a in alerts
-    )
+    return "\n".join(f"[{a['severity']}] {a['type']}: {a['message']}" for a in alerts)
 
 
 def build_email_message(

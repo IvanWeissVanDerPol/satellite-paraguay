@@ -11,16 +11,16 @@ Pages:
 6. Models — Prithvi, U-Net, LSTM performance
 7. References — papers, data, code
 """
-import sys
-from pathlib import Path
-
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 import json
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 # Page config
 st.set_page_config(
@@ -31,12 +31,15 @@ st.set_page_config(
 )
 
 # Custom CSS
-st.markdown("""
+st.markdown(
+    """
 <style>
 .big-font { font-size: 20px !important; }
 .metric-card { background-color: #f0f2f6; padding: 16px; border-radius: 8px; }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 def load_json(path):
@@ -60,7 +63,7 @@ def page_overview():
     with col2:
         st.metric("Carbon emitted", "2,755 MtCO₂e", "≈ Argentina annual emissions")
     with col3:
-     st.metric("Indigenous disparity", "~3×", "CI: [1.7, 4.2]×, p<0.001")
+        st.metric("Indigenous disparity", "~3×", "CI: [1.7, 4.2]×, p<0.001")
     with col4:
         st.metric("Peak loss year", "2012", "16.6M pixels")
 
@@ -135,7 +138,7 @@ def page_indigenous():
     Bootstrap 95% CI: [1.72, 4.20]x, p<0.001.
     """)
 
-    ind_file = REPO_ROOT / "outputs/p0011/indigenous/indigenous_overlap.json"
+    REPO_ROOT / "outputs/p0011/indigenous/indigenous_overlap.json"
     ind_files_alt = [
         REPO_ROOT / "outputs/p0011/indigenous/indigenous_stats.json",
         REPO_ROOT / "outputs/p0011/indigenous/indigenous_overlap.json",
@@ -181,10 +184,9 @@ def page_carbon():
 
         per_year = data.get("per_year", {})
         if per_year:
-            df = pd.DataFrame([
-                {"year": int(y), "co2e_mt": v["co2e_mt"], "pixels": v["pixels"]}
-                for y, v in per_year.items()
-            ])
+            df = pd.DataFrame(
+                [{"year": int(y), "co2e_mt": v["co2e_mt"], "pixels": v["pixels"]} for y, v in per_year.items()]
+            )
             st.line_chart(df.set_index("year")["co2e_mt"])
     else:
         st.warning("Run: `python3 scripts/per_pixel_carbon.py`")

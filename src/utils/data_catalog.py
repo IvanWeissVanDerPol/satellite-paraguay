@@ -3,6 +3,7 @@
 Generates docs/DATA_CATALOG.md from local files and a curated list of remote
 data sources.
 """
+
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -53,26 +54,30 @@ def build_catalog(local_dir: Path) -> List[Dict[str, Any]]:
     for fname, desc, fmt in LOCAL_DATA_FILES:
         f = local_dir / fname
         if f.exists():
-            catalog.append({
-                "name": fname,
-                "format": fmt,
-                "size_mb": round(f.stat().st_size / (1024 * 1024), 2),
-                "source": "local: paraguay-geodata",
-                "license": "varies (mostly open)",
-                "description": desc,
-                "path": str(f),
-            })
+            catalog.append(
+                {
+                    "name": fname,
+                    "format": fmt,
+                    "size_mb": round(f.stat().st_size / (1024 * 1024), 2),
+                    "source": "local: paraguay-geodata",
+                    "license": "varies (mostly open)",
+                    "description": desc,
+                    "path": str(f),
+                }
+            )
 
     for name, src, license, desc in REMOTE_SOURCES:
-        catalog.append({
-            "name": name,
-            "format": "remote",
-            "size_mb": None,
-            "source": src,
-            "license": license,
-            "description": desc,
-            "path": "remote",
-        })
+        catalog.append(
+            {
+                "name": name,
+                "format": "remote",
+                "size_mb": None,
+                "source": src,
+                "license": license,
+                "description": desc,
+                "path": "remote",
+            }
+        )
 
     return catalog
 
@@ -102,34 +107,34 @@ def render_markdown(catalog: List[Dict[str, Any]]) -> str:
     ]
     for c in catalog:
         if c["source"].startswith("local"):
-            lines.append(
-                f"| `{c['name']}` | {c['format']} | {c['size_mb']} | {c['description']} |"
-            )
+            lines.append(f"| `{c['name']}` | {c['format']} | {c['size_mb']} | {c['description']} |")
 
-    lines.extend([
-        "",
-        "## Remote Data Sources",
-        "",
-        "| Source | Provider | License | Description |",
-        "|--------|----------|---------|-------------|",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Remote Data Sources",
+            "",
+            "| Source | Provider | License | Description |",
+            "|--------|----------|---------|-------------|",
+        ]
+    )
     for c in catalog:
         if not c["source"].startswith("local"):
-            lines.append(
-                f"| **{c['name']}** | {c['source']} | {c['license']} | {c['description']} |"
-            )
+            lines.append(f"| **{c['name']}** | {c['source']} | {c['license']} | {c['description']} |")
 
-    lines.extend([
-        "",
-        "## How to Fetch Remote Data",
-        "",
-        "```bash",
-        "# All downloads go through make targets",
-        "make data-sentinel      # Sentinel-2",
-        "make data-mapbiomas     # MapBiomas",
-        "make data-all           # everything",
-        "```",
-    ])
+    lines.extend(
+        [
+            "",
+            "## How to Fetch Remote Data",
+            "",
+            "```bash",
+            "# All downloads go through make targets",
+            "make data-sentinel      # Sentinel-2",
+            "make data-mapbiomas     # MapBiomas",
+            "make data-all           # everything",
+            "```",
+        ]
+    )
 
     return "\n".join(lines) + "\n"
 

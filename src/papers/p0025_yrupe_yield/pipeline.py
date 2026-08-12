@@ -7,15 +7,14 @@ Timeline: 8 weeks
 Hypothesis: Sentinel-2 time series + INBIO yield data + Delineate Anything v2
 yields better than 80% accuracy for soybean yield prediction in Caaguazú.
 """
-from pathlib import Path
-from typing import Optional, Dict
-import numpy as np
-import json
 
-from ...satellite_io import download_via_gee, compute_ndvi
-from ...foundation_models import load_dinov2
-from ...paraguay_admin import get_tile_bbox
-from ...evaluation import regression_metrics, print_metrics
+import json
+from pathlib import Path
+from typing import Dict, Optional
+
+import numpy as np
+
+from ...evaluation import regression_metrics
 
 
 class YrupePipeline:
@@ -99,6 +98,7 @@ def run_yrupe_demo(data: Optional[np.ndarray] = None):
 
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) > 1:
         ndvi_in = np.load(sys.argv[1])["ndvi"]
         run_yrupe_demo(data=ndvi_in)

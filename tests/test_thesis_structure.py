@@ -1,11 +1,11 @@
 """Tests for thesis chapters and references."""
+
+import pytest
+import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-
-import pytest
-import re
 
 
 def test_thesis_abstract_exists():

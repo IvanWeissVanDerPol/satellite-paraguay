@@ -2,15 +2,14 @@
 
 Builds citation graph and BibTeX file for the thesis.
 """
-import json
-from collections import Counter
-from typing import Any, Dict, List, Optional
 
+import json
+from typing import Any, Dict, List, Optional
 
 SHARED_REFS: Dict[str, Dict[str, str]] = {
     "hansen2013": {
         "type": "article",
-        "author": "Hansen, M. C. and Potapov, P. V. and Moore, R. and Hancher, M. and Turubanova, S. A. and Tyukavina, A. and Thau, D. and Stehman, S. V. and Goetz, S. J. and Loveland, T. R. and Kommareddy, A. and Egorov, A. and Chini, L. and Justice, C. O. and Townshend, J. R. G.",
+        "author": "Hansen, M. C. and Potapov, P. V. and Moore, R. and Hancher, M. and Turubanova, S. A. and Tyukavina, A. and Thau, D. and Stehman, S. V. and Goetz, S. J. and Loveland, T. R. and Kommareddy, A. and Egorov, A. and Chini, L. and Justice, C. O. and Townshend, J. R. G.",  # noqa: E501
         "title": "High-Resolution Global Maps of 21st-Century Forest Cover Change",
         "journal": "Science",
         "year": "2013",
@@ -62,7 +61,7 @@ SHARED_REFS: Dict[str, Dict[str, str]] = {
     },
     "chave2014": {
         "type": "article",
-        "author": "Chave, J. and Rejou-Mechain, M. and Burquez, A. and Chidumayo, E. and Colgan, M. S. and Delitti, W. B. C. and Duque, A. and Eid, T. and Fearnside, P. M. and Goodman, R. C. and Henry, M. and Martinez-Yrizar, A. and Mugasha, W. A. and Muller-Landau, H. C. and Mencuccini, M. and Nelson, B. W. and Ngomanda, A. and Nogueira, E. M. and Ortiz-Malavassi, E. and Pelissier, R. and Ploton, P. and Ryan, C. M. and Saldarriaga, J. G. and Vieilledent, G.",
+        "author": "Chave, J. and Rejou-Mechain, M. and Burquez, A. and Chidumayo, E. and Colgan, M. S. and Delitti, W. B. C. and Duque, A. and Eid, T. and Fearnside, P. M. and Goodman, R. C. and Henry, M. and Martinez-Yrizar, A. and Mugasha, W. A. and Muller-Landau, H. C. and Mencuccini, M. and Nelson, B. W. and Ngomanda, A. and Nogueira, E. M. and Ortiz-Malavassi, E. and Pelissier, R. and Ploton, P. and Ryan, C. M. and Saldarriaga, J. G. and Vieilledent, G.",  # noqa: E501
         "title": "Improved allometric models to estimate the aboveground biomass of tropical trees",
         "journal": "Global Change Biology",
         "year": "2014",
@@ -116,19 +115,28 @@ SHARED_REFS: Dict[str, Dict[str, str]] = {
 
 # Paper -> citations
 PAPER_CITES: Dict[str, List[str]] = {
-    "P0011_yvutu_deforestation": ["hansen2013", "mapbiomas2023", "prithvi2023",
-                                    "planetarycomputer2022", "chave2014", "ipcc2006",
-                                    "gao2024", "hochtleitner2022"],
-    "P0010_yvyra_carbon_credits": ["verra2021", "hansen2013", "mapbiomas2023",
-                                    "ipcc2006", "chave2014", "hochtleitner2022"],
-    "P0012_yvy_indigenous": ["iwgia2024", "indi2024", "unesco2023",
-                               "hansen2013", "mapbiomas2023", "hochtleitner2022"],
-    "P0025_yrupe_yield": ["inbio2024", "mapbiomas2023", "prithvi2023",
-                            "planetarycomputer2022", "hochtleitner2022"],
-    "P0026_kai_poaching": ["planetarycomputer2022", "prithvi2023",
-                             "hansen2020", "hochtleitner2022"],
-    "P0035_tatakua_air_quality": ["openaq2024", "ipcc2006",
-                                    "planetarycomputer2022", "hochtleitner2022"],
+    "P0011_yvutu_deforestation": [
+        "hansen2013",
+        "mapbiomas2023",
+        "prithvi2023",
+        "planetarycomputer2022",
+        "chave2014",
+        "ipcc2006",
+        "gao2024",
+        "hochtleitner2022",
+    ],
+    "P0010_yvyra_carbon_credits": [
+        "verra2021",
+        "hansen2013",
+        "mapbiomas2023",
+        "ipcc2006",
+        "chave2014",
+        "hochtleitner2022",
+    ],
+    "P0012_yvy_indigenous": ["iwgia2024", "indi2024", "unesco2023", "hansen2013", "mapbiomas2023", "hochtleitner2022"],
+    "P0025_yrupe_yield": ["inbio2024", "mapbiomas2023", "prithvi2023", "planetarycomputer2022", "hochtleitner2022"],
+    "P0026_kai_poaching": ["planetarycomputer2022", "prithvi2023", "hansen2020", "hochtleitner2022"],
+    "P0035_tatakua_air_quality": ["openaq2024", "ipcc2006", "planetarycomputer2022", "hochtleitner2022"],
 }
 
 
@@ -174,9 +182,7 @@ def count_citations(
     return counts
 
 
-def most_cited(
-    citation_counts: Dict[str, int], min_count: int = 1
-) -> List[tuple]:
+def most_cited(citation_counts: Dict[str, int], min_count: int = 1) -> List[tuple]:
     """Return list of (ref, count) sorted by count desc, filtered by min_count."""
     return sorted(
         [(r, c) for r, c in citation_counts.items() if c >= min_count],

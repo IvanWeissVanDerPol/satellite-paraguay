@@ -1,8 +1,9 @@
 """Tests for src/baselines/p0035_tatakua_baselines.py — air quality
 forecasting baselines.
 """
-import pytest
+
 import numpy as np
+import pytest
 
 
 class TestP0035Baselines:
@@ -11,6 +12,7 @@ class TestP0035Baselines:
     @pytest.fixture
     def module(self):
         from src.baselines import p0035_tatakua_baselines
+
         return p0035_tatakua_baselines
 
     @pytest.fixture

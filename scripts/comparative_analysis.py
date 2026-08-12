@@ -11,16 +11,17 @@ Also compares:
 Outputs:
     outputs/comparison/Hansen_vs_PRODES.json
 """
-import sys
+
+from rasterio.windows import Window
+import rasterio
+import numpy as np
 import json
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
 
 OUT_DIR = REPO_ROOT / "outputs/comparison"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -114,25 +115,25 @@ def main():
     print(f"\n  Saved: {out_path}")
 
     # Print summary
-    print(f"\n  KEY FINDINGS:")
+    print("\n  KEY FINDINGS:")
     print(f"    Hansen cumulative loss (2001-2023): {100*hansen_total/lossyear.size:.2f}%")
     if mb_forest_pct:
         print(f"    MapBiomas 2023 forest: {100*mb_forest_pct:.2f}%")
-    print(f"    These are consistent: ~5-10% loss in our window matches national average")
+    print("    These are consistent: ~5-10% loss in our window matches national average")
 
     # Also create a comparison with World Bank / FAO data (rough estimates)
-    print(f"\n  EXTERNAL SOURCES (no download):")
-    print(f"    World Bank/FAO estimate: ~9% Paraguay forest loss 2001-2023")
-    print(f"    Our Hansen estimate: ~8.5% national (from previous analysis)")
-    print(f"    Consistency: ✓ within 1%")
+    print("\n  EXTERNAL SOURCES (no download):")
+    print("    World Bank/FAO estimate: ~9% Paraguay forest loss 2001-2023")
+    print("    Our Hansen estimate: ~8.5% national (from previous analysis)")
+    print("    Consistency: ✓ within 1%")
 
     # Note about INPE PRODES
-    print(f"\n  INPE PRODES:")
-    print(f"    Coverage: Brazil only (Amazon, Cerrado, Pantanal)")
-    print(f"    Cross-border analysis requires:")
-    print(f"      - PRODES Mato Grosso do Sul (border with Paraguay Chaco)")
-    print(f"      - Argentine deforestation data (Monitoreo de Bosques Nativos)")
-    print(f"    Recommendation: Future work to integrate PRODES for border analysis")
+    print("\n  INPE PRODES:")
+    print("    Coverage: Brazil only (Amazon, Cerrado, Pantanal)")
+    print("    Cross-border analysis requires:")
+    print("      - PRODES Mato Grosso do Sul (border with Paraguay Chaco)")
+    print("      - Argentine deforestation data (Monitoreo de Bosques Nativos)")
+    print("    Recommendation: Future work to integrate PRODES for border analysis")
 
 
 if __name__ == "__main__":

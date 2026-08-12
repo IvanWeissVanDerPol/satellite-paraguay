@@ -7,11 +7,13 @@ Models:
 
 All open-source. Each can be used for transfer learning on Paraguay satellite tiles.
 """
+
 from pathlib import Path
-from typing import Optional, List, Dict, Tuple
+from typing import Dict, Optional
+
 import numpy as np
 
-DEFAULT_CACHE_DIR = Path("/root/satellite-paraguay/data/cache/embeddings")
+DEFAULT_CACHE_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "cache" / "embeddings"
 
 
 def load_prithvi(model_size: str = "300m", allow_fallback: bool = True):
@@ -79,9 +81,7 @@ def load_alphaearth():
     """
     print("[alphaearth] Loading (free for research)")
     # Real implementation uses google-deepmind/alphaearth
-    raise NotImplementedError(
-        "AlphaEarth requires research access. Apply at https://deepmind.google/forms/"
-    )
+    raise NotImplementedError("AlphaEarth requires research access. Apply at https://deepmind.google/forms/")
 
 
 def load_dinov2(model_size: str = "large", allow_fallback: bool = True):

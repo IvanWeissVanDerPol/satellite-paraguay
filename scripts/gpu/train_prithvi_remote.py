@@ -11,23 +11,23 @@ Run on Vast.ai A100 instance with:
 Expected runtime: 4-6 hours on A100
 Expected F1: > 0.85 (vs 0.017 from from-scratch)
 """
-import sys
-import json
+
+from torch.utils.data import DataLoader, Dataset
+from scipy.ndimage import zoom
+from rasterio.windows import Window
+import torch.nn as nn
+import torch
+import rasterio
+import numpy as np
 import argparse
+import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
-from scipy.ndimage import zoom
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
 
 OUT_DIR = None
 
@@ -52,7 +52,7 @@ class HansenParaguayDataset(Dataset):
         x = rng.integers(0, self.W - self.tile_size)
 
         # 6 channels: treecover + 5 land cover classes
-        labels = self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size]
+        labels = self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size]
         is_forest = (labels == 3).astype(np.float32)
         is_pasture = (labels == 15).astype(np.float32)
         is_agri = (labels == 18).astype(np.float32)
@@ -61,17 +61,25 @@ class HansenParaguayDataset(Dataset):
 
         # Sentinel-2 mock: derived from treecover + land cover
         # In real Prithvi use, replace with actual Sentinel-2 time series
-        s2_b04 = (self.treecover[y:y+self.tile_size, x:x+self.tile_size] / 100.0) * 0.10
-        s2_b08 = (self.treecover[y:y+self.tile_size, x:x+self.tile_size] / 100.0) * 0.40 + 0.10
+        s2_b04 = (self.treecover[y: y + self.tile_size, x: x + self.tile_size] / 100.0) * 0.10
+        s2_b08 = (self.treecover[y: y + self.tile_size, x: x + self.tile_size] / 100.0) * 0.40 + 0.10
 
         # Stack features
-        features = np.stack([
-            s2_b04, s2_b08,
-            is_forest, is_pasture, is_agri, is_water, is_savanna,
-        ], axis=0)
+        features = np.stack(
+            [
+                s2_b04,
+                s2_b08,
+                is_forest,
+                is_pasture,
+                is_agri,
+                is_water,
+                is_savanna,
+            ],
+            axis=0,
+        )
 
         # Label: 1 if tile has any deforestation
-        label = ((self.lossyear[y:y+self.tile_size, x:x+self.tile_size] > 0).any()).astype(np.float32)
+        label = ((self.lossyear[y: y + self.tile_size, x: x + self.tile_size] > 0).any()).astype(np.float32)
 
         if self.augment:
             if rng.random() > 0.5:
@@ -112,7 +120,7 @@ class PrithviLiteClassifier(nn.Module):
 
     def forward(self, x):
         # x: (B, C, H, W)
-        B = x.shape[0]
+        x.shape[0]
         # Patchify: (B, embed_dim, H/8, W/8)
         x = self.patch_embed(x)
         # Flatten: (B, embed_dim, N) -> (B, N, embed_dim)
@@ -141,9 +149,9 @@ def train(args):
         mb_chunk = src.read(1, window=Window(10000, 10000, 5000, 5000))
         mapbiomas = zoom(mb_chunk, (5000 / mb_chunk.shape[0], 5000 / mb_chunk.shape[1]), order=0)
 
-    print(f"  Lossyear:", lossyear.shape, "Loss pixels:", (lossyear > 0).sum())
-    print(f"  Treecover:", treecover.shape, "Mean:", treecover.mean())
-    print(f"  MapBiomas:", mapbiomas.shape)
+    print("  Lossyear:", lossyear.shape, "Loss pixels:", (lossyear > 0).sum())
+    print("  Treecover:", treecover.shape, "Mean:", treecover.mean())
+    print("  MapBiomas:", mapbiomas.shape)
 
     # Build dataset
     print("\n[2/4] Building dataset...")
@@ -156,7 +164,7 @@ def train(args):
     for _ in range(args.n_tiles * 5):
         y = rng.integers(0, H - args.tile_size)
         x = rng.integers(0, W - args.tile_size)
-        label = (lossyear[y:y+args.tile_size, x:x+args.tile_size] > 0).any()
+        label = (lossyear[y: y + args.tile_size, x: x + args.tile_size] > 0).any()
         if label and len(pos_tiles) < args.n_tiles:
             pos_tiles.append((y, x))
         elif not label and len(neg_tiles) < args.n_tiles:
@@ -182,22 +190,30 @@ def train(args):
 
         def __getitem__(self, idx):
             y, x = self.indices[idx]
-            labels = self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size]
+            labels = self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size]
             is_forest = (labels == 3).astype(np.float32)
             is_pasture = (labels == 15).astype(np.float32)
             is_agri = (labels == 18).astype(np.float32)
             is_water = (labels == 26).astype(np.float32)
             is_savanna = (labels == 4).astype(np.float32)
 
-            s2_b04 = (self.treecover[y:y+self.tile_size, x:x+self.tile_size] / 100.0) * 0.10
-            s2_b08 = (self.treecover[y:y+self.tile_size, x:x+self.tile_size] / 100.0) * 0.40 + 0.10
+            s2_b04 = (self.treecover[y: y + self.tile_size, x: x + self.tile_size] / 100.0) * 0.10
+            s2_b08 = (self.treecover[y: y + self.tile_size, x: x + self.tile_size] / 100.0) * 0.40 + 0.10
 
-            features = np.stack([
-                s2_b04, s2_b08,
-                is_forest, is_pasture, is_agri, is_water, is_savanna,
-            ], axis=0)
+            features = np.stack(
+                [
+                    s2_b04,
+                    s2_b08,
+                    is_forest,
+                    is_pasture,
+                    is_agri,
+                    is_water,
+                    is_savanna,
+                ],
+                axis=0,
+            )
 
-            label = ((self.lossyear[y:y+self.tile_size, x:x+self.tile_size] > 0).any()).astype(np.float32)
+            label = ((self.lossyear[y: y + self.tile_size, x: x + self.tile_size] > 0).any()).astype(np.float32)
 
             if self.augment:
                 rng2 = np.random.default_rng(idx)
@@ -217,8 +233,10 @@ def train(args):
     n_train = int(len(all_indices) * 0.7)
     n_val = int(len(all_indices) * 0.15)
     train_d = IndexedDataset(all_indices[:n_train], lossyear, treecover, mapbiomas, args.tile_size, True)
-    val_d = IndexedDataset(all_indices[n_train:n_train+n_val], lossyear, treecover, mapbiomas, args.tile_size, False)
-    test_d = IndexedDataset(all_indices[n_train+n_val:], lossyear, treecover, mapbiomas, args.tile_size, False)
+    val_d = IndexedDataset(
+        all_indices[n_train: n_train + n_val], lossyear, treecover, mapbiomas, args.tile_size, False
+    )
+    test_d = IndexedDataset(all_indices[n_train + n_val:], lossyear, treecover, mapbiomas, args.tile_size, False)
 
     train_loader = DataLoader(train_d, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_d, batch_size=args.batch_size, shuffle=False)
@@ -278,7 +296,9 @@ def train(args):
         val_f1s.append(f1)
 
         if (epoch + 1) % 5 == 0 or epoch == 0:
-            print(f"  Epoch {epoch+1}/{args.epochs}: loss={train_losses[-1]:.4f}, val_F1={f1:.3f} (P={precision:.3f}, R={recall:.3f})")
+            print(
+                f"  Epoch {epoch+1}/{args.epochs}: loss={train_losses[-1]:.4f}, val_F1={f1:.3f} (P={precision:.3f}, R={recall:.3f})"  # noqa: E501
+            )
 
     # Test
     print("\n[FINAL] Test set evaluation...")
@@ -303,7 +323,7 @@ def train(args):
     f1 = 2 * precision * recall / (precision + recall + 1e-8)
     accuracy = (tp + tn) / (tp + fp + fn + tn)
 
-    print(f"\n  TEST RESULTS:")
+    print("\n  TEST RESULTS:")
     print(f"    TP={tp}, FP={fp}, FN={fn}, TN={tn}")
     print(f"    Precision: {precision:.3f}")
     print(f"    Recall:    {recall:.3f}")
@@ -325,7 +345,10 @@ def train(args):
             "recall": float(recall),
             "f1": float(f1),
             "accuracy": float(accuracy),
-            "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "tn": tn,
         },
         "train_losses": train_losses,
         "val_f1s": val_f1s,

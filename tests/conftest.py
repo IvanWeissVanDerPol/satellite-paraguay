@@ -8,19 +8,14 @@ Provides:
 - Performance timer fixtures
 - Test data versioning fixtures
 """
-import json
+
 import os
-import shutil
-import sys
-import tempfile
 import time
-from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pytest
 import rasterio
-from rasterio.io import MemoryFile
 from rasterio.transform import from_bounds
 
 # ========== Path fixtures ==========

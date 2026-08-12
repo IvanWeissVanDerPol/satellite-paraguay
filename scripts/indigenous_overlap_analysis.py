@@ -8,19 +8,20 @@ Outputs:
     outputs/p0011/indigenous/indigenous_overlap.json
     outputs/p0011/indigenous/indigenous_overlap.png
 """
-import sys
+
+from rasterio.features import rasterize
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
+import geopandas as gpd
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.features import rasterize
-import geopandas as gpd
-import matplotlib.pyplot as plt
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/indigenous"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -43,8 +44,7 @@ def process_tile(tile, gdf):
 
     # Filter territories that intersect this tile's bounds
     tile_bounds = src.bounds  # left, bottom, right, top
-    gdf_tile = gdf.cx[tile_bounds.left:tile_bounds.right,
-                       tile_bounds.bottom:tile_bounds.top].copy()
+    gdf_tile = gdf.cx[tile_bounds.left: tile_bounds.right, tile_bounds.bottom: tile_bounds.top].copy()
     if len(gdf_tile) == 0:
         return {}
 
@@ -111,7 +111,7 @@ def main():
     # Build full results with metadata
     pixel_area_ha = 0.0625
     mean_tc = 50.0
-    agb = 100 * mean_tc ** 2 / (100 + mean_tc ** 2)
+    agb = 100 * mean_tc**2 / (100 + mean_tc**2)
     carbon_per_ha = agb * 0.47
 
     results = []
@@ -126,18 +126,20 @@ def main():
         loss_ha = loss_pixels * pixel_area_ha
         co2e_mt = carbon_per_ha * loss_ha * 44 / 12 / 1000
 
-        results.append({
-            "name": name,
-            "people": row["people"],
-            "status": row.get("status", "Unknown"),
-            "claimed_area_km2": float(row.get("area_km2", 0)),
-            "polygon_area_km2": float(row.get("area_km2_computed", 0)),
-            "pixels_in_window": total_pixels,
-            "loss_pixels": loss_pixels,
-            "loss_pct": float(loss_pct),
-            "loss_ha": float(loss_ha),
-            "co2e_mt": float(co2e_mt),
-        })
+        results.append(
+            {
+                "name": name,
+                "people": row["people"],
+                "status": row.get("status", "Unknown"),
+                "claimed_area_km2": float(row.get("area_km2", 0)),
+                "polygon_area_km2": float(row.get("area_km2_computed", 0)),
+                "pixels_in_window": total_pixels,
+                "loss_pixels": loss_pixels,
+                "loss_pct": float(loss_pct),
+                "loss_ha": float(loss_ha),
+                "co2e_mt": float(co2e_mt),
+            }
+        )
 
     # Sort by loss %
     results.sort(key=lambda x: x["loss_pct"], reverse=True)
@@ -146,18 +148,22 @@ def main():
     print(f"{'Territory':<35}  {'People':<18}  {'Loss %':>8}  {'Loss km²':>10}")
     print("-" * 80)
     for r in results:
-        print(f"{r['name'][:33]:<35}  {r['people'][:16]:<18}  "
-              f"{r['loss_pct']:>7.2f}%  {r['loss_ha']/100:>10,.0f}")
+        print(f"{r['name'][:33]:<35}  {r['people'][:16]:<18}  " f"{r['loss_pct']:>7.2f}%  {r['loss_ha']/100:>10,.0f}")
 
     # Save
     out_json = OUT_DIR / "indigenous_overlap.json"
-    out_json.write_text(json.dumps({
-        "data_source": "Hansen GFC v1.11 + IWGIA/AVINA/INDI public references",
-        "n_territories": len(results),
-        "disclaimer": "Territories are approximate bboxes, not legal boundaries",
-        "territories": results,
-        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-    }, indent=2))
+    out_json.write_text(
+        json.dumps(
+            {
+                "data_source": "Hansen GFC v1.11 + IWGIA/AVINA/INDI public references",
+                "n_territories": len(results),
+                "disclaimer": "Territories are approximate bboxes, not legal boundaries",
+                "territories": results,
+                "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            },
+            indent=2,
+        )
+    )
 
     # Plot
     plot_results(results, OUT_DIR / "indigenous_overlap.png")
@@ -167,8 +173,9 @@ def main():
     print(f"Figure: {OUT_DIR}/indigenous_overlap.png")
     if results:
         worst = results[0]
-        print(f"\n  Most affected: {worst['name']} — {worst['loss_pct']:.1f}% loss, "
-              f"~{worst['loss_ha']/100:.0f} km²")
+        print(
+            f"\n  Most affected: {worst['name']} — {worst['loss_pct']:.1f}% loss, " f"~{worst['loss_ha']/100:.0f} km²"
+        )
         avg_loss = np.mean([r["loss_pct"] for r in results])
         print(f"  Average loss % across all territories: {avg_loss:.1f}%")
 
@@ -195,9 +202,10 @@ def plot_results(results, out_path):
     ax.set_title("Carbon loss in Indigenous Territories")
     ax.grid(True, alpha=0.3, axis="x")
 
-    plt.suptitle("Indigenous Territory Overlap with Hansen GFC Loss\n"
-                 "*** Approximate bboxes — illustrative only ***",
-                 fontsize=12)
+    plt.suptitle(
+        "Indigenous Territory Overlap with Hansen GFC Loss\n" "*** Approximate bboxes — illustrative only ***",
+        fontsize=12,
+    )
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()

@@ -3,9 +3,11 @@
 Coverage target: 70%+. The KaiPipeline class handles wildlife
 poaching detection in Defensores del Chaco.
 """
-import pytest
+
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 
 class TestKaiPipeline:
@@ -14,6 +16,7 @@ class TestKaiPipeline:
     @pytest.fixture
     def pipeline(self):
         from src.papers.p0026_kai_poaching.pipeline import KaiPipeline
+
         return KaiPipeline()
 
     # --- __init__ ---
@@ -34,6 +37,7 @@ class TestKaiPipeline:
 
     def test_init_custom_config(self):
         from src.papers.p0026_kai_poaching.pipeline import KaiPipeline
+
         cfg = {"yolo_model": "yolov8x.pt"}
         p = KaiPipeline(config=cfg)
         assert p.config["yolo_model"] == "yolov8x.pt"
@@ -66,6 +70,7 @@ class TestKaiPipeline:
     def test_load_model_raises_without_ultralytics(self, pipeline):
         """Without ultralytics installed, should raise ImportError."""
         import sys as _sys
+
         saved = _sys.modules.get("ultralytics")
         _sys.modules["ultralytics"] = None  # type: ignore
         try:

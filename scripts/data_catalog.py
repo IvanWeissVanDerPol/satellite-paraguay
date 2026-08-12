@@ -1,7 +1,7 @@
 """Generate data catalog from paraguay-geodata + remote sources."""
-import json
-from pathlib import Path
+
 from datetime import datetime
+from pathlib import Path
 
 OUT = Path("docs/DATA_CATALOG.md")
 
@@ -33,15 +33,17 @@ def main():
     for fname, desc, fmt in local_files:
         f = pg_dir / fname
         if f.exists():
-            catalog.append({
-                "name": fname,
-                "format": fmt,
-                "size_mb": round(f.stat().st_size / (1024 * 1024), 2),
-                "source": "local: paraguay-geodata",
-                "license": "varies (mostly open)",
-                "description": desc,
-                "path": str(f),
-            })
+            catalog.append(
+                {
+                    "name": fname,
+                    "format": fmt,
+                    "size_mb": round(f.stat().st_size / (1024 * 1024), 2),
+                    "source": "local: paraguay-geodata",
+                    "license": "varies (mostly open)",
+                    "description": desc,
+                    "path": str(f),
+                }
+            )
 
     # Remote data
     remote_sources = [
@@ -64,15 +66,17 @@ def main():
     ]
 
     for name, src, license, desc in remote_sources:
-        catalog.append({
-            "name": name,
-            "format": "remote",
-            "size_mb": None,
-            "source": src,
-            "license": license,
-            "description": desc,
-            "path": "remote",
-        })
+        catalog.append(
+            {
+                "name": name,
+                "format": "remote",
+                "size_mb": None,
+                "source": src,
+                "license": license,
+                "description": desc,
+                "path": "remote",
+            }
+        )
 
     # Write markdown catalog
     with open(OUT, "w") as f:

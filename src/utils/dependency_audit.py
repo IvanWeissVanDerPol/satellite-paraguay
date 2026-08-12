@@ -8,13 +8,13 @@ Checks:
 
 Pure logic, no network. Returns structured audit results.
 """
+
 import json
 import re
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
-
 
 # Common import name -> package name mapping
 IMPORT_TO_PKG = {
@@ -79,9 +79,7 @@ def get_declared_deps(pyproject_path: Path) -> List[str]:
         return []
     deps_text = deps_match.group(1)
     deps = re.findall(r'"([^"]+)"', deps_text)
-    return [
-        d.split(">=")[0].split("==")[0].split("[")[0].strip() for d in deps
-    ]
+    return [d.split(">=")[0].split("==")[0].split("[")[0].strip() for d in deps]
 
 
 def _find_imports_in_file(py_file: Path) -> Set[str]:
@@ -91,9 +89,7 @@ def _find_imports_in_file(py_file: Path) -> Set[str]:
     except (UnicodeDecodeError, FileNotFoundError):
         return set()
     imports = set()
-    for match in re.finditer(
-        r"^\s*(?:from|import)\s+([\w.]+)", content, re.MULTILINE
-    ):
+    for match in re.finditer(r"^\s*(?:from|import)\s+([\w.]+)", content, re.MULTILINE):
         module = match.group(1).split(".")[0]
         imports.add(module)
     return imports
@@ -173,11 +169,7 @@ def get_installed_versions(declared: List[str]) -> List[Dict[str, str]]:
         )
         packages = json.loads(result.stdout)
         declared_set = {d.lower().replace("-", "_") for d in declared}
-        relevant = [
-            p
-            for p in packages
-            if p["name"].lower().replace("-", "_") in declared_set
-        ]
+        relevant = [p for p in packages if p["name"].lower().replace("-", "_") in declared_set]
         return [{"name": p["name"], "version": p["version"]} for p in relevant]
     except (subprocess.TimeoutExpired, FileNotFoundError, json.JSONDecodeError):
         return []

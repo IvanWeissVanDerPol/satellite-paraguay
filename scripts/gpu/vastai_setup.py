@@ -22,14 +22,13 @@ The script will:
 - Save results
 - Terminate the instance
 """
-import sys
-import subprocess
+
 import argparse
-import json
-import time
+import subprocess
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 
@@ -47,15 +46,27 @@ def check_vast_cli():
 
 def find_a100():
     """Find cheapest A100 80GB instance."""
-    result = subprocess.run([
-        "vastai", "search", "offers",
-        "--gpu-name", "A100",
-        "--num-gpus", "1",
-        "--cuda-max-version", "12.0",
-        "--dph", "1.0",  # max $1/hr
-        "--order", "dph",
-        "--limit", "5",
-    ], capture_output=True, text=True)
+    result = subprocess.run(
+        [
+            "vastai",
+            "search",
+            "offers",
+            "--gpu-name",
+            "A100",
+            "--num-gpus",
+            "1",
+            "--cuda-max-version",
+            "12.0",
+            "--dph",
+            "1.0",  # max $1/hr
+            "--order",
+            "dph",
+            "--limit",
+            "5",
+        ],
+        capture_output=True,
+        text=True,
+    )
     if result.returncode != 0:
         print("ERROR:", result.stderr)
         return None
@@ -65,14 +76,24 @@ def find_a100():
 def rent_instance(offer_id, image):
     """Rent a specific instance."""
     print(f"Renting instance {offer_id}...")
-    result = subprocess.run([
-        "vastai", "create", "instance",
-        offer_id,
-        "--image", image,
-        "--disk", "100",
-        "--ssh", "True",
-        "--onstart", "scripts/gpu/onstart.sh",
-    ], capture_output=True, text=True)
+    result = subprocess.run(
+        [
+            "vastai",
+            "create",
+            "instance",
+            offer_id,
+            "--image",
+            image,
+            "--disk",
+            "100",
+            "--ssh",
+            "True",
+            "--onstart",
+            "scripts/gpu/onstart.sh",
+        ],
+        capture_output=True,
+        text=True,
+    )
     if result.returncode != 0:
         print("ERROR:", result.stderr)
         return None
@@ -81,7 +102,9 @@ def rent_instance(offer_id, image):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["setup", "rent", "train_prithvi", "train_yolov8", "train_lstm", "inference_llava"])
+    parser.add_argument(
+        "command", choices=["setup", "rent", "train_prithvi", "train_yolov8", "train_lstm", "inference_llava"]
+    )
     args = parser.parse_args()
 
     if args.command == "setup":

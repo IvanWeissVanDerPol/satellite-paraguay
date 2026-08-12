@@ -6,11 +6,11 @@ Provides: NO2, SO2, CO, O3, CH4, AER_AI (aerosol index)
 
 Free, no auth required (via GEE or Copernicus Open Hub).
 """
-import os
+
 import logging
+import os
 from pathlib import Path
-from typing import Optional, Dict, List
-from datetime import datetime, timedelta
+from typing import Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -44,6 +44,7 @@ def fetch_sentinel5p_via_gee(
     """
     try:
         import ee
+
         try:
             ee.Initialize()
         except Exception:
@@ -65,8 +66,7 @@ def fetch_sentinel5p_via_gee(
     if band not in s5p_collections:
         return None
 
-    aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"],
-                                  bbox["max_lon"], bbox["max_lat"]])
+    aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"], bbox["max_lon"], bbox["max_lat"]])
     img = ee.ImageCollection(s5p_collections[band]).filterBounds(aoi).filterDate(start_date, end_date)
 
     # Get monthly mean
@@ -75,17 +75,21 @@ def fetch_sentinel5p_via_gee(
     for month in months:
         month_end = month + pd.offsets.MonthEnd(1)
         monthly = img.filterDate(month.isoformat(), month_end.isoformat()).mean()
-        url = monthly.getThumbURL({
-            "region": aoi,
-            "dimensions": 64,
-            "format": "GEO_TIFF",
-            "min": 0,
-            "max": 0.0002,  # typical range for S5P
-        })
+        url = monthly.getThumbURL(
+            {
+                "region": aoi,
+                "dimensions": 64,
+                "format": "GEO_TIFF",
+                "min": 0,
+                "max": 0.0002,  # typical range for S5P
+            }
+        )
 
         try:
             import urllib.request
+
             import rasterio
+
             with urllib.request.urlopen(url, timeout=30) as response:
                 arr_bytes = response.read()
             with rasterio.io.MemoryFile(arr_bytes) as memfile:
@@ -110,13 +114,15 @@ def fetch_sentinel5p_no2(
     cache_path = CACHE_DIR / f"s5p_no2_{start_date}_{end_date}.json"
     if cache_path.exists():
         import json
+
         return json.load(open(cache_path))
 
     arr = fetch_sentinel5p_via_gee(bbox, "NO2", start_date, end_date)
     if arr is not None and len(arr) > 0:
-        months = pd.date_range(start_date, end_date, freq="MS")[:len(arr)]
+        months = pd.date_range(start_date, end_date, freq="MS")[: len(arr)]
         result = {m.isoformat(): float(v) for m, v in zip(months, arr)}
         import json
+
         json.dump(result, open(cache_path, "w"), indent=2)
         return result
 
@@ -190,9 +196,7 @@ def aggregate_atmospheric_by_month(
     monthly_openaq = monthly_openaq.rename(columns={"value": "pm25"})
 
     # Add S5P features
-    monthly_openaq["no2"] = monthly_openaq["year_month"].map(
-        {k[:7]: v for k, v in s5p_data.items()}
-    )
+    monthly_openaq["no2"] = monthly_openaq["year_month"].map({k[:7]: v for k, v in s5p_data.items()})
 
     return monthly_openaq
 

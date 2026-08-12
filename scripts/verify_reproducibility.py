@@ -6,6 +6,7 @@ Run: python3 scripts/verify_reproducibility.py
 
 This is the gold standard for reproducibility — it actually re-executes the analysis.
 """
+
 import hashlib
 import json
 import subprocess
@@ -77,8 +78,8 @@ def main():
     print("=" * 70)
     print("REPRODUCIBILITY VERIFIER")
     print("=" * 70)
-    print(f"\n  This re-runs key analysis scripts and verifies outputs.")
-    print(f"  Run on a fresh clone to ensure full reproducibility.")
+    print("\n  This re-runs key analysis scripts and verifies outputs.")
+    print("  Run on a fresh clone to ensure full reproducibility.")
 
     tests = [
         # (script, expected_outputs, timeout)
@@ -143,7 +144,7 @@ def main():
 
     # Summary
     print(f"\n{'=' * 70}")
-    print(f"  SUMMARY")
+    print("  SUMMARY")
     print(f"{'=' * 70}")
 
     n_pass = sum(1 for r in results if r["status"] == "pass")
@@ -155,7 +156,7 @@ def main():
     print(f"  Total time: {total_elapsed:.1f}s")
 
     if n_fail > 0:
-        print(f"\n  Failed scripts:")
+        print("\n  Failed scripts:")
         for r in results:
             if r["status"] != "pass":
                 print(f"    - {r['script']}: {r['status']}")
@@ -177,12 +178,12 @@ def main():
     )
     print(f"\n  Saved: {out_path}")
 
-    print(f"\n  To achieve full reproducibility:")
-    print(f"    1. Clone repo from scratch")
-    print(f"    2. pip install -r requirements.txt")
-    print(f"    3. python3 scripts/download_all_data.py")
-    print(f"    4. bash scripts/install_git_hooks.sh")
-    print(f"    5. python3 scripts/verify_reproducibility.py")
+    print("\n  To achieve full reproducibility:")
+    print("    1. Clone repo from scratch")
+    print("    2. pip install -r requirements.txt")
+    print("    3. python3 scripts/download_all_data.py")
+    print("    4. bash scripts/install_git_hooks.sh")
+    print("    5. python3 scripts/verify_reproducibility.py")
 
     return 0 if n_fail == 0 else 1
 

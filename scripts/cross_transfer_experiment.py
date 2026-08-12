@@ -16,20 +16,20 @@ H3: deforestation-pretrained achieves > 0.7x accuracy of yield-trained on yield 
 
 Saves results to outputs/cross_transfer/transfer_results.json
 """
-import sys
+
+from rasterio.windows import Window
+import torch.nn as nn
+import torch
+import rasterio
+import numpy as np
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
-
-import torch
-import torch.nn as nn
 
 OUT_DIR = REPO_ROOT / "outputs/cross_transfer"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -56,9 +56,9 @@ class TileDataset:
         for _ in range(n * 5):
             y = rng.integers(0, self.H - self.tile_size)
             x = rng.integers(0, self.W - self.tile_size)
-            tile_lbl = (self.lossyear[y:y+self.tile_size, x:x+self.tile_size] > 0).any()
-            tile_yld = float(self.treecover[y:y+self.tile_size, x:x+self.tile_size].mean()) / 100.0
-            tile_forest = float((self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size] == 3).mean())
+            tile_lbl = (self.lossyear[y: y + self.tile_size, x: x + self.tile_size] > 0).any()
+            tile_yld = float(self.treecover[y: y + self.tile_size, x: x + self.tile_size].mean()) / 100.0
+            tile_forest = float((self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size] == 3).mean())
             tiles.append((y, x, int(tile_lbl), tile_yld, tile_forest))
             if len(tiles) >= n:
                 break
@@ -69,12 +69,15 @@ class TileDataset:
 
     def __getitem__(self, idx):
         y, x, lbl_def, lbl_yld, lbl_forest = self.tiles[idx]
-        feats = np.stack([
-            self.treecover[y:y+self.tile_size, x:x+self.tile_size] / 100.0,
-            (self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size] == 3).astype(np.float32),
-            (self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size] == 15).astype(np.float32),
-            (self.mapbiomas[y:y+self.tile_size, x:x+self.tile_size] == 18).astype(np.float32),
-        ], axis=0)
+        feats = np.stack(
+            [
+                self.treecover[y: y + self.tile_size, x: x + self.tile_size] / 100.0,
+                (self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size] == 3).astype(np.float32),
+                (self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size] == 15).astype(np.float32),
+                (self.mapbiomas[y: y + self.tile_size, x: x + self.tile_size] == 18).astype(np.float32),
+            ],
+            axis=0,
+        )
         return (
             torch.from_numpy(feats).float(),
             torch.tensor(lbl_def).float(),
@@ -196,6 +199,7 @@ def main():
     with rasterio.open(MAPBIOMAS_DIR / "mapbiomas_paraguay_2023.tif") as src:
         mb_chunk = src.read(1, window=Window(8000, 8000, 1000, 1000))
         from scipy.ndimage import zoom
+
         mapbiomas = zoom(mb_chunk, (2.0, 2.0), order=0)
 
     print(f"  Hansen lossyear: {lossyear.shape}, {(lossyear > 0).sum():,} loss pixels")
@@ -282,8 +286,8 @@ def main():
     print(f"\n  Saved: {out_path}")
 
     print(f"\n{'=' * 70}")
-    print(f"  TRANSFER RATIOS:")
-    print(f"    Yield->Yield: 1.0 (baseline)")
+    print("  TRANSFER RATIOS:")
+    print("    Yield->Yield: 1.0 (baseline)")
     print(f"    Deforest->Yield: {yield_transfer:.3f}  (H3 test: > 0.7 = confirmed)")
     print(f"    Yield->Deforest: {def_transfer:.3f}")
     print(f"    Deforest->Forest: {forest_transfer:.3f}")

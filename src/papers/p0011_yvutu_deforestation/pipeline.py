@@ -7,25 +7,22 @@ Timeline: 12 weeks
 Hypothesis: Pre-trained Prithvi + MapBiomas labels + BFAST change detection
 outperforms Hansen GFC on Chaco deforestation (F1 > 0.85).
 """
-from pathlib import Path
-from typing import Optional, Dict, List
-import numpy as np
-import torch
 
-from ...satellite_io import download_via_gee, compute_ndvi
-from ...foundation_models import load_prithvi, compute_tile_embeddings
-from ...paraguay_admin import load_tile_index, get_tile_bbox
-from ...timeseries import (
-    compute_ndvi_timeseries,
-    detect_changes_bfast,
-    compute_trend,
-)
+from pathlib import Path
+from typing import Dict, List, Optional
+import sys
+
+import numpy as np
+
 from ...evaluation import (
-    pixel_f1_score,
-    mean_iou,
-    benchmark_against_mapbiomas,
     benchmark_against_hansen,
-    print_metrics,
+    benchmark_against_mapbiomas,
+)
+from ...foundation_models import compute_tile_embeddings, load_prithvi
+from ...paraguay_admin import get_tile_bbox
+from ...satellite_io import download_via_gee
+from ...timeseries import (
+    detect_changes_bfast,
 )
 
 
@@ -56,6 +53,7 @@ class YvytuPipeline:
     def select_tiles(self) -> List[str]:
         """Select Chaco tiles for analysis."""
         from ...paraguay_admin import list_tiles_in_region
+
         return list_tiles_in_region(self.config["chaco_bbox"])
 
     def download_data(self, tile_id: str) -> Path:
@@ -101,8 +99,7 @@ class YvytuPipeline:
         # NDVI drop > 0.2 = likely deforestation
         threshold = 0.2
         mask = (
-            (change_result["magnitudes"] > threshold)
-            & (change_result["before_mean"] > change_result["after_mean"])
+            (change_result["magnitudes"] > threshold) & (change_result["before_mean"] > change_result["after_mean"])
         ).astype(np.uint8)
 
         return mask
@@ -122,7 +119,6 @@ class YvytuPipeline:
         return results
 
 
-
 def run_yvytu_demo(data: np.ndarray = None):
     """Run a demo of the Yvytu pipeline on 1 Chaco tile.
 
@@ -130,7 +126,7 @@ def run_yvytu_demo(data: np.ndarray = None):
         data: Optional NDVI time-series of shape (T, H, W). If None, raises
             FileNotFoundError (fail-loud, no random fill).
     """
-    pipeline = YvutuPipeline()
+    pipeline = YvutuPipeline()  # noqa: F821
     pipeline.load_model()
 
     # Select Chaco tiles

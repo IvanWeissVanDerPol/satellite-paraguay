@@ -2,15 +2,16 @@
 
 Provides a unified interface for logging experiments across all 6 papers.
 """
-from pathlib import Path
-from typing import Optional, Dict, Any
+
 import os
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 
 def setup_mlflow(
     tracking_uri: Optional[str] = None,
     experiment_name: str = "satellite-paraguay",
-) -> "mlflow.tracking.MlflowClient":
+) -> "mlflow.tracking.MlflowClient":  # noqa: F821
     """Set up MLflow tracking.
 
     Args:
@@ -106,7 +107,7 @@ def get_best_run(
         ascending: sort ascending (True) or descending (False)
     """
     try:
-        from mlflow.tracking import MlflowClient
+        pass
     except ImportError:
         raise ImportError("mlflow not installed. Run: pip install mlflow")
 
@@ -130,6 +131,7 @@ def get_best_run(
 # ============================================
 # Example usage for each paper
 # ============================================
+
 
 def log_p0011_experiment(f1_macro, miou, params):
     """Log P0011 Yvutu experiment."""

@@ -5,10 +5,11 @@ Baselines:
 2. Random Forest
 3. Persistence (mean of training set)
 """
-from typing import Optional
+
+
 import numpy as np
 
-from src.evaluation import regression_metrics, print_metrics
+from src.evaluation import print_metrics, regression_metrics
 
 
 def linear_regression_baseline(
@@ -97,17 +98,14 @@ if __name__ == "__main__":
     print("Pass real Verra features + claims:")
     print("    python -m src.baselines.p0100_yvyra_baselines features.npy claims.npy")
     import sys
+
     if len(sys.argv) >= 3:
         features = np.load(sys.argv[1])
-        target   = np.load(sys.argv[2])
+        target = np.load(sys.argv[2])
         if features.ndim != 2:
-            raise FileNotFoundError(
-                f"features must be 2D (n_samples, n_features); got {features.shape}"
-            )
+            raise FileNotFoundError(f"features must be 2D (n_samples, n_features); got {features.shape}")
         if target.shape != (features.shape[0],):
-            raise FileNotFoundError(
-                f"target shape {target.shape} != n_samples {features.shape[0]}"
-            )
+            raise FileNotFoundError(f"target shape {target.shape} != n_samples {features.shape[0]}")
         results = run_all_baselines(features, target)
         print_metrics(results)
     else:

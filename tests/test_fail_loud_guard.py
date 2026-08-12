@@ -17,7 +17,9 @@ If you find a paper pipeline that still produces numbers from
 ``np.random.rand()`` when real data is missing, that's a regression
 of the BRUTAL_ROAST fix and should be fixed before any review.
 """
+
 from __future__ import annotations
+
 import subprocess
 import sys
 from pathlib import Path
@@ -41,6 +43,7 @@ def _run_module(module: str, args: list[str], cwd: Path) -> subprocess.Completed
 # ----------------------------------------------------------------------
 # 1. P0011 Yvutu — run_yvutu_demo requires NDVI data, no random fill
 # ----------------------------------------------------------------------
+
 
 class TestP0011YvutuFailLoud:
     """run_yvutu_demo() must fail loud if no NDVI is supplied."""
@@ -73,14 +76,13 @@ class TestP0011YvutuFailLoud:
         )
         # Acceptable: rc != 0 (any error). Unacceptable: rc=0 with random output.
         if r.returncode == 0:
-            pytest.fail(
-                "run_yvutu_demo() succeeded with nonexistent data — silent corruption!"
-            )
+            pytest.fail("run_yvutu_demo() succeeded with nonexistent data — silent corruption!")
 
 
 # ----------------------------------------------------------------------
 # 2. P0025 Yrupe — same contract
 # ----------------------------------------------------------------------
+
 
 class TestP0025YrupeFailLoud:
     def test_run_yrupe_demo_without_data_raises(self):
@@ -90,10 +92,7 @@ class TestP0025YrupeFailLoud:
             cwd=REPO,
         )
         if r.returncode == 0:
-            pytest.fail(
-                "run_yrupe_demo() exited 0 with no data — silent random fill!\n"
-                f"stdout: {r.stdout[:300]}"
-            )
+            pytest.fail("run_yrupe_demo() exited 0 with no data — silent random fill!\n" f"stdout: {r.stdout[:300]}")
 
     def test_run_yrupe_demo_with_nonexistent_file_raises(self):
         r = _run_module(
@@ -108,6 +107,7 @@ class TestP0025YrupeFailLoud:
 # ----------------------------------------------------------------------
 # 3. P0035 Tatakua — fetch_sentinel5p + run_tatakua_demo + forecast
 # ----------------------------------------------------------------------
+
 
 class TestP0035TatakuaFailLoud:
     def test_run_tatakua_demo_without_data_raises(self):
@@ -145,12 +145,14 @@ class TestP0035TatakuaFailLoud:
         # If forecast_pm25 is deterministic (seed=42 default), the two calls
         # must produce identical arrays.
         import numpy as np
+
         pipe = p.TatakuaPipeline()
         hist = np.array([10.0, 12.0, 8.0, 15.0, 11.0] * 50)  # 250 points
         f1 = pipe.forecast_pm25(hist.copy())
         f2 = pipe.forecast_pm25(hist.copy())
         np.testing.assert_array_equal(
-            f1, f2,
+            f1,
+            f2,
             err_msg="forecast_pm25 must be deterministic with seed=42 default",
         )
 
@@ -158,6 +160,7 @@ class TestP0035TatakuaFailLoud:
 # ----------------------------------------------------------------------
 # 4-6. Baselines — CLI-only, require real data files
 # ----------------------------------------------------------------------
+
 
 class TestBaselinesFailLoud:
     """The 3 baseline modules previously used random data in __main__.
@@ -176,10 +179,7 @@ class TestBaselinesFailLoud:
     )
     def test_baseline_bare_invocation_raises(self, module):
         r = _run_module(module, [], cwd=REPO)
-        assert r.returncode != 0, (
-            f"{module} exited 0 with no data — silent random fill!\n"
-            f"stdout: {r.stdout[:300]}"
-        )
+        assert r.returncode != 0, f"{module} exited 0 with no data — silent random fill!\n" f"stdout: {r.stdout[:300]}"
 
     @pytest.mark.parametrize(
         "module",
@@ -195,14 +195,13 @@ class TestBaselinesFailLoud:
             ["/tmp/no.npz", "/tmp/no.npy"],
             cwd=REPO,
         )
-        assert r.returncode != 0, (
-            f"{module} succeeded with nonexistent data — silent corruption!"
-        )
+        assert r.returncode != 0, f"{module} succeeded with nonexistent data — silent corruption!"
 
 
 # ----------------------------------------------------------------------
 # 7. mlflow_tracking demo — NaN placeholders, no random.uniform
 # ----------------------------------------------------------------------
+
 
 class TestMLflowTrackingNoRandom:
     """The MLflow demo previously logged `random.uniform(0.7, 0.9)` as F1.
@@ -218,15 +217,14 @@ class TestMLflowTrackingNoRandom:
         describing the historical bug; only actual function calls count.
         """
         import re
+
         text = (REPO / "src/utils/mlflow_tracking.py").read_text()
         # Strip comments and docstrings before searching.
-        code = re.sub(r'(?m)^\s*#.*$', '', text)
-        code = re.sub(r'"""[\s\S]*?"""', '', code)
-        code = re.sub(r"'''[\s\S]*?'''", '', code)
+        code = re.sub(r"(?m)^\s*#.*$", "", text)
+        code = re.sub(r'"""[\s\S]*?"""', "", code)
+        code = re.sub(r"'''[\s\S]*?'''", "", code)
         real_calls = re.findall(r"random\.uniform\s*\(", code)
-        assert not real_calls, (
-            f"mlflow_tracking.py still has random.uniform() calls: {real_calls}"
-        )
+        assert not real_calls, f"mlflow_tracking.py still has random.uniform() calls: {real_calls}"
 
     def test_mlflow_demo_logs_nan_status(self):
         """The demo should log NaN metrics with a clear PLACEHOLDER status."""
@@ -235,9 +233,11 @@ class TestMLflowTrackingNoRandom:
         assert "nan" in text.lower(), "mlflow_tracking.py should use NaN placeholders"
         assert "PLACEHOLDER" in text, "mlflow_tracking.py should label placeholders explicitly"
 
+
 # ---------------------------------------------------------------------------
 # References bibliography guard
 # ---------------------------------------------------------------------------
+
 
 class TestReferencesBibliography:
     """The unified references.bib must contain no malformed escape artifacts.
@@ -250,6 +250,7 @@ class TestReferencesBibliography:
 
     def test_references_bib_has_no_doubled_backslash_url(self):
         import re
+
         text = (REPO / "references.bib").read_text()
         bad = re.findall(r"\\\\url", text)
         assert not bad, (
@@ -259,16 +260,17 @@ class TestReferencesBibliography:
 
     def test_references_bib_has_no_doubled_quote_i_artifact(self):
         import re
+
         text = (REPO / "references.bib").read_text()
         bad = re.findall(r"\\'\\i", text)
         assert not bad, (
-            f"references.bib contains {len(bad)} doubled i-acute artifacts. "
-            "Run scripts/merge_bib.py to sanitize."
+            f"references.bib contains {len(bad)} doubled i-acute artifacts. " "Run scripts/merge_bib.py to sanitize."
         )
 
     def test_references_bib_has_180_unique_entries(self):
         import re
         from collections import Counter
+
         text = (REPO / "references.bib").read_text()
         keys = re.findall(r"^@\w+\{\s*([^,\s]+)", text, flags=re.M)
         # 2026-08-13: 182 (was 180; added vallejos2020 + xie2023 for p0011)
@@ -283,6 +285,7 @@ class TestReferencesBibliography:
         fail loudly via the script's unresolved-fail-loud branch.
         """
         import subprocess
+
         r = subprocess.run(
             [sys.executable, "scripts/merge_bib.py"],
             capture_output=True,
@@ -290,15 +293,8 @@ class TestReferencesBibliography:
             cwd=str(REPO),
             timeout=30,
         )
-        assert r.returncode == 0, (
-            "merge_bib.py failed:\n"
-            f"stdout={r.stdout}\n"
-            f"stderr={r.stderr}"
-        )
-        assert "0 unresolved" in r.stdout, (
-            "merge_bib.py printed unresolved conflicts:\n"
-            f"{r.stdout}"
-        )
+        assert r.returncode == 0, "merge_bib.py failed:\n" f"stdout={r.stdout}\n" f"stderr={r.stderr}"
+        assert "0 unresolved" in r.stdout, "merge_bib.py printed unresolved conflicts:\n" f"{r.stdout}"
 
     def test_resolved_conflict_keys_contain_expected_canonical_text(self):
         """Each of the 5 PREFER_PAPERS-resolved keys should contain the
@@ -307,13 +303,14 @@ class TestReferencesBibliography:
         version accidentally, this test catches it.
         """
         import re
+
         text = (REPO / "references.bib").read_text()
         expected_substrings = {
-            "indi2024":        "Instituto Nacional del Ind",
-            "infona2024":      "Instituto Forestal Nacional (INFONA)",
-            "mades2024":       "(MADES)",
-            "openaq2024":      "Open Air Quality Data",
-            "tensorflow2015":  "@software{tensorflow2015,",
+            "indi2024": "Instituto Nacional del Ind",
+            "infona2024": "Instituto Forestal Nacional (INFONA)",
+            "mades2024": "(MADES)",
+            "openaq2024": "Open Air Quality Data",
+            "tensorflow2015": "@software{tensorflow2015,",
         }
         for key, expected in expected_substrings.items():
             m = re.search(

@@ -4,20 +4,29 @@ Coverage target: 70%+. Uses real Paraguay geodata from
 /root/paraguay-geodata/exports/web/data when available, with
 synthetic fallbacks.
 """
-import json
-import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
-import geopandas as gpd
-from shapely.geometry import box, Point, Polygon
 
+import os
+from pathlib import Path
+
+import geopandas as gpd
+import pytest
+from shapely.geometry import Polygon
 
 REAL_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")
 
 
 # Skip all tests if real data doesn't exist
+# 2026-08-13: Use os.access to avoid PermissionError when /root is not
+# readable (e.g., when CI runs as a non-root user, or when the sandbox
+# filesystem forbids stat() on /root).
+
+try:
+    _has_real_data = os.access(REAL_DATA_DIR, os.R_OK) and REAL_DATA_DIR.is_dir()
+except (PermissionError, OSError):
+    _has_real_data = False
+
 pytestmark = pytest.mark.skipif(
-    not REAL_DATA_DIR.exists(),
+    not _has_real_data,
     reason="Paraguay geodata not available",
 )
 
@@ -27,6 +36,7 @@ class TestFindCatastroPaths:
 
     def test_finds_in_admin_dir(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_catastro_paths
+
         admin = tmp_path / "admin"
         admin.mkdir()
         (admin / "catastro_parcels_sample.geojson").write_text("{}")
@@ -36,17 +46,20 @@ class TestFindCatastroPaths:
 
     def test_finds_in_root(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_catastro_paths
+
         (tmp_path / "catastro_urba.geojson").write_text("{}")
         result = _find_catastro_paths(tmp_path)
         assert len(result) >= 1
 
     def test_no_files_returns_empty(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_catastro_paths
+
         result = _find_catastro_paths(tmp_path)
         assert result == []
 
     def test_finds_multiple_files(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_catastro_paths
+
         (tmp_path / "catastro_urba.geojson").write_text("{}")
         admin = tmp_path / "admin"
         admin.mkdir()
@@ -60,6 +73,7 @@ class TestFindIndigenousPath:
 
     def test_found_in_admin(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_indigenous_path
+
         admin = tmp_path / "admin"
         admin.mkdir()
         (admin / "indigenous_territories.geojson").write_text("{}")
@@ -69,12 +83,14 @@ class TestFindIndigenousPath:
 
     def test_found_in_root(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_indigenous_path
+
         (tmp_path / "indigenous_territories.geojson").write_text("{}")
         result = _find_indigenous_path(tmp_path)
         assert result is not None
 
     def test_not_found_returns_none(self, tmp_path):
         from src.paraguay_admin.real_analysis import _find_indigenous_path
+
         result = _find_indigenous_path(tmp_path)
         assert result is None
 
@@ -85,6 +101,7 @@ class TestLoadCatastroParcelsReal:
     def test_load_from_real_dir(self):
         """Load from default /root/paraguay-geodata directory."""
         from src.paraguay_admin.real_analysis import load_catastro_parcels_real
+
         if not (REAL_DATA_DIR / "admin" / "catastro_parcels_sample.geojson").exists():
             pytest.skip("catastro_parcels_sample.geojson not available")
         gdf = load_catastro_parcels_real()
@@ -93,18 +110,21 @@ class TestLoadCatastroParcelsReal:
 
     def test_load_raises_when_no_files(self, tmp_path):
         from src.paraguay_admin.real_analysis import load_catastro_parcels_real
+
         with pytest.raises(FileNotFoundError):
             load_catastro_parcels_real(data_dir=tmp_path)
 
     def test_load_handles_failed_files_gracefully(self, tmp_path):
         """If files exist but fail to load, should raise."""
         from src.paraguay_admin.real_analysis import load_catastro_parcels_real
+
         (tmp_path / "catastro_urba.geojson").write_text("not valid geojson")
         with pytest.raises(FileNotFoundError):
             load_catastro_parcels_real(data_dir=tmp_path)
 
     def test_load_adds_source_file_column(self):
         from src.paraguay_admin.real_analysis import load_catastro_parcels_real
+
         if not (REAL_DATA_DIR / "admin" / "catastro_parcels_sample.geojson").exists():
             pytest.skip("catastro not available")
         gdf = load_catastro_parcels_real()
@@ -116,14 +136,18 @@ class TestLoadIndigenousTerritoriesReal:
 
     def test_load_from_real_dir(self):
         from src.paraguay_admin.real_analysis import load_indigenous_territories_real
-        if not (REAL_DATA_DIR / "indigenous_territories.geojson").exists() and \
-           not (REAL_DATA_DIR / "admin" / "indigenous_territories.geojson").exists():
+
+        if (
+            not (REAL_DATA_DIR / "indigenous_territories.geojson").exists()
+            and not (REAL_DATA_DIR / "admin" / "indigenous_territories.geojson").exists()
+        ):
             pytest.skip("indigenous_territories.geojson not available")
         gdf = load_indigenous_territories_real()
         assert isinstance(gdf, gpd.GeoDataFrame)
 
     def test_load_raises_when_not_found(self, tmp_path):
         from src.paraguay_admin.real_analysis import load_indigenous_territories_real
+
         with pytest.raises(FileNotFoundError):
             load_indigenous_territories_real(data_dir=tmp_path)
 
@@ -136,6 +160,7 @@ class TestDetectConflictsReal:
 
     def test_detect_conflicts_returns_dict(self):
         from src.paraguay_admin.real_analysis import detect_conflicts_real
+
         try:
             result = detect_conflicts_real(buffer_m=50)
         except FileNotFoundError:
@@ -147,6 +172,7 @@ class TestDetectConflictsReal:
 
     def test_detect_conflicts_custom_buffer(self):
         from src.paraguay_admin.real_analysis import detect_conflicts_real
+
         try:
             result = detect_conflicts_real(buffer_m=500)
         except FileNotFoundError:
@@ -161,6 +187,7 @@ class TestGetParcelsInDepartment:
         from src.paraguay_admin.real_analysis import (
             get_parcels_in_department,
         )
+
         try:
             result = get_parcels_in_department("Central")
         except FileNotFoundError:
@@ -171,6 +198,7 @@ class TestGetParcelsInDepartment:
         from src.paraguay_admin.real_analysis import (
             get_parcels_in_department,
         )
+
         try:
             result = get_parcels_in_department("FakeDept123")
         except FileNotFoundError:
@@ -184,15 +212,18 @@ class TestComputeParcelSummaryStats:
 
     def test_returns_dict(self):
         from src.paraguay_admin.real_analysis import compute_parcel_summary_stats
+
         # Use a synthetic GeoDataFrame
-        gdf = gpd.GeoDataFrame({
-            "id": ["P1", "P2", "P3"],
-            "geometry": [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
-                Polygon([(20, 20), (30, 20), (30, 30), (20, 30)]),
-                Polygon([(40, 40), (50, 40), (50, 50), (40, 50)]),
-            ],
-        })
+        gdf = gpd.GeoDataFrame(
+            {
+                "id": ["P1", "P2", "P3"],
+                "geometry": [
+                    Polygon([(0, 0), (10, 0), (10, 10), (0, 10)]),
+                    Polygon([(20, 20), (30, 20), (30, 30), (20, 30)]),
+                    Polygon([(40, 40), (50, 40), (50, 50), (40, 50)]),
+                ],
+            }
+        )
         result = compute_parcel_summary_stats(gdf)
         assert isinstance(result, dict)
         assert "count" in result
@@ -200,6 +231,7 @@ class TestComputeParcelSummaryStats:
 
     def test_empty_gdf(self):
         from src.paraguay_admin.real_analysis import compute_parcel_summary_stats
+
         gdf = gpd.GeoDataFrame()
         result = compute_parcel_summary_stats(gdf)
         assert isinstance(result, dict)
@@ -211,4 +243,5 @@ class TestConstants:
 
     def test_pg_data_dir_is_path(self):
         from src.paraguay_admin import real_analysis
+
         assert isinstance(real_analysis.PG_DATA_DIR, Path)

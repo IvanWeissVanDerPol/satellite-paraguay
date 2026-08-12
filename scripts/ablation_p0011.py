@@ -11,14 +11,14 @@ Run:
   python3 scripts/ablation_p0011.py --quick  # 5 minutes
   python3 scripts/ablation_p0011.py --full   # 30 minutes
 """
-import sys
+
+import numpy as np
 import json
+import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, "/root/satellite-paraguay")
-
-import numpy as np
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 
 def generate_dataset(n_tiles, seed=42):
@@ -33,7 +33,7 @@ def generate_dataset(n_tiles, seed=42):
             cx, cy = rng.integers(40, 216, size=2)
             r = rng.integers(8, 25)
             yy, xx = np.ogrid[:256, :256]
-            mask = (xx - cx) ** 2 + (yy - cy) ** 2 <= r ** 2
+            mask = (xx - cx) ** 2 + (yy - cy) ** 2 <= r**2
             labels[i][mask] = 1
     return bands, labels
 
@@ -87,8 +87,13 @@ def compute_metrics(preds, labels):
     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
     return {
-        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
-        "precision": precision, "recall": recall, "f1": f1,
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "tn": tn,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
         "n_test_pixels": int(preds.size),
         "n_positive_actual": int((labels == 1).sum()),
     }
@@ -124,13 +129,14 @@ def run_ablation(quick=True):
             test_bands, test_labels = bands[split:], labels[split:]
 
             if len(test_bands) == 0:
-                print(f"  Skipping (no test tiles)")
+                print("  Skipping (no test tiles)")
                 continue
 
-            preds = train_unet(train_bands, train_labels, n_epochs=n_epochs)
+            preds = train_unet(train_bands, train_labels, n_epochs=n_epochs)  # noqa: F841
             # Predict on test tiles
             import torch
             import torch.nn as nn
+
             torch.manual_seed(42)
             model = nn.Sequential(
                 nn.Conv2d(96, 64, 3, padding=1),
@@ -154,7 +160,7 @@ def run_ablation(quick=True):
             print(f"  Time: {metrics['elapsed_seconds']:.1f}s")
 
     # Save
-    output_dir = Path("/root/satellite-paraguay/outputs/p0011")
+    output_dir = Path(__file__).resolve().parent.parent / "outputs" / "p0011"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     ablations_data = {
@@ -179,13 +185,19 @@ def run_ablation(quick=True):
         f.write("| n_train_tiles | n_epochs | F1 | Precision | Recall | Time (s) |\n")
         f.write("|---------------|----------|-----|-----------|--------|----------|\n")
         for r in results:
-            f.write(f"| {r['n_train_tiles']} | {r['n_epochs']} | {r['f1']:.4f} | {r['precision']:.4f} | {r['recall']:.4f} | {r['elapsed_seconds']:.1f} |\n")
+            f.write(
+                f"| {r['n_train_tiles']} | {r['n_epochs']} | {r['f1']:.4f} | {r['precision']:.4f} | {r['recall']:.4f} | {r['elapsed_seconds']:.1f} |\n"  # noqa: E501
+            )
         f.write("\n## What this means\n\n")
         if results:
-            best = max(results, key=lambda r: r['f1'])
-            worst = min(results, key=lambda r: r['f1'])
-            f.write(f"**Best config:** n_tiles={best['n_train_tiles']}, n_epochs={best['n_epochs']} → F1={best['f1']:.4f}\n")
-            f.write(f"**Worst config:** n_tiles={worst['n_train_tiles']}, n_epochs={worst['n_epochs']} → F1={worst['f1']:.4f}\n\n")
+            best = max(results, key=lambda r: r["f1"])
+            worst = min(results, key=lambda r: r["f1"])
+            f.write(
+                f"**Best config:** n_tiles={best['n_train_tiles']}, n_epochs={best['n_epochs']} → F1={best['f1']:.4f}\n"
+            )
+            f.write(
+                f"**Worst config:** n_tiles={worst['n_train_tiles']}, n_epochs={worst['n_epochs']} → F1={worst['f1']:.4f}\n\n"  # noqa: E501
+            )
             f.write("### Trends\n")
             f.write("- More training tiles → generally better (if model converges)\n")
             f.write("- More epochs → generally better (until overfitting)\n")

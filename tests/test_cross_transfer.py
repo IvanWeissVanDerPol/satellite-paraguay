@@ -1,16 +1,17 @@
 """Tests for cross-paper transfer learning."""
+
+import torch
+import numpy as np
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import numpy as np
-import pytest
-
 
 def test_multi_task_cnn_forward():
     """Multi-task CNN forward pass returns correct shapes."""
     from scripts.cross_transfer_experiment import MultiTaskCNN
+
     model = MultiTaskCNN(in_ch=4)
     x = torch.randn(2, 4, 64, 64)
 
@@ -28,6 +29,7 @@ def test_multi_task_cnn_forward():
 def test_multi_task_cnn_invalid_task():
     """Invalid task returns None or fails gracefully."""
     from scripts.cross_transfer_experiment import MultiTaskCNN
+
     model = MultiTaskCNN(in_ch=4)
     x = torch.randn(1, 4, 64, 64)
 
@@ -43,6 +45,7 @@ def test_multi_task_cnn_invalid_task():
 def test_tile_dataset():
     """Tile dataset returns correct shape."""
     from scripts.cross_transfer_experiment import TileDataset
+
     H = W = 200
     lossyear = np.zeros((H, W), dtype=np.uint8)
     treecover = np.full((H, W), 50, dtype=np.uint8)
@@ -68,4 +71,3 @@ def test_h3_threshold():
 
 
 # Need torch for the above tests
-import torch

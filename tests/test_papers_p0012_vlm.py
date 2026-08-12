@@ -2,16 +2,18 @@
 
 Coverage target: 90%+. Tests VLM validation with LLaVA fallback and GPT-4V.
 """
+
 import sys
-import pytest
-import numpy as np
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 
 @pytest.fixture
 def pipeline():
     from src.papers.p0012_yvy_indigenous.pipeline import YvyPipeline
+
     return YvyPipeline()
 
 
@@ -21,6 +23,7 @@ class TestValidateIndigenousVLM:
     def test_llava_default(self, pipeline):
         """When use_paid_api=False (default), uses LLaVA fallback."""
         from shapely.geometry import box
+
         path = Path("dummy.tif")
         geometry = box(0, 0, 1, 1)
         result = pipeline.validate_with_vlm(path, geometry, "P001")
@@ -38,6 +41,7 @@ class TestValidateIndigenousVLM:
 
         with patch.dict(sys.modules, {"openai": mock_openai}):
             from shapely.geometry import box
+
             path = Path("dummy.tif")
             result = pipeline.validate_with_vlm(path, box(0, 0, 1, 1), "P002")
         assert result["api"] == "gpt-4v"
@@ -52,6 +56,7 @@ class TestValidateIndigenousVLM:
         sys.modules["openai"] = None
         try:
             from shapely.geometry import box
+
             result = pipeline.validate_with_vlm(Path("dummy.tif"), box(0, 0, 1, 1), "P003")
             assert result["api"] == "llava-1.6"
         finally:

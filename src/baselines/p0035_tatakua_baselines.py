@@ -5,9 +5,8 @@ Baselines:
 2. Linear regression on time
 3. Persistence (last value)
 """
-import numpy as np
 
-from src.evaluation import regression_metrics
+import numpy as np
 
 
 def mean_forecast_baseline(historical: np.ndarray, horizon: int) -> np.ndarray:
@@ -53,6 +52,7 @@ if __name__ == "__main__":
     print("Pass real PM2.5 history as a .npy file:")
     print("    python -m src.baselines.p0035_tatakua_baselines pm25_history.npy")
     import sys
+
     if len(sys.argv) >= 2:
         historical = np.load(sys.argv[1])
     else:

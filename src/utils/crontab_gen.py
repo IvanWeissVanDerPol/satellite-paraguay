@@ -3,6 +3,7 @@
 Generates crontab entries for all periodic tasks.
 Pure string generation, no dependencies on running services.
 """
+
 from pathlib import Path
 
 
@@ -28,13 +29,13 @@ def build_crontab(repo_root: Path) -> str:
 0 4 1 * * cd {repo_root} && python3 scripts/audit_dependencies.py >> logs/cron_monthly.log 2>&1
 
 # ====== Quarterly: Performance benchmarks + report ======
-0 5 1 */3 * cd {repo_root} && python3 -m pytest tests/test_performance.py -m performance --no-cov --benchmark-only --benchmark-autosave >> logs/cron_quarterly.log 2>&1
+0 5 1 */3 * cd {repo_root} && python3 -m pytest tests/test_performance.py -m performance --no-cov --benchmark-only --benchmark-autosave >> logs/cron_quarterly.log 2>&1  # noqa: E501
 
 # ====== Hourly: Log rotation (prevent disk fill) ======
-0 * * * * cd {repo_root} && find logs/ -name "*.log" -mtime +7 -delete && find outputs/weekly -name "*.log" -mtime +30 -delete
+0 * * * * cd {repo_root} && find logs/ -name "*.log" -mtime +7 -delete && find outputs/weekly -name "*.log" -mtime +30 -delete  # noqa: E501
 
 # ====== Daily: Backup outputs to remote ======
-0 23 * * * cd {repo_root} && tar czf /tmp/satellite-paraguay-$(date +\\\\%Y\\\\%m\\\\%d).tar.gz outputs/ && (rsync -avz /tmp/satellite-paraguay-$(date +\\\\%Y\\\\%m\\\\%d).tar.gz remote:/backups/ || echo "Backup failed" >> logs/cron_daily.log)
+0 23 * * * cd {repo_root} && tar czf /tmp/satellite-paraguay-$(date +\\\\%Y\\\\%m\\\\%d).tar.gz outputs/ && (rsync -avz /tmp/satellite-paraguay-$(date +\\\\%Y\\\\%m\\\\%d).tar.gz remote:/backups/ || echo "Backup failed" >> logs/cron_daily.log)  # noqa: E501
 """
 
 

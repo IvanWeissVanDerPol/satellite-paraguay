@@ -2,6 +2,7 @@
 
 Pure math functions for above-ground biomass (AGB), carbon stock, and CO2e.
 """
+
 from typing import Tuple
 
 import numpy as np
@@ -35,9 +36,7 @@ def co2e(treecover_pct) -> np.ndarray:
     return carbon_stock(treecover_pct) * C_STOIC_RATIO
 
 
-def carbon_loss_per_pixel(
-    treecover_pct, lossyear, min_year: int = 2001
-) -> np.ndarray:
+def carbon_loss_per_pixel(treecover_pct, lossyear, min_year: int = 2001) -> np.ndarray:
     """Compute CO2e lost per pixel (only loss pixels > min_year).
 
     Returns array with CO2e values; 0 for non-loss pixels.
@@ -47,9 +46,7 @@ def carbon_loss_per_pixel(
     return np.where(loss_mask, co2e_arr, 0.0)
 
 
-def annual_carbon_loss(
-    treecover_pct, lossyear, min_year: int = 2001
-) -> dict:
+def annual_carbon_loss(treecover_pct, lossyear, min_year: int = 2001) -> dict:
     """Compute annual CO2e loss.
 
     Returns dict mapping year (int) -> total CO2e (Mg).

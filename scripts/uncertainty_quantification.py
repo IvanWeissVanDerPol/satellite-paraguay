@@ -8,16 +8,17 @@ Computes:
 
 All results saved to outputs/p0011/uncertainty/.
 """
-import sys
+
+from rasterio.windows import Window
+import rasterio
+import numpy as np
 import json
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/uncertainty"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -62,7 +63,7 @@ def block_bootstrap_fast(lossyear, block_size=100, n_boot=1000, seed=42):
         for bw in range(n_blocks_w):
             y = bh * block_size
             x = bw * block_size
-            block_losses[bh * n_blocks_w + bw] = (lossyear[y:y+block_size, x:x+block_size] > 0).sum()
+            block_losses[bh * n_blocks_w + bw] = (lossyear[y: y + block_size, x: x + block_size] > 0).sum()
 
     # Bootstrap: resample blocks (preserves spatial structure)
     boots = np.zeros(n_boot)
@@ -116,7 +117,7 @@ def annual_loss_ci(lossyear, n_boot=1000, seed=42):
     n_pixels = flat.size
 
     # Annual histogram
-    hist = np.bincount(flat.flatten(), minlength=24)[1:]  # years 2001-2023
+    hist = np.bincount(flat.flatten(), minlength=24)[1:]  # years 2001-2023  # noqa: F841
 
     boots = np.zeros((n_boot, 23))
     for i in range(n_boot):
@@ -158,7 +159,7 @@ def main():
     block_boot = block_bootstrap_fast(lossyear_60, block_size=100, n_boot=1000)
     print(f"  Mean loss pixels: {block_boot['mean']:,.0f}")
     print(f"  95% CI: [{block_boot['ci_lower_95']:,.0f}, {block_boot['ci_upper_95']:,.0f}]")
-    print(f"  NOTE: Block CI is wider due to spatial correlation")
+    print("  NOTE: Block CI is wider due to spatial correlation")
 
     print("\n[4/4] AGB sensitivity...")
     agb_sens = agb_sensitivity(lossyear_60, treecover_60)
@@ -183,16 +184,16 @@ def main():
             "agb_source": "Chave et al. 2014 approximation",
         },
         "key_findings": [
-            f"Total loss: {pix_boot['mean']:,.0f} ± {(pix_boot['ci_upper_95']-pix_boot['ci_lower_95'])/2:,.0f} pixels (95% CI)",
-            f"Block bootstrap shows wider CIs due to spatial autocorrelation",
-            f"AGB sensitivity: CO2e ranges from {agb_sens['low']['co2e_mt']:.2f} to {agb_sens['high']['co2e_mt']:.2f} Mt",
-            f"Annual loss varies from {min(c['mean'] for c in annual_cis.values()):,.0f} to {max(c['mean'] for c in annual_cis.values()):,.0f} pixels",
+            f"Total loss: {pix_boot['mean']:,.0f} ± {(pix_boot['ci_upper_95']-pix_boot['ci_lower_95'])/2:,.0f} pixels (95% CI)",  # noqa: E501
+            "Block bootstrap shows wider CIs due to spatial autocorrelation",
+            f"AGB sensitivity: CO2e ranges from {agb_sens['low']['co2e_mt']:.2f} to {agb_sens['high']['co2e_mt']:.2f} Mt",  # noqa: E501
+            f"Annual loss varies from {min(c['mean'] for c in annual_cis.values()):,.0f} to {max(c['mean'] for c in annual_cis.values()):,.0f} pixels",  # noqa: E501
         ],
     }
     (OUT_DIR / "uncertainty_results.json").write_text(json.dumps(results, indent=2))
     print(f"\n  Saved: {OUT_DIR}/uncertainty_results.json")
     print(f"\n{'=' * 70}")
-    print(f"  KEY UNCERTAINTY FINDINGS:")
+    print("  KEY UNCERTAINTY FINDINGS:")
     for f in results["key_findings"]:
         print(f"    • {f}")
 

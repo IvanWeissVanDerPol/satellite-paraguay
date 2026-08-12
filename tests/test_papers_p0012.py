@@ -3,10 +3,10 @@
 Coverage target: 60%+. The YvyPipeline class handles indigenous
 territory mapping and conflict detection.
 """
+
+from unittest.mock import MagicMock, patch
+
 import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
-import numpy as np
 
 
 class TestYvyPipeline:
@@ -15,6 +15,7 @@ class TestYvyPipeline:
     @pytest.fixture
     def pipeline(self):
         from src.papers.p0012_yvy_indigenous.pipeline import YvyPipeline
+
         return YvyPipeline()
 
     # --- __init__ ---
@@ -30,6 +31,7 @@ class TestYvyPipeline:
 
     def test_init_custom_config(self):
         from src.papers.p0012_yvy_indigenous.pipeline import YvyPipeline
+
         cfg = {"vlm_model": "custom-model", "care_principles": False}
         p = YvyPipeline(config=cfg)
         assert p.config["vlm_model"] == "custom-model"

@@ -12,19 +12,20 @@ Outputs:
     outputs/p0011/real_paraguay_analysis.json
     outputs/p0011/figures/real_*.png
 """
-import sys
+
+from rasterio.windows import Window
+from matplotlib.colors import ListedColormap
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 
 # Constants
 HANSEN_DIR = REPO_ROOT / "data/hansen"
@@ -81,9 +82,11 @@ def load_hansen_full():
                         tc_count += chunk.size
                 results[tile]["treecover_forest_30"] = forest_pixels
                 results[tile]["treecover_mean"] = tc_sum / tc_count
-                print(f"  {tile} treecover: mean={tc_sum/tc_count:.1f}%, "
-                      f"forest>30%: {forest_pixels:,} ({100*forest_pixels/tc_count:.1f}%) "
-                      f"in {time.time()-t0:.1f}s")
+                print(
+                    f"  {tile} treecover: mean={tc_sum/tc_count:.1f}%, "
+                    f"forest>30%: {forest_pixels:,} ({100*forest_pixels/tc_count:.1f}%) "
+                    f"in {time.time()-t0:.1f}s"
+                )
     return results
 
 
@@ -119,7 +122,7 @@ def compute_carbon_loss(tiles):
     # Assume lost pixels were ~50% treecover (Chaco average)
     mean_treecover_lost = 50.0
     # Biomass model
-    agb = 100.0 * mean_treecover_lost ** 2 / (100.0 + mean_treecover_lost ** 2)
+    agb = 100.0 * mean_treecover_lost**2 / (100.0 + mean_treecover_lost**2)
     carbon_per_pixel = agb * 0.47 * pixel_area_ha
     total_carbon_tons = total_loss_pixels * carbon_per_pixel
     co2e_tons = total_carbon_tons * 44.0 / 12.0
@@ -145,7 +148,11 @@ def chaco_vs_east(tiles):
         if not d:
             return {"loss_pixels": 0, "total_pixels": 0, "loss_pct": 0, "mean_treecover": 0}
         total = d["lossyear"].size
-        loss = int(d.get("annual_hist", np.zeros(24))[1:24].sum()) if "annual_hist" in d else int((d["lossyear"] > 0).sum())
+        loss = (
+            int(d.get("annual_hist", np.zeros(24))[1:24].sum())
+            if "annual_hist" in d
+            else int((d["lossyear"] > 0).sum())
+        )
         tc = d.get("treecover_mean", 0)
         return {
             "loss_pixels": loss,
@@ -165,8 +172,9 @@ def plot_annual_loss(annual_loss, out_path):
     ax.bar(years, annual_loss, color="darkred", alpha=0.7)
     ax.set_xlabel("Year")
     ax.set_ylabel("Loss pixels")
-    ax.set_title("Annual Forest Loss in Paraguay (Hansen GFC v1.11, 2001-2023)\n"
-                 f"Total: {int(annual_loss.sum()):,} pixels")
+    ax.set_title(
+        "Annual Forest Loss in Paraguay (Hansen GFC v1.11, 2001-2023)\n" f"Total: {int(annual_loss.sum()):,} pixels"
+    )
     ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
@@ -214,7 +222,7 @@ def plot_lossyear_map(tiles, out_path):
     found = False
     for y0 in range(0, 35000, 5000):
         for x0 in range(0, 35000, 5000):
-            loss_chunk = data["lossyear"][y0:y0+win_size, x0:x0+win_size]
+            loss_chunk = data["lossyear"][y0: y0 + win_size, x0: x0 + win_size]
             n_loss = int((loss_chunk > 0).sum())
             if 100 < n_loss < 50000:
                 found = True
@@ -226,7 +234,7 @@ def plot_lossyear_map(tiles, out_path):
         # Fallback: use first window with any loss
         for y0 in range(0, 35000, 5000):
             for x0 in range(0, 35000, 5000):
-                loss_chunk = data["lossyear"][y0:y0+win_size, x0:x0+win_size]
+                loss_chunk = data["lossyear"][y0: y0 + win_size, x0: x0 + win_size]
                 if (loss_chunk > 0).sum() > 0:
                     found = True
                     break
@@ -235,8 +243,10 @@ def plot_lossyear_map(tiles, out_path):
 
     fig, ax = plt.subplots(figsize=(10, 10))
     im = ax.imshow(loss_chunk, cmap="RdYlGn_r", vmin=0, vmax=23)
-    ax.set_title(f"Hansen lossyear (Eastern Paraguay)\nWindow: {x0}-{x0+win_size}, {y0}-{y0+win_size}\n"
-                 f"Loss pixels: {int((loss_chunk>0).sum()):,}")
+    ax.set_title(
+        f"Hansen lossyear (Eastern Paraguay)\nWindow: {x0}-{x0+win_size}, {y0}-{y0+win_size}\n"
+        f"Loss pixels: {int((loss_chunk>0).sum()):,}"
+    )
     plt.colorbar(im, ax=ax, label="Year of loss (0=stable, 1-23=2001-2023)")
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
@@ -253,10 +263,17 @@ def plot_landcover_composition(out_path):
         chunk = src.read(1, window=Window(10000, 10000, 5000, 5000))
 
     legend = {
-        0: "No data", 3: "Forest Formation", 4: "Savanna",
-        6: "Wetland", 9: "Forest Plantation", 11: "Wetland",
-        12: "Grassland", 15: "Pasture", 18: "Agriculture",
-        22: "Mining", 26: "Water",
+        0: "No data",
+        3: "Forest Formation",
+        4: "Savanna",
+        6: "Wetland",
+        9: "Forest Plantation",
+        11: "Wetland",
+        12: "Grassland",
+        15: "Pasture",
+        18: "Agriculture",
+        22: "Mining",
+        26: "Water",
     }
 
     unique, counts = np.unique(chunk, return_counts=True)
@@ -270,9 +287,21 @@ def plot_landcover_composition(out_path):
 
     # Map
     ax = axes[1]
-    colors = ["white", "darkgreen", "green", "olive", "lightblue", "purple",
-              "blue", "yellow", "tan", "orange", "red", "cyan"]
-    cmap = ListedColormap(colors[:max(unique) + 1])
+    colors = [
+        "white",
+        "darkgreen",
+        "green",
+        "olive",
+        "lightblue",
+        "purple",
+        "blue",
+        "yellow",
+        "tan",
+        "orange",
+        "red",
+        "cyan",
+    ]
+    cmap = ListedColormap(colors[: max(unique) + 1])
     im = ax.imshow(chunk, cmap=cmap, vmin=0, vmax=max(unique))
     ax.set_title("MapBiomas Sample (Central Paraguay)")
     plt.colorbar(im, ax=ax, ticks=range(max(unique) + 1))
@@ -299,7 +328,7 @@ def main():
     annual_loss, forest_2000 = compute_annual_loss_tiles(tiles)
     print(f"  Total forest (2000, treecover>30%): {forest_2000:,} pixels")
     print(f"  Total loss (2001-2023): {int(annual_loss.sum()):,} pixels")
-    print(f"  Per-year:")
+    print("  Per-year:")
     for year_idx in range(23):  # annual_loss[0] = 2001, ..., [22] = 2023
         yr = year_idx + 2001
         print(f"    {yr}: {int(annual_loss[year_idx]):,} pixels")
@@ -317,8 +346,7 @@ def main():
     print("\n[4/5] Comparing Chaco vs Eastern Paraguay...")
     region_stats = chaco_vs_east(tiles)
     for region, stats in region_stats.items():
-        print(f"  {region}: {stats['loss_pct']:.2f}% loss, "
-              f"mean treecover {stats['mean_treecover']:.1f}%")
+        print(f"  {region}: {stats['loss_pct']:.2f}% loss, " f"mean treecover {stats['mean_treecover']:.1f}%")
     plot_chaco_vs_east(region_stats, FIG_DIR / "real_chaco_vs_east.png")
 
     # Loss map visualization
@@ -331,10 +359,7 @@ def main():
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "data_sources": ["Hansen GFC v1.11", "MapBiomas Paraguay Collection 2"],
         "coverage": "Paraguay (lat -20 to -30, lon -50 to -70)",
-        "annual_loss": {
-            int(2001 + i): int(annual_loss[i])
-            for i in range(23)
-        },
+        "annual_loss": {int(2001 + i): int(annual_loss[i]) for i in range(23)},
         "total_loss_2001_2023": int(annual_loss.sum()),
         "forest_baseline_2000": int(forest_2000),
         "carbon_loss": carbon,
@@ -347,7 +372,7 @@ def main():
     print(f"\n{'=' * 70}")
     print(f"Report saved to {out_json}")
     print(f"Figures saved to {FIG_DIR}/real_*.png")
-    print(f"\nKey findings:")
+    print("\nKey findings:")
     print(f"  Total deforestation (2001-2023): {int(annual_loss.sum()):,} pixels")
     print(f"  Approximate area: {annual_loss.sum() * 0.0625 / 1000:.0f} km²")
     print(f"  CO2e released: {carbon['co2e_tons']/1e6:.2f} Mt")

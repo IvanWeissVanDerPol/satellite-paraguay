@@ -8,13 +8,15 @@ Coverage target: 80%+. The 3 baselines files share a common pattern:
 We focus on testing the pure-numpy baselines (persistence, linear_trend)
 which work without sklearn/torch and don't need GPU.
 """
-import importlib
-import pytest
+
+
 import numpy as np
+import pytest
 
 # Make sure sklearn is available for the RF tests
 try:
     import sklearn  # noqa: F401
+
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
@@ -31,6 +33,7 @@ class TestP0011Baselines:
     @pytest.fixture
     def module(self):
         from src.baselines import p0011_yvytu_baselines
+
         return p0011_yvytu_baselines
 
     @pytest.fixture
@@ -42,12 +45,15 @@ class TestP0011Baselines:
     @pytest.fixture
     def ground_truth(self):
         """Small (H=4, W=4) ground truth."""
-        return np.array([
-            [0, 1, 2, 3],
-            [4, 0, 1, 2],
-            [3, 4, 0, 1],
-            [2, 3, 4, 0],
-        ], dtype=np.int64)
+        return np.array(
+            [
+                [0, 1, 2, 3],
+                [4, 0, 1, 2],
+                [3, 4, 0, 1],
+                [2, 3, 4, 0],
+            ],
+            dtype=np.int64,
+        )
 
     # --- persistence_baseline ---
 
@@ -66,9 +72,12 @@ class TestP0011Baselines:
 
     def test_persistence_threshold_buckets(self, module):
         """Test that NDVI thresholds produce correct class assignments."""
-        ndvi = np.array([
-            [[0.8, 0.6, 0.4, 0.2]],  # 1 frame, 4 pixels
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.8, 0.6, 0.4, 0.2]],  # 1 frame, 4 pixels
+            ],
+            dtype=np.float32,
+        )
         preds = module.persistence_baseline(ndvi)
         assert preds[0, 0] == 1  # > 0.7
         assert preds[0, 1] == 2  # 0.5-0.7
@@ -88,50 +97,62 @@ class TestP0011Baselines:
     def test_linear_trend_detects_strong_decline(self, module):
         """Pixel that drops substantially should be flagged as deforested."""
         # T=5, single pixel, strong decline
-        ndvi = np.array([
-            [[0.9]],
-            [[0.7]],
-            [[0.5]],
-            [[0.3]],
-            [[0.1]],
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.9]],
+                [[0.7]],
+                [[0.5]],
+                [[0.3]],
+                [[0.1]],
+            ],
+            dtype=np.float32,
+        )
         preds = module.linear_trend_baseline(ndvi, threshold=-0.1)
         # Slope is ~-0.2 which is < -0.1, so deforested
         assert preds[0, 0] == 1
 
     def test_linear_trend_detects_stable(self, module):
         """Stable pixel should NOT be flagged as deforested."""
-        ndvi = np.array([
-            [[0.5]],
-            [[0.5]],
-            [[0.5]],
-            [[0.5]],
-            [[0.5]],
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.5]],
+                [[0.5]],
+                [[0.5]],
+                [[0.5]],
+                [[0.5]],
+            ],
+            dtype=np.float32,
+        )
         preds = module.linear_trend_baseline(ndvi, threshold=-0.1)
         assert preds[0, 0] == 0  # slope ~0, not deforested
 
     def test_linear_trend_detects_positive(self, module):
         """Growing pixel should NOT be flagged as deforested."""
-        ndvi = np.array([
-            [[0.1]],
-            [[0.3]],
-            [[0.5]],
-            [[0.7]],
-            [[0.9]],
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.1]],
+                [[0.3]],
+                [[0.5]],
+                [[0.7]],
+                [[0.9]],
+            ],
+            dtype=np.float32,
+        )
         preds = module.linear_trend_baseline(ndvi, threshold=-0.1)
         assert preds[0, 0] == 0  # slope is positive
 
     def test_linear_trend_threshold_parameter(self, module):
         """Lower threshold (more negative) catches fewer pixels."""
-        ndvi = np.array([
-            [[0.5, 0.5]],
-            [[0.4, 0.4]],
-            [[0.3, 0.3]],
-            [[0.2, 0.2]],
-            [[0.1, 0.1]],
-        ], dtype=np.float32)
+        ndvi = np.array(
+            [
+                [[0.5, 0.5]],
+                [[0.4, 0.4]],
+                [[0.3, 0.3]],
+                [[0.2, 0.2]],
+                [[0.1, 0.1]],
+            ],
+            dtype=np.float32,
+        )
         # Strict threshold catches the declining pixel
         strict = module.linear_trend_baseline(ndvi, threshold=-0.2)
         # Loose threshold (allow shallow decline) catches more
@@ -142,29 +163,19 @@ class TestP0011Baselines:
 
     @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
     def test_random_forest_returns_correct_shape(self, module, small_ndvi, ground_truth):
-        preds = module.random_forest_baseline(
-            small_ndvi, ground_truth, n_estimators=10
-        )
+        preds = module.random_forest_baseline(small_ndvi, ground_truth, n_estimators=10)
         assert preds.shape == (4, 4)
 
     @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
     def test_random_forest_deterministic_with_seed(self, module, small_ndvi, ground_truth):
-        preds_a = module.random_forest_baseline(
-            small_ndvi, ground_truth, n_estimators=10, random_state=42
-        )
-        preds_b = module.random_forest_baseline(
-            small_ndvi, ground_truth, n_estimators=10, random_state=42
-        )
+        preds_a = module.random_forest_baseline(small_ndvi, ground_truth, n_estimators=10, random_state=42)
+        preds_b = module.random_forest_baseline(small_ndvi, ground_truth, n_estimators=10, random_state=42)
         np.testing.assert_array_equal(preds_a, preds_b)
 
     @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
     def test_random_forest_different_seeds_differ(self, module, small_ndvi, ground_truth):
-        preds_a = module.random_forest_baseline(
-            small_ndvi, ground_truth, n_estimators=10, random_state=42
-        )
-        preds_b = module.random_forest_baseline(
-            small_ndvi, ground_truth, n_estimators=10, random_state=99
-        )
+        preds_a = module.random_forest_baseline(small_ndvi, ground_truth, n_estimators=10, random_state=42)
+        preds_b = module.random_forest_baseline(small_ndvi, ground_truth, n_estimators=10, random_state=99)
         # Different seeds may give different predictions (but not guaranteed)
         # We just check the function doesn't crash
         assert preds_a.shape == preds_b.shape
@@ -195,6 +206,7 @@ class TestP0035Baselines:
     @pytest.fixture
     def module(self):
         from src.baselines import p0035_tatakua_baselines
+
         return p0035_tatakua_baselines
 
     def test_module_loads(self, module):
@@ -202,8 +214,7 @@ class TestP0035Baselines:
 
     def test_module_has_functions(self, module):
         """Check the module exposes at least one baseline function."""
-        funcs = [name for name in dir(module)
-                 if callable(getattr(module, name)) and not name.startswith("_")]
+        funcs = [name for name in dir(module) if callable(getattr(module, name)) and not name.startswith("_")]
         # Some callable that's exported
         assert len(funcs) >= 1
 
@@ -219,6 +230,7 @@ class TestP0100Baselines:
     @pytest.fixture
     def module(self):
         from src.baselines import p0100_yvyra_baselines
+
         return p0100_yvyra_baselines
 
     def test_module_loads(self, module):
@@ -226,8 +238,7 @@ class TestP0100Baselines:
 
     def test_module_has_functions(self, module):
         """Check the module exposes at least one baseline function."""
-        funcs = [name for name in dir(module)
-                 if callable(getattr(module, name)) and not name.startswith("_")]
+        funcs = [name for name in dir(module) if callable(getattr(module, name)) and not name.startswith("_")]
         assert len(funcs) >= 1
 
 
@@ -242,14 +253,17 @@ class TestUnetBaseline:
     def test_unet_baseline_imports(self):
         try:
             from src.baselines.p0011_yvytu_baselines import unet_baseline
+
             assert callable(unet_baseline)
         except ImportError:
             pytest.skip("torch not installed")
 
     def test_unet_baseline_signature(self):
         try:
-            from src.baselines.p0011_yvytu_baselines import unet_baseline
             import inspect
+
+            from src.baselines.p0011_yvytu_baselines import unet_baseline
+
             sig = inspect.signature(unet_baseline)
             # Must accept ndvi_timeseries, ground_truth
             params = list(sig.parameters.keys())

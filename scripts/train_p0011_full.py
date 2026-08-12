@@ -14,6 +14,7 @@ This script:
 Usage:
     python3 scripts/train_p0011_full.py --epochs 30 --n-tiles 50 --output-dir outputs/p0011
 """
+
 import argparse
 import json
 import logging
@@ -62,7 +63,9 @@ def generate_realistic_chaco_tile(
         for j in range(0, W, window // 2):
             end_i = min(i + window, H)
             end_j = min(j + window, W)
-            smoothed[i:end_i, end_j:end_j] = base_grid[i // (window // 2) * (window // 2), j // (window // 2) * (window // 2)]
+            smoothed[i:end_i, end_j:end_j] = base_grid[
+                i // (window // 2) * (window // 2), j // (window // 2) * (window // 2)
+            ]
 
     # Forest in west (low smoothed values), grassland in east
     # Use longitude to bias
@@ -89,17 +92,19 @@ def generate_realistic_chaco_tile(
             center_x = event["x"]
             radius = event["radius"]
             yy, xx = np.ogrid[:H, :W]
-            mask = (yy - center_y) ** 2 + (xx - center_x) ** 2 < radius ** 2
+            mask = (yy - center_y) ** 2 + (xx - center_x) ** 2 < radius**2
             # Only deforest forest or grassland
             final_land_cover[mask & (land_cover == 1)] = 4  # forest → agriculture
             final_land_cover[mask & (land_cover == 2)] = 4  # grassland → agriculture
-            deforestation_events.append({
-                "month": month,
-                "y": center_y,
-                "x": center_x,
-                "radius": radius,
-                "affected_pixels": int(mask.sum()),
-            })
+            deforestation_events.append(
+                {
+                    "month": month,
+                    "y": center_y,
+                    "x": center_x,
+                    "radius": radius,
+                    "affected_pixels": int(mask.sum()),
+                }
+            )
 
     # Generate NDVI/EVI time series per class
     # Forest: NDVI 0.6-0.8, stable
@@ -181,8 +186,10 @@ def generate_chaco_dataset(n_tiles: int = 50, n_months: int = 24, seed: int = 42
         lat = rng.uniform(-24, -19)
         tile_id = f"{lon:.3f}_{lat:.3f}"
         bbox = {
-            "min_lon": lon - 0.05, "max_lon": lon + 0.05,
-            "min_lat": lat - 0.05, "max_lat": lat + 0.05,
+            "min_lon": lon - 0.05,
+            "max_lon": lon + 0.05,
+            "min_lat": lat - 0.05,
+            "max_lat": lat + 0.05,
         }
 
         # Generate 1-3 deforestation events per tile (probability 0.6)
@@ -223,11 +230,11 @@ def train_random_forest(bands, labels, dates):
     # X: each pixel has all bands × timesteps as features
     # (T*C, H*W) → (H*W, T*C)
     X = bands.reshape(T * C, H * W).T  # (H*W, T*C)
-    y = labels.flatten()  # (H*W,)
+    y = labels.flatten()  # (H*W,)  # noqa: F841
 
     # Use median NDVI per pixel as a proxy for "deforested" probability
     ndvi = (bands[:, 3] - bands[:, 2]) / (bands[:, 3] + bands[:, 2] + 1e-8)  # (T, H, W)
-    ndvi_late = np.mean(ndvi[T//2:], axis=0)  # (H, W)
+    ndvi_late = np.mean(ndvi[T // 2:], axis=0)  # (H, W)
     pseudo_labels = (ndvi_late < 0.4).astype(int).flatten()
 
     rf = RandomForestClassifier(n_estimators=100, max_depth=10, n_jobs=-1, random_state=42)
@@ -300,6 +307,7 @@ class YvutuPrithvi(torch.nn.Module):
         # Try to load Prithvi; fall back to lightweight backbone
         try:
             from transformers import AutoModel
+
             self.prithvi = AutoModel.from_pretrained("ibm-nasa-geospatial/Prithvi-300M", trust_remote_code=True)
             self.backbone_dim = 768
             self.use_prithvi = True
@@ -336,6 +344,7 @@ class YvutuPrithvi(torch.nn.Module):
                 B, N, D = features.shape
                 # Reshape to (B, D, H, W) if N is square
                 import math
+
                 side = int(math.sqrt(N))
                 features = features.permute(0, 2, 1).reshape(B, D, side, side)
             except Exception:
@@ -375,7 +384,9 @@ def train_segmentation_model(model_class, tiles_train, tiles_val, epochs=10, bat
             pred = model(x)
             # Resize pred if needed
             if pred.shape[-2:] != y_small.shape[-2:]:
-                pred = torch.nn.functional.interpolate(pred, size=y_small.shape[-2:], mode="bilinear", align_corners=False)
+                pred = torch.nn.functional.interpolate(
+                    pred, size=y_small.shape[-2:], mode="bilinear", align_corners=False
+                )
 
             loss = criterion(pred, y_small)
             loss.backward()
@@ -394,18 +405,22 @@ def train_segmentation_model(model_class, tiles_train, tiles_val, epochs=10, bat
                 y_small = torch.nn.functional.interpolate(y, size=(16, 16), mode="bilinear", align_corners=False)
                 pred = model(x)
                 if pred.shape[-2:] != y_small.shape[-2:]:
-                    pred = torch.nn.functional.interpolate(pred, size=y_small.shape[-2:], mode="bilinear", align_corners=False)
+                    pred = torch.nn.functional.interpolate(
+                        pred, size=y_small.shape[-2:], mode="bilinear", align_corners=False
+                    )
                 val_loss += criterion(pred, y_small).item()
 
         if (epoch + 1) % 2 == 0:
-            print(f"    Epoch {epoch+1}/{epochs}: train_loss={total_loss/len(tiles_train):.4f}, val_loss={val_loss/5:.4f}")
+            print(
+                f"    Epoch {epoch+1}/{epochs}: train_loss={total_loss/len(tiles_train):.4f}, val_loss={val_loss/5:.4f}"
+            )
 
     return model
 
 
 def evaluate_model(model, tiles_test, model_type="supervised"):
     """Evaluate a model on test tiles, return predictions + metrics."""
-    from src.evaluation import pixel_f1_score, mean_iou
+    from src.evaluation import mean_iou, pixel_f1_score
 
     all_preds = []
     all_labels = []
@@ -506,7 +521,7 @@ def main():
     n_train = int(0.7 * len(tiles))
     n_val = int(0.15 * len(tiles))
     tiles_train = tiles[:n_train]
-    tiles_val = tiles[n_train:n_train + n_val]
+    tiles_val = tiles[n_train: n_train + n_val]
     tiles_test = tiles[n_train + n_val:]
     logger.info(f"  Train: {len(tiles_train)}, Val: {len(tiles_val)}, Test: {len(tiles_test)}")
 
@@ -550,7 +565,8 @@ def main():
     start = time.time()
     unet = train_segmentation_model(
         UNetFromScratch,
-        tiles_train, tiles_val,
+        tiles_train,
+        tiles_val,
         epochs=args.epochs,
         batch_size=2,
         lr=1e-3,
@@ -571,7 +587,8 @@ def main():
     start = time.time()
     yvutu = train_segmentation_model(
         YvutuPrithvi,
-        tiles_train, tiles_val,
+        tiles_train,
+        tiles_val,
         epochs=args.epochs,
         batch_size=2,
         lr=1e-4,
@@ -607,8 +624,10 @@ def main():
     logger.info("TRAINING COMPLETE")
     logger.info("=" * 70)
     for model_name, m in results.items():
-        logger.info(f"  {model_name:15s} F1={m['f1_macro']:.4f}  mIoU={m['miou']:.4f}  "
-                   f"Train={m['training_time_seconds']:.1f}s  Inference={m['inference_time_per_tile_seconds']:.3f}s/tile")
+        logger.info(
+            f"  {model_name:15s} F1={m['f1_macro']:.4f}  mIoU={m['miou']:.4f}  "
+            f"Train={m['training_time_seconds']:.1f}s  Inference={m['inference_time_per_tile_seconds']:.3f}s/tile"
+        )
 
     return results
 
@@ -616,9 +635,9 @@ def main():
 def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
     """Generate paper-ready figures."""
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import matplotlib.gridspec as gridspec
 
     figures_dir = output_dir / "figures"
     figures_dir.mkdir(exist_ok=True)
@@ -628,7 +647,7 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
     sample_tile = tiles_test[0]
 
     # Sample 3 spatial points
-    rng = np.random.default_rng(42)
+    np.random.default_rng(42)
     H, W = sample_tile["ndvi"].shape[1:]
     points = [(50, 50, "Forest (no loss)"), (150, 80, "Deforested"), (200, 200, "Stable")]
 
@@ -668,8 +687,11 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
         axes[1, :],
         [("Persistence", "persistence"), ("Random Forest", "random_forest"), ("Yvutu (Prithvi)", "yvutu")],
     ):
-        m = evaluate_model(None if model_type in ["persistence", "random_forest"] else (unet if model_type == "unet" else yvutu),
-                          [sample_tile], model_type=model_type)
+        m = evaluate_model(
+            None if model_type in ["persistence", "random_forest"] else (unet if model_type == "unet" else yvutu),
+            [sample_tile],
+            model_type=model_type,
+        )
         pred = m["pred"] if "pred" in m else None
         if pred is None:
             # Reconstruct from metrics
@@ -683,8 +705,7 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
         ax.imshow(pred, cmap="Reds", vmin=0, vmax=1)
         ax.set_title(f"{model_name} Predicted", fontsize=12)
 
-    fig.suptitle(f"P0011 Yvutu: Model Comparison on Test Tile {sample_tile['tile_id']}",
-                 fontsize=14, fontweight="bold")
+    fig.suptitle(f"P0011 Yvutu: Model Comparison on Test Tile {sample_tile['tile_id']}", fontsize=14, fontweight="bold")
     fig.tight_layout()
     fig.savefig(figures_dir / "fig2_model_comparison.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -698,8 +719,8 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
     x = np.arange(len(models))
     width = 0.35
 
-    bars1 = ax.bar(x - width/2, f1_scores, width, label="F1 macro", color="steelblue")
-    bars2 = ax.bar(x + width/2, miou_scores, width, label="mIoU", color="darkorange")
+    bars1 = ax.bar(x - width / 2, f1_scores, width, label="F1 macro", color="steelblue")
+    bars2 = ax.bar(x + width / 2, miou_scores, width, label="mIoU", color="darkorange")
 
     ax.set_xlabel("Model")
     ax.set_ylabel("Score")
@@ -712,8 +733,7 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
 
     for bar in bars1 + bars2:
         h = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, h + 0.01, f"{h:.3f}",
-                ha="center", va="bottom", fontsize=10)
+        ax.text(bar.get_x() + bar.get_width() / 2, h + 0.01, f"{h:.3f}", ha="center", va="bottom", fontsize=10)
 
     fig.tight_layout()
     fig.savefig(figures_dir / "fig3_model_comparison_bars.png", dpi=150, bbox_inches="tight")
@@ -723,8 +743,7 @@ def generate_paper_figures(tiles_test, results, output_dir, unet, yvutu):
     # Figure 4: Confusion matrix for Yvutu
     fig, ax = plt.subplots(figsize=(8, 6))
     yvutu_m = results["yvutu"]
-    cm = np.array([[yvutu_m["tn"], yvutu_m["fp"]],
-                   [yvutu_m["fn"], yvutu_m["tp"]]])
+    cm = np.array([[yvutu_m["tn"], yvutu_m["fp"]], [yvutu_m["fn"], yvutu_m["tp"]]])
     im = ax.imshow(cm, cmap="Blues")
     ax.set_xticks([0, 1])
     ax.set_yticks([0, 1])
@@ -764,15 +783,17 @@ def generate_paper_tables(tiles, results, output_dir):
     }
     for model_name in ["persistence", "random_forest", "unet", "yvutu"]:
         m = results[model_name]
-        table1["rows"].append([
-            model_name.replace("_", " ").title(),
-            f"{m['f1_macro']:.4f}",
-            f"{m['miou']:.4f}",
-            f"{m['precision']:.4f}",
-            f"{m['recall']:.4f}",
-            f"{m['training_time_seconds']:.1f}",
-            f"{m['inference_time_per_tile_seconds']:.3f}",
-        ])
+        table1["rows"].append(
+            [
+                model_name.replace("_", " ").title(),
+                f"{m['f1_macro']:.4f}",
+                f"{m['miou']:.4f}",
+                f"{m['precision']:.4f}",
+                f"{m['recall']:.4f}",
+                f"{m['training_time_seconds']:.1f}",
+                f"{m['inference_time_per_tile_seconds']:.3f}",
+            ]
+        )
 
     (tables_dir / "table1_main_results.json").write_text(json.dumps(table1, indent=2))
 
@@ -780,8 +801,13 @@ def generate_paper_tables(tiles, results, output_dir):
     table2 = {}
     for model_name, m in results.items():
         table2[model_name] = {
-            "TN": m["tn"], "FP": m["fp"], "FN": m["fn"], "TP": m["tp"],
-            "precision": m["precision"], "recall": m["recall"], "f1": m["f1_macro"],
+            "TN": m["tn"],
+            "FP": m["fp"],
+            "FN": m["fn"],
+            "TP": m["tp"],
+            "precision": m["precision"],
+            "recall": m["recall"],
+            "f1": m["f1_macro"],
         }
     (tables_dir / "table2_confusion_matrices.json").write_text(json.dumps(table2, indent=2))
 
@@ -801,7 +827,7 @@ def generate_paper_tables(tiles, results, output_dir):
     # Table 4: LaTeX-ready version of Table 1
     latex_table = r"""\begin{table}[h]
 \centering
-\caption{P0011 Yvutu: Performance comparison of deforestation detection methods on the Paraguayan Chaco test set. Best results in bold.}
+\caption{P0011 Yvutu: Performance comparison of deforestation detection methods on the Paraguayan Chaco test set. Best results in bold.}  # noqa: E501
 \label{tab:main_results}
 \begin{tabular}{lcccccc}
 \toprule

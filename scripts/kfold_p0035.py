@@ -7,14 +7,14 @@ Run:
   python3 scripts/kfold_p0035.py --quick
   python3 scripts/kfold_p0035.py --full
 """
-import sys
+
+import numpy as np
 import json
+import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, "/root/satellite-paraguay")
-
-import numpy as np
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 
 def generate_air_quality(seed=42):
@@ -50,10 +50,9 @@ def lstm_train_eval(train_series, test_series, hidden_size=8, n_epochs=20, lr=0.
     def make_windows(s):
         X, y = [], []
         for i in range(3, len(s)):
-            X.append(s[i - 3:i])
+            X.append(s[i - 3: i])
             y.append(s[i])
-        return (np.array(X)[..., None] if X else np.zeros((0, 3, 1)),
-                np.array(y) if y else np.zeros((0,)))
+        return (np.array(X)[..., None] if X else np.zeros((0, 3, 1)), np.array(y) if y else np.zeros((0,)))
 
     X_tr, y_tr = make_windows(train_series)
     X_te, y_te = make_windows(test_series)
@@ -65,8 +64,7 @@ def lstm_train_eval(train_series, test_series, hidden_size=8, n_epochs=20, lr=0.
     y_tr_t = torch.tensor(y_tr).unsqueeze(-1)
     X_te_t = torch.tensor(X_te)
 
-    model = nn.LSTM(input_size=1, hidden_size=hidden_size,
-                    num_layers=1, batch_first=True)
+    model = nn.LSTM(input_size=1, hidden_size=hidden_size, num_layers=1, batch_first=True)
     head = nn.Linear(hidden_size, 1)
 
     opt = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=lr)
@@ -156,12 +154,14 @@ def run_kfold(quick=True):
                 if lstm_metrics is None or baseline_metrics is None:
                     continue
 
-                fold_results.append({
-                    "station": station_name,
-                    "lstm": lstm_metrics,
-                    "baseline": baseline_metrics,
-                    "improvement_mae": baseline_metrics["mae"] - lstm_metrics["mae"],
-                })
+                fold_results.append(
+                    {
+                        "station": station_name,
+                        "lstm": lstm_metrics,
+                        "baseline": baseline_metrics,
+                        "improvement_mae": baseline_metrics["mae"] - lstm_metrics["mae"],
+                    }
+                )
 
             if fold_results:
                 avg = {
@@ -184,7 +184,7 @@ def run_kfold(quick=True):
                 print(f"  Improvement: {avg['improvement_mae']:+.3f} MAE")
 
     # Save
-    output_dir = Path("/root/satellite-paraguay/outputs/p0035")
+    output_dir = Path(__file__).resolve().parent.parent / "outputs" / "p0035"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_data = {
@@ -202,9 +202,9 @@ def run_kfold(quick=True):
         f.write("# P0035 Tatakua — 5-Fold Cross-Validation Results\n\n")
         f.write(f"**Mode:** {'QUICK' if quick else 'FULL'}\n")
         f.write(f"**Total time:** {output_data['total_time_seconds']:.1f}s\n")
-        f.write(f"**Date:** 2026-08-03\n\n")
+        f.write("**Date:** 2026-08-03\n\n")
         f.write("## Setup\n")
-        f.write(f"- 5 synthetic air-quality stations × 36 months\n")
+        f.write("- 5 synthetic air-quality stations × 36 months\n")
         f.write(f"- LSTM hidden sizes: {hidden_sizes}\n")
         f.write(f"- {n_folds}-fold time-series CV (rolling-window, no future leakage)\n")
         f.write(f"- {n_epochs} epochs, MSE loss, Adam\n\n")
@@ -212,8 +212,10 @@ def run_kfold(quick=True):
         f.write("| Fold | Hidden | LSTM MAE | LSTM R² | Baseline MAE | Baseline R² | Δ MAE |\n")
         f.write("|------|--------|----------|---------|--------------|-------------|-------|\n")
         for r in all_results:
-            f.write(f"| {r['fold']+1} | {r['hidden_size']} | {r['lstm_mae']:.3f} | {r['lstm_r2']:.3f} | "
-                   f"{r['baseline_mae']:.3f} | {r['baseline_r2']:.3f} | {r['improvement_mae']:+.3f} |\n")
+            f.write(
+                f"| {r['fold']+1} | {r['hidden_size']} | {r['lstm_mae']:.3f} | {r['lstm_r2']:.3f} | "
+                f"{r['baseline_mae']:.3f} | {r['baseline_r2']:.3f} | {r['improvement_mae']:+.3f} |\n"
+            )
         f.write("\n## Aggregate\n\n")
         if all_results:
             f.write(f"- **Mean LSTM MAE:** {np.mean([r['lstm_mae'] for r in all_results]):.3f}\n")
@@ -222,7 +224,7 @@ def run_kfold(quick=True):
             f.write(f"- **Mean improvement:** {np.mean([r['improvement_mae'] for r in all_results]):+.3f}\n")
             f.write(f"- **Mean LSTM R²:** {np.mean([r['lstm_r2'] for r in all_results]):.3f}\n")
         f.write("\n## What this means\n\n")
-        if all_results and np.mean([r['improvement_mae'] for r in all_results]) > 0:
+        if all_results and np.mean([r["improvement_mae"] for r in all_results]) > 0:
             f.write("- LSTM beats persistence baseline on synthetic data.\n")
             f.write("- Improvement is consistent across folds (low variance).\n")
             f.write("- Hidden size 8-16 is sufficient for this synthetic task.\n")

@@ -5,10 +5,10 @@ Uses content-addressable storage (CAS) for efficiency.
 
 Run: python3 scripts/manage_test_data.py
 """
+
 import hashlib
 import json
 import shutil
-import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -129,11 +129,11 @@ def main():
     if n_missing > 0:
         print(f"  ⚠ Missing: {n_missing}")
 
-    print(f"\nUsage:")
+    print("\nUsage:")
     print(f"  - Test fixtures in {TEST_DATA_DIR}")
     print(f"  - Index in {TEST_DATA_INDEX}")
-    print(f"  - Fixtures are content-addressed (SHA256)")
-    print(f"  - Verify with: python3 scripts/manage_test_data.py")
+    print("  - Fixtures are content-addressed (SHA256)")
+    print("  - Verify with: python3 scripts/manage_test_data.py")
 
 
 if __name__ == "__main__":

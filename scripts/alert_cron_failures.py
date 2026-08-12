@@ -14,13 +14,12 @@ Sends alerts via:
 
 Run: python3 scripts/alert_cron_failures.py
 """
+
 import argparse
 import json
 import os
 import re
 import smtplib
-import subprocess
-import sys
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path

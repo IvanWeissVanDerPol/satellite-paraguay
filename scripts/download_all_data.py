@@ -16,13 +16,14 @@ Usage:
     python3 scripts/download_all_data.py --with-s2 5      # also 5 Sentinel-2 scenes (~30 min)
     python3 scripts/download_all_data.py --full          # everything (~2 hours)
 """
-import sys
+
 import json
+import sys
 import time
 import urllib.request
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 
@@ -65,7 +66,7 @@ def download_mapbiomas():
     output_dir = REPO_ROOT / "data" / "mapbiomas"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    url = "https://storage.googleapis.com/mapbiomas-public/initiatives/paraguay/collection_2/mapbiomas_paraguay_collection2_integration_v1-classification_2023.tif"
+    url = "https://storage.googleapis.com/mapbiomas-public/initiatives/paraguay/collection_2/mapbiomas_paraguay_collection2_integration_v1-classification_2023.tif"  # noqa: E501
     out_path = output_dir / "mapbiomas_paraguay_2023.tif"
 
     if out_path.exists():
@@ -89,11 +90,20 @@ def download_sentinel2(n_scenes=5, max_cloud=20):
         import pystac_client
     except ImportError:
         import subprocess
-        subprocess.run([
-            sys.executable, "-m", "pip", "install",
-            "planetary-computer", "pystac-client",
-            "--break-system-packages", "-q"
-        ], check=True)
+
+        subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "planetary-computer",
+                "pystac-client",
+                "--break-system-packages",
+                "-q",
+            ],
+            check=True,
+        )
         import planetary_computer
         import pystac_client
 
@@ -140,13 +150,11 @@ def download_sentinel2(n_scenes=5, max_cloud=20):
 
 def main():
     import argparse
+
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--quick", action="store_true",
-                           help="Hansen + MapBiomas only (~5 min)")
-    argparser.add_argument("--with-s2", type=int, default=0,
-                           help="Also download N Sentinel-2 scenes")
-    argparser.add_argument("--full", action="store_true",
-                           help="Download everything (slow)")
+    argparser.add_argument("--quick", action="store_true", help="Hansen + MapBiomas only (~5 min)")
+    argparser.add_argument("--with-s2", type=int, default=0, help="Also download N Sentinel-2 scenes")
+    argparser.add_argument("--full", action="store_true", help="Download everything (slow)")
     args = argparser.parse_args()
 
     print("=" * 70)

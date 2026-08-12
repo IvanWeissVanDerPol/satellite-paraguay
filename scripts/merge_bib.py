@@ -14,7 +14,9 @@ Usage:
 
 Default output: ./references.bib (repo root).
 """
+
 from __future__ import annotations
+
 import argparse
 import re
 from pathlib import Path
@@ -30,11 +32,11 @@ PREFER_PAPERS = {
     # in parentheses) and the author field is more granular. The papers
     # version also uses "\url{...}" instead of the malformed "\\\\url{...}"
     # that appears in some thesis entries.
-    "indi2024",          # papers: title contains "(INDI)" + author is "INDI Paraguay"
-    "infona2024",        # papers: title contains "(INFONA)" + author is "INFONA Paraguay"
-    "mades2024",         # papers: title contains "(MADES)" + author is "MADES Paraguay"
-    "openaq2024",        # papers: title contains "Open Air Quality Data"
-    "tensorflow2015",    # papers: full author list + @software entry type + URL
+    "indi2024",  # papers: title contains "(INDI)" + author is "INDI Paraguay"
+    "infona2024",  # papers: title contains "(INFONA)" + author is "INFONA Paraguay"
+    "mades2024",  # papers: title contains "(MADES)" + author is "MADES Paraguay"
+    "openaq2024",  # papers: title contains "Open Air Quality Data"
+    "tensorflow2015",  # papers: full author list + @software entry type + URL
 }
 
 
@@ -68,7 +70,7 @@ def split_entries(text: str) -> list[str]:
         elif ch == "}":
             depth -= 1
             if depth == 0 and start is not None:
-                out.append(text[start : i + 1])
+                out.append(text[start: i + 1])
                 start = None
     return [normalize_entry(e) for e in out if e.strip()]
 

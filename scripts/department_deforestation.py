@@ -14,21 +14,19 @@ Outputs:
     outputs/p0011/departments/department_deforestation.png
     outputs/p0011/departments/department_map.png
 """
-import sys
+
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
+import geopandas as gpd
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.features import rasterize
-from rasterio.windows import Window
-import geopandas as gpd
-import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/departments"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -94,21 +92,23 @@ def compute_dept_stats(dept_array, lossyear, dept_ids):
         loss_ha = loss_pixels * pixel_area_ha
         loss_km2 = loss_ha / 100
         # Carbon: AGB = 100*tc^2/(100+tc^2), carbon = AGB * 0.47 * ha
-        agb = 100 * mean_tc ** 2 / (100 + mean_tc ** 2)
+        agb = 100 * mean_tc**2 / (100 + mean_tc**2)
         carbon_t = agb * 0.47 * loss_ha * 1000  # agb in Mg/ha, * loss_ha
         co2e_t = carbon_t * 44 / 12
 
-        results.append({
-            "rank": 0,  # filled after sorting
-            "department": dept,
-            "total_pixels": total_pixels,
-            "loss_pixels": loss_pixels,
-            "loss_pct": float(loss_pct),
-            "loss_ha": float(loss_ha),
-            "loss_km2": float(loss_km2),
-            "carbon_mt": float(carbon_t / 1e6),
-            "co2e_mt": float(co2e_t / 1e6),
-        })
+        results.append(
+            {
+                "rank": 0,  # filled after sorting
+                "department": dept,
+                "total_pixels": total_pixels,
+                "loss_pixels": loss_pixels,
+                "loss_pct": float(loss_pct),
+                "loss_ha": float(loss_ha),
+                "loss_km2": float(loss_km2),
+                "carbon_mt": float(carbon_t / 1e6),
+                "co2e_mt": float(co2e_t / 1e6),
+            }
+        )
 
     # Sort by loss %
     results.sort(key=lambda x: x["loss_pct"], reverse=True)
@@ -163,7 +163,7 @@ def plot_map(dept_array, lossyear, dept_ids, results, out_path):
     # Map 2: deforestation intensity by department
     ax = axes[1]
     # Create per-pixel loss % map
-    loss_pct_map = np.zeros_like(dept_array, dtype=np.float32)
+    loss_pct_map = np.zeros_like(dept_array, dtype=np.float32)  # noqa: F841
     # Note: this is approximate (windowed histograms would be more accurate)
     ax.imshow(loss_sample, cmap="Reds", vmin=0, vmax=1, alpha=0.5)
     ax.imshow(dept_sample, cmap="Greys", vmin=0, vmax=len(dept_ids) + 1, alpha=0.3)
@@ -192,8 +192,7 @@ def main():
     print("\n[1/3] Loading Hansen lossyear...")
     with rasterio.open(hansen_path) as src:
         lossyear = src.read(1)
-        print(f"  Shape: {lossyear.shape}, "
-              f"loss pixels (2001-2023): {int((lossyear > 0).sum()):,}")
+        print(f"  Shape: {lossyear.shape}, " f"loss pixels (2001-2023): {int((lossyear > 0).sum()):,}")
 
     # Rasterize departments
     print("\n[2/3] Rasterizing departments...")
@@ -208,27 +207,36 @@ def main():
     print(f"{'Rank':>4}  {'Department':<20}  {'Loss %':>8}  {'Loss km²':>10}  {'CO2e Mt':>10}")
     print("-" * 70)
     for r in results:
-        print(f"{r['rank']:>4}  {r['department']:<20}  "
-              f"{r['loss_pct']:>7.2f}%  {r['loss_km2']:>10,.0f}  {r['co2e_mt']:>10.2f}")
+        print(
+            f"{r['rank']:>4}  {r['department']:<20}  "
+            f"{r['loss_pct']:>7.2f}%  {r['loss_km2']:>10,.0f}  {r['co2e_mt']:>10.2f}"
+        )
 
     # Top 3 most-deforested
     if len(results) >= 3:
-        print(f"\nTop 3 most-deforested departments:")
+        print("\nTop 3 most-deforested departments:")
         for r in results[:3]:
-            print(f"  {r['rank']}. {r['department']}: "
-                  f"{r['loss_pct']:.1f}% loss, "
-                  f"{r['loss_km2']:.0f} km², "
-                  f"{r['co2e_mt']:.1f} MtCO2e")
+            print(
+                f"  {r['rank']}. {r['department']}: "
+                f"{r['loss_pct']:.1f}% loss, "
+                f"{r['loss_km2']:.0f} km², "
+                f"{r['co2e_mt']:.1f} MtCO2e"
+            )
 
     # Save
     out_json = OUT_DIR / "department_deforestation.json"
-    out_json.write_text(json.dumps({
-        "data_source": "Hansen GFC v1.11 + geoBoundaries Paraguay ADM1 simplified",
-        "tiles_analyzed": ["20S_060W"],
-        "n_departments": len(dept_ids),
-        "departments": results,
-        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-    }, indent=2))
+    out_json.write_text(
+        json.dumps(
+            {
+                "data_source": "Hansen GFC v1.11 + geoBoundaries Paraguay ADM1 simplified",
+                "tiles_analyzed": ["20S_060W"],
+                "n_departments": len(dept_ids),
+                "departments": results,
+                "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            },
+            indent=2,
+        )
+    )
 
     # Plots
     plot_results(results, OUT_DIR / "department_deforestation.png")

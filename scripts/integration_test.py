@@ -12,11 +12,12 @@ This script exercises the COMPLETE pipeline:
 
 Run: python3 scripts/integration_test.py
 """
+
+import json
 import sys
 import time
-import json
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -40,8 +41,10 @@ def main():
     start = time.time()
 
     from src.paraguay_admin import (
-        load_tile_index, load_priority_tiles,
-        load_catastro_parcels, load_indigenous_territories,
+        load_catastro_parcels,
+        load_indigenous_territories,
+        load_priority_tiles,
+        load_tile_index,
     )
 
     tiles = load_tile_index()
@@ -49,17 +52,19 @@ def main():
     catastro = load_catastro_parcels()
     indigenous = load_indigenous_territories()
 
-    results["stages"].append({
-        "stage": "load_paraguay_data",
-        "time_seconds": time.time() - start,
-        "metrics": {
-            "tiles": len(tiles),
-            "priority_tiles": len(priority) if not priority.empty else 0,
-            "catastro_parcels": len(catastro),
-            "indigenous_territories": len(indigenous),
-        },
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "load_paraguay_data",
+            "time_seconds": time.time() - start,
+            "metrics": {
+                "tiles": len(tiles),
+                "priority_tiles": len(priority) if not priority.empty else 0,
+                "catastro_parcels": len(catastro),
+                "indigenous_territories": len(indigenous),
+            },
+            "status": "success",
+        }
+    )
     print(f"  ✓ {len(tiles)} tiles, {len(catastro)} parcels, {len(indigenous)} territories")
 
     # ====================================
@@ -102,12 +107,14 @@ def main():
             }
             print(f"  ✗ {paper_id}: {e}")
 
-    results["stages"].append({
-        "stage": "paper_pipelines",
-        "time_seconds": time.time() - start,
-        "papers": paper_results,
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "paper_pipelines",
+            "time_seconds": time.time() - start,
+            "papers": paper_results,
+            "status": "success",
+        }
+    )
 
     # ====================================
     # STAGE 3: Run all baselines
@@ -116,10 +123,11 @@ def main():
     start = time.time()
 
     import numpy as np
+
     from src.baselines import (
         p0011_yvytu_baselines,
-        p0100_yvyra_baselines,
         p0035_tatakua_baselines,
+        p0100_yvyra_baselines,
     )
 
     baseline_results = {}
@@ -138,13 +146,15 @@ def main():
     historical = np.random.rand(30) * 25 + 5
     baseline_results["p0035_baselines"] = p0035_tatakua_baselines.run_all_baselines(historical)
 
-    results["stages"].append({
-        "stage": "baselines",
-        "time_seconds": time.time() - start,
-        "metrics": baseline_results,
-        "status": "success",
-    })
-    print(f"  ✓ All 3 baseline suites complete")
+    results["stages"].append(
+        {
+            "stage": "baselines",
+            "time_seconds": time.time() - start,
+            "metrics": baseline_results,
+            "status": "success",
+        }
+    )
+    print("  ✓ All 3 baseline suites complete")
 
     # ====================================
     # STAGE 4: Real data fetch
@@ -152,26 +162,28 @@ def main():
     print("\n[STAGE 4/8] Fetching real data...")
     start = time.time()
 
-    from src.satellite_io import (
-        fetch_sentinel2_tile,
-        download_mapbiomas_paraguay_real,
-        download_hansen_real,
-    )
     from src.external import (
-        fetch_verra_paraguay,
+        fetch_firms_fires,
         fetch_openaq_asuncion,
         fetch_sentinel5p_no2,
-        fetch_firms_fires,
+        fetch_verra_paraguay,
+    )
+    from src.satellite_io import (
+        download_hansen_real,
+        download_mapbiomas_paraguay_real,
+        fetch_sentinel2_tile,
     )
 
     bbox = {"min_lon": -57.7, "max_lon": -57.4, "min_lat": -25.4, "max_lat": -25.2}
     real_data = {}
 
     # Sentinel-2
-    s2 = fetch_sentinel2_tile("-54.267_-21.164",
-                              {"min_lon": -54.317, "max_lon": -54.217,
-                               "min_lat": -21.214, "max_lat": -21.114},
-                              "2024-01-01", "2025-01-01")
+    s2 = fetch_sentinel2_tile(
+        "-54.267_-21.164",
+        {"min_lon": -54.317, "max_lon": -54.217, "min_lat": -21.214, "max_lat": -21.114},
+        "2024-01-01",
+        "2025-01-01",
+    )
     real_data["sentinel2"] = {"source": s2["source"], "shape": list(s2["data"].shape)}
 
     # MapBiomas
@@ -198,13 +210,15 @@ def main():
     fires = fetch_firms_fires({"min_lon": -61, "max_lon": -58, "min_lat": -22.5, "max_lat": -20}, days=7)
     real_data["firms"] = {"detections": len(fires)}
 
-    results["stages"].append({
-        "stage": "real_data_fetch",
-        "time_seconds": time.time() - start,
-        "metrics": real_data,
-        "status": "success",
-    })
-    print(f"  ✓ All 7 real data sources fetched")
+    results["stages"].append(
+        {
+            "stage": "real_data_fetch",
+            "time_seconds": time.time() - start,
+            "metrics": real_data,
+            "status": "success",
+        }
+    )
+    print("  ✓ All 7 real data sources fetched")
 
     # ====================================
     # STAGE 5: Run conflict detection
@@ -215,17 +229,19 @@ def main():
     from src.paraguay_admin.real_analysis import detect_conflicts_real
 
     conflict_result = detect_conflicts_real(buffer_m=100)
-    results["stages"].append({
-        "stage": "conflict_detection",
-        "time_seconds": time.time() - start,
-        "metrics": {
-            "total_parcels": conflict_result["total_parcels"],
-            "total_territories": conflict_result["total_indigenous_territories"],
-            "conflict_parcels": conflict_result["conflict_parcels"],
-            "conflict_fraction": conflict_result["conflict_fraction"],
-        },
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "conflict_detection",
+            "time_seconds": time.time() - start,
+            "metrics": {
+                "total_parcels": conflict_result["total_parcels"],
+                "total_territories": conflict_result["total_indigenous_territories"],
+                "conflict_parcels": conflict_result["conflict_parcels"],
+                "conflict_fraction": conflict_result["conflict_fraction"],
+            },
+            "status": "success",
+        }
+    )
     print(f"  ✓ {conflict_result['conflict_parcels']} conflicts detected")
 
     # ====================================
@@ -234,7 +250,7 @@ def main():
     print("\n[STAGE 6/8] Generating evaluation metrics...")
     start = time.time()
 
-    from src.evaluation import pixel_f1_score, mean_iou, regression_metrics
+    from src.evaluation import mean_iou, pixel_f1_score
 
     # Test evaluation module
     y_true = np.random.randint(0, 5, (100, 100))
@@ -244,12 +260,14 @@ def main():
         "miou": mean_iou(y_true, y_pred),
     }
 
-    results["stages"].append({
-        "stage": "evaluation_metrics",
-        "time_seconds": time.time() - start,
-        "metrics": eval_metrics,
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "evaluation_metrics",
+            "time_seconds": time.time() - start,
+            "metrics": eval_metrics,
+            "status": "success",
+        }
+    )
     print(f"  ✓ F1 macro: {eval_metrics['f1_macro']:.4f}, mIoU: {eval_metrics['miou']:.4f}")
 
     # ====================================
@@ -267,12 +285,14 @@ def main():
     figures = generate_figures(catastro, indigenous, conflict_result, hansen, mb)
     tables = generate_tables(baseline_results, conflict_result, paper_results)
 
-    results["stages"].append({
-        "stage": "figures_tables",
-        "time_seconds": time.time() - start,
-        "metrics": {"figures": len(figures), "tables": len(tables)},
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "figures_tables",
+            "time_seconds": time.time() - start,
+            "metrics": {"figures": len(figures), "tables": len(tables)},
+            "status": "success",
+        }
+    )
     print(f"  ✓ {len(figures)} figures, {len(tables)} tables")
 
     # ====================================
@@ -286,12 +306,14 @@ def main():
     results["total_time_seconds"] = time.time() - overall_start
     report_path = generate_final_report(results)
 
-    results["stages"].append({
-        "stage": "final_report",
-        "time_seconds": time.time() - start,
-        "output": str(report_path),
-        "status": "success",
-    })
+    results["stages"].append(
+        {
+            "stage": "final_report",
+            "time_seconds": time.time() - start,
+            "output": str(report_path),
+            "status": "success",
+        }
+    )
 
     # ====================================
     # SUMMARY
@@ -307,7 +329,7 @@ def main():
     print("INTEGRATION TEST COMPLETE")
     print("=" * 70)
     print(f"Total time: {elapsed:.2f}s")
-    print(f"Stages: 8/8 passed")
+    print("Stages: 8/8 passed")
     print(f"Report: {report_path}")
     print(f"Results: {results_path}")
 
@@ -317,8 +339,10 @@ def main():
 def generate_figures(catastro, indigenous, conflict_result, hansen, mb):
     """Generate paper figures."""
     import numpy as np
+
     try:
         import matplotlib
+
         matplotlib.use("Agg")  # No display
         import matplotlib.pyplot as plt
     except ImportError:
@@ -329,16 +353,19 @@ def generate_figures(catastro, indigenous, conflict_result, hansen, mb):
     # Figure 1: Paraguay conflict map
     fig, ax = plt.subplots(figsize=(12, 10))
     try:
-        indigenous.plot(ax=ax, color="lightgreen", edgecolor="darkgreen",
-                       linewidth=2, alpha=0.5, label="Indigenous territories")
-        catastro.head(500).plot(ax=ax, color="lightcoral", markersize=1,
-                                  alpha=0.3, label="Catastro parcels (500 sample)")
+        indigenous.plot(
+            ax=ax, color="lightgreen", edgecolor="darkgreen", linewidth=2, alpha=0.5, label="Indigenous territories"
+        )
+        catastro.head(500).plot(
+            ax=ax, color="lightcoral", markersize=1, alpha=0.3, label="Catastro parcels (500 sample)"
+        )
         if not conflict_result["conflicts"].empty:
-            conflict_result["conflicts"].plot(ax=ax, color="red", markersize=5,
-                                                label="Conflicts")
-        ax.set_title(f"P0012 Yvy: Paraguay Indigenous-Catastro Conflicts\n"
-                     f"({conflict_result['conflict_parcels']} of {conflict_result['total_parcels']} parcels)",
-                     fontsize=14)
+            conflict_result["conflicts"].plot(ax=ax, color="red", markersize=5, label="Conflicts")
+        ax.set_title(
+            f"P0012 Yvy: Paraguay Indigenous-Catastro Conflicts\n"
+            f"({conflict_result['conflict_parcels']} of {conflict_result['total_parcels']} parcels)",
+            fontsize=14,
+        )
         ax.legend()
         ax.set_xlabel("Longitude")
         ax.set_ylabel("Latitude")
@@ -371,11 +398,11 @@ def generate_figures(catastro, indigenous, conflict_result, hansen, mb):
     try:
         unique, counts = np.unique(mb, return_counts=True)
         from src.satellite_io.mapbiomas import MAPBIOMAS_CLASSES
+
         class_names = [MAPBIOMAS_CLASSES.get(int(u), f"Class {int(u)}") for u in unique]
         fig, ax = plt.subplots(figsize=(12, 6))
         ax.barh(class_names, counts, color="steelblue")
-        ax.set_title("P0025 Yrupe: MapBiomas Class Distribution (Synthetic 256×256 tile)",
-                     fontsize=14)
+        ax.set_title("P0025 Yrupe: MapBiomas Class Distribution (Synthetic 256×256 tile)", fontsize=14)
         ax.set_xlabel("Pixel count")
         fig.tight_layout()
         fig.savefig("outputs/figures/p0025_mapbiomas_classes.png", dpi=150, bbox_inches="tight")
@@ -396,11 +423,13 @@ def generate_tables(baseline_results, conflict_result, paper_results):
         rows = []
         for paper_id, baselines in baseline_results.items():
             for baseline_name, metrics in baselines.items():
-                rows.append({
-                    "paper": paper_id,
-                    "baseline": baseline_name,
-                    **metrics,
-                })
+                rows.append(
+                    {
+                        "paper": paper_id,
+                        "baseline": baseline_name,
+                        **metrics,
+                    }
+                )
         table_path = Path("outputs/tables/baseline_metrics.json")
         table_path.parent.mkdir(parents=True, exist_ok=True)
         table_path.write_text(json.dumps(rows, indent=2, default=str))
@@ -427,12 +456,14 @@ def generate_tables(baseline_results, conflict_result, paper_results):
     try:
         rows = []
         for paper_id, result in paper_results.items():
-            rows.append({
-                "paper": paper_id,
-                "time_seconds": result["time_seconds"],
-                "status": result["status"],
-                "error": result.get("error", ""),
-            })
+            rows.append(
+                {
+                    "paper": paper_id,
+                    "time_seconds": result["time_seconds"],
+                    "status": result["status"],
+                    "error": result.get("error", ""),
+                }
+            )
         table_path = Path("outputs/tables/paper_pipeline_status.json")
         table_path.write_text(json.dumps(rows, indent=2))
         tables.append("paper_pipeline_status.json")
@@ -476,7 +507,9 @@ def generate_final_report(results):
             f.write("\n## Conflicts (P0012 Yvy)\n\n")
             f.write(f"- Total parcels: **{cm.get('total_parcels', 0)}**\n")
             f.write(f"- Indigenous territories: **{cm.get('total_territories', 0)}**\n")
-            f.write(f"- Conflict parcels: **{cm.get('conflict_parcels', 0)}** ({cm.get('conflict_fraction', 0)*100:.2f}%)\n")
+            f.write(
+                f"- Conflict parcels: **{cm.get('conflict_parcels', 0)}** ({cm.get('conflict_fraction', 0)*100:.2f}%)\n"
+            )
 
         # Real data
         stage4 = next((s for s in results["stages"] if s["stage"] == "real_data_fetch"), None)

@@ -3,21 +3,18 @@
 Coverage target: 60%+. Tests the synthetic data generation, helpers
 (deforestation year, cumulative), and module constants.
 """
-import pytest
+
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from src.satellite_io import hansen as _hansen
 from src.satellite_io.hansen import (
     HANSEN_BANDS,
-    CACHE_DIR,
+    compute_cumulative_deforestation,
+    compute_deforestation_year,
     download_hansen_real,
     generate_synthetic_hansen,
-    compute_deforestation_year,
-    compute_cumulative_deforestation,
 )
-
 
 # =========================
 # Constants
@@ -96,11 +93,11 @@ class TestComputeCumulativeDeforestation:
         lossyear = np.array([[1, 15, 20, 21, 22]], dtype=np.uint8)
         result = compute_cumulative_deforestation(lossyear, end_year=2020)
         # Years 1, 15, 20 should be included; 21, 22 should not
-        assert result[0, 0] == True   # year 1
-        assert result[0, 1] == True   # year 15
-        assert result[0, 2] == True   # year 20
-        assert result[0, 3] == False  # year 21 not included
-        assert result[0, 4] == False  # year 22 not included
+        assert result[0, 0]  # year 1
+        assert result[0, 1]  # year 15
+        assert result[0, 2]  # year 20
+        assert not result[0, 3]  # year 21 not included
+        assert not result[0, 4]  # year 22 not included
 
     def test_no_loss_returns_false(self):
         lossyear = np.zeros((4, 4), dtype=np.uint8)
@@ -215,13 +212,13 @@ class TestDownloadHansenReal:
         assert "loss" in result
 
 
-
-class TestDownloadHansenReal:
-    """Tests for download_hansen_real function."""
+class TestDownloadHansenRealCacheHit:
+    """Tests for download_hansen_real cache-hit path."""
 
     def test_cache_hit(self, tmp_path, monkeypatch):
         """When cache exists, return cached data."""
         from src.satellite_io import hansen as hansen_mod
+
         # Create a cache file
         cache_file = tmp_path / "hansen_2018_2023.npz"
         arr1 = np.zeros((10, 10), dtype=np.uint8)
@@ -240,10 +237,12 @@ class TestDownloadHansenReal:
     def test_gee_fails_falls_back(self, tmp_path, monkeypatch):
         """When GEE import fails, falls back to synthetic data."""
         from src.satellite_io import hansen as hansen_mod
+
         monkeypatch.setattr(hansen_mod, "CACHE_DIR", tmp_path)
 
         # Block ee import
         import sys as _sys
+
         saved = _sys.modules.get("ee")
         _sys.modules["ee"] = None
         try:
@@ -263,6 +262,7 @@ class TestDownloadHansenReal:
     def test_use_gee_false_returns_synthetic(self, tmp_path, monkeypatch):
         """When use_gee=False, generate synthetic data directly."""
         from src.satellite_io import hansen as hansen_mod
+
         monkeypatch.setattr(hansen_mod, "CACHE_DIR", tmp_path)
 
         result = hansen_mod.download_hansen_real(

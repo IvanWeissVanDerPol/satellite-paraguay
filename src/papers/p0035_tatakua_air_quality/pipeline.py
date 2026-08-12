@@ -14,12 +14,14 @@ persistence) — see papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md.
 The MAE < 5 µg/m³ target remains valid as a goal for the next experiment
 run with a larger station set and rural coverage.
 """
+
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict, Optional
+
 import numpy as np
 import requests
 
-from ...evaluation import regression_metrics, print_metrics
+from ...evaluation import regression_metrics
 
 OPENAQ_API = "https://api.openaq.org/v2/measurements"
 
@@ -53,7 +55,7 @@ class TatakuaPipeline:
         params = {
             "city": city,
             "parameter": self.config["pollutants"],
-            "date_from": f"2025-01-01",
+            "date_from": "2025-01-01",
             "limit": 10000,
         }
         try:
@@ -90,7 +92,7 @@ class TatakuaPipeline:
         return {
             "no2": arr["no2"][:days] if "no2" in arr.files else np.zeros(days),
             "so2": arr["so2"][:days] if "so2" in arr.files else np.zeros(days),
-            "co":  arr["co"][:days]  if "co"  in arr.files else np.zeros(days),
+            "co": arr["co"][:days] if "co" in arr.files else np.zeros(days),
         }
 
     def forecast_pm25(
@@ -164,6 +166,7 @@ def run_tatakua_demo(historical: Optional[np.ndarray] = None):
 
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) > 1:
         hist = np.load(sys.argv[1])
         run_tatakua_demo(historical=hist)

@@ -4,10 +4,10 @@ Coverage target: 90%+. Tests stack_timeseries, compute_ndvi_timeseries,
 detect_changes_bfast, compute_trend, compute_anomaly,
 aggregate_by_department.
 """
-import pytest
+
+from unittest.mock import MagicMock, patch
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 class TestStackTimeseries:
@@ -42,6 +42,7 @@ class TestStackTimeseries:
     def test_stack_without_bands(self, tmp_path):
         """Stack rasters without band selection."""
         from src.timeseries.analysis import stack_timeseries
+
         paths = [tmp_path / "a.tif", tmp_path / "b.tif"]
         for p in paths:
             p.write_text("dummy")
@@ -79,18 +80,22 @@ class TestComputeNDVITimeseries:
         mock_src = MagicMock()
         mock_src.__enter__ = MagicMock(return_value=mock_src)
         mock_src.__exit__ = MagicMock(return_value=False)
+
         # NIR > RED so NDVI positive
         def side_effect(*args, **kwargs):
             # First call is red, second is nir (per iter)
             # alternate between red and nir
             return np.array([[0.2, 0.3], [0.4, 0.5]])
+
         # Alternate values via side_effect with iterator
-        vals = iter([
-            np.array([[0.2, 0.3], [0.4, 0.5]]),  # red
-            np.array([[0.5, 0.6], [0.7, 0.8]]),  # nir
-            np.array([[0.2, 0.3], [0.4, 0.5]]),  # red
-            np.array([[0.5, 0.6], [0.7, 0.8]]),  # nir
-        ])
+        vals = iter(
+            [
+                np.array([[0.2, 0.3], [0.4, 0.5]]),  # red
+                np.array([[0.5, 0.6], [0.7, 0.8]]),  # nir
+                np.array([[0.2, 0.3], [0.4, 0.5]]),  # red
+                np.array([[0.5, 0.6], [0.7, 0.8]]),  # nir
+            ]
+        )
         mock_src.read.side_effect = lambda *args, **kwargs: next(vals)
 
         with patch("src.timeseries.analysis.rasterio.open", return_value=mock_src):
@@ -104,6 +109,7 @@ class TestDetectChangesBfast:
     def test_detect_with_insufficient_data(self):
         """When T < 4, return zeros."""
         from src.timeseries.analysis import detect_changes_bfast
+
         ts = np.random.rand(3, 5, 5)
         dates = ["2024-01-01", "2024-02-01", "2024-03-01"]
         result = detect_changes_bfast(ts, dates)
@@ -115,6 +121,7 @@ class TestDetectChangesBfast:
     def test_detect_with_sufficient_data(self):
         """When T >= 4, compute changes."""
         from src.timeseries.analysis import detect_changes_bfast
+
         ts = np.random.rand(10, 5, 5)
         dates = [f"2024-{m:02d}-01" for m in range(1, 11)]
         result = detect_changes_bfast(ts, dates)
@@ -126,6 +133,7 @@ class TestDetectChangesBfast:
     def test_detect_with_drop(self):
         """NDVI drops should be detected."""
         from src.timeseries.analysis import detect_changes_bfast
+
         # Stable NDVI
         ts = np.full((10, 5, 5), 0.8, dtype=np.float32)
         ts[5:, :, :] = 0.3  # Drop in second half
@@ -137,6 +145,7 @@ class TestDetectChangesBfast:
     def test_detect_with_threshold(self):
         """Different h thresholds work."""
         from src.timeseries.analysis import detect_changes_bfast
+
         ts = np.random.rand(8, 5, 5)
         dates = [f"2024-{m:02d}-01" for m in range(1, 9)]
         for h_val in [0.1, 0.5, 1.0]:
@@ -150,6 +159,7 @@ class TestComputeTrend:
     def test_trend_perfectly_linear(self):
         """Perfectly linear data should have a non-zero trend."""
         from src.timeseries.analysis import compute_trend
+
         # Increasing linearly
         ts = np.zeros((10, 5, 5), dtype=np.float32)
         for t in range(10):
@@ -163,6 +173,7 @@ class TestComputeTrend:
     def test_trend_constant_data(self):
         """Constant data should have ~zero trend."""
         from src.timeseries.analysis import compute_trend
+
         ts = np.full((10, 5, 5), 0.5, dtype=np.float32)
         dates = [f"2024-{m:02d}-01" for m in range(1, 11)]
         trend = compute_trend(ts, dates)
@@ -172,6 +183,7 @@ class TestComputeTrend:
     def test_trend_decreasing(self):
         """Decreasing data should have negative trend."""
         from src.timeseries.analysis import compute_trend
+
         ts = np.zeros((10, 5, 5), dtype=np.float32)
         for t in range(10):
             ts[t] = 1.0 - 0.1 * t
@@ -186,12 +198,14 @@ class TestComputeAnomaly:
 
     def test_anomaly_with_default_baseline(self):
         from src.timeseries.analysis import compute_anomaly
+
         ts = np.random.rand(20, 5, 5).astype(np.float32)
         anomaly = compute_anomaly(ts)
         assert anomaly.shape == (20, 5, 5)
 
     def test_anomaly_with_custom_baseline(self):
         from src.timeseries.analysis import compute_anomaly
+
         ts = np.random.rand(15, 5, 5).astype(np.float32)
         anomaly = compute_anomaly(ts, baseline_period=(0, 5))
         assert anomaly.shape == (15, 5, 5)
@@ -199,6 +213,7 @@ class TestComputeAnomaly:
     def test_anomaly_constant_baseline(self):
         """If data is constant, anomaly should be zero."""
         from src.timeseries.analysis import compute_anomaly
+
         ts = np.full((10, 5, 5), 0.5, dtype=np.float32)
         anomaly = compute_anomaly(ts)
         assert np.abs(anomaly).max() < 1e-5
@@ -209,6 +224,7 @@ class TestAggregateByDepartment:
 
     def test_aggregate_with_departments(self):
         from src.timeseries.analysis import aggregate_by_department
+
         ts = np.random.rand(10, 20, 20).astype(np.float32)
         depts = {
             "Asunción": "geom1",
@@ -223,6 +239,7 @@ class TestAggregateByDepartment:
 
     def test_aggregate_empty_departments(self):
         from src.timeseries.analysis import aggregate_by_department
+
         ts = np.random.rand(5, 10, 10).astype(np.float32)
         result = aggregate_by_department(ts, {})
         assert len(result) == 0
@@ -231,4 +248,5 @@ class TestAggregateByDepartment:
 class TestModuleImports:
     def test_module_imports(self):
         from src.timeseries import analysis
+
         assert analysis is not None

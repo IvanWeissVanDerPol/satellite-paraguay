@@ -2,11 +2,12 @@
 
 Coverage target: 95%+. Tests edge cases in dict handling.
 """
+
 import json
 import sys
+from unittest.mock import MagicMock, patch
+
 import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 @pytest.fixture
@@ -19,6 +20,7 @@ def mock_streamlit(monkeypatch):
 
     with patch.dict(sys.modules, {"streamlit": mock_st}):
         import src.dashboard.app as app_module
+
         saved = app_module.st
         app_module.st = mock_st
         yield mock_st
@@ -31,14 +33,19 @@ class TestPageIndigenousDictFallback:
     def test_dict_with_dict_values(self, mock_streamlit, tmp_path):
         """When data is dict of dicts, fallback creates columns."""
         import src.dashboard.app as dash_mod
+
         dash_mod.REPO_ROOT = tmp_path
 
         ind_dir = tmp_path / "outputs/p0011/indigenous"
         ind_dir.mkdir(parents=True, exist_ok=True)
-        (ind_dir / "indigenous_overlap.json").write_text(json.dumps({
-            "stat1": {"total": 100, "loss": 20},
-            "stat2": {"total": 50, "loss": 5},
-        }))
+        (ind_dir / "indigenous_overlap.json").write_text(
+            json.dumps(
+                {
+                    "stat1": {"total": 100, "loss": 20},
+                    "stat2": {"total": 50, "loss": 5},
+                }
+            )
+        )
 
         dash_mod.page_indigenous()
 
@@ -49,15 +56,20 @@ class TestPageDepartmentsNoLossPct:
     def test_no_loss_pct_column(self, mock_streamlit, tmp_path):
         """When df has no loss_pct, no bar_chart."""
         import src.dashboard.app as dash_mod
+
         dash_mod.REPO_ROOT = tmp_path
 
         dept_dir = tmp_path / "outputs/p0011/departments"
         dept_dir.mkdir(parents=True, exist_ok=True)
-        (dept_dir / "department_stats.json").write_text(json.dumps({
-            "departments": [
-                {"name": "Asuncion", "unrelated_field": 100},
-            ]
-        }))
+        (dept_dir / "department_stats.json").write_text(
+            json.dumps(
+                {
+                    "departments": [
+                        {"name": "Asuncion", "unrelated_field": 100},
+                    ]
+                }
+            )
+        )
 
         dash_mod.page_departments()
 
@@ -68,29 +80,37 @@ class TestPageDepartmentsFallbackDict:
     def test_dict_with_only_list_value(self, mock_streamlit, tmp_path):
         """When data is dict containing a list value, use that."""
         import src.dashboard.app as dash_mod
+
         dash_mod.REPO_ROOT = tmp_path
 
         dept_dir = tmp_path / "outputs/p0011/departments"
         dept_dir.mkdir(parents=True, exist_ok=True)
-        (dept_dir / "department_stats.json").write_text(json.dumps({
-            "list_key": [
-                {"name": "Alto Paraguay", "loss_pct": 28.49}
-            ],
-            "other_key": "value",
-        }))
+        (dept_dir / "department_stats.json").write_text(
+            json.dumps(
+                {
+                    "list_key": [{"name": "Alto Paraguay", "loss_pct": 28.49}],
+                    "other_key": "value",
+                }
+            )
+        )
 
         dash_mod.page_departments()
 
     def test_dict_with_only_dict_value(self, mock_streamlit, tmp_path):
         """When data is dict with dict value."""
         import src.dashboard.app as dash_mod
+
         dash_mod.REPO_ROOT = tmp_path
 
         dept_dir = tmp_path / "outputs/p0011/departments"
         dept_dir.mkdir(parents=True, exist_ok=True)
-        (dept_dir / "department_stats.json").write_text(json.dumps({
-            "dict_key": {"name": "Asuncion", "loss_pct": 5.0},
-            "other": 42,
-        }))
+        (dept_dir / "department_stats.json").write_text(
+            json.dumps(
+                {
+                    "dict_key": {"name": "Asuncion", "loss_pct": 5.0},
+                    "other": 42,
+                }
+            )
+        )
 
         dash_mod.page_departments()

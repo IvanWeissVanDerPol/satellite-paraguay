@@ -3,11 +3,12 @@
 Coverage target: 70%+. We mock streamlit and run main() with
 synthetic REPO_ROOT data.
 """
+
 import json
 import sys
+from unittest.mock import MagicMock
+
 import pytest
-from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 
 def _make_col():
@@ -55,6 +56,7 @@ def mock_streamlit(monkeypatch):
     monkeypatch.setenv("MLFLOW_TRACKING_URI", "file:/tmp/obs_mlruns")
     mock_st = _make_mock_streamlit()
     import src.observability_dashboard as obs_mod
+
     saved_st = obs_mod.st
     obs_mod.st = mock_st
     saved_sys = sys.modules.get("streamlit")
@@ -73,6 +75,7 @@ class TestMainEmpty:
     def test_main_with_no_data(self, mock_streamlit, tmp_path):
         """Run main() with empty REPO_ROOT."""
         from src import observability_dashboard as obs_mod
+
         obs_mod.REPO_ROOT = tmp_path
         # Need to create the expected dirs (even if empty) so glob doesn't crash
         for sub in ["tests", "scripts", "src", "outputs"]:
@@ -89,13 +92,12 @@ class TestMainWithData:
     def test_main_with_test_report(self, mock_streamlit, tmp_path):
         """Run main() with test_report.json present."""
         from src import observability_dashboard as obs_mod
+
         # Set up dirs
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
         # Test report
-        (tmp_path / "outputs" / "test_report.json").write_text(json.dumps({
-            "passed": 100, "failed": 5
-        }))
+        (tmp_path / "outputs" / "test_report.json").write_text(json.dumps({"passed": 100, "failed": 5}))
         obs_mod.REPO_ROOT = tmp_path
         obs_mod.main()
         mock_streamlit.title.assert_called()
@@ -103,6 +105,7 @@ class TestMainWithData:
     def test_main_with_coverage_xml(self, mock_streamlit, tmp_path):
         """Run main() with coverage.xml present."""
         from src import observability_dashboard as obs_mod
+
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
         (tmp_path / "coverage.xml").write_text(
@@ -111,8 +114,8 @@ class TestMainWithData:
             '<packages><package name="src"><classes>'
             '<class name="foo" filename="src/foo.py" line-rate="0.9"/>\n'
             '<class name="bar" filename="src/bar.py" line-rate="0.8"/>\n'
-            '</classes></package></packages>\n'
-            '</coverage>\n'
+            "</classes></package></packages>\n"
+            "</coverage>\n"
         )
         obs_mod.REPO_ROOT = tmp_path
         obs_mod.main()
@@ -121,14 +124,19 @@ class TestMainWithData:
     def test_main_with_dependency_audit(self, mock_streamlit, tmp_path):
         """Run main() with dependency_audit.json present."""
         from src import observability_dashboard as obs_mod
+
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
-        (tmp_path / "outputs" / "dependency_audit.json").write_text(json.dumps({
-            "declared": ["numpy", "pandas", "scipy"],
-            "used_packages": ["numpy", "pandas"],
-            "missing": ["scipy"],
-            "unused": [],
-        }))
+        (tmp_path / "outputs" / "dependency_audit.json").write_text(
+            json.dumps(
+                {
+                    "declared": ["numpy", "pandas", "scipy"],
+                    "used_packages": ["numpy", "pandas"],
+                    "missing": ["scipy"],
+                    "unused": [],
+                }
+            )
+        )
         obs_mod.REPO_ROOT = tmp_path
         obs_mod.main()
         mock_streamlit.title.assert_called()
@@ -136,15 +144,20 @@ class TestMainWithData:
     def test_main_with_alerts(self, mock_streamlit, tmp_path):
         """Run main() with alert_report.json present."""
         from src import observability_dashboard as obs_mod
+
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
-        (tmp_path / "outputs" / "alert_report.json").write_text(json.dumps({
-            "alerts": [
-                {"severity": "high", "type": "test_fail", "message": "5 tests failed"},
-                {"severity": "medium", "type": "coverage_drop", "message": "Coverage dropped 2%"},
-                {"severity": "low", "type": "info", "message": "Dep update available"},
-            ]
-        }))
+        (tmp_path / "outputs" / "alert_report.json").write_text(
+            json.dumps(
+                {
+                    "alerts": [
+                        {"severity": "high", "type": "test_fail", "message": "5 tests failed"},
+                        {"severity": "medium", "type": "coverage_drop", "message": "Coverage dropped 2%"},
+                        {"severity": "low", "type": "info", "message": "Dep update available"},
+                    ]
+                }
+            )
+        )
         obs_mod.REPO_ROOT = tmp_path
         obs_mod.main()
         mock_streamlit.title.assert_called()
@@ -152,6 +165,7 @@ class TestMainWithData:
     def test_main_with_no_alerts(self, mock_streamlit, tmp_path):
         """Run main() with empty alerts list."""
         from src import observability_dashboard as obs_mod
+
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
         (tmp_path / "outputs" / "alert_report.json").write_text(json.dumps({"alerts": []}))
@@ -163,21 +177,18 @@ class TestMainWithData:
     def test_main_full(self, mock_streamlit, tmp_path):
         """Run main() with everything."""
         from src import observability_dashboard as obs_mod
+
         for sub in ["tests", "scripts", "src", "outputs"]:
             (tmp_path / sub).mkdir()
         # Test files (one)
         (tmp_path / "tests" / "test_foo.py").write_text("# test")
         # Outputs
-        (tmp_path / "outputs" / "test_report.json").write_text(json.dumps({
-            "passed": 100, "failed": 0
-        }))
-        (tmp_path / "outputs" / "dependency_audit.json").write_text(json.dumps({
-            "declared": ["a"], "used_packages": ["a"], "missing": [], "unused": []
-        }))
-        (tmp_path / "outputs" / "alert_report.json").write_text(json.dumps({"alerts": []}))
-        (tmp_path / "coverage.xml").write_text(
-            '<coverage line-rate="0.95"></coverage>'
+        (tmp_path / "outputs" / "test_report.json").write_text(json.dumps({"passed": 100, "failed": 0}))
+        (tmp_path / "outputs" / "dependency_audit.json").write_text(
+            json.dumps({"declared": ["a"], "used_packages": ["a"], "missing": [], "unused": []})
         )
+        (tmp_path / "outputs" / "alert_report.json").write_text(json.dumps({"alerts": []}))
+        (tmp_path / "coverage.xml").write_text('<coverage line-rate="0.95"></coverage>')
         obs_mod.REPO_ROOT = tmp_path
         obs_mod.main()
         mock_streamlit.title.assert_called()
@@ -187,11 +198,13 @@ class TestMainWithData:
 class TestLoadJsonObs:
     def test_load_json(self, tmp_path):
         from src.observability_dashboard import load_json
+
         f = tmp_path / "test.json"
         f.write_text(json.dumps({"k": "v"}))
         assert load_json(f) == {"k": "v"}
 
     def test_load_json_missing(self, tmp_path):
         from src.observability_dashboard import load_json
+
         result = load_json(tmp_path / "missing.json")
         assert result == {}

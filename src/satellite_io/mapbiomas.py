@@ -8,12 +8,11 @@ Strategy:
 MapBiomas Paraguay: https://plataforma.mapbiomas.org/
 Data: 30m land cover, 1985-2024
 """
-import os
+
 import logging
+import os
 from pathlib import Path
-from typing import Optional, Dict, List
-from datetime import datetime
-import json
+from typing import Dict, Optional
 
 import numpy as np
 
@@ -90,30 +89,34 @@ def download_mapbiomas_paraguay_real(
     if use_gee:
         try:
             import ee
+
             try:
                 ee.Initialize()
             except Exception:
                 logger.warning("GEE auth not available")
                 raise RuntimeError("no GEE auth")
 
-            aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"],
-                                          bbox["max_lon"], bbox["max_lat"]])
-            img = ee.Image(f"projects/mapbiomas-paraguay/public/collection1/paraguay_collection1")
+            aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"], bbox["max_lon"], bbox["max_lat"]])
+            img = ee.Image("projects/mapbiomas-paraguay/public/collection1/paraguay_collection1")
             # Get classification for specific year
             year_band = f"classification_{year}"
             img_year = img.select(year_band)
 
             # Get thumbnail URL
-            url = img_year.getThumbURL({
-                "region": aoi,
-                "dimensions": 256,
-                "format": "GEO_TIFF",
-                "min": 0,
-                "max": 50,
-            })
+            url = img_year.getThumbURL(
+                {
+                    "region": aoi,
+                    "dimensions": 256,
+                    "format": "GEO_TIFF",
+                    "min": 0,
+                    "max": 50,
+                }
+            )
 
             import urllib.request
+
             import rasterio
+
             with urllib.request.urlopen(url, timeout=60) as response:
                 arr_bytes = response.read()
             with rasterio.io.MemoryFile(arr_bytes) as memfile:
@@ -187,8 +190,6 @@ def compute_parcel_statistics_real(
 
     Returns dict with class fractions.
     """
-    from rasterio.mask import mask as rasterio_mask
-    from shapely.geometry import box
 
     # Simple impl: assume parcel geometry has bounding box
     if hasattr(parcel_geometry, "bounds"):

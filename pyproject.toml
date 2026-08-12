@@ -52,6 +52,7 @@ dependencies = [
     "huggingface_hub>=0.16",
     "fastapi>=0.100",
     "uvicorn>=0.23",
+    "httpx>=0.24",  # 2026-08-13: required by FastAPI TestClient (starlette.testclient)
     "streamlit>=1.28",
     "plotly>=5.17",
     "folium>=0.14",

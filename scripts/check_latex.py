@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
 """AC3: per-paper LaTeX syntax + bib-resolve check."""
+
 import re
 from pathlib import Path
+
 from pylatexenc.latexwalker import LatexWalker, LatexWalkerError
 
 base = Path("papers/drafts")
-papers = ["p0011_yvutu_deforestation", "p0010_yvyra_carbon_credits",
-          "p0012_yvy_indigenous", "p0025_yrupe_yield",
-          "p0026_kai_poaching", "p0035_tatakua_air_quality"]
+papers = [
+    "p0011_yvutu_deforestation",
+    "p0010_yvyra_carbon_credits",
+    "p0012_yvy_indigenous",
+    "p0025_yrupe_yield",
+    "p0026_kai_poaching",
+    "p0035_tatakua_air_quality",
+]
+
 
 def get_bib_keys(refs_path):
     if not refs_path.exists():
         return set()
     text = refs_path.read_text()
     return {m.group(1).strip() for m in re.finditer(r"@\w+\s*\{\s*([^,]+),", text)}
+
 
 print("AC3 -- LaTeX syntax + bib-resolve check")
 print("=" * 60)

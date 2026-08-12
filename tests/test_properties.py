@@ -5,19 +5,20 @@ Tests invariants that should hold for any input, not just specific examples.
 Run:
     pytest tests/test_properties.py -m property -v
 """
+
+from scripts.uncertainty_quantification import pixel_bootstrap_fast
+from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
+from hypothesis import strategies as st
+from hypothesis import assume, given, settings
+import pytest
+import numpy as np
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import numpy as np
-import pytest
-from hypothesis import HealthCheck, assume, given, settings
-from hypothesis import strategies as st
 
 # Import all functions to property-test
-from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
-from scripts.uncertainty_quantification import pixel_bootstrap_fast
 
 # ========== Chave 2014 AGB properties ==========
 

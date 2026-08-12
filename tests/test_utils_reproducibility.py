@@ -10,21 +10,23 @@ Covers:
 - capture_environment() — writes JSON, includes packages
 - verify_reproducibility() — repeatable / not-reproducible cases
 """
+
+import subprocess  # for the patch tests above
+import json
 import os
 import sys
-import json
+from unittest.mock import patch
+
 import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from src.utils.reproducibility import (
     DEFAULT_SEED,
-    set_seed,
-    get_git_hash,
+    capture_environment,
     get_git_branch,
+    get_git_hash,
     get_python_version,
     get_system_info,
-    capture_environment,
+    set_seed,
     verify_reproducibility,
 )
 
@@ -39,6 +41,7 @@ class TestSetSeed:
     def test_set_seed_sets_python_random(self):
         set_seed(7)
         import random as _random
+
         # Different runs of random() should be deterministic given seed
         a = _random.random()
         set_seed(7)
@@ -51,6 +54,7 @@ class TestSetSeed:
 
     def test_set_seed_sets_numpy(self):
         import numpy as np
+
         set_seed(13)
         a = np.random.rand()
         set_seed(13)
@@ -70,13 +74,12 @@ class TestSetSeed:
         # If torch isn't installed in the test env, the try/except branch
         # should fire silently. We don't fail.
 
-    @pytest.mark.skipif(
-        sys.version_info < (3, 7), reason="random.* consistent on 3.7+"
-    )
+    @pytest.mark.skipif(sys.version_info < (3, 7), reason="random.* consistent on 3.7+")
     def test_set_seed_idempotent(self):
         """Calling set_seed twice with same value is idempotent."""
         set_seed(42)
         import random
+
         a = random.random()
         set_seed(42)
         b = random.random()
@@ -114,8 +117,10 @@ class TestSetSeed:
 
         # Force the CUDA branch by mocking cuda.is_available to True.
         with patch.object(torch.cuda, "is_available", return_value=True):
-            with patch.object(torch.cuda, "manual_seed") as mock_ms, \
-                 patch.object(torch.cuda, "manual_seed_all") as mock_msa:
+            with (
+                patch.object(torch.cuda, "manual_seed") as mock_ms,
+                patch.object(torch.cuda, "manual_seed_all") as mock_msa,
+            ):
                 set_seed(1)
                 # If CUDA were available, the function would call these.
                 if torch.cuda.is_available():  # mock satisfied True
@@ -154,9 +159,6 @@ class TestGit:
             assert get_git_branch() is None
 
 
-import subprocess  # for the patch tests above
-
-
 class TestSystemInfo:
     def test_get_python_version(self):
         v = get_python_version()
@@ -187,11 +189,13 @@ class TestSystemInfo:
             pytest.skip("torch not installed")
 
         # Mock cuda-available branch
-        with patch.object(torch.cuda, "is_available", return_value=True), \
-             patch.object(torch.cuda, "get_device_name", return_value="TestGPU"), \
-             patch.object(torch.cuda, "device_count", return_value=1), \
-             patch.object(torch.cuda, "get_device_properties") as mock_props, \
-             patch.object(torch, "version") as mock_ver:
+        with (
+            patch.object(torch.cuda, "is_available", return_value=True),
+            patch.object(torch.cuda, "get_device_name", return_value="TestGPU"),
+            patch.object(torch.cuda, "device_count", return_value=1),
+            patch.object(torch.cuda, "get_device_properties") as mock_props,
+            patch.object(torch, "version") as mock_ver,
+        ):
             mock_ver.cuda = "12.0"
             mock_props.return_value.total_memory = 8 * 1024**3
             info = get_system_info()
@@ -208,8 +212,7 @@ class TestSystemInfo:
         except ImportError:
             pytest.skip("psutil not installed")
 
-        with patch("psutil.cpu_count", return_value=8), \
-             patch("psutil.virtual_memory") as mock_vm:
+        with patch("psutil.cpu_count", return_value=8), patch("psutil.virtual_memory") as mock_vm:
             mock_vm.return_value.total = 16 * 1024**3
             info = get_system_info()
             assert info["cpu_count"] == 8
@@ -242,6 +245,7 @@ class TestVerifyReproducibility:
     def test_returns_true_for_deterministic_op(self):
         def op():
             return 42  # constant
+
         assert verify_reproducibility(op, expected_output=42) is True
 
     def test_returns_true_when_numpy_ran_repeatedly_with_seed(self):
@@ -249,6 +253,7 @@ class TestVerifyReproducibility:
 
         def op():
             import numpy as np
+
             return float(np.random.rand())
 
         # Note: verify_reproducibility re-seeds each run with DEFAULT_SEED+i.
@@ -260,26 +265,32 @@ class TestVerifyReproducibility:
 
     def test_n_runs_3_by_default(self):
         calls = []
+
         def op():
             calls.append(1)
             return "x"
+
         verify_reproducibility(op, expected_output="x")
         assert len(calls) == 3
 
     def test_custom_n_runs(self):
         calls = []
+
         def op():
             calls.append(1)
             return "y"
+
         verify_reproducibility(op, expected_output="y", n_runs=5)
         assert len(calls) == 5
 
     def test_returns_false_for_non_reproducible(self):
         """Counter that increments across runs is not reproducible."""
         counter = [0]
+
         def op():
             counter[0] += 1
             return counter[0]
+
         assert verify_reproducibility(op, expected_output=1) is False
 
 
@@ -287,16 +298,16 @@ class TestIfMain:
     """Run the __main__ block doesn't crash."""
 
     def test_main_block_runs(self, capsys):
-        from src.utils import reproducibility
         # Use the runpy trick is overkill; just exec the main block.
         # The block calls print twice, then exits the script.
         # We simulate by running as a subprocess.
         import subprocess as sp
+
         result = sp.run(
-            [sys.executable, "-c",
-             "import src.utils.reproducibility as r; "
-             "print(r.get_python_version())"],
-            capture_output=True, text=True, timeout=10,
+            [sys.executable, "-c", "import src.utils.reproducibility as r; " "print(r.get_python_version())"],
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         assert result.returncode == 0
         assert "." in result.stdout

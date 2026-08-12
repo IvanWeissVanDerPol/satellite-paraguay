@@ -22,21 +22,22 @@ asserts a measurement) with no surrounding context.
 Usage:
   python scripts/check_claims.py [--root PATH] [--strict]
 """
+
 from __future__ import annotations
+
 import argparse
 import re
-import sys
 from pathlib import Path
 
 CLAIM_PATTERNS: list[tuple[str, str]] = [
     (r"F1\s*[>=]\s*0\.[78]\b", "F1 > 0.7x headline"),
-    (r"F1\s*=\s*0\.[78]\d",     "F1 = 0.7x or 0.8x specific"),
+    (r"F1\s*=\s*0\.[78]\d", "F1 = 0.7x or 0.8x specific"),
     (r"R\^?2\s*[>=]\s*0\.[78]\b", "R² > 0.7x headline"),
-    (r"R\^?2\s*=\s*0\.[78]\d",   "R² = 0.7x or 0.8x specific"),
-    (r"mAP\s*[>=]\s*0\.[67]\b",  "mAP > 0.6x headline"),
-    (r"mAP\s*=\s*0\.[67]\d",     "mAP = 0.6x or 0.7x specific"),
-    (r"MAE\s*<\s*5\b",           "MAE < 5 specific"),
-    (r"MAE\s*<\s*0\.[78]\b",     "MAE < 0.7x or 0.8x specific"),
+    (r"R\^?2\s*=\s*0\.[78]\d", "R² = 0.7x or 0.8x specific"),
+    (r"mAP\s*[>=]\s*0\.[67]\b", "mAP > 0.6x headline"),
+    (r"mAP\s*=\s*0\.[67]\d", "mAP = 0.6x or 0.7x specific"),
+    (r"MAE\s*<\s*5\b", "MAE < 5 specific"),
+    (r"MAE\s*<\s*0\.[78]\b", "MAE < 0.7x or 0.8x specific"),
 ]
 
 # Phrases that, when present in the same line as a claim, indicate the
@@ -90,34 +91,34 @@ CONTEXT_WORDS = (
     "remains valid as a goal",
     "target quoted in earlier",
     "target that earlier drafts",
-    "skeptical of \"we report",
+    'skeptical of "we report',
     "not mean",
 )
 
 
 SANCTIONED_PREFIXES: list[tuple[str, str]] = [
-    ("README.md",                          "user-facing summary; allowed to cite measured values"),
-    ("WORKLOG_",                           "session logs cite measured values"),
-    ("docs/REAL_TODO.md",                  "real TODO references measured values"),
-    ("docs/CONVENTIONS.md",                "conventions doc explains the convention"),
-    ("docs/COMPREHENSIVE_TODO.md",         "deprecated TODO kept for history; aspirational values noted"),
-    ("LICENSE",                            "license text"),
-    ("CITATION.cff",                       "citation metadata"),
-    ("ROAST.md",                           "critique; intentionally quotes aspirational values"),
-    ("CONTRIBUTING.md",                    "contribution guide; quotes values to explain the rule"),
-    ("AGENT_TODO.md",                      "agent todo; references values in commit log + plans"),
-    ("BRUTAL_ROAST.md",                    "self-audit; quotes values as documented failures"),
-    ("STATUS.md",                          "status report; cites measured pilots + aspirational targets"),
-    ("thesis/MAIN/thesis.tex",             "thesis master; cites aspirational targets explicitly as replaced"),
-    ("papers/drafts/ACTUAL_RESULTS.md",    "the source of truth for measurements"),
-    ("papers/drafts/paper.md",             "paper body; Honest Reporting Note names aspirational values"),
-    ("papers/drafts/paper.tex",            "LaTeX paper body; same"),
+    ("README.md", "user-facing summary; allowed to cite measured values"),
+    ("WORKLOG_", "session logs cite measured values"),
+    ("docs/REAL_TODO.md", "real TODO references measured values"),
+    ("docs/CONVENTIONS.md", "conventions doc explains the convention"),
+    ("docs/COMPREHENSIVE_TODO.md", "deprecated TODO kept for history; aspirational values noted"),
+    ("LICENSE", "license text"),
+    ("CITATION.cff", "citation metadata"),
+    ("ROAST.md", "critique; intentionally quotes aspirational values"),
+    ("CONTRIBUTING.md", "contribution guide; quotes values to explain the rule"),
+    ("AGENT_TODO.md", "agent todo; references values in commit log + plans"),
+    ("BRUTAL_ROAST.md", "self-audit; quotes values as documented failures"),
+    ("STATUS.md", "status report; cites measured pilots + aspirational targets"),
+    ("thesis/MAIN/thesis.tex", "thesis master; cites aspirational targets explicitly as replaced"),
+    ("papers/drafts/ACTUAL_RESULTS.md", "the source of truth for measurements"),
+    ("papers/drafts/paper.md", "paper body; Honest Reporting Note names aspirational values"),
+    ("papers/drafts/paper.tex", "LaTeX paper body; same"),
     ("papers/drafts/submission_checklist.md", "operational; not the claim itself"),
-    ("papers/drafts/reproducibility.md",   "operational; not the claim itself"),
-    ("papers/drafts/quickstart.sh",        "operational"),
-    ("scripts/check_claims.py",            "self-reference"),
-    ("tests/",                             "test fixtures use synthetic values"),
-    ("CRITIC_200_ANGLES.md",               "critique doc; quotes values to critique them"),
+    ("papers/drafts/reproducibility.md", "operational; not the claim itself"),
+    ("papers/drafts/quickstart.sh", "operational"),
+    ("scripts/check_claims.py", "self-reference"),
+    ("tests/", "test fixtures use synthetic values"),
+    ("CRITIC_200_ANGLES.md", "critique doc; quotes values to critique them"),
 ]
 
 
@@ -159,8 +160,7 @@ def line_has_context(line: str) -> bool:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".", help="Repo root to scan")
-    ap.add_argument("--strict", action="store_true",
-                    help="Also flag claims inside sanctioned files (use for audit)")
+    ap.add_argument("--strict", action="store_true", help="Also flag claims inside sanctioned files (use for audit)")
     args = ap.parse_args()
     root = Path(args.root).resolve()
 
@@ -170,9 +170,16 @@ def main() -> int:
         if not path.is_file():
             continue
         rel = path.relative_to(root).as_posix()
-        if any(rel.startswith(p) for p in (
-            ".git/", ".venv/", "node_modules/", "data/", "models/weights/",
-        )):
+        if any(
+            rel.startswith(p)
+            for p in (
+                ".git/",
+                ".venv/",
+                "node_modules/",
+                "data/",
+                "models/weights/",
+            )
+        ):
             continue
         if path.suffix.lower() not in (".md", ".tex", ".py", ".bib", ".txt", ".rst"):
             continue

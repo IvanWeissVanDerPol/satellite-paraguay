@@ -6,19 +6,20 @@ Implements:
 - Classification: Accuracy, F1, ROC AUC
 - Regression: MAE, RMSE, R²
 """
+
 from pathlib import Path
-from typing import Optional, Dict, List, Tuple
+from typing import Dict, List, Optional
+
 import numpy as np
-import pandas as pd
 from sklearn.metrics import (
-    f1_score,
-    precision_score,
-    recall_score,
     accuracy_score,
     confusion_matrix,
+    f1_score,
     mean_absolute_error,
     mean_squared_error,
+    precision_score,
     r2_score,
+    recall_score,
     roc_auc_score,
 )
 
@@ -38,8 +39,8 @@ def pixel_iou(y_true: np.ndarray, y_pred: np.ndarray, num_classes: Optional[int]
 
     ious = {}
     for cls in range(num_classes):
-        true_mask = (y_true == cls)
-        pred_mask = (y_pred == cls)
+        true_mask = y_true == cls
+        pred_mask = y_pred == cls
         intersection = np.logical_and(true_mask, pred_mask).sum()
         union = np.logical_or(true_mask, pred_mask).sum()
         if union == 0:
