@@ -234,3 +234,94 @@ class TestMLflowTrackingNoRandom:
         text = (REPO / "src/utils/mlflow_tracking.py").read_text()
         assert "nan" in text.lower(), "mlflow_tracking.py should use NaN placeholders"
         assert "PLACEHOLDER" in text, "mlflow_tracking.py should label placeholders explicitly"
+
+# ---------------------------------------------------------------------------
+# References bibliography guard
+# ---------------------------------------------------------------------------
+
+class TestReferencesBibliography:
+    """The unified references.bib must contain no malformed escape artifacts.
+
+    The 2026-08-11 manual pass fixed 26 doubled backslash-backslash-url
+    artifacts and 6 doubled i-with-acute artifacts that came from the
+    original BibTeX parser upstream. Re-introduction would silently
+    break PDF rendering. Run scripts/merge_bib.py to sanitize.
+    """
+
+    def test_references_bib_has_no_doubled_backslash_url(self):
+        import re
+        text = (REPO / "references.bib").read_text()
+        bad = re.findall(r"\\\\url", text)
+        assert not bad, (
+            f"references.bib contains {len(bad)} doubled backslash-backslash-url artifacts. "
+            "Run scripts/merge_bib.py to sanitize."
+        )
+
+    def test_references_bib_has_no_doubled_quote_i_artifact(self):
+        import re
+        text = (REPO / "references.bib").read_text()
+        bad = re.findall(r"\\'\\i", text)
+        assert not bad, (
+            f"references.bib contains {len(bad)} doubled i-acute artifacts. "
+            "Run scripts/merge_bib.py to sanitize."
+        )
+
+    def test_references_bib_has_180_unique_entries(self):
+        import re
+        from collections import Counter
+        text = (REPO / "references.bib").read_text()
+        keys = re.findall(r"^@\w+\{\s*([^,\s]+)", text, flags=re.M)
+        assert len(keys) == 180, f"Expected 180 unique entries, got {len(keys)}"
+        dups = [k for k, c in Counter(keys).items() if c > 1]
+        assert not dups, f"Duplicate keys in references.bib: {dups}"
+
+    def test_merge_bib_runs_clean_with_no_unresolved(self):
+        """merge_bib.py must succeed with zero unresolved conflicts.
+
+        Any future re-introduction of a duplicate key would cause this to
+        fail loudly via the script's unresolved-fail-loud branch.
+        """
+        import subprocess
+        r = subprocess.run(
+            [sys.executable, "scripts/merge_bib.py"],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO),
+            timeout=30,
+        )
+        assert r.returncode == 0, (
+            "merge_bib.py failed:\n"
+            f"stdout={r.stdout}\n"
+            f"stderr={r.stderr}"
+        )
+        assert "0 unresolved" in r.stdout, (
+            "merge_bib.py printed unresolved conflicts:\n"
+            f"{r.stdout}"
+        )
+
+    def test_resolved_conflict_keys_contain_expected_canonical_text(self):
+        """Each of the 5 PREFER_PAPERS-resolved keys should contain the
+        papers version's text (more informative title, "Paraguay" suffix
+        on author, etc.). If someone reverts PREFER_PAPERS to the thesis
+        version accidentally, this test catches it.
+        """
+        import re
+        text = (REPO / "references.bib").read_text()
+        expected_substrings = {
+            "indi2024":        "Instituto Nacional del Ind",
+            "infona2024":      "Instituto Forestal Nacional (INFONA)",
+            "mades2024":       "(MADES)",
+            "openaq2024":      "Open Air Quality Data",
+            "tensorflow2015":  "@software{tensorflow2015,",
+        }
+        for key, expected in expected_substrings.items():
+            m = re.search(
+                rf"@\w+\{{{re.escape(key)},.*?\n\}}",
+                text,
+                flags=re.S,
+            )
+            assert m, f"Entry for {key} not found in references.bib"
+            assert expected in m.group(0), (
+                f"{key} in references.bib does not contain expected canonical "
+                f"text {expected!r}. Did someone revert PREFER_PAPERS?"
+            )

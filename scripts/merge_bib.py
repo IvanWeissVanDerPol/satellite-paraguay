@@ -23,14 +23,33 @@ REPO = Path(__file__).resolve().parent.parent
 
 
 PREFER_PAPERS = {
-    # Manually resolved 2026-08-10: prefer the more descriptive version.
+    # Manually resolved 2026-08-11: prefer the more descriptive version.
     # To change a preference, edit this set and re-run the script.
-    "indi2024",          # papers: title contains "(INDI)"
-    "infona2024",        # papers: title contains "(INFONA)"
-    "mades2024",         # papers: title contains "(MADES)"
+    # All 5 are institutional/official citations where the papers version
+    # has a slightly more informative title (e.g., includes the acronym
+    # in parentheses) and the author field is more granular. The papers
+    # version also uses "\url{...}" instead of the malformed "\\\\url{...}"
+    # that appears in some thesis entries.
+    "indi2024",          # papers: title contains "(INDI)" + author is "INDI Paraguay"
+    "infona2024",        # papers: title contains "(INFONA)" + author is "INFONA Paraguay"
+    "mades2024",         # papers: title contains "(MADES)" + author is "MADES Paraguay"
     "openaq2024",        # papers: title contains "Open Air Quality Data"
-    "tensorflow2015",    # papers: full author list + @software + URL
+    "tensorflow2015",    # papers: full author list + @software entry type + URL
 }
+
+
+def normalize_entry(entry: str) -> str:
+    r"""Sanitize common BibTeX escape artifacts from upstream .bib files.
+
+    These artifacts ("\\url" instead of "\url", "{\'\i}" instead of
+    "{\'{\i}}") come from a previous parser that double-escaped special
+    characters. They would compile under latex but show as literal
+    backslashes in any markdown/PDF renderer. Applied uniformly so future
+    merges stay clean.
+    """
+    out = re.sub(r"\\\\url", r"\\url", entry)
+    out = re.sub(r"\'\\i", r"\\'{i}", out)
+    return out
 
 
 def split_entries(text: str) -> list[str]:
@@ -51,7 +70,7 @@ def split_entries(text: str) -> list[str]:
             if depth == 0 and start is not None:
                 out.append(text[start : i + 1])
                 start = None
-    return [e for e in out if e.strip()]
+    return [normalize_entry(e) for e in out if e.strip()]
 
 
 def entry_key(entry: str) -> str | None:
