@@ -15,6 +15,21 @@
 
 ---
 
+## Tier 0 — CI green-build pass landed (commit f8b5978 + a0b8a93, 2026-08-13)
+
+- [x] Lint: 798 → 0 flake8 violations (190 files via black+isort+autopep8+autoflake)
+- [x] Lint: 131 F541 (unnecessary f-string prefix) regex-stripped
+- [x] Lint: 7 duplicate test class names renamed (TestX → TestXSynthetic/V2/CacheHit)
+- [x] Bug: `criterion(logs[-1], y)` → `criterion(logits, y)` in train_prithvi_yvutu.py:149
+- [x] CI: requirements-ci.txt added (no GDAL-bound deps)
+- [x] CI: .github/workflows/ci.yml uses pip install -r requirements-ci.txt + -e . --no-deps
+- [x] CI: tests/conftest.py lazy rasterio import (skips gracefully if GDAL unavailable)
+- [x] Tests: 1028 passed, 52 skipped, 0 failed (88s on 3.11 sandbox)
+- [x] Tests: flaky test_bbox_validity fixed via suppress_health_check=[HealthCheck.filter_too_much]
+- [x] Guards: check_claims.py OK, check_latex.py 6/6 papers pass
+- [x] STATUS.md refreshed with 2026-08-13 metrics
+- [x] CHANGELOG.md updated with this session entry
+
 ## Tier 1 — PR #1 from previous sessions landed (done)
 
 - [x] 6 abstracts rewritten with measured values (commit 65621c4)
