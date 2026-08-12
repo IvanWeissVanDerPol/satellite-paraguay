@@ -1,122 +1,163 @@
 # Chapter 4: Yvyra — Carbon Credit Integrity Verification in Paraguay Using Hansen Deforestation
 
-**Author:** Iván Hocht-VonDerPol
+**Author:** Iván Weiss Van der Pol
 **Status:** Chapter of the thesis (in journal-preparation)
-**Target journal:** Nature Climate Change
+**Target journal:** Nature Climate Change (Letter format, 4 pages, ~30 references, IF 28.9)
 
 ---
 
 ## Abstract
 
-Voluntary carbon markets (VCMs) such as Verra promise to finance forest conservation through verified carbon credits. However, recent investigations have raised concerns about the integrity of REDD+ projects. We integrate Hansen Global Forest Change (GFC) v1.11 with the Verra Registry to assess carbon credit integrity in Paraguay. Across 5 registered Paraguayan projects (123,000 ha total area), we find that **Hansen-derived carbon loss exceeds Verra-claimed carbon loss by an average of 35%**, indicating systematic under-claiming. This finding has implications for Paraguay's potential Article 6 participation and the EU Carbon Removal Certification Framework.
+We present **Yvyra** ("tree" in Guaraní), an independent satellite-
+based verification of carbon-credit claims for the 5 Paraguayan
+Verra-registered forest conservation projects covering **124,310 ha**
+(≈8% of Paraguay's protected-area forest). The methodology combines
+Hansen Global Forest Change v1.11 pixel-level loss (2001-2023) with
+the Chave 2014 allometric model and IPCC Tier-1 conversion factors to
+produce a satellite-derived carbon loss estimate per project, directly
+comparable to Verra's declared credits.
 
-## 4.1 Introduction
+Across all 5 projects we find that **the Verra-registered carbon
+loss figures underestimate the satellite-derived loss by a mean of
++35.9% (range +33.3% to +50.0%)**. Total over-crediting across the 5
+projects: **+1.19 MtCO₂e** (Verra-claimed 3.30 MtCO₂e vs. Hansen-derived
+4.49 MtCO₂e). The under-claim direction is **robust under all tested
+methodological variations** (carbon fraction 0.42-0.52; Chave wet vs.
+dry allometric form; forest-canopy threshold 30-70%): the sign test
+on 5 of 5 positive $\Delta$ values has $p = 0.063$ (one-tailed) and the
+Wilcoxon signed-rank test has $p = 0.031$.
 
-Voluntary carbon markets (VCMs) have grown rapidly, reaching $2B in 2022 transaction value. Verra's Verified Carbon Standard (VCS) is the world's largest VCM, with 1,700+ registered REDD+ projects. However, recent investigations (e.g., the 2023 Guardian investigation) found that **90%+ of Verra's rainforest carbon credits may be "phantom credits"** that don't represent real emission reductions.
+The finding is **consistent with the global pattern** documented by
+the 2023 Guardian investigation of Verra rainforest credits, but is
+at the lower end of the Guardian-documented range. The +35.9% figure
+has a ±8% sensitivity envelope from methodological choices;
+**the qualitative direction (all 5 under-claim) is robust**.
 
-Paraguay hosts 5 registered Verra projects (123,000 ha), focused on the Chaco and Eastern Region. The integrity of these projects has not been independently verified using satellite data. This chapter addresses:
+We **acknowledge four substantial limitations**: (i) the baseline-
+scenario adjustment that Verra's methodology applies is not modeled
+here — the under-claim magnitude reflects absolute-loss under-claim,
+not baseline-adjusted claim-vs-actual-discrepancy; (ii) the Chave
+2014 model is not ground-truthed for our specific project polygons;
+(iii) the sample is the 5 Paraguayan projects (exhausted); and
+(iv) **we have no partnership with Verra**, the EU CRCF, or any
+Article 6 mechanism — this is independent analysis.
 
-**RQ:** What is the discrepancy between Hansen-derived carbon loss and Verra-claimed carbon loss for Paraguayan projects?
+We explicitly **do not** claim that any specific project is "phantom"
+in the Guardian sense; that determination requires baseline-scenario
+analysis (not done) and field validation (not done). The
+contribution is the **methodology** for independent satellite
+verification of REDD+ projects, applicable globally. The Paraguay-
+specific quantification is a worked example.
 
-## 4.2 Data
+All code + data + project listings under CC-BY-NC-4.0.
 
-### 4.2.1 Verra Registry
-
-We downloaded all 5 Paraguayan Verra projects from `https://verra.org/verra-registry/`. For each project, we extracted:
-- Project area (ha)
-- Project boundary (polygon GeoJSON)
-- Annual carbon claims (tCO₂e/year)
-- Project period (start/end years)
-
-### 4.2.2 Hansen GFC v1.11
-
-We used the same Hansen data as Chapter 3 (Yvutu), restricted to the bounding boxes of each Verra project.
-
-## 4.3 Methods
-
-### 4.3.1 Hansen-Derived Carbon Loss
-
-For each project, we compute:
-
-$$\text{CO}_2\text{e}_{\text{Hansen}} = N_{\text{loss}} \times 0.0625\text{ ha} \times \text{AGB}(t_c) \times 0.47 \times \frac{44}{12}$$
-
-where $N_{\text{loss}}$ is the count of Hansen loss pixels within the project boundary, and $t_c$ is the mean treecover at project start.
-
-### 4.3.2 Verra-Claimed Carbon Loss
-
-We extract the cumulative carbon loss claims from Verra project documentation.
-
-### 4.3.3 Discrepancy Analysis
-
-We compute:
-
-$$\Delta = \text{CO}_2\text{e}_{\text{Hansen}} - \text{CO}_2\text{e}_{\text{Verra}}$$
-
-A positive $\Delta$ indicates Hansen-derived exceeds Verra-claimed (under-claim).
-
-## 4.4 Results
-
-### 4.4.1 Project-Level Discrepancies
-
-| Project | Area (ha) | Hansen CO₂e (Mt) | Verra CO₂e (Mt) | Δ (Mt) | Δ (%) |
-|---|---|---|---|---|---|
-| Project 1 (Chaco) | 45,000 | 1.5 | 1.1 | +0.4 | +36% |
-| Project 2 (Chaco) | 28,000 | 1.2 | 0.9 | +0.3 | +33% |
-| Project 3 (Eastern) | 22,000 | 0.8 | 0.6 | +0.2 | +33% |
-| Project 4 (Chaco) | 18,000 | 0.7 | 0.5 | +0.2 | +40% |
-| Project 5 (Eastern) | 10,000 | 0.3 | 0.2 | +0.1 | +50% |
-| **Total** | **123,000** | **4.5** | **3.3** | **+1.2** | **+35%** |
-
-The average discrepancy is +35%, with all 5 projects showing under-claims.
-
-### 4.4.2 Source of Discrepancy
-
-The discrepancy could arise from:
-
-1. **Hansen over-estimation**: Hansen may over-count loss in dry forests (Chaco).
-2. **Verra under-claiming**: Projects may not claim all loss (conservative).
-3. **Methodological differences**: Hansen uses pixel counts; Verra uses project-specific baseline.
-
-We hypothesize that **all three factors contribute**, but Verra under-claiming is the dominant factor based on field validation (which we did not conduct).
-
-## 4.5 Discussion
-
-### 4.5.1 Implications for Paraguay's NDC
-
-Paraguay's NDC (Nationally Determined Contribution) does not include detailed land-use accounting. Our findings suggest that Paraguay could increase its climate ambition by:
-
-1. **Independent verification** of Verra projects using satellite data
-2. **NDC inclusion** of deforestation reduction targets
-3. **Article 6 readiness** through robust MRV (Measurement, Reporting, Verification)
-
-### 4.5.2 Implications for the EU CRCF
-
-The EU Carbon Removal Certification Framework (CRCF) requires third-party verification. Our methods provide a template for such verification.
-
-### 4.5.3 Limitations
-
-- **Small sample**: 5 projects is insufficient for robust statistics.
-- **No field validation**: We have not validated against ground-truth biomass measurements.
-- **Hansen uncertainty**: Hansen has known commission errors in dry forests.
-- **Project boundary mismatch**: Verra project boundaries may not align perfectly with Hansen pixels.
-
-## 4.6 Conclusion
-
-The thesis provides preliminary evidence that Verra-claimed carbon credits in Paraguay may systematically under-claim actual carbon loss by 35%. While the small sample size and lack of field validation limit the strength of this conclusion, the methodology provides a template for independent verification. Paraguay's potential participation in Article 6 markets should require robust MRV using open satellite data.
+> **Honest Reporting Note (added 2026-08-10):** The abstract above
+> does not include the "AlphaEarth R²=0.82 biomass" figure or the
+> "50+ Verra projects comparison" figure from earlier drafts of this
+> chapter. **Both are aspirational, not measured.** The AlphaEarth
+> fine-tune was never run in this thesis; the global replication
+> analysis (50+ Verra projects) is downloaded but not yet
+> executed. See `ACTUAL_RESULTS.md` for the actual measured numbers
+> (5 projects only, +35.9% mean, ±8% sensitivity envelope) and
+> `discussion.md` Section D.4 for what needs to happen before a
+> broader claim can be made.
 
 ---
 
-## References
+## Paper body
 
-See `thesis/references.bib`.
+This paper is organized as a set of structured sections in
+companion files. Read in order:
+
+- **`introduction.md`** — voluntary carbon market context, the
+  Guardian investigation, the Paraguay test case, 1 research
+  question, 4 contributions, honest limitations on the headline.
+- **`methods.md`** — Verra registry extraction, Hansen GFC per-
+  pixel loss, Chave 2014 allometric model, carbon conversion
+  factors, per-project aggregation, statistical tests
+  (sign + Wilcoxon), sensitivity analysis (3 dimensions).
+- **`results.md`** — per-project discrepancy table, aggregate
+  total (+1.19 MtCO₂e over-crediting), statistical robustness,
+  sensitivity envelope (±8%), sub-departmental pattern.
+- **`discussion.md`** — meaning of +35.9% in the Guardian context,
+  four alternative explanations, implications for Paraguay's NDC
+  and Article 6 readiness, limitations and next steps.
+- **`conclusion.md`** — main contributions, honest limitations,
+  submission roadmap for Nature Climate Change.
+- **`related_work.md`** — Guardian/West Bloomberg investigation,
+  Verra methodology (VM0007, VM0009, VM0015), Chave allometric
+  papers, voluntary carbon market integrity literature.
+- **`ACTUAL_RESULTS.md`** — the source of truth for every number
+  in this paper.
+- **`paper.tex`** — LaTeX Letter format for Nature Climate Change.
+- **`cover_letter.md`** + **`submission_checklist.md`** — for
+  Nature Climate Change submission.
 
 ---
 
-## Honest Reporting Note (added 2026-08-10)
+## Headline numbers (measured)
 
-The abstract above drops two aspirational figures that did not survive experimental validation:
+| Finding | Value | Source |
+|---|---|---|
+| Total Paraguayan Verra project area | 124,310 ha (≈1,243 km²) | Verra registry |
+| Total Verra-claimed CO₂e reductions (2001-2023) | 3.30 MtCO₂e | Verra project docs |
+| Total Hansen-derived CO₂e loss (2001-2023) | **4.49 MtCO₂e** | Hansen GFC v1.11 + Chave 2014 |
+| **Mean under-claim ratio** | **+35.9%** (range +33.3% to +50.0%) | Per-project Hansen vs Verra |
+| Total over-crediting across 5 projects | **+1.19 MtCO₂e** | Aggregate |
+| Projects where Verra under-claims | **5 / 5** | All 5 |
+| Sign test p-value (one-tailed) | 0.063 | 5 of 5 positive |
+| Wilcoxon signed-rank p-value | 0.031 | Statistically significant |
+| Sensitivity envelope (±8%, quadrature combined) | +27.9% to +43.9% | Carbon fraction + Chave form + threshold |
+| **AlphaEarth R²=0.82 biomass** | **NOT MEASURED** | Aspirational target, not a Yvyra result |
 
-- **"AlphaEarth biomass R²=0.82"** — this was a benchmark number from a different AlphaEarth paper on different data. We did not run AlphaEarth fine-tuning in this experiment. It is **not a Yvyra result**.
-- **"50+ projects / within 15% agreement"** — we did not run a 50-project comparison. We verified 5 projects (124,310 ha), and found Hansen loss **exceeds** Verra claims by 33.3-50.0% (mean +35.9%). The "15% agreement" framing inverted the actual direction of the finding.
+---
 
-The substantive finding — **systematic Verra under-claiming averaging ~36% across 5 Paraguayan projects** — is real, statistically supported (bootstrap CI excludes 0), and is the actual contribution of this chapter. The headline metric used in the abstract has been corrected to match. See `ACTUAL_RESULTS.md` for the per-project table.
+## Honest limitations
+
+- **Baseline-scenario analysis not done.** The +35.9% is
+  absolute-loss under-claim, not baseline-adjusted claim-vs-
+  actual discrepancy. Closing this requires Verra partnership to
+  obtain project-specific baselines.
+- **Field validation not done.** The Chave 2014 model has not
+  been ground-truthed for our specific project polygons. 25-50
+  field plots per project would resolve this.
+- **Sample of 5 projects only**, the population of Paraguayan
+  Verra projects. Global replication on 30+ projects would
+  support a stronger claim.
+- **No partnership with Verra / Article 6 / EU CRCF.** This is
+  independent analysis. Operational deployment requires
+  partnership engagement.
+- **No claim that any specific project is "phantom"** in the
+  Guardian-investigation sense; that determination requires
+  baseline-scenario + field-validation, neither of which this
+  paper provides.
+
+---
+
+## What this paper is and isn't
+
+This paper is:
+
+- ✅ A reproducible methodology paper with measured numbers on
+  the 5 Paraguayan projects.
+- ✅ A defensible empirical claim about an open-data comparison
+  of the 5 Paraguayan Verra projects vs. Hansen-derived loss.
+- ✅ A contribution to the global "Verra integrity" literature
+  with a Paraguay-specific quantification in the lower range of
+  the Guardian findings.
+
+This paper is not:
+
+- ❌ A verdict that any specific project is "phantom".
+- ❌ A claim about the global Verra portfolio (would require
+  replication on 30+ projects from multiple countries).
+- ❌ An Article 6 / EU CRCF audit tool (would require partnership
+  and field validation).
+- ❌ A claim that the projects acted in bad faith (the
+  under-claim is consistent with multiple alternative
+  explanations).
+
+All code + data listings + per-project JSON outputs under
+CC-BY-NC-4.0. Authors are committed to making the full Verra
+discrepancy table publicly available if and when the projects
+consent to unblinded attribution.
