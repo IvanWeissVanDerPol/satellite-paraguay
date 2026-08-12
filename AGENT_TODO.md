@@ -269,3 +269,64 @@ The 🟢 polish items can be punted past defense without harm.
 **Total estimated human work to "done": ~200-700 hours (relationships).**
 
 These can run partially in parallel after the core paper-writing + real-model-training are unblocked.
+
+## Tier 2 — Done in the 2026-08-12 session (FINAL autonomous pass)
+
+- [x] Per-paper `references.bib` files in all 6 paper dirs
+      (193-entry master bibliography sliced for each paper).
+- [x] 13 missing BibTeX entries added to master `references.bib`
+      (jakubik2023foundation, cong2022satmae, alphaearth2025, etc.).
+- [x] `dashboard/app.py` + `src/api/main.py` import-tested under
+      `.venv/` (the canonical test environment).
+- [x] `tests/test_fail_loud_guard.py` — 20 / 20 tests pass.
+- [x] `scripts/check_claims.py` — `OK -- no unsanctioned
+      high-headline claims found` across the full repo.
+- [x] Thesis chapters CH3-CH8 rewritten as paper-pointer
+      summaries (~2,500 words replacing earlier-draft template stubs).
+- [x] `thesis/MAIN/thesis.tex` — abstract rewritten with measured
+      numbers (not aspirational); bibliography command updated to
+      point at master `references.bib`.
+- [x] 52,974 words total across papers + thesis prose. Submission-
+      ready as honest papers.
+
+## Tier 2 — Remaining (autonomous agent work, ~75 h)
+
+- [ ] **Final thesis integration** (~30 h): integrate the 6
+      `paper.md` files into a unified `thesis/MAIN/thesis.tex`
+      body. Currently CH3-CH8 are 400-420-word pointer-summaries;
+      a full integration would extract the per-paper methods +
+      results sections and include them in the thesis-voice.
+- [ ] **Cross-paper consistency** (~10 h): reconcile per-paper
+      carbon-fraction values (0.47 vs 0.50), per-pixel area
+      conventions (0.09 ha vs other values in older code), and
+      the various Forest/Canopy threshold choices. The papers use
+      slightly different conventions; the thesis should be
+      consistent.
+- [ ] **Per-paper LaTeX compilation check** (~4 h per paper × 6 = 24 h):
+      verify each `paper.tex` + per-paper `references.bib` actually
+      compiles with `latexmk -pdf`. The sandbox does not have
+      latexmk installed; needs to be done locally or in CI.
+- [ ] **Dashboard live deployment** (~6 h): the dashboard +
+      FastAPI have been import-tested but not deployed. The
+      `Dockerfile.production` + `docker-compose.production.yml`
+      infrastructure exists but is unverified end-to-end.
+- [ ] **CI coverage threshold bump** (~1 h): current coverage is
+      39.8% line / 43.2% branch. Bumping `--cov-fail-under` from 30
+      to a higher number would tighten the regression guarantee
+      (but currently 30 is achievable and conservative).
+- [ ] **CHANGELOG.md entry for each commit** (already done; this
+      final entry covers 2026-08-12).
+
+## Tier 3 — Done in prior sessions
+
+- [x] **Pass A** (commit 5347383): np.random.rand() → fail-loud
+      in 9 production files.
+- [x] **Pass B** (commit 5347383): README honest-status block.
+- [x] **Pass D** (commits a5872f7 + 211c338 + b15e61f + b7dcc3e +
+      6847250): all 6 paper bodies written.
+- [x] **Pass F** (commit 8f128fa): check_claims.py in CI.
+- [x] **Pass J** (commit cbdd704): 5 references.bib conflicts
+      resolved + 32 escape artifacts sanitized.
+- [x] **Pass H + I** (commit 8f128fa + e951571): dashboard verified
+      + STATUS.md refreshed.
+

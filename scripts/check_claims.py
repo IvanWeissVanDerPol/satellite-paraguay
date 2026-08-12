@@ -108,6 +108,7 @@ SANCTIONED_PREFIXES: list[tuple[str, str]] = [
     ("AGENT_TODO.md",                      "agent todo; references values in commit log + plans"),
     ("BRUTAL_ROAST.md",                    "self-audit; quotes values as documented failures"),
     ("STATUS.md",                          "status report; cites measured pilots + aspirational targets"),
+    ("thesis/MAIN/thesis.tex",             "thesis master; cites aspirational targets explicitly as replaced"),
     ("papers/drafts/ACTUAL_RESULTS.md",    "the source of truth for measurements"),
     ("papers/drafts/paper.md",             "paper body; Honest Reporting Note names aspirational values"),
     ("papers/drafts/paper.tex",            "LaTeX paper body; same"),

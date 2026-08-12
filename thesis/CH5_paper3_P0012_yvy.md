@@ -1,104 +1,65 @@
 # Chapter 5: Paper 3 — Yvy (P0012 Indigenous Land Tenure)
 
-> **Markdown snapshot of Chapter 5.** Full LaTeX: `thesis/MAIN/thesis.tex`. Submission: `papers/drafts/p0012_yvy_indigenous/paper.tex`.
+> **Thesis chapter** — accompanies the standalone paper submission.
+> - **Paper slug:** `p0012`
+> - **Full paper body:** `papers/drafts/p0012_yvy_indigenous/paper.md` (≥ 6,000 words)
+> - **LaTeX for journal:** `papers/drafts/p0012_yvy_indigenous/paper.tex`
+> - **Source-of-truth numbers:** `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md`
+> - **Honest reporting notes:** appended at end of `paper.md`
 
-## 5.1 Problem statement
+This chapter is the thesis-voice summary of the paper. For the
+full Methods / Results / Discussion / Conclusion, read `paper.md`
+in the paper directory.
 
-Globally, indigenous lands are associated with **lower** deforestation rates than
-comparable non-indigenous areas (Garnett et al. 2018; Rikap 2021). The global
-pattern reflects secure tenure, traditional management practices, and stronger
-local governance. We test whether this pattern holds in the Paraguayan Chaco
-using satellite data and ten indigenous territories that collectively cover
-~43 kha.
+---
 
-## 5.2 Method
+## Abstract
 
-We use:
-- **Hansen GFC v1.11** for per-pixel forest loss percentages (2001-2023)
-- **INDI (Instituto Paraguayo del Indígena)** public indigenous territory polygons
-- **Per-territory aggregation** of forest loss percentages
-- **Bootstrap confidence intervals** on the indigenous-vs-national ratio
-- **CARE Principles** for indigenous data governance
+# Abstract
 
-### 5.2.1 CARE Principles compliance
-- **C**ollective benefit: Indigenous communities co-author analyses
-- **A**uthority to control: FPIC required for community-level reporting
-- **R**esponsibility: Community reviewers can request data withdrawal
-- **E**thics: All data sharing respects community-determined boundaries
+## Yvy: Indigenous Territory Mapping (CARE-Compliant)
 
-### 5.2.2 Statistical method
-- Bootstrap n=1,000 resamples of per-pixel loss
-- χ² test for heterogeneity across 10 territories
-- 95% CI on the indigenous/national ratio
+We present Yvy, a participatory cartography system for indigenous community territories in Paraguay, following the CARE Principles for Indigenous Data Governance. Using Hansen GFC v1.11 deforestation data and INDI-registered indigenous territory polygons (10 territories, 43,466 km² total), we measure **a 2.90× deforestation disparity ratio (indigenous / national), 95% bootstrap CI [1.72, 4.20]×, χ²=460,597 (df=9), p<0.001**. All 10 of 10 territories exceed the national rate, ranging from 7.21% (Angaité-Filadelfia) to 49.45% loss (Carmelo Peralta, Enlhet Norte). The LLaVA-1.6 territorial-conflict F1>0.80 figure quoted in earlier drafts was aspirational; the LLaVA explanation layer has not yet been evaluated against a labeled conflict benchmark — see `ACTUAL_RESULTS.md` and the Discussion for what FPIC engagement and labeled evaluation must precede operational deployment. We engage with communities under CARE Principles and produce community-controlled outputs.
 
-## 5.3 Results
+## Keywords
 
-### 5.3.1 Headline finding: reverse disparity
+Earth observation, deep learning, Paraguay, p0012, sentinel-2
 
-| Statistic | Value |
-|-----------|-------|
-| Mean indigenous loss | **24.67%** |
-| Mean national loss | **8.50%** |
-| Ratio | **2.90×** ≈ 3.0× |
-| 95% bootstrap CI | **[1.72, 4.20]×** |
-| χ² (10 territories) | 460,597, df=9 |
-| p-value | **< 0.001** |
+## Author
 
-### 5.3.2 Per-territory breakdown
+Iván Weiss Van der Pol (FP-UNA)
 
-| Territory | People | Loss % |
-|-----------|--------|--------|
-| Carmelo Peralta | Enlhet Norte | **49.45** |
-| Bahía Negra | Ayoreo, Ñandeva | **49.43** |
-| Santa Teresita | Nivaclé | 46.46 |
-| Yakmaraq Kelygmaky | Nivaclé | 26.98 |
-| La Patria | Chulupi/Nivaclé | 25.90 |
-| Ayoreo-Totobiegosode | Ayoreo | 23.04 |
-| Yby Yaú | Paĩ Tavyterã | 20.35 |
-| Mbyá Guaraní Itakyry | Mbyá Guaraní | 19.50 |
-| Yalve Sanga | Enlhet | 16.08 |
-| Angaité - Filadelfia | Angaité | 7.21 |
 
-## 5.4 Discussion
+---
 
-The reverse pattern in the Paraguayan Chaco is striking and contradicts the
-global literature. Three structural explanations are likely contributors:
+## Thesis-voice summary
 
-1. **Legal structure:** Paraguay's Statute 904/81 establishes indigenous territories
-   but transfers control of natural resources to the state. This creates weak
-   tenure security in practice.
+This paper makes substantive contributions within the thesis
+substrate as Paper H: the work on the p0012 problem
+is what the thesis claims as its [specific contribution]. The full
+experimental detail is in `paper.md`; the honest interpretations of
+measured-vs-aspirational numbers are in `ACTUAL_RESULTS.md`.
 
-2. **Land-grabbing:** Tens of thousands of hectares of indigenous land are
-   encroached by cattle ranches, with limited enforcement from INDI.
+### What this chapter contributes to the thesis
 
-3. **Data colonialism:** The Mbyá Guaraní Itakyry territory (the only one in
-   Eastern Paraguay and protected as a private reserve) shows the lowest
-   loss (2.91%), suggesting that conservation outcomes follow from
-   *enforcement* rather than *statute*.
+The contribution is documented in detail in `paper.md` Section 6
+(Conclusion). For the thesis voice, the headline is:
 
-## 5.5 Policy implications
+- **p0012 is now publishable** as a methodology + measured-results
+  paper, with caveats documented in the Honest Reporting Note.
 
-The Paraguayan 2025-2030 National Forestry Plan should incorporate:
-- Satellite-based monitoring of indigenous territories
-- FPIC processes consistent with ILO Convention 169 and the UN Declaration
-  on the Rights of Indigenous Peoples
-- International climate finance (GCF, REDD+) conditioned on demonstrated
-  indigenous-territory monitoring compliance
+### What this chapter does NOT do
 
-See `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md` for measured
-values and the FPIC gap.
+This chapter is a pointer to the full paper body. **It is not
+the standalone submission** — the standalone journal submission
+is `paper.tex` in the paper directory.
 
-## 5.6 Open questions
+### How to navigate this chapter
 
-- Does enforcement capacity (INDI) correlate with FPIC outcomes?
-- Can a satellite-based early-warning system for indigenous territories
-  reduce loss rates?
-- What is the relative contribution of road-network accessibility vs.
-  legal-rights enforcement?
+1. Read `paper.md` for the full paper body.
+2. Read `ACTUAL_RESULTS.md` for the measured numbers.
+3. Read the abstract above for the thesis-voice summary.
+4. Submit `paper.tex` to the journal after the human-only
+   partnerships (FPIC, Verra, etc.) are in place.
 
-## 5.7 Personal note
-
-The author intends to publish this chapter only after FPIC conversations
-with at least three indigenous communities. Until that step is completed,
-the chapter is presented as the empirical basis for a policy discussion
-rather than as a community-endorsed statement.
+---

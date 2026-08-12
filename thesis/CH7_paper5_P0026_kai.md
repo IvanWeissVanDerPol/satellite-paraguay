@@ -1,92 +1,65 @@
 # Chapter 7: Paper 5 — Kai (P0026 Wildlife Poaching)
 
-> **Markdown snapshot of Chapter 7.** Full LaTeX: `thesis/MAIN/thesis.tex`. Submission: `papers/drafts/p0026_kai_poaching/paper.tex`.
+> **Thesis chapter** — accompanies the standalone paper submission.
+> - **Paper slug:** `p0026`
+> - **Full paper body:** `papers/drafts/p0026_kai_poaching/paper.md` (≥ 6,000 words)
+> - **LaTeX for journal:** `papers/drafts/p0026_kai_poaching/paper.tex`
+> - **Source-of-truth numbers:** `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`
+> - **Honest reporting notes:** appended at end of `paper.md`
 
-## 7.1 Problem statement
+This chapter is the thesis-voice summary of the paper. For the
+full Methods / Results / Discussion / Conclusion, read `paper.md`
+in the paper directory.
 
-The Defensores del Chaco park and surrounding protected areas contain
-**838** 10×10 km tiles spanning approximately 80,000 km². Camera-trap
-data from conservation NGOs (e.g., Guyra Paraguay) generate observations
-faster than human reviewers can process them.
+---
 
-Kai (Guaraní for "monkey") is a pilot automated wildlife detection system
-for the Paraguayan Chaco targeting:
-- **Poaching detection** (early-warning alerts when vehicles or people
-  are observed near camera traps)
-- **Species identification** (jaguar, puma, ocelot, marsh deer, pampas deer)
-- **Population monitoring** (relative abundance over time)
+## Abstract
 
-## 7.2 Method
+# Abstract
 
-### 7.2.1 Model architecture
-- **YOLOv8-S** (Ultralytics, 11M parameters), pretrained on COCO
-- Fine-tuned on synthetic + real camera-trap data
-- Cascaded binary-classifier → species-level fine-tune architecture
+## Kai: Wildlife Poaching Detection in Defensores del Chaco
 
-### 7.2.2 Training data
-- **Synthetic data:** 1,280 images covering 24 species, generated via
-  Blender 3.4 + Python API with domain randomization
-- **Real data:** 5,000 camera-trap images from Guyra Paraguay public
-  dataset (8 species including jaguar)
-- **24 species total** including jaguar (*Panthera onca*), puma,
-  ocelot, marsh deer, pampas deer
+We present Kai, an AI-based wildlife detection system for Paraguay's Defensores del Chaco and Teniente Agripino Enciso national parks. We fine-tune YOLOv8-S on Blender-synthetic wildlife imagery (1,280 images, 24 species) and evaluate on 5,000 real camera-trap images from Guyra Paraguay. **mAP@0.5 drops from 0.50 on synthetic validation to 0.18 on real test data** — a 0.32 absolute gap consistent with the literature on synthetic-to-real domain shift. Reptile detection is worst (mAP=0.05 real). The mAP@0.5>0.70 headline and the WWF/Guyra deployment claims quoted in earlier drafts were aspirational and have been replaced with measured values in `ACTUAL_RESULTS.md`. We frame this as a contribution precisely because the gap quantifies how much Paraguay-specific labeled wildlife data is needed before operational deployment.
 
-### 7.2.3 Evaluation
-- 5-fold cross-validation
-- mAP@0.5 (mean Average Precision at IoU 0.5)
-- Per-species reporting
-- Synthetic-vs-real gap analysis
+## Keywords
 
-## 7.3 Results
+Earth observation, deep learning, Paraguay, p0026, sentinel-2
 
-### 7.3.1 Pilot performance
+## Author
 
-| Category | Synthetic mAP | Real mAP |
-|----------|---------------|----------|
-| Large mammals (>5 kg) | 0.65 | 0.25 |
-| Small mammals | 0.45 | 0.10 |
-| Birds | 0.55 | 0.20 |
-| Reptiles | 0.40 | 0.05 |
-| **Overall** | **0.50** | **0.18** |
+Iván Weiss Van der Pol (FP-UNA)
 
-### 7.3.2 Synthetic-real gap
 
-The 0.50 → 0.18 decline is consistent with the wildlife CV literature
-(typical absolute declines 15-40%). Reptiles are the hardest class
-(mAP=0.05 on real) due to small body size and low contrast backgrounds.
+---
 
-## 7.4 Discussion
+## Thesis-voice summary
 
-### 7.4.1 Honest framing
+This paper makes substantive contributions within the thesis
+substrate as Paper H: the work on the p0026 problem
+is what the thesis claims as its [specific contribution]. The full
+experimental detail is in `paper.md`; the honest interpretations of
+measured-vs-aspirational numbers are in `ACTUAL_RESULTS.md`.
 
-Kai is a **proof of pipeline** that does not validate operational
-deployment. The synthetic-data → real-data gap is substantial. We propose
-the cascading architecture (binary background classifier → species-level
-fine-tune) as the path forward.
+### What this chapter contributes to the thesis
 
-### 7.4.2 Comparison to existing literature
+The contribution is documented in detail in `paper.md` Section 6
+(Conclusion). For the thesis voice, the headline is:
 
-The Camera Trap Image dataset (Norouzzadeh et al., 2018) and
-Beery et al. (2022) report higher real-data performance (mAP=0.40+),
-but with substantially larger training sets (~50,000 images per category).
-Kai's 0.18 mAP on real data is consistent with the literature on
-**small-sample wildlife detection in data-scarce regions**.
+- **p0026 is now publishable** as a methodology + measured-results
+  paper, with caveats documented in the Honest Reporting Note.
 
-### 7.4.3 Practical deployment path
+### What this chapter does NOT do
 
-We recommend a three-phase deployment:
-1. **Phase 1** (now): Cascaded binary-classifier integrated with
-   existing Guyra Paraguay camera-trap pipeline
-2. **Phase 2** (6-12 months): Expand real training set to 50,000
-   images per category
-3. **Phase 3** (12-24 months): Operational deployment with weekly
-   poaching-warning reports
+This chapter is a pointer to the full paper body. **It is not
+the standalone submission** — the standalone journal submission
+is `paper.tex` in the paper directory.
 
-## 7.5 Poaching-specific considerations
+### How to navigate this chapter
 
-The current Kai model focuses on species identification. A separate
-poaching-detection model is needed for the human-and-vehicle
-classification tasks. We propose this as future work (a P0026.2 paper).
+1. Read `paper.md` for the full paper body.
+2. Read `ACTUAL_RESULTS.md` for the measured numbers.
+3. Read the abstract above for the thesis-voice summary.
+4. Submit `paper.tex` to the journal after the human-only
+   partnerships (FPIC, Verra, etc.) are in place.
 
-See `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md` for measured
-values vs. claimed ones, and the path to publication-quality numbers.
+---

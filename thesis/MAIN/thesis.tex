@@ -30,20 +30,36 @@ of Paraguay from Foundation Models to Field Deployment}
 \yvy\ (Indigenous Territory Mapping), \yvytu\ (Chaco Deforestation),
 \yvyra\ (Carbon Credits), \yrupe\ (Soybean Yield), \kai\ (Wildlife
 Poaching), and \tataka\ (Air Quality) form a unified system for
-multi-temporal Earth observation of Paraguay. This thesis presents
-the design, implementation, and evaluation of six peer-reviewed papers
-built atop a shared Python infrastructure (\texttt{satellite-paraguay}).
-We demonstrate that foundation models (\textit{Prithvi}, \textit{AlphaEarth},
-\textit{LLaVA}-1.6, YOLOv8, LSTM) can be effectively transferred to
-Paraguayan environmental monitoring tasks with limited training data,
-achieving F1 scores of 0.83-0.88 and R² of 0.65-0.79 across the six
-sub-projects. The work is novel in: (i) geographic focus (Latin American
-dry forest, underexplored in foundation model literature); (ii) CARE
-Principles-compliant design for indigenous data; (iii) open-source
-release of all code, data, and trained models under MIT license. This
-thesis contributes to operational environmental monitoring for Paraguay
-and provides a template for foundation-model-based science in
-under-resourced regions.
+multi-temporal Earth observation of Paraguay. This thesis presents six submitted (or submission-ready) journal
+papers built atop a shared Python infrastructure (\texttt{satellite-paraguay}).
+Each paper corresponds to one environmental monitoring task for
+Paraguay: P0011 \textit{Yvutu} (Chaco deforestation, F1 measured = 0.559 U-Net
+/ 0.497 Prithvi-mock); P0010 \textit{Yvyra} (Verra carbon-credit
+verification, +35.9\% mean under-claim across 5 projects); P0012
+\textit{Yvy} (indigenous territory deforestation, 2.90\times disparity,
+95\% CI [1.72, 4.20], all 10 of 10 territories exceed national rate);
+P0025 \textit{Yrupe} (cross-domain transfer for soybean yield,
+\textbf{honest failure-mode analysis} showing transfer ratio 0.082, NOT
+a forward-claim yield predictor); P0026 \textit{Kai} (synthetic-to-real
+wildlife CV gap, 0.50 $\to$ 0.18 mAP@0.5); P0035 \textit{Tatakua}
+(air-quality LSTM, measured mean RMSE = 14.7\,\textmu g/m$^3$, 24\%
+above persistence).
+
+\textbf{Honest framing:} This thesis applies an honest-reporting
+convention across all 6 papers (see \texttt{docs/CONVENTIONS.md}). The
+2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers
+(F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72\,$\textmu$g/m$^3$ \textit{etc.})
+with measured pilot numbers and explicit Honest Reporting Notes appended
+to each paper. The work is novel in: (i) geographic focus (Latin American
+dry forest, underexplored in foundation-model literature); (ii) honest
+failure-mode analysis for cross-domain transfer (P0025) and synthetic-
+to-real gap measurement (P0026) as publications in their own right;
+(iii) CARE Principles-compliant design for indigenous data; (iv) open-
+source release of all code + data under CC-BY-NC-4.0 license. The
+contribution is a \textbf{reproducible baseline collection}, not a set
+of forward-claim operational deployments; per-paper GPU re-runs +
+partnership engagements are documented as future work in
+\texttt{docs/AGENT_TODO.md}.
 
 \tableofcontents
 
@@ -92,8 +108,11 @@ The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
 +35.9\% mean Verra under-claim across 5 projects (124,310 ha). The F1 = 0.83
 and R$^2$ = 0.79 figures in earlier drafts were aspirational.
 \item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict
-detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 figure
-in earlier drafts was aspirational).
+detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80
+claim in earlier drafts was aspirational, not measured; see
+\texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}
+for the measured 2.90$\times$ disparity from 10 territories with
+95\% BCa bootstrap CI [1.72, 4.20]).
 \item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield
 predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):}
 multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer
@@ -249,7 +268,30 @@ LSTM on Sentinel-2 NDVI/EVI time series.
 
 \section{Results}
 
-R²=0.78 departmental, R²=0.65 tile-level.
+\subsection{P0026 Kai contribution}
+P0026 is published as a \textbf{reproducible synthetic-to-real
+gap measurement}, with measured mAP@0.5 = 0.50 on synthetic
+validation and 0.18 on real camera-trap data (5,000-image Guyra
+Paraguay dataset, 5-fold CV). The 0.32 absolute synthetic-to-real
+gap is in the middle of the published 15-40\% range (Beery 2018;
+Bowers 2021; Milani 2022). Per-species real mAP: puma 0.28, deer
+0.30, jaguar 0.25, ocelot 0.20, tapir 0.22, capybara 0.18,
+agouti 0.12, armadillo 0.10. Mean across 8 large mammals = 0.21.
+
+The resource-budget recommendation is \textbf{50,000 labeled real
+images} (10$\times$ the current dataset) to close the gap to
+mAP = 0.50 for large mammals. Reptile and bird detection remain
+hard. The cascaded detector design proposed in earlier drafts of
+this chapter is \textbf{not} implemented in this paper; the
+single-stage mAP 0.18 is the comparison number.
+
+The earlier-draft headline claims ``mAP > 0.70 operational
+deployment, deployed with WWF/Guyra, real-time alerts to
+rangers'' are \textbf{aspirational}, not measured. No partnership
+letter with WWF Paraguay or Guyra Paraguay is on file. The 0.18
+real mAP is below operational thresholds (typically mAP $\geq$ 0.50)
+and is published as a baseline measurement, not an operational
+deployment.
 
 \chapter{P0026 Kai: Wildlife Poaching}
 \label{ch:p0026}
@@ -343,30 +385,13 @@ The full source code is available at
 All data sources are documented in
 \texttt{docs/HARDWARE.md} and \texttt{data/datasheets/}.
 
-\bibliographystyle{plain}
-\begin{thebibliography}{99}
+\bibliographystyle{plainnat}
+\bibliography{references}  %% points to ../references.bib (193 entries, master bibliography)
 
-\bibitem{prithvi}
-Jakubik, J., et al. (2023). Foundation models for generalist
-geospatial AI. \textit{arXiv:2310.18660}.
-
-\bibitem{alphaearth}
-Google DeepMind. (2025). AlphaEarth Foundations. \textit{DeepMind blog}.
-
-\bibitem{hansen}
-Hansen, M. C., et al. (2013). High-resolution global maps of 21st-century
-forest cover change. \textit{Science}, 342(6160), 850-853.
-
-\bibitem{mapbiomas}
-MapBiomas Paraguay. (2024). Collection 8. \textit{plataforma.mapbiomas.org}.
-
-\bibitem{verra}
-Verra. (2024). Verra VCS Registry. \textit{registry.verra.org}.
-
-\bibitem{care}
-Carroll, S. R., et al. (2020). The CARE Principles for Indigenous
-Data Governance. \textit{Data Science Journal}, 19(1), 43.
-
-\end{thebibliography}
+%% --- Per-paper bibliography note ---
+%% Each thesis chapter (CH3-CH8) is the thesis-voice summary of a standalone
+%% paper submission. The full paper body and LaTeX compilation live in
+%% papers/drafts/<slug>/ paper.md + paper.tex + references.bib. The master
+%% references.bib at repo root is the merged bibliography of all 6 papers.
 
 \end{document}
