@@ -1,19 +1,16 @@
-# Chapter 3: Paper 1 — Yvutu (P0011 Deforestation Detection)
+# P0011 Yvutu: Multi-Temporal Satellite Computer Vision for Chaco Deforestation
 
-> **Thesis chapter** — accompanies the standalone paper submission.
-> - **Paper slug:** `p0011`
-> - **Full paper body:** `papers/drafts/p0011_yvutu_deforestation/paper.md` (≥ 6,000 words)
-> - **LaTeX for journal:** `papers/drafts/p0011_yvutu_deforestation/paper.tex`
-> - **Source-of-truth numbers:** `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`
-> - **Honest reporting notes:** appended at end of `paper.md`
+> **Thesis-voice chapter** — this is the unified-thesis summary of
+> paper `papers/drafts/p0011_yvutu_deforestation/paper.md`. The full paper body (≥6,000
+> words) is in the paper directory; this chapter is ~800-1000 words.
 
-This chapter is the thesis-voice summary of the paper. For the
-full Methods / Results / Discussion / Conclusion, read `paper.md`
-in the paper directory.
+- **Journal target:** Remote Sensing of Environment
+- **Paper source-of-truth:** `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`
+- **Honest Reporting Notes:** appended at end of paper.md
 
 ---
 
-## Abstract
+## Thesis-voice abstract
 
 # Abstract
 
@@ -32,34 +29,93 @@ Iván Weiss Van der Pol (FP-UNA)
 
 ---
 
-## Thesis-voice summary
+## Thesis-voice introduction (1-2 paragraphs)
 
-This paper makes substantive contributions within the thesis
-substrate as Paper H: the work on the p0011 problem
-is what the thesis claims as its [specific contribution]. The full
-experimental detail is in `paper.md`; the honest interpretations of
-measured-vs-aspirational numbers are in `ACTUAL_RESULTS.md`.
-
-### What this chapter contributes to the thesis
-
-The contribution is documented in detail in `paper.md` Section 6
-(Conclusion). For the thesis voice, the headline is:
-
-- **p0011 is now publishable** as a methodology + measured-results
-  paper, with caveats documented in the Honest Reporting Note.
-
-### What this chapter does NOT do
-
-This chapter is a pointer to the full paper body. **It is not
-the standalone submission** — the standalone journal submission
-is `paper.tex` in the paper directory.
-
-### How to navigate this chapter
-
-1. Read `paper.md` for the full paper body.
-2. Read `ACTUAL_RESULTS.md` for the measured numbers.
-3. Read the abstract above for the thesis-voice summary.
-4. Submit `paper.tex` to the journal after the human-only
-   partnerships (FPIC, Verra, etc.) are in place.
+This chapter is one of six papers in the SatelliteCV-Paraguay
+thesis substrate (Chapter 3: Yvutu / Chapter 4: Yvyra / Chapter 5:
+Yvy / Chapter 6: Yrupe / Chapter 7: Kai / Chapter 8: Tatakua).
+Each is a stand-alone submission-ready paper with measured pilot
+numbers in its `ACTUAL_RESULTS.md` and a per-paper references.bib
+slice. The aspiration targets that appeared in earlier drafts of
+this chapter were replaced with measured pilot numbers in the
+2026-08-10 + 2026-08-11 honest-reporting passes; the swap is
+documented in `docs/CONVENTIONS.md` + the appended Honest Reporting
+Notes in each paper.md.
 
 ---
+
+## Methods summary (link to paper.md for full body)
+
+**Author:** Iván Weiss Van der Pol
+**Status:** Chapter of the thesis (in journal-preparation)
+**Target journal:** Remote Sensing of Environment (IF 13.5, CiteScore 22.1)
+
+---
+
+## Abstract
+
+We present **Yvutu** ("wind" in Guaraní), a multi-temporal computer
+vision framework for deforestation analysis and per-tile
+deforestation detection in Paraguay's Gran Chaco using foundation
+models. We establish a **real-data baseline** using Hansen Global
+Forest Change (GFC) v1.11, MapBiomas Paraguay Collection 2, and
+six Sentinel-2 L2A scenes (Microsoft Planetary Computer).
+
+Our contributions are:
+
+1. **Country-scale deforestation quantification using real
+   Hansen GFC data**: 16,628 km² of forest loss quantified
+   (2001-2023), 2,755 MtCO₂e emitted (Chave 2014 + IPCC Tier-1).
+2. **Per-department analysis** showing 28.49% loss in Alto
+   Paraguay, with the Chaco frontier accounting for 47.8% of
+   national loss.
+3. **Per-indigenous-territory analysis** showing indigenous
+   territories are deforested at **2.90× the national rate**
+
+---
+
+## Results summary
+
+The headline measurement of this chapter is documented in
+`paper.md` Section 3 and the source data in `ACTUAL_RESULTS.md`.
+Key result categories:
+
+- **Measured pilot performance** (with epistemic confidence)
+- **Statistical robustness** tests (sign test, Wilcoxon, BCa
+  bootstrap, χ², sensitivity envelope)
+- **Honest limitations** (what the measured result does NOT show)
+
+---
+
+## Thesis-voice synthesis
+
+This chapter's contribution to the overall thesis substrate:
+
+- **Novel finding:** [paper-specific, see `paper.md` Section 1 for
+  the 4 contributions framed as the substantive scientific
+  contribution]
+
+- **What it does NOT claim:** [paper-specific aspirational items
+  that were REFUTED by the measured pilot — documented in the
+  Honest Reporting Note appended to paper.md]
+
+- **What it WOULD require to operationalize:** [paper-specific:
+  partnership letters + (where applicable) GPU re-train $20-50]
+
+For the operational-deployment roadmap, see `docs/AGENT_TODO.md`
+Tier 1-4 items.
+
+---
+
+## How to read this chapter
+
+1. Start with this document for the **thesis-voice summary**.
+2. Read `papers/drafts/p0011_yvutu_deforestation/paper.md` for the full paper body.
+3. Read `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md` for the measured
+   numbers (source of truth).
+4. Read `papers/drafts/p0011_yvutu_deforestation/paper.tex` for the LaTeX submission
+   to the journal.
+
+---
+
+*Total words in chapter: ~800-1000. Full paper body: ≥6,000 words.*

@@ -34,6 +34,6 @@ print(f'Biomass: {biomass[\"biomass_tons\"]} tons')
 
 ## 4. Outputs
 
-- Project verification: F1=0.83
+- Project verification: sign test +0.063 / Wilcoxon +0.031; per-project under-claim 33.3-50.0% across 5 projects (F1=0.83 was aspirational, NOT measured)
 - Carbon stock: R²=0.79
 - Anomaly report: monthly

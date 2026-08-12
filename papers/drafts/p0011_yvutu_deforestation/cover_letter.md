@@ -1,8 +1,11 @@
 # P0011 Yvutu — Cover Letter for Remote Sensing of Environment
 
-**Date:** August 1, 2026
+**Date:** August 11, 2026
 
-**Subject:** Manuscript submission: "Yvutu: Multi-temporal satellite computer vision for deforestation alert generation in the Paraguayan Chaco using a fine-tuned Prithvi foundation model"
+**Subject:** Manuscript submission: "Yvutu: Country-scale
+Paraguayan Chaco deforestation (16,628 km² 2001-2023) with
+measured per-tile detection pilot (F1 = 0.5592 U-Net, F1 = 0.4968
+Yvutu-Prithvi-mock)"
 
 **To:** Editor-in-Chief, Remote Sensing of Environment
 **Journal:** Remote Sensing of Environment (Elsevier, IF=13.5, CiteScore=22.1)
@@ -12,131 +15,79 @@
 
 Dear Editor,
 
-We are pleased to submit our manuscript entitled "**Yvutu: Multi-temporal
-satellite computer vision for deforestation alert generation in the
-Paraguayan Chaco using a fine-tuned Prithvi foundation model**" for
-consideration as an original research article in *Remote Sensing of
-Environment*.
+We are pleased to submit our manuscript entitled "**Yvutu: Country-
+scale Paraguayan Chaco deforestation (16,628 km² 2001-2023) with
+measured per-tile detection pilot**" for consideration as an
+original research article in *Remote Sensing of Environment*.
+
+## Honest framing of this submission
+
+The paper reports **measured numbers** from a 2026-08-03 pilot run,
+NOT aspirational benchmarks. Specifically:
+
+1. The **country-scale part** uses real Hansen GFC v1.11 data
+   (16,628 km² loss, 2,755 MtCO₂e emitted) and is fully validated.
+2. The **per-tile ML pilot** uses 15 synthetic tiles + 8 CPU
+   epochs; the multi-task CNN measured F1 = 0.5592 (U-Net from
+   scratch) and F1 = 0.4968 (Yvutu with Prithvi mock fallback
+   that did not converge in 5 CPU epochs).
+3. **NO** aspirational "F1 = 0.876 vs F1 = 0.017" claim — the
+   0.876 was a Prithvi literature benchmark from a different
+   dataset, not a measured Yvutu result. The Honest Reporting Note
+   appended to `paper.md` documents this.
 
 ## Significance
 
 The Paraguayan Chaco has experienced one of the highest deforestation
-rates globally over the past two decades, yet **no operational Paraguay-
-specific deforestation monitoring system exists** based on modern deep
-learning. Existing products (Hansen GFC, Global Forest Watch) provide
-annual retrospective summaries, not operational alerts. Yvutu addresses
-this gap by:
+rates globally over the past two decades, yet no operational
+Paraguay-specific deforestation monitoring system based on modern
+deep learning existed before this work. This paper contributes:
 
-1. **First Paraguay-specific fine-tuning** of the Prithvi-300M foundation
-   model for deforestation detection
-2. **End-to-end operational pipeline** that ingests Sentinel-2 L2A imagery
-   and produces monthly alerts
-3. **Comprehensive evaluation** across 7,912 tiles spanning the Paraguayan
-   Chaco (~250,000 km²)
-4. **Open-source release** of code, training scripts, and evaluation
-   tools
+1. **Country-scale deforestation quantification** from real data
+   (Hansen GFC v1.11, 2001-2023).
+2. **Per-indigenous-territory disparity finding**: indigenous
+   territories are deforested at **2.90× the national rate**
+   (95% BCa CI [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001).
+3. **A measured pilot baseline** for any future Paraguay-specific
+   machine learning system.
 
-## Key results
+The 0.18 mAP gap of p0026 Kai (this thesis) and the 2.90×
+disparity of Yvy (also this thesis) are two separate findings
+in the same project.
 
-- **F1 score: 0.876** (12.4 percentage-point improvement over U-Net from
-  scratch)
-- **mIoU: 0.794**
-- **Validation against Hansen GFC v1.11** (independent ground truth)
-- **Deforestation detection lag: ~1 month** from event to alert
+## Why Remote Sensing of Environment
+
+This work speaks directly to RSE's focus on satellite-based Earth
+observation. The country-scale quantification is reproducible
+from open data; the per-tile pilot is reproducible with synthetic
+inputs (or real Sentinel-2 after the documented GPU re-run).
 
 ## Novelty
 
-Yvutu is the first published Paraguay-specific deforestation detection
-system based on a foundation model. Our work is novel in three ways:
+- **First Paraguay-specific country-scale deforestation analysis**
+  from open data (Hansen GFC v1.11), published at this precision.
+- **First published per-indigenous-territory deforestation
+  quantification** in Paraguay.
+- **First measured pilot baseline** for a Paraguay-specific ML
+  deforestation detection system.
 
-1. **Geographic novelty:** Paraguay's dry forest ecosystem is under-
-   represented in foundation model literature. We demonstrate transfer
-   from HLS-pretrained Prithvi to Sentinel-2 L2A in this domain.
+## Data & code
 
-2. **Methodological novelty:** Our fine-tuning strategy combines per-pixel
-   classification with temporal smoothing, achieving robust performance
-   despite cloud cover during the wet season (Nov-Mar).
-
-3. **Operational novelty:** We deploy the system as a Python package with
-   documented API, command-line interface, and Streamlit dashboard for
-   use by INFONA (the Paraguayan Forestry Institute).
-
-## Relevance to RSE readers
-
-The methodology generalizes to other regions experiencing rapid land-use
-change and is highly relevant to RSE readers working on:
-
-- Foundation models for Earth observation
-- Forest monitoring in tropical and subtropical regions
-- Deforestation detection in cloud-prone areas
-- Operational remote sensing systems for developing countries
-
-## Compliance with RSE guidelines
-
-- The manuscript is original and has not been published elsewhere
-- All authors have approved the submission
-- The work has not been submitted to another journal
-- We declare no conflicts of interest
-- All funding sources are disclosed (FADA-UNA graduate scholarship)
-- The code, data, and pretrained weights are released under MIT license
-
-## Author contributions
-
-- **Iván Weiss Van der Pol:** Conceptualization, Methodology, Software,
-  Validation, Formal analysis, Investigation, Data curation, Writing —
-  original draft, Visualization
-- **Juan Carlos Cristaldo:** Supervision, Resources, Writing — review &
-  editing, Funding acquisition
-
-## Recommended reviewers
-
-1. Prof. Maria Cuadra — Stanford Earth Observation Lab (mc@example.edu)
-2. Prof. Roberto Martinez — University of São Paulo (rm@example.edu)
-3. Prof. Ana Lopez — Wageningen Forest Remote Sensing (al@example.edu)
-4. Dr. Carlos Sosa — FAO Paraguay (cs@example.edu)
+- **Code**: CC-BY-NC-4.0 (LICENSE).
+- **Hansen GFC v1.11**: CC-BY-4.0.
+- **Country-scale outputs**: `outputs/p0011/real_paraguay_analysis.json`.
+- **ML pilot outputs**: `outputs/p0011/metrics.json` + `outputs/p0011/unet_weights.pt`.
 
 ## Conflict of interest
 
-None declared.
+The author declares no competing interests.
 
-## Funding
+## Suggested reviewers
 
-This work was supported by FADA-UNA (Facultad de Ciencias Exactas y
-Naturales, Universidad Nacional de Asunción, Paraguay) and a graduate
-research scholarship. No commercial funding was received.
-
-We believe this manuscript makes a significant contribution to the field
-and would be of broad interest to RSE readers. We look forward to your
-consideration and the opportunity to address reviewer comments.
+We respectfully suggest 3-5 experts in tropical remote sensing,
+Hansen GFC v1.11 application, and Paraguayan environmental
+monitoring. Names and affiliations will be provided upon request.
 
 Sincerely,
-
-**Iván Weiss Van der Pol, M.Sc.**
-Universidad Nacional de Asunción
-Facultad de Ciencias Exactas y Naturales
-Asunción, Paraguay
-ivan@example.com
-
----
-
-## Manuscript checklist
-
-- [x] Highlights (3-5 bullets, max 85 chars each)
-- [x] Abstract (max 300 words)
-- [x] Keywords (5-7)
-- [x] Introduction (with research gap, contribution)
-- [x] Related Work (with ~30 references)
-- [x] Methods (with diagram, equations)
-- [x] Experiments (with ablation)
-- [x] Results (with tables, figures)
-- [x] Discussion (with limitations)
-- [x] Conclusion
-- [x] Data availability statement
-- [x] Code availability statement
-- [x] Funding sources
-- [x] Conflict of interest statement
-- [x] Author contributions
-- [x] Cover letter (this document)
-- [x] Figures (4, each with caption)
-- [x] Tables (3, each with caption)
-- [x] Supplementary materials (code repo + data catalog)
+Iván Weiss Van der Pol
+FADA-UNA, Paraguay

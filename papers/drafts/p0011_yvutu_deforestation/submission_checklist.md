@@ -4,147 +4,81 @@ RSE requires 3-5 bullet points, each maximum 85 characters.
 
 ---
 
-1. **First Paraguay-specific Prithvi fine-tuning for deforestation detection achieves F1=0.876 on Chaco test set.**
+## Honest Submission Highlights (2026-08-13 update)
 
-2. **Comprehensive evaluation across 7,912 tiles spanning 250,000 km² of Paraguayan Chaco.**
+The bullet points below replace the original draft's aspirational claims
+with **measured** numbers from the 2026-08-03 pilot run. See
+`ACTUAL_RESULTS.md` for the source values.
 
-3. **Operational pipeline produces monthly Sentinel-2 alerts with ~1-month detection lag.**
+1. **Country-scale deforestation quantification (real Hansen GFC v1.11): 16,628 km² of loss over 2001-2023, equivalent to 2,755 MtCO₂e.**
 
-4. **Outperforms U-Net from scratch by 12.4 percentage points F1 and persistence by 22.7 points.**
+2. **Per-department analysis showing 28.49% loss in Alto Paraguay, with the Chaco frontier accounting for ~47.8% of national loss.**
 
-5. **Open-source Python package released with pretrained weights, training scripts, and evaluation tools.**
+3. **Per-indigenous-territory analysis showing 2.90× the national rate (95% BCa CI [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001), with Carmelo Peralta worst at 49.45% loss.**
+
+4. **End-to-end ML pipeline + measured pilot baseline: F1 = 0.5592 (U-Net from scratch) and F1 = 0.4968 (Yvutu with Prithvi mock fallback that did not converge in 5 CPU epochs).**
+
+5. **The aspirational "F1 = 0.876 vs F1 = 0.017 from-scratch" claim from earlier drafts is REFUTED by the measured pilot. Honest Reporting Note appended to paper.md documents this.**
 
 ---
 
-# P0011 Yvutu — Author Contributions (CRediT taxonomy)
+## Display Items
+
+**Figure 1.** Country-scale deforestation map (2023 state) and per-
+department breakdown (Alto Paraguay dominant).
+
+**Figure 2.** Per-indigenous-territory disparity visualization
+(Carmelo Peralta + Bahía Negra as worst cases).
+
+**Figure 3.** ML pilot run: U-Net vs. Yvutu-Prithvi-mock on 15
+synthetic tiles, confusion matrix and per-class breakdown.
+
+**Table 1.** Per-department loss statistics (18 departments).
+
+**Table 2.** Per-indigenous-territory analysis (10 territories).
+
+**Table 3.** ML pilot metrics comparison table.
+
+---
+
+## Author Contributions (CRediT taxonomy)
 
 | Author | CRediT Roles |
 |--------|--------------|
 | **Iván Weiss Van der Pol** | Conceptualization; Methodology; Software; Validation; Formal analysis; Investigation; Data curation; Writing — original draft; Visualization |
-| **Juan Carlos Cristaldo** | Supervision; Resources; Writing — review & editing; Funding acquisition |
+| **Juan Carlos Cristaldo** | Supervision; Resources; Writing — review & editing |
 
 ---
 
-# P0011 Yvutu — Funding Sources
+## Funding Sources
 
 This work was supported by:
 
-1. **FADA-UNA graduate research scholarship** — Iván Weiss Van der Pol, 2024-2026
-2. **Paraguayan National Science Fund (CONACYT)** — Project 14-INV-202 (partial support)
-3. **Ai-Whisperers compute grant** — Free compute access on Paraguay VPS infrastructure
+- UNA FADA — research infrastructure and compute time
+- Personal equipment and computational resources (the agent-side sandbox)
 
-No commercial funding was received.
-
----
-
-# P0011 Yvutu — Conflict of Interest
-
-The authors declare no conflicts of interest.
+No external grant number is associated with this pilot.
 
 ---
 
-# P0011 Yvutu — Data Availability Statement
+## Data + Code Availability
 
-The data used in this study are openly available:
-
-| Dataset | Source | License |
-|---------|--------|---------|
-| Sentinel-2 L2A | ESA Copernicus | Free, open |
-| MapBiomas Paraguay Collection 8 | plataforma.mapbiomas.org | CC0 |
-| Hansen Global Forest Change v1.11 | data.globalforestwatch.org | CC0 |
-| Paraguay Geodata | Ai-Whisperers / Iván Weiss Van der Pol | CC0 (anonymized) |
-| Synthetic Chaco dataset (this paper) | github.com/IvanWeissVanDerPol/satellite-paraguay | MIT |
-
-Synthetic data generation scripts and tile IDs used in this study are
-included in the GitHub repository.
+- **Code**: CC-BY-NC-4.0 (LICENSE).
+- **Hansen GFC v1.11**: CC-BY-4.0.
+- **Indigenous territory polygons**: CC-BY-4.0 (paraguay-geodata).
+- **Pretrained pipeline weights** (planned): `outputs/p0011/unet_weights.pt`.
+- **Measured-results log**: ACTUAL_RESULTS.md.
 
 ---
 
-# P0011 Yvutu — Code Availability Statement
+## RSE Honest-Submission Statement
 
-All code, training scripts, evaluation tools, and figure generation scripts
-are released as open-source under the MIT license:
+This paper is submitted **as a reproducible baseline contribution**.
+The measured pilot performance does not validate the aspirational
+headline published in earlier drafts of this chapter. We explicitly
+state the gap so reviewers do not discover it themselves.
 
-- **Repository:** https://github.com/IvanWeissVanDerPol/satellite-paraguay
-- **Commit:** 1708643
-- **License:** MIT
-- **Documentation:** See `docs/` folder in the repository
-- **Issues/Contact:** Open a GitHub issue or contact the corresponding author
-
-The trained model weights (Prithvi fine-tuned for Paraguay deforestation
-detection) are released on HuggingFace under the name
-`weissvanderpol/yvutu-paraguay-deforestation` (forthcoming).
-
----
-
-# P0011 Yvutu — Submission Checklist (RSE format)
-
-## Manuscript structure
-- [x] Title (max 200 chars)
-- [x] Highlights (3-5 bullets, max 85 chars each)
-- [x] Abstract (max 300 words)
-- [x] Keywords (5-7)
-- [x] Introduction
-- [x] Related Work (~30 references)
-- [x] Methods (with equations, system diagram)
-- [x] Experiments (with ablation, hyperparameter table)
-- [x] Results (with tables, figures, statistical tests)
-- [x] Discussion (with limitations, future work)
-- [x] Conclusion
-- [x] Acknowledgments
-- [x] References (target: 50-80)
-
-## Required statements
-- [x] Author contributions (CRediT)
-- [x] Conflict of interest
-- [x] Funding sources
-- [x] Data availability
-- [x] Code availability
-- [x] Cover letter
-- [x] Highlights file
-
-## Figures (target: 4-6)
-- [x] Fig 1: NDVI time series (sample tile)
-- [x] Fig 2: Model comparison (4 models)
-- [x] Fig 3: Per-metric bar chart
-- [x] Fig 4: Confusion matrix
-- [ ] Fig 5: Per-department performance
-- [ ] Fig 6: Annual loss detection lag distribution
-
-## Tables (target: 4-6)
-- [x] Table 1: Main results (F1, mIoU, precision, recall, time)
-- [x] Table 2: Confusion matrices per model
-- [x] Table 3: Dataset statistics
-- [ ] Table 4: Hyperparameter search results
-- [ ] Table 5: Ablation study (Prithvi vs. random init)
-
-## Supplementary
-- [ ] Code link (GitHub)
-- [ ] Pretrained weights link (HuggingFace)
-- [ ] Data catalog (Zenodo DOI)
-- [ ] Detailed hyperparameter configs
-- [ ] Additional figures (per-dept, per-year)
-- [ ] Reproducibility checklist
-
-## RSE submission portal
-- [ ] Submit at https://www.editorialmanager.com/rse/
-- [ ] Choose "Original research article"
-- [ ] Upload all files
-- [ ] Confirm all author ORCID iDs
-- [ ] Suggest 3-5 reviewers
-- [ ] Pay $200 submission fee (waiver available for Paraguay)
-
-## Estimated timeline
-- Submission: 2026-08-15
-- First decision: ~6 weeks (RSE median)
-- Reviews: 2-3 reviewer reports
-- Revision: 4-6 weeks
-- Acceptance: ~5-6 months
-- Publication: ~6-8 months
-
-## Suggested reviewers (RSE top forest remote sensing)
-1. Prof. Xiao-Peng Song — Tsinghua University (forest remote sensing)
-2. Prof. Xiao Zhang — UNH (Hansen GFC co-creator)
-3. Prof. David Skole — Michigan State (deforestation monitoring)
-4. Prof. Carlos Souza — INPE Brazil (PRODES creator)
-5. Dr. Fred Stolle — WRI/GFW (forest monitoring operations)
+If the editorial team prefers the paper framed as a methodology +
+measured-results contribution, we are happy to revise the abstract
+to lead with the operationalization plan (Section D.4 of
+`discussion.md`) rather than the headline metric.

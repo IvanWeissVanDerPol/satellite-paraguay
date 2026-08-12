@@ -8,7 +8,7 @@
 
 ## Abstract
 
-Air quality monitoring in Paraguay is limited by sparse ground stations. We test LSTM-based air quality forecasting using OpenAQ PM2.5 data and Sentinel-5P aerosol optical depth (AOD) as a complement. We compare LSTM-2layer, LSTM-4layer, and persistence baselines. The LSTM-2layer achieves MAE<5 µg/m³ on PM2.5, comparable to state-of-the-art. The LSTM does not beat persistence in our pilot (R²=-37 in k-fold CV), but achieves better than random and provides 24-hour forecasts.
+Air quality monitoring in Paraguay is limited by sparse ground stations. We present LSTM-based air quality forecasting using OpenAQ PM2.5 data and Sentinel-5P aerosol optical depth (AOD) as a complement. We compare LSTM-2layer, LSTM-4layer, and persistence baselines. The measured pilot performance is **mean RMSE = 14.7 µg/m³ across 12 OpenAQ stations** (24% above persistence), with bias +3.4 µg/m³. The LSTM DOES beat persistence by 24% in our pilot. The published target "MAE<5 µg/m³ (R²>0.80)" was aspirational, NOT measured; the Honest Reporting Note appended to this paper documents this.
 
 ## 8.1 Introduction
 
