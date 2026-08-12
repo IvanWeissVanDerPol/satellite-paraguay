@@ -141,7 +141,7 @@ def is_sanctioned(rel_path: str) -> bool:
                 if rel_path.startswith(pattern):
                     return True
             elif pattern.startswith("papers/drafts/"):
-                middle = pattern[len("papers/drafts/"):]
+                middle = pattern[len("papers/drafts/") :]
                 if "/" not in middle and rel_path.endswith("/" + middle):
                     return True
             elif rel_path == pattern:

@@ -69,7 +69,7 @@ def block_bootstrap_fast(
         for bw in range(n_blocks_w):
             y = bh * block_size
             x = bw * block_size
-            block_losses[bh * n_blocks_w + bw] = (lossyear[y: y + block_size, x: x + block_size] > 0).sum()
+            block_losses[bh * n_blocks_w + bw] = (lossyear[y : y + block_size, x : x + block_size] > 0).sum()
 
     boots = np.zeros(n_boot)
     for i in range(n_boot):

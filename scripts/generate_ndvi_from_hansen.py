@@ -17,14 +17,15 @@ Outputs:
     outputs/p0011/ndvi/ndvi_per_dept.json
 """
 
-from rasterio.windows import Window
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 import sys
 import time
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

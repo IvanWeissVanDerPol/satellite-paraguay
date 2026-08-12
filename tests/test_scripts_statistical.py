@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 # Add scripts to path BEFORE importing script functions
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"

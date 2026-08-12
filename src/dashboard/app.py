@@ -12,11 +12,12 @@ Pages:
 7. References — papers, data, code
 """
 
-import streamlit as st
-import pandas as pd
 import json
 import sys
 from pathlib import Path
+
+import pandas as pd
+import streamlit as st
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

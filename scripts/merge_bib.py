@@ -70,7 +70,7 @@ def split_entries(text: str) -> list[str]:
         elif ch == "}":
             depth -= 1
             if depth == 0 and start is not None:
-                out.append(text[start: i + 1])
+                out.append(text[start : i + 1])
                 start = None
     return [normalize_entry(e) for e in out if e.strip()]
 

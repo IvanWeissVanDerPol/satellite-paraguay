@@ -9,7 +9,6 @@ We focus on testing the pure-numpy baselines (persistence, linear_trend)
 which work without sklearn/torch and don't need GPU.
 """
 
-
 import numpy as np
 import pytest
 

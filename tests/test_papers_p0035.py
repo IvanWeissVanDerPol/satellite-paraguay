@@ -4,7 +4,6 @@ Coverage target: 70%+. The TatakuaPipeline class handles air quality
 forecasting for Asunción.
 """
 
-
 import numpy as np
 import pytest
 

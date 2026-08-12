@@ -9,12 +9,13 @@ Computes:
 All results saved to outputs/p0011/uncertainty/.
 """
 
-from rasterio.windows import Window
-import rasterio
-import numpy as np
 import json
 import sys
 from pathlib import Path
+
+import numpy as np
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -63,7 +64,7 @@ def block_bootstrap_fast(lossyear, block_size=100, n_boot=1000, seed=42):
         for bw in range(n_blocks_w):
             y = bh * block_size
             x = bw * block_size
-            block_losses[bh * n_blocks_w + bw] = (lossyear[y: y + block_size, x: x + block_size] > 0).sum()
+            block_losses[bh * n_blocks_w + bw] = (lossyear[y : y + block_size, x : x + block_size] > 0).sum()
 
     # Bootstrap: resample blocks (preserves spatial structure)
     boots = np.zeros(n_boot)

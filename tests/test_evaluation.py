@@ -1,5 +1,11 @@
 """Tests for src.evaluation module."""
 
+import sys
+from pathlib import Path
+
+import numpy as np
+import pytest
+
 from src.evaluation import (
     classification_metrics,
     confusion_matrix_segmentation,
@@ -8,11 +14,6 @@ from src.evaluation import (
     pixel_iou,
     regression_metrics,
 )
-import sys
-from pathlib import Path
-
-import numpy as np
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

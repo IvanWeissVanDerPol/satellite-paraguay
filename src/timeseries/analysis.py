@@ -149,7 +149,7 @@ def compute_anomaly(
 
     Returns anomaly for each timestep (T, H, W).
     """
-    baseline = np.nanmean(timeseries[baseline_period[0]: baseline_period[1]], axis=0)
+    baseline = np.nanmean(timeseries[baseline_period[0] : baseline_period[1]], axis=0)
     return timeseries - baseline[None, :, :]
 
 

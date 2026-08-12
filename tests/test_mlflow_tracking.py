@@ -4,7 +4,6 @@ Coverage target: 70%+. Tests start_run context manager,
 log_params, log_metrics, log_artifact, etc.
 """
 
-
 import pytest
 
 

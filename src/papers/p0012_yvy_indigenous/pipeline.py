@@ -11,7 +11,6 @@ territory conflicts with F1 > 0.80, CARE-compliant.
 from pathlib import Path
 from typing import Dict, Optional
 
-
 from ...paraguay_admin import load_catastro_parcels, load_indigenous_territories
 
 

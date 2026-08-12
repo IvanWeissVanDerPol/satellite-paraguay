@@ -11,10 +11,11 @@ Outputs:
     outputs/real/real_figures/*
 """
 
-import numpy as np
 import json
 import sys
 from pathlib import Path
+
+import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -104,15 +105,15 @@ def prepare_tiles(data, n_tiles=10, tile_size=256):
         n_attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        tile = multi[:, y: y + tile_size, x: x + tile_size]
-        mb_tile = mb_resized[y: y + tile_size, x: x + tile_size]
+        tile = multi[:, y : y + tile_size, x : x + tile_size]
+        mb_tile = mb_resized[y : y + tile_size, x : x + tile_size]
 
         # Label: 1 if any deforestation event in tile (loss year > 0)
-        has_loss = (hansen[y: y + tile_size, x: x + tile_size] > 0).any()
+        has_loss = (hansen[y : y + tile_size, x : x + tile_size] > 0).any()
 
         # Balance classes
         if has_loss and n_with_loss < n_tiles // 2:
-            label = (hansen[y: y + tile_size, x: x + tile_size] > 0).astype(np.int64)
+            label = (hansen[y : y + tile_size, x : x + tile_size] > 0).astype(np.int64)
             tiles.append({"bands": tile, "label": label, "mapbiomas": mb_tile})
             n_with_loss += 1
         elif not has_loss and n_without_loss < n_tiles - n_tiles // 2:

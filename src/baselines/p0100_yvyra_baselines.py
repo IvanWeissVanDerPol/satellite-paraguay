@@ -6,7 +6,6 @@ Baselines:
 3. Persistence (mean of training set)
 """
 
-
 import numpy as np
 
 from src.evaluation import print_metrics, regression_metrics

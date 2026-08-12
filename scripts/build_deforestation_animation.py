@@ -8,13 +8,14 @@ Output:
     outputs/p0011/figures/deforestation_timeline.gif
 """
 
-from rasterio.windows import Window
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import sys
 from pathlib import Path
+
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

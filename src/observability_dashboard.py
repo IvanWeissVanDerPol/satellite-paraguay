@@ -11,10 +11,11 @@ A Streamlit dashboard showing:
 Run: streamlit run src/observability_dashboard.py
 """
 
-import streamlit as st
 import json
 import sys
 from pathlib import Path
+
+import streamlit as st
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))

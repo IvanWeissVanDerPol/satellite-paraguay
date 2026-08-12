@@ -8,9 +8,9 @@ Hypothesis: Pre-trained Prithvi + MapBiomas labels + BFAST change detection
 outperforms Hansen GFC on Chaco deforestation (F1 > 0.85).
 """
 
+import sys
 from pathlib import Path
 from typing import Dict, List, Optional
-import sys
 
 import numpy as np
 

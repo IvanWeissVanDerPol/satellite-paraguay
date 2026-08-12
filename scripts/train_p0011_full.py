@@ -234,7 +234,7 @@ def train_random_forest(bands, labels, dates):
 
     # Use median NDVI per pixel as a proxy for "deforested" probability
     ndvi = (bands[:, 3] - bands[:, 2]) / (bands[:, 3] + bands[:, 2] + 1e-8)  # (T, H, W)
-    ndvi_late = np.mean(ndvi[T // 2:], axis=0)  # (H, W)
+    ndvi_late = np.mean(ndvi[T // 2 :], axis=0)  # (H, W)
     pseudo_labels = (ndvi_late < 0.4).astype(int).flatten()
 
     rf = RandomForestClassifier(n_estimators=100, max_depth=10, n_jobs=-1, random_state=42)
@@ -521,8 +521,8 @@ def main():
     n_train = int(0.7 * len(tiles))
     n_val = int(0.15 * len(tiles))
     tiles_train = tiles[:n_train]
-    tiles_val = tiles[n_train: n_train + n_val]
-    tiles_test = tiles[n_train + n_val:]
+    tiles_val = tiles[n_train : n_train + n_val]
+    tiles_test = tiles[n_train + n_val :]
     logger.info(f"  Train: {len(tiles_train)}, Val: {len(tiles_val)}, Test: {len(tiles_test)}")
 
     # Save tile stats

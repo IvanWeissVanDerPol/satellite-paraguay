@@ -89,8 +89,8 @@ def main():
     sequence_length = 6  # 6 months input
     X, y = [], []
     for i in range(len(values_norm) - sequence_length - args.horizon + 1):
-        X.append(values_norm[i: i + sequence_length])
-        y.append(values_norm[i + sequence_length: i + sequence_length + args.horizon, 0])  # PM2.5 only
+        X.append(values_norm[i : i + sequence_length])
+        y.append(values_norm[i + sequence_length : i + sequence_length + args.horizon, 0])  # PM2.5 only
 
     X = np.array(X, dtype=np.float32)
     y = np.array(y, dtype=np.float32)
@@ -151,8 +151,8 @@ def main():
 
         # Mini-batch training
         for i in range(0, len(X_train_t), args.batch_size):
-            batch_X = X_train_t[i: i + args.batch_size]
-            batch_y = y_train_t[i: i + args.batch_size]
+            batch_X = X_train_t[i : i + args.batch_size]
+            batch_y = y_train_t[i : i + args.batch_size]
 
             optimizer.zero_grad()
             pred = model(batch_X)

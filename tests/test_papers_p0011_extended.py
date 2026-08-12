@@ -4,12 +4,13 @@ detect_deforestation and validate methods.
 Coverage target: 70%+ for the pipeline module.
 """
 
-from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline as YvytuPipeline_Indirect
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
+
+from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline as YvytuPipeline_Indirect
 
 
 @pytest.fixture

@@ -13,12 +13,13 @@ Saves:
     outputs/p0011/carbon/per_year_loss.json
 """
 
-from rasterio.windows import Window
-import rasterio
-import numpy as np
 import json
 import sys
 from pathlib import Path
+
+import numpy as np
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

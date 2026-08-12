@@ -7,7 +7,6 @@ Baselines to compare against Prithvi foundation model:
 4. Linear trend
 """
 
-
 import numpy as np
 
 from src.evaluation import mean_iou, pixel_f1_score, print_metrics

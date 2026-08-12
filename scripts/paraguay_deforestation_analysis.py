@@ -13,15 +13,16 @@ Outputs:
     outputs/p0011/figures/real_*.png
 """
 
-from rasterio.windows import Window
-from matplotlib.colors import ListedColormap
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 import sys
 import time
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+from matplotlib.colors import ListedColormap
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -222,7 +223,7 @@ def plot_lossyear_map(tiles, out_path):
     found = False
     for y0 in range(0, 35000, 5000):
         for x0 in range(0, 35000, 5000):
-            loss_chunk = data["lossyear"][y0: y0 + win_size, x0: x0 + win_size]
+            loss_chunk = data["lossyear"][y0 : y0 + win_size, x0 : x0 + win_size]
             n_loss = int((loss_chunk > 0).sum())
             if 100 < n_loss < 50000:
                 found = True
@@ -234,7 +235,7 @@ def plot_lossyear_map(tiles, out_path):
         # Fallback: use first window with any loss
         for y0 in range(0, 35000, 5000):
             for x0 in range(0, 35000, 5000):
-                loss_chunk = data["lossyear"][y0: y0 + win_size, x0: x0 + win_size]
+                loss_chunk = data["lossyear"][y0 : y0 + win_size, x0 : x0 + win_size]
                 if (loss_chunk > 0).sum() > 0:
                     found = True
                     break

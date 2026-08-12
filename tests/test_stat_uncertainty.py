@@ -1,6 +1,5 @@
 """Tests for src/utils/stat_analysis.py and src/utils/uncertainty.py."""
 
-
 import numpy as np
 import pytest
 

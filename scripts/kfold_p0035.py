@@ -8,11 +8,12 @@ Run:
   python3 scripts/kfold_p0035.py --full
 """
 
-import numpy as np
 import json
 import sys
 import time
 from pathlib import Path
+
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -50,7 +51,7 @@ def lstm_train_eval(train_series, test_series, hidden_size=8, n_epochs=20, lr=0.
     def make_windows(s):
         X, y = [], []
         for i in range(3, len(s)):
-            X.append(s[i - 3: i])
+            X.append(s[i - 3 : i])
             y.append(s[i])
         return (np.array(X)[..., None] if X else np.zeros((0, 3, 1)), np.array(y) if y else np.zeros((0,)))
 

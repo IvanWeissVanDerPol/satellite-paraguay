@@ -1,8 +1,9 @@
 """Tests for Chave 2014 AGB model."""
 
-import numpy as np
 import sys
 from pathlib import Path
+
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

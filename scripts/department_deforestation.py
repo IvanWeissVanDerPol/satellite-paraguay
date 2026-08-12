@@ -15,14 +15,15 @@ Outputs:
     outputs/p0011/departments/department_map.png
 """
 
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
-import geopandas as gpd
 import json
 import sys
 import time
 from pathlib import Path
+
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

@@ -4,7 +4,6 @@ Coverage target: 60%+. Tests the synthetic data generation, helpers
 (deforestation year, cumulative), and module constants.
 """
 
-
 import numpy as np
 
 from src.satellite_io import hansen as _hansen

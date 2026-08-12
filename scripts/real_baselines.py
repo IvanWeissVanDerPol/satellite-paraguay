@@ -13,14 +13,15 @@ Outputs:
     outputs/p0011/real_baselines/real_confusion_matrices.png
 """
 
-from rasterio.windows import Window
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 import sys
 import time
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -106,13 +107,13 @@ def make_tiles(data, tile_size=128, n_tiles=50, seed=42):
         attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        label_tile = data["lossyear"][y: y + tile_size, x: x + tile_size]
+        label_tile = data["lossyear"][y : y + tile_size, x : x + tile_size]
         has_loss = (label_tile > 0).any()
 
         if has_loss and n_pos < target_per_class:
             tiles.append(
                 {
-                    "features": features[:, y: y + tile_size, x: x + tile_size],
+                    "features": features[:, y : y + tile_size, x : x + tile_size],
                     "label": (label_tile > 0).astype(np.int64),
                     "y0": y,
                     "x0": x,
@@ -123,7 +124,7 @@ def make_tiles(data, tile_size=128, n_tiles=50, seed=42):
         elif not has_loss and n_neg < target_per_class:
             tiles.append(
                 {
-                    "features": features[:, y: y + tile_size, x: x + tile_size],
+                    "features": features[:, y : y + tile_size, x : x + tile_size],
                     "label": np.zeros((tile_size, tile_size), dtype=np.int64),
                     "y0": y,
                     "x0": x,

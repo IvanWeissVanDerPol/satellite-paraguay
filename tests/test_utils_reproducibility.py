@@ -11,9 +11,9 @@ Covers:
 - verify_reproducibility() — repeatable / not-reproducible cases
 """
 
-import subprocess  # for the patch tests above
 import json
 import os
+import subprocess  # for the patch tests above
 import sys
 from unittest.mock import patch
 

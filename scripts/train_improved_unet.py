@@ -12,18 +12,19 @@ Output:
     outputs/p0011/real_model/training_curves.png
 """
 
-from scipy.ndimage import zoom
-from rasterio.windows import Window
-import torch.nn.functional as F
-import torch.nn as nn
-import torch
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 import sys
 import time
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from rasterio.windows import Window
+from scipy.ndimage import zoom
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -165,14 +166,14 @@ def make_tiles_with_features(data, tile_size=64, n_per_class=80, seed=42):
         attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        label = data["lossyear"][y: y + tile_size, x: x + tile_size]
+        label = data["lossyear"][y : y + tile_size, x : x + tile_size]
         has_loss = (label > 0).any()
         loss_count = int((label > 0).sum())
 
         if has_loss and n_pos < target:
             # Static features + yearly cover
-            static_tile = features_static[:, y: y + tile_size, x: x + tile_size]
-            yearly_tile = cover_yearly[:, y: y + tile_size, x: x + tile_size]
+            static_tile = features_static[:, y : y + tile_size, x : x + tile_size]
+            yearly_tile = cover_yearly[:, y : y + tile_size, x : x + tile_size]
             full_features = np.concatenate([static_tile, yearly_tile], axis=0)  # (30, ts, ts)
             tiles.append(
                 {
@@ -183,8 +184,8 @@ def make_tiles_with_features(data, tile_size=64, n_per_class=80, seed=42):
             )
             n_pos += 1
         elif not has_loss and n_neg < target:
-            static_tile = features_static[:, y: y + tile_size, x: x + tile_size]
-            yearly_tile = cover_yearly[:, y: y + tile_size, x: x + tile_size]
+            static_tile = features_static[:, y : y + tile_size, x : x + tile_size]
+            yearly_tile = cover_yearly[:, y : y + tile_size, x : x + tile_size]
             full_features = np.concatenate([static_tile, yearly_tile], axis=0)
             tiles.append(
                 {
@@ -236,8 +237,8 @@ def main():
     n_train = int(len(tiles) * 0.6)
     n_val = int(len(tiles) * 0.2)
     train_tiles = [tiles[i] for i in perm[:n_train]]
-    val_tiles = [tiles[i] for i in perm[n_train: n_train + n_val]]
-    test_tiles = [tiles[i] for i in perm[n_train + n_val:]]
+    val_tiles = [tiles[i] for i in perm[n_train : n_train + n_val]]
+    test_tiles = [tiles[i] for i in perm[n_train + n_val :]]
     print(f"  Split: {len(train_tiles)} train / {len(val_tiles)} val / {len(test_tiles)} test")
 
     # Train

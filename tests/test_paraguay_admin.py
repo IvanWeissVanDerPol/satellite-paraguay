@@ -1,5 +1,11 @@
 """Tests for src.paraguay_admin module."""
 
+import os
+import sys
+from pathlib import Path
+
+import pytest
+
 from src.paraguay_admin import (
     get_tile_bbox,
     list_tiles_in_region,
@@ -7,11 +13,6 @@ from src.paraguay_admin import (
     load_indigenous_territories,
     load_tile_index,
 )
-import os
-import sys
-from pathlib import Path
-
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

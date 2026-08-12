@@ -11,7 +11,6 @@ detects poaching camps in Defensores del Chaco with mAP@0.5 > 0.70.
 from pathlib import Path
 from typing import Dict, Optional
 
-
 from ...paraguay_admin import list_tiles_in_region
 
 

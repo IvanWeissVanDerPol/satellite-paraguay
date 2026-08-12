@@ -8,14 +8,15 @@ Expected runtime: 1-2 hours on A100
 Expected cost: $1-2
 """
 
-import torch.nn as nn
-import torch
-import numpy as np
 import argparse
 import json
 import sys
 import time
 from pathlib import Path
+
+import numpy as np
+import torch
+import torch.nn as nn
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -72,8 +73,8 @@ def main():
     for epoch in range(args.epochs):
         loss_epoch = 0
         for i in range(0, n_train - seq_len - 1, seq_len):
-            x = series[:, i: i + seq_len, :]
-            y = target[:, i: i + seq_len, :]
+            x = series[:, i : i + seq_len, :]
+            y = target[:, i : i + seq_len, :]
             optimizer.zero_grad()
             out, _ = model(x)
             pred = fc(out)

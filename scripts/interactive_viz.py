@@ -11,11 +11,12 @@ Outputs:
     outputs/figures/interactive/indigenous_map.html
 """
 
-from rasterio.windows import Window
-import rasterio
 import json
 import sys
 from pathlib import Path
+
+import rasterio
+from rasterio.windows import Window
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))

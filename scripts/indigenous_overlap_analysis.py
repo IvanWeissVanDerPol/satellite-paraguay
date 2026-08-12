@@ -9,15 +9,16 @@ Outputs:
     outputs/p0011/indigenous/indigenous_overlap.png
 """
 
-from rasterio.features import rasterize
-import rasterio
-import numpy as np
-import matplotlib.pyplot as plt
-import geopandas as gpd
 import json
 import sys
 import time
 from pathlib import Path
+
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio
+from rasterio.features import rasterize
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -44,7 +45,7 @@ def process_tile(tile, gdf):
 
     # Filter territories that intersect this tile's bounds
     tile_bounds = src.bounds  # left, bottom, right, top
-    gdf_tile = gdf.cx[tile_bounds.left: tile_bounds.right, tile_bounds.bottom: tile_bounds.top].copy()
+    gdf_tile = gdf.cx[tile_bounds.left : tile_bounds.right, tile_bounds.bottom : tile_bounds.top].copy()
     if len(gdf_tile) == 0:
         return {}
 

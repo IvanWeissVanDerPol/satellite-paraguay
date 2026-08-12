@@ -6,14 +6,16 @@ Run:
     pytest tests/test_properties.py -m property -v
 """
 
-from scripts.uncertainty_quantification import pixel_bootstrap_fast
-from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
-from hypothesis import strategies as st
-from hypothesis import assume, given, settings
-import pytest
-import numpy as np
 import sys
 from pathlib import Path
+
+import numpy as np
+import pytest
+from hypothesis import HealthCheck, assume, given, settings
+from hypothesis import strategies as st
+
+from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
+from scripts.uncertainty_quantification import pixel_bootstrap_fast
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -194,7 +196,7 @@ def test_lossyear_count_invariant(H, W, n_loss):
     n=st.integers(min_value=10, max_value=10000),
     p=st.floats(min_value=0.0, max_value=1.0, allow_nan=False, allow_infinity=False),
 )
-@settings(max_examples=30, deadline=None)
+@settings(max_examples=30, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
 @pytest.mark.property
 def test_binomial_proportion_ci(n, p):
     """Wilson 95% CI for proportion p is valid."""
@@ -218,7 +220,7 @@ def test_binomial_proportion_ci(n, p):
     max_lon=st.floats(min_value=-180, max_value=180),
     max_lat=st.floats(min_value=-90, max_value=90),
 )
-@settings(max_examples=30, deadline=None)
+@settings(max_examples=30, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
 @pytest.mark.property
 def test_bbox_validity(min_lon, min_lat, max_lon, max_lat):
     """Bounding box has min < max for each axis."""

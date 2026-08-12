@@ -147,7 +147,8 @@ def analyze_pilot():
                 f"| {model_name} | "
                 f"{cis['precision']['mean']:.4f} [{cis['precision']['ci_lower']:.4f}, {cis['precision']['ci_upper']:.4f}] | "  # noqa: E501
                 f"{cis['recall']['mean']:.4f} [{cis['recall']['ci_lower']:.4f}, {cis['recall']['ci_upper']:.4f}] | "
-                f"{cis['f1']['mean']:.4f} [{cis['f1']['ci_lower']:.4f}, {cis['f1']['ci_upper']:.4f}] |\n")
+                f"{cis['f1']['mean']:.4f} [{cis['f1']['ci_lower']:.4f}, {cis['f1']['ci_upper']:.4f}] |\n"
+            )
         f.write("\n## Confusion matrices\n\n")
         for model_name, r in results.items():
             f.write(f"### {model_name}\n\n")
