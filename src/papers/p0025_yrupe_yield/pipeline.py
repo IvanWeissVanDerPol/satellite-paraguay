@@ -70,19 +70,41 @@ class YrupePipeline:
         return regression_metrics(ground_truth, predictions)
 
 
-def run_yrupe_demo():
-    """Demo: predict yield for 1 Caaguazú tile."""
+def run_yrupe_demo(data: Optional[np.ndarray] = None):
+    """Demo: predict yield for 1 Caaguazú tile.
+
+    Args:
+        data: Optional pre-loaded NDVI series of shape (12, 256, 256). If None
+            or wrong shape, raises FileNotFoundError (fail-loud, no random fill).
+    """
     pipeline = YrupePipeline()
 
     inbio = pipeline.load_inbio_data()
     print(f"  INBIO data: {inbio}")
 
-    # Simulate NDVI series
-    ndvi = np.random.rand(12, 256, 256).astype(np.float32) * 0.5 + 0.3
+    # FAIL-LOUD (added 2026-08-11): no more np.random.rand() silent fallback.
+    # Use a real Sentinel-2 NDVI raster from data/cache/sentinel2/ instead.
+    if data is None:
+        raise FileNotFoundError(
+            "No NDVI `data` provided to run_yrupe_demo(). "
+            "Pass a (12, 256, 256) NDVI raster from data/cache/sentinel2/ "
+            "or run scripts/download_sentinel2_real.py first. "
+            "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+        )
+    ndvi = data
 
     pred = pipeline.predict_yield("-55.5_-25.0", ndvi)
     print(f"  Predicted yield: {pred:.2f} tons/hectare")
 
 
 if __name__ == "__main__":
-    run_yrupe_demo()
+    import sys
+    if len(sys.argv) > 1:
+        ndvi_in = np.load(sys.argv[1])["ndvi"]
+        run_yrupe_demo(data=ndvi_in)
+    else:
+        try:
+            run_yrupe_demo()
+        except FileNotFoundError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            sys.exit(2)

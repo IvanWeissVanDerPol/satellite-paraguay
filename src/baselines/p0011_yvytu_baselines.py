@@ -240,12 +240,31 @@ def run_all_baselines(
 
 
 if __name__ == "__main__":
-    # Demo
-    print("P0011 baselines demo")
-    np.random.seed(42)
-    T, H, W = 12, 64, 64
-    ndvi = np.random.rand(T, H, W).astype(np.float32) * 0.5 + 0.3
-    gt = np.random.randint(0, 5, (H, W), dtype=np.int64)
-
-    results = run_all_baselines(ndvi, gt)
-    print_metrics(results)
+    # FAIL-LOUD (added 2026-08-11): no more np.random.rand() silent fallback.
+    # Provide real NDVI/ground-truth arrays via the CLI args, or run via the
+    # scripts/run_real_experiment_p0011.py wrapper which loads from
+    # data/cache/sentinel2/.
+    print("P0011 baselines demo (fail-loud mode)")
+    print("Pass NDVI as .npz and ground-truth as .npy:")
+    print("    python -m src.baselines.p0011_yvutu_baselines ndvi.npz gt.npy")
+    import sys
+    if len(sys.argv) >= 3:
+        ndvi = np.load(sys.argv[1])["ndvi"]
+        gt = np.load(sys.argv[2])
+        if ndvi.ndim != 3:
+            raise FileNotFoundError(
+                f"NDVI must be (T, H, W); got shape {ndvi.shape}. "
+                "See scripts/download_sentinel2_real.py."
+            )
+        if gt.shape != ndvi.shape[1:]:
+            raise FileNotFoundError(
+                f"ground_truth shape {gt.shape} != NDVI spatial {ndvi.shape[1:]}"
+            )
+        results = run_all_baselines(ndvi, gt)
+        print_metrics(results)
+    else:
+        raise FileNotFoundError(
+            "P0011 baselines demo requires real data. "
+            "Use scripts/run_real_experiment_p0011.py to load from data/cache/sentinel2/. "
+            "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+        )

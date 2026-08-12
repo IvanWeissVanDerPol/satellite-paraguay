@@ -215,26 +215,30 @@ def log_p0035_experiment(val_mae, epochs, params):
 
 
 if __name__ == "__main__":
-    # Demo
-    print("MLflow experiment tracking demo")
+    # Demo (fail-loud 2026-08-11): no more random.uniform metrics.
+    # Real runs should use scripts/train_*.py which log measured values.
+    print("MLflow experiment tracking demo (fail-loud mode)")
+    print("For real runs: scripts/train_improved_unet.py + scripts/train_p0011_full.py")
 
     # Setup
     setup_mlflow(experiment_name="satellite-paraguay-demo")
 
-    # Log example runs
-    import random
+    # Log ONLY fixed placeholder metrics (clearly labelled as TODO).
+    # Real workflow: parse metrics.json from outputs/p0011/ and pass them here.
+    PLACEHOLDER_F1 = float("nan")
     for i in range(3):
         params = {"lr": 0.001, "batch_size": 32, "epochs": 50}
         metrics = {
-            "f1_macro": random.uniform(0.7, 0.9),
-            "miou": random.uniform(0.6, 0.8),
+            "f1_macro": PLACEHOLDER_F1,
+            "miou": PLACEHOLDER_F1,
+            "status": "PLACEHOLDER — replace with measured metrics from outputs/p0011/metrics.json",
         }
         run_id = log_experiment(
-            run_name=f"demo_run_{i}",
+            run_name=f"demo_placeholder_run_{i}",
             params=params,
             metrics=metrics,
         )
-        print(f"  Logged run {run_id}: F1={metrics['f1_macro']:.3f}")
+        print(f"  Logged placeholder run {run_id} (F1=NaN; use measured scripts)")
 
     # Get best
     best = get_best_run("f1_macro")

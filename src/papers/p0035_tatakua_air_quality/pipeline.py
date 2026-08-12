@@ -63,37 +63,66 @@ class TatakuaPipeline:
             print(f"[openaq] Error: {e}")
             return []
 
-    def fetch_sentinel5p(self, days: int = 365) -> dict:
+    def fetch_sentinel5p(self, days: int = 365, data_path: Optional[Path] = None) -> dict:
         """Fetch Sentinel-5P atmospheric data.
 
         NO2, SO2, CO, O3, CH4, AER_AI from Copernicus.
+
+        Args:
+            days: Number of days to fetch.
+            data_path: Optional path to a pre-downloaded S5P .npz file. If
+                provided, loads from disk. If None, attempts to load from the
+                default cache. If neither exists, raise FileNotFoundError
+                (fail-loud, no random fill).
         """
-        # Real implementation: use earthengine-api
-        # For now, return sample
+        # FAIL-LOUD (added 2026-08-11): was using np.random.rand() silent fallback.
+        # Now requires a real data path; the old `return random` is gone.
+        if data_path is None:
+            data_path = Path("data/cache/sentinel5p/s5p_paraguay.npz")
+        if not data_path.exists():
+            raise FileNotFoundError(
+                f"Sentinel-5P data not found at {data_path}. "
+                "Download via Copernicus Open Access Hub, then re-run. "
+                "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+            )
+        arr = np.load(data_path)
+        # Crop to `days` if the array is longer
         return {
-            "no2": np.random.rand(days) * 1e-5,
-            "so2": np.random.rand(days) * 1e-5,
-            "co": np.random.rand(days) * 1e-5,
+            "no2": arr["no2"][:days] if "no2" in arr.files else np.zeros(days),
+            "so2": arr["so2"][:days] if "so2" in arr.files else np.zeros(days),
+            "co":  arr["co"][:days]  if "co"  in arr.files else np.zeros(days),
         }
 
     def forecast_pm25(
         self,
         historical_data: np.ndarray,
         atmospheric_data: Optional[dict] = None,
+        noise_std: float = 1.0,
+        seed: Optional[int] = 42,
     ) -> np.ndarray:
         """Forecast PM2.5 for next N days.
 
-        Uses LSTM or TimesFM.
+        Uses LSTM or TimesFM. Falls back to a persistence + small Gaussian
+        noise heuristic when no trained model is available.
+
+        Args:
+            noise_std: Std dev of the per-step Gaussian noise (µg/m³).
+                Set to 0 for deterministic persistence. Default 1.0.
+            seed: RNG seed for the noise (deterministic by default). Pass
+                None for a fresh non-deterministic noise each call.
         """
         # Real implementation: trained LSTM or TimesFM
-        # Simple heuristic: persistence + small adjustment
+        # Simple heuristic: persistence + small adjustment.
         if len(historical_data) == 0:
             return np.array([])
 
         last_value = historical_data[-1]
         forecast = np.full(self.config["forecast_horizon_days"], last_value)
-        # Add small noise
-        forecast += np.random.normal(0, 1, size=forecast.shape)
+        if noise_std > 0:
+            rng = np.random.default_rng(seed)
+            # Deterministic by default (seed=42) so the heuristic
+            # does not silently produce different numbers each run.
+            forecast += rng.normal(0, noise_std, size=forecast.shape)
         return forecast
 
     def validate(self, predictions: np.ndarray, ground_truth: np.ndarray) -> Dict:
@@ -101,24 +130,46 @@ class TatakuaPipeline:
         return regression_metrics(ground_truth, predictions)
 
 
-def run_tatakua_demo():
-    """Demo: fetch OpenAQ + forecast PM2.5."""
+def run_tatakua_demo(historical: Optional[np.ndarray] = None):
+    """Demo: fetch OpenAQ + forecast PM2.5.
+
+    Args:
+        historical: Optional PM2.5 hourly history of shape (24*N,). If None,
+            raises FileNotFoundError (fail-loud, no random fill).
+    """
     pipeline = TatakuaPipeline()
 
-    # Fetch OpenAQ
+    # Fetch OpenAQ (real API call; if no network, returns [])
     data = pipeline.fetch_openaq_data(days=30)
     print(f"  OpenAQ measurements: {len(data)}")
 
-    # Fetch Sentinel-5P
+    # Fetch Sentinel-5P (real data needed; raises FileNotFoundError if absent)
     s5p = pipeline.fetch_sentinel5p(days=30)
     print(f"  Sentinel-5P pollutants: {list(s5p.keys())}")
 
-    # Forecast
-    historical = np.random.rand(30) * 25 + 5  # 5-30 µg/m³ PM2.5
+    # FAIL-LOUD (added 2026-08-11): no more np.random.rand() silent fill.
+    if historical is None:
+        raise FileNotFoundError(
+            "No PM2.5 `historical` provided to run_tatakua_demo(). "
+            "Pass real OpenAQ PM2.5 hourly measurements (download via "
+            "src/external/openaq_client.py, save to data/cache/openaq/pm25.npy) "
+            "or use the pretrained LSTM in models/lstm_tatakua/best.pt + "
+            "the validation script in outputs/p0035/kfold_results.json. "
+            "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+        )
     forecast = pipeline.forecast_pm25(historical)
     print(f"  Forecast shape: {forecast.shape}")
     print(f"  Forecast values: {forecast}")
 
 
 if __name__ == "__main__":
-    run_tatakua_demo()
+    import sys
+    if len(sys.argv) > 1:
+        hist = np.load(sys.argv[1])
+        run_tatakua_demo(historical=hist)
+    else:
+        try:
+            run_tatakua_demo()
+        except FileNotFoundError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            sys.exit(2)

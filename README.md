@@ -6,7 +6,26 @@ wildlife detection, and air quality.
 
 **Author:** Iván Hocht-VonDerPol (Universidad Nacional de Asunción)
 **Started:** 2026-07-22 (Hansen data acquisition)
-**Status:** Ship-ready. Pilot validation. All data real, all tests passing.
+**Status:** **Pilot stage.** ~25% submission-ready across 6 papers. Only P0035
+Tatakua has a real trained model (LSTM, RMSE = 14.7 µg/m³ measured on real
+OpenAQ data). See [`STATUS.md`](STATUS.md) for per-paper scorecards and
+[`BRUTAL_ROAST.md`](BRUTAL_ROAST.md) for the full self-audit. The 2026-08-10
+honest-reporting pass replaced all aspirational headline numbers with
+measured values; the 2026-08-11 fail-loud pass replaced silent
+`np.random.rand()` data fallbacks with `FileNotFoundError`.
+
+**Honest status flags:**
+- ✅ Infrastructure: LICENSE, CITATION.cff, FastAPI, Streamlit, Docker, CI/CD, 53 tests
+- ✅ Verra carbon credit analysis (P0010): real data, +35.9% under-claim finding
+- ✅ Indigenous disparity (P0012): real Hansen + 10 territories, χ² p<0.001
+- ✅ Country-scale deforestation (P0011): real Hansen, 16,628 km² measured
+- ✅ Air-quality forecasting (P0035): real OpenAQ + LSTM, RMSE 14.7 µg/m³ measured
+- ⚠️ Papers are template-stub: ~25% of journal-target word counts filled
+- ⚠️ Sentinel-2 coverage: 2/150 tiles; Hansen: 1/30 tiles; MapBiomas: 1 tile
+- ⚠️ Most "models" are code-only — `models/lstm_tatakua/best.pt` is the only trained .pt file
+- ❌ P0012 ethical block: 0/10 indigenous communities contacted (FPIC not done)
+- ❌ IRB, partnerships (INFONA/INDI/SENEPA/Verra/Guyra), and dashboard verification
+  — see [`AGENT_TODO.md`](AGENT_TODO.md) for the full 700-hour operational plan
 
 ## TL;DR — Headline findings
 
