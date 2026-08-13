@@ -27,3 +27,5 @@ jobs:
           folder-path: "docs/"
           max-depth: 3
           ignore-paths: "docs/TODO.md,docs/REPORT.md"
+          # Localhost URLs are dev-only and not resolvable in CI
+          config-file: '.github/markdown-link-check.json' 
