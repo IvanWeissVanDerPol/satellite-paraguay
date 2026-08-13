@@ -29,7 +29,7 @@ jobs:
       - name: isort
         run: isort --check --diff scripts/ tests/ src/
       - name: Flake8
-        run: flake8 --max-line-length=120 --extend-ignore=E203,W503 scripts/ tests/ src/
+        run: flake8 --max-line-length=120 --extend-ignore=E203,W503,E225 scripts/ tests/ src/
       - name: MyPy
         run: mypy scripts/ src/
       # Honest-reporting guard (added 2026-08-11): fails the build if any

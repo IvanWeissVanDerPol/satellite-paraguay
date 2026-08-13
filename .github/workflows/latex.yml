@@ -43,8 +43,18 @@ jobs:
       - name: Compile paper
         working-directory: papers/drafts/${{ matrix.paper }}
         run: |
+          # Run latexmk which auto-runs latex+bibtex+biblatex as needed
           latexmk -pdf -interaction=nonstopmode paper.tex
-          test -f paper.pdf || ( pdflatex -interaction=nonstopmode paper.tex && bibtex paper && pdflatex -interaction=nonstopmode paper.tex && pdflatex -interaction=nonstopmode paper.tex )
+          # Fallback: manual sequence with biber for elsarticle-num
+          if [ ! -f paper.pdf ]; then
+            echo "latexmk failed, trying manual sequence with biber..."
+            pdflatex -interaction=nonstopmode paper.tex
+            biber paper || bibtex paper
+            pdflatex -interaction=nonstopmode paper.tex
+            pdflatex -interaction=nonstopmode paper.tex
+          fi
+          # Verify final PDF
+          ls -la paper.pdf 2>&1 || echo "PDF not generated"
       - name: Verify PDF
         working-directory: papers/drafts/${{ matrix.paper }}
         run: |
