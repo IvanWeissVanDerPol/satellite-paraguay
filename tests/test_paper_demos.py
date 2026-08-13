@@ -3,9 +3,13 @@
 Coverage target: 95%+. Covers the __main__ demo runners.
 """
 
-from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
 
-import numpy as np
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
+from unittest.mock import MagicMock, patch  # noqa: E402
+
+import numpy as np  # noqa: E402
 
 
 class TestYrupeDemo:

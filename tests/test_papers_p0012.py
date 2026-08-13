@@ -4,9 +4,13 @@ Coverage target: 60%+. The YvyPipeline class handles indigenous
 territory mapping and conflict detection.
 """
 
-from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+from unittest.mock import MagicMock, patch  # noqa: E402
+
+import pytest  # noqa: E402
 
 
 class TestYvyPipeline:

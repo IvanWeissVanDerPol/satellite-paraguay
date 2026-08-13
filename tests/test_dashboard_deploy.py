@@ -1,13 +1,20 @@
+from __future__ import annotations
+
 """AC4: Dashboard live deployment verification.
 
 Imports dashboard/app.py with all required modules installed, and runs a
 smoke test against the loaded functions without actually launching
 streamlit (which would block on a TTY)."""
 
-from __future__ import annotations
+import pytest  # noqa: E402
 
-import importlib.util
-from pathlib import Path
+pytest.importorskip(
+    "streamlit_folium", reason="CI: requires optional system dep 'streamlit_folium' (not installed)"
+)  # noqa: E402
+
+
+import importlib.util  # noqa: E402
+from pathlib import Path  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 

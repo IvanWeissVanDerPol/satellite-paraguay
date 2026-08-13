@@ -4,19 +4,18 @@
 %
 % Atmospheric Environment uses elsarticle class.
 
-\documentclass[review]{elsarticle}
+\documentclass[preprint,linenumbers]{elsarticle}
 
 \usepackage[utf8]{inputenc}
 \usepackage[english, spanish]{babel}
 \usepackage{amsmath, amssymb}
+\usepackage{gensymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
-\modulolinenumbers[5]
 
-\journal{Atmospheric Environment}
 
 \bibliographystyle{elsarticle-num}
 
@@ -29,9 +28,7 @@ LSTM -- \\
 A multi-source framework with measured mean RMSE = \SI{14.7}{\micro g\per m^3} for PM$_{2.5}$ (24\% improvement over persistence)}
 
 \author[una]{Iván Hocht-VonDerPol}
-\affiliation[una]{organization={Facultad de Ciencias Agrarias,
-                             Universidad Nacional de Asunci\'on (FADA-UNA)},
-                country={Paraguay}}
+\affiliation[una]{organization={FADA-UNA, Facultad de Ciencias Agrarias, Universidad Nacional de Asuncion},country={Paraguay}}
 
 \begin{abstract}
 We present \textbf{Tatakua} (Guaran\'i for ``fire''), an air-quality
@@ -54,11 +51,9 @@ PM$_{2.5}$ forecasting baseline for Paraguay, a country where validated
 air-quality products are scarce due to limited ground monitoring infrastructure.
 \end{abstract}
 
-\begin{keywords}
-air quality forecasting \sep PM$_{2.5}$ \sep AOD \sep LSTM \sep
-biomass burning \sep Paraguay \sep OpenAQ \sep TROPOMI
-\end{keywords}
-
+\begin{keyword}
+air quality forecasting \sep LSTM \sep OpenAQ \sep Asunción \sep PM2.5 \sep wildfire smoke
+\end{keyword}
 \end{frontmatter}
 
 \section{Introduction}
@@ -154,3 +149,4 @@ All code is open source under MIT license.
 \bibliography{references}
 
 \end{document}
+

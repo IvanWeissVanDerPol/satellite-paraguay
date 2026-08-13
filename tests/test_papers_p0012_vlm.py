@@ -3,11 +3,15 @@
 Coverage target: 90%+. Tests VLM validation with LLaVA fallback and GPT-4V.
 """
 
-import sys
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+import sys  # noqa: E402
+from pathlib import Path  # noqa: E402
+from unittest.mock import MagicMock, patch  # noqa: E402
+
+import pytest  # noqa: E402
 
 
 @pytest.fixture

@@ -5,9 +5,13 @@ benchmark_against_mapbiomas, benchmark_against_hansen, print_metrics,
 pixel_iou edge cases, regression_metrics edge cases.
 """
 
-from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
 
-import numpy as np
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+from unittest.mock import MagicMock, patch  # noqa: E402
+
+import numpy as np  # noqa: E402
 
 
 class TestPixelF1Score:

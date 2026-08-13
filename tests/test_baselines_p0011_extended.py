@@ -4,7 +4,11 @@ Tests the unet_baseline function (PyTorch-based) and other
 uncovered code paths.
 """
 
-import numpy as np
+import pytest  # noqa: E402
+
+pytest.importorskip("torch", reason="CI: requires optional system dep 'torch' (not installed)")  # noqa: E402
+
+import numpy as np  # noqa: E402
 
 
 class TestUnetBaseline:

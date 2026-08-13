@@ -23,7 +23,7 @@ jobs:
       - name: isort check
         run: isort --check-only --diff src/ tests/ scripts/
       - name: flake8
-        run: flake8 src/ tests/ scripts/ --max-line-length=120 --extend-ignore=E203,W503
+        run: flake8 --max-line-length=120 --extend-ignore=E203,W503 src/ tests/ scripts/ --max-line-length=120 --extend-ignore=E203,W503
 
   type-check:
     name: Type check (mypy)
@@ -36,7 +36,7 @@ jobs:
       - name: Install mypy
         run: pip install mypy types-PyYAML types-requests
       - name: mypy
-        run: mypy src/ --ignore-missing-imports || true
+        run: mypy --no-implicit-optional --ignore-missing-imports --no-strict-optional src/ || true
 
   test:
     name: Tests (pytest)

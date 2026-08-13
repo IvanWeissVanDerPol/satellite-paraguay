@@ -7,8 +7,11 @@ parcel statistics, and module constants.
 from unittest.mock import MagicMock
 
 import numpy as np
+import pytest  # noqa: E402
 
-from src.satellite_io.mapbiomas import (
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+from src.satellite_io.mapbiomas import (  # noqa: E402
     MAPBIOMAS_CLASSES,
     compute_parcel_statistics_real,
     generate_synthetic_mapbiomas,

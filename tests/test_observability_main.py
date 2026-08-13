@@ -4,11 +4,15 @@ Coverage target: 70%+. We mock streamlit and run main() with
 synthetic REPO_ROOT data.
 """
 
-import json
-import sys
-from unittest.mock import MagicMock
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+import json  # noqa: E402
+import sys  # noqa: E402
+from unittest.mock import MagicMock  # noqa: E402
+
+import pytest  # noqa: E402
 
 
 def _make_col():

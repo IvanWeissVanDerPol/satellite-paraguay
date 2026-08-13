@@ -2,7 +2,7 @@
 %
 % Compile: latexmk -pdf paper.tex
 
-\documentclass[review]{elsarticle}
+\documentclass[preprint,linenumbers]{elsarticle}
 
 \usepackage[utf8]{inputenc}
 \usepackage[english, spanish]{babel}
@@ -12,9 +12,7 @@
 \usepackage{siunitx}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
-\modulolinenumbers[5]
 
-\journal{Agricultural Systems}
 
 \bibliographystyle{elsarticle-num}
 
@@ -27,9 +25,7 @@ the Eastern Paraguay Pampas -- \\
 A multi-task CNN with Chave-2014 AGB features achieves MAE of 0.74 t/ha}
 
 \author[una]{Iván Hocht-VonDerPol}
-\affiliation[una]{organization={Facultad de Ciencias Agrarias,
-                             Universidad Nacional de Asunci\'on (FADA-UNA)},
-                country={Paraguay}}
+\affiliation[una]{organization={FADA-UNA, Facultad de Ciencias Agrarias, Universidad Nacional de Asuncion},country={Paraguay}}
 
 \begin{abstract}
 We present \textbf{Yrupe} (Guaran\'i for ``puddle''), a satellite-based
@@ -52,11 +48,9 @@ This work contributes an open-source pipeline for satellite-based
 yield estimation in a region with limited ground-truth data.
 \end{abstract}
 
-\begin{keywords}
-soybean yield prediction \sep remote sensing \sep cross-domain transfer learning \sep
-Sentinel-2 \sep Paraguay \sep multi-task CNN
-\end{keywords}
-
+\begin{keyword}
+soybean yield \sep multi-task CNN \sep cross-domain transfer \sep Paraguay \sep remote sensing \sep HLS data
+\end{keyword}
 \end{frontmatter}
 
 \section{Introduction}
@@ -129,3 +123,4 @@ All data and code are open source under MIT license.
 \bibliography{references}
 
 \end{document}
+

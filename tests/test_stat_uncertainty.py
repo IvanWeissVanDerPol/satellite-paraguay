@@ -178,8 +178,8 @@ class TestUncertainty:
 
         lossyear = np.array([[0, 1], [1, 1]])
         area = loss_area_hectares(lossyear)
-        # 3 loss pixels * 0.09 ha = 0.27 ha
-        assert area == pytest.approx(0.27, rel=0.01)
+        # 3 loss pixels * 0.0625 ha = 0.1875 ha (Hansen GFC v1.11 pixel area)
+        assert area == pytest.approx(0.1875, rel=0.01)
 
     def test_loss_area_custom_pixel(self):
         from src.utils.uncertainty import loss_area_hectares

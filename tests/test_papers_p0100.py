@@ -4,10 +4,14 @@ Coverage target: 70%+. The YvyraPipeline class handles carbon
 credit verification against Verra/Gold Standard projects.
 """
 
-from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
 
-import pandas as pd
-import pytest
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+from unittest.mock import MagicMock, patch  # noqa: E402
+
+import pandas as pd  # noqa: E402
+import pytest  # noqa: E402
 
 
 class TestYvyraPipeline:

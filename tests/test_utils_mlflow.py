@@ -5,10 +5,14 @@ function is exercised via mocking or, when mlflow is available, an
 in-memory SQLite tracking URI.
 """
 
-import sys
-from unittest.mock import patch
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("mlflow", reason="CI: requires optional system dep 'mlflow' (not installed)")  # noqa: E402
+
+import sys  # noqa: E402
+from unittest.mock import patch  # noqa: E402
+
+import pytest  # noqa: E402
 
 try:
     import mlflow  # noqa: F401

@@ -11,15 +11,19 @@ Covers:
 - verify_reproducibility() — repeatable / not-reproducible cases
 """
 
-import json
-import os
-import subprocess  # for the patch tests above
-import sys
-from unittest.mock import patch
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("tensorflow", reason="CI: requires optional system dep 'tensorflow' (not installed)")  # noqa: E402
 
-from src.utils.reproducibility import (
+import json  # noqa: E402
+import os  # noqa: E402
+import subprocess  # for the patch tests above  # noqa: E402
+import sys  # noqa: E402
+from unittest.mock import patch  # noqa: E402
+
+import pytest  # noqa: E402
+
+from src.utils.reproducibility import (  # noqa: E402
     DEFAULT_SEED,
     capture_environment,
     get_git_branch,

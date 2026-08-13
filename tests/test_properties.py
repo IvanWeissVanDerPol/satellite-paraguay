@@ -10,15 +10,13 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pytest
+import pytest  # noqa: E402
 from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
-from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
-from scripts.uncertainty_quantification import pixel_bootstrap_fast
-
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
-
+from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e  # noqa: E402
+from scripts.uncertainty_quantification import pixel_bootstrap_fast  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

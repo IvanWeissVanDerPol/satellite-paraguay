@@ -1,5 +1,9 @@
 """Tests for src/utils/reproducibility_verify, repo_evaluator, repo_verify."""
 
+import pytest  # noqa: E402
+
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 
 class TestReproducibilityVerify:
     """Tests for reproducibility_verify module."""

@@ -5,9 +5,13 @@ generation, cloud mask, and atmospheric correction. GEE/copernicus
 download functions are mocked since they require external auth.
 """
 
-from pathlib import Path
+import pytest  # noqa: E402
 
-import numpy as np
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+from pathlib import Path  # noqa: E402
+
+import numpy as np  # noqa: E402
 
 
 class TestCacheHelpers:

@@ -5,12 +5,16 @@ geodata from /root/paraguay-geodata/exports/web/data when
 available, with synthetic fallbacks.
 """
 
-import json
-import os
-from pathlib import Path
-from unittest.mock import patch
+import pytest  # noqa: E402
 
-import pytest
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
+import json  # noqa: E402
+import os  # noqa: E402
+from pathlib import Path  # noqa: E402
+from unittest.mock import patch  # noqa: E402
+
+import pytest  # noqa: E402
 
 # Real data directory
 # 2026-08-13: Read from env var with a sane production default so CI/sandbox
