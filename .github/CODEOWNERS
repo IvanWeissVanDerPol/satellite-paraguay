@@ -1,0 +1,23 @@
+# CODEOWNERS — satellite-paraguay
+# Each line is a file pattern followed by one or more owners.
+# Order matters: later patterns override earlier ones.
+
+# Default owners (catch-all)
+/                                      @IvanWeissVanDerPol
+
+# Tier 1: Critical infrastructure
+/.github/                              @IvanWeissVanDerPol
+/pyproject.toml                        @IvanWeissVanDerPol
+/requirements-ci.txt                   @IvanWeissVanDerPol
+
+# Tier 2: Tests
+/tests/                                @IvanWeissVanDerPol
+/src/                                  @IvanWeissVanDerPol
+/scripts/                              @IvanWeissVanDerPol
+
+# Tier 3: Papers/thesis (need subject matter review)
+/papers/                               @IvanWeissVanDerPol
+/thesis/                               @IvanWeissVanDerPol
+/STATUS.md                             @IvanWeissVanDerPol
+/AGENT_TODO.md                         @IvanWeissVanDerPol
+/BRUTAL_ROAST.md                       @IvanWeissVanDerPol
