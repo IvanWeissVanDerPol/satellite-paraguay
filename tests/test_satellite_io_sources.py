@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 from src.satellite_io.sources import (
     DEFAULT_OUTPUT_DIR,
     LANDSAT_OUTPUT,
@@ -16,7 +17,6 @@ from src.satellite_io.sources import (
     download_via_gee,
 )
 
-pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
 
 # =========================

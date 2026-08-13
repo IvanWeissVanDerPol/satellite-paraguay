@@ -1,3 +1,4 @@
+
 """Tests for src.paraguay_admin module."""
 
 import os
@@ -5,6 +6,8 @@ import sys
 from pathlib import Path
 
 import pytest
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
 
 from src.paraguay_admin import (
     get_tile_bbox,
@@ -14,7 +17,7 @@ from src.paraguay_admin import (
     load_tile_index,
 )
 
-pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
 
 
 sys.path.insert(0, str(Path(__file__).parent.parent))

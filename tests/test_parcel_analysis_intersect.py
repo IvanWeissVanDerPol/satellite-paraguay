@@ -5,13 +5,13 @@ synthetic GeoDataFrames and mocks for rasterio.
 """
 
 from unittest.mock import MagicMock, patch
+import pytest  # noqa: E402
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
 import geopandas as gpd
 import numpy as np
-import pytest  # noqa: E402
 from shapely.geometry import Polygon
 
-pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
 
 class TestGetParcelsInTile:

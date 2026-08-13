@@ -7,11 +7,12 @@ departamento fallback, edge cases.
 from pathlib import Path
 from unittest.mock import patch
 
-import geopandas as gpd
 import pytest
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
+import geopandas as gpd
 from shapely.geometry import box
 
-pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
 
 REAL_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")

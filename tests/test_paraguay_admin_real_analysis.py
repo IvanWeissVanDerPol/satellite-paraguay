@@ -8,11 +8,12 @@ synthetic fallbacks.
 import os
 from pathlib import Path
 
-import geopandas as gpd
 import pytest
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
+import geopandas as gpd
 from shapely.geometry import Polygon
 
-pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
 
 REAL_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")
