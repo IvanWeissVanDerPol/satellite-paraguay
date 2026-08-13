@@ -69,9 +69,13 @@ $$\text{CO}_2\text{e}_{\text{loss}} = A \times \text{AGB}(t_c) \times
 
 where:
 
-- $A$ = pixel area, **0.09 ha** (30 m × 30 m = 900 m² = 0.09 ha)
-  (corrected from the earlier-draft `0.0625` value, which was
-  an 8/3 factor too low).
+- $A$ = Hansen GFC v1.11 pixel area, **0.0625 ha** (0.00025° ×
+  0.00025° at the equator; ~0.066 ha at Paraguay's -25° latitude, a
+  5% correction we treat as negligible at this resolution). Paper
+  v1 used 0.09 ha (incorrect 30 m × 30 m assumption); that value
+  inflated the carbon estimates by a factor of 1.44 (0.09/0.0625).
+  **Headline carbon totals and under-claim ratios in this paper
+  use 0.0625 ha.**
 - $0.47$ = IPCC Tier-1 carbon fraction for tropical moist forest.
 - $44/12$ = stoichiometric ratio of CO₂ to C.
 

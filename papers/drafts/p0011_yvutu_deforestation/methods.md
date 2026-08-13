@@ -101,16 +101,18 @@ reports for the same period.
 We compute carbon emissions from the loss pixels using the standard
 Chave 2014 allometric model and IPCC Tier-1 conversion factors:
 
-$$\text{CO}_2\text{e} = N_{\text{loss}} \times 0.09 \text{ ha} \times
+$$\text{CO}_2\text{e} = N_{\text{loss}} \times 0.0625 \text{ ha} \times
 \text{AGB}(t_c) \times 0.47 \times \frac{44}{12}$$
 
 where $N_{\text{loss}}$ is the per-pixel loss count per (department,
-year), 0.09 ha is the pixel area (30 m × 30 m = 900 m²), AGB($t_c$)
-is the Chave 2014 above-ground biomass model applied at the per-
-pixel Hansen treecover $t_c$ (we use the continuous treecover
-percent rather than the canonical 50% threshold), 0.47 is the
-IPCC carbon fraction for tropical dry forest, and 44/12 is the
-stoichiometric ratio of CO₂ to C.
+year), **0.0625 ha is the Hansen GFC v1.11 pixel area at the equator**
+(0.00025° × 0.00025° = 0.0625 ha; at Paraguay's -25° latitude this is
+0.066 ha, a 5% correction we treat as negligible at the resolution we
+report), AGB($t_c$) is the Chave 2014 above-ground biomass model
+applied at the per-pixel Hansen treecover $t_c$ (we use the
+continuous treecover percent rather than the canonical 50%
+threshold), 0.47 is the IPCC carbon fraction for tropical dry
+forest, and 44/12 is the stoichiometric ratio of CO₂ to C.
 
 The Chave 2014 model we use is the wet-forest form with
 environmental adjustment (eqn. 4 in Chave et al. 2014); the Chaco

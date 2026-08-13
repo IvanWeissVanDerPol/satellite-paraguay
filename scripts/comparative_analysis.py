@@ -53,7 +53,7 @@ def main():
     if mb_path.exists():
         with rasterio.open(mb_path) as src:
             mapbiomas = src.read(1, window=Window(8000, 8000, 1000, 1000))
-        # Resample to Hansen scale (each Hansen pixel = ~0.0625 ha, MapBiomas = 0.09 ha)
+        # Both Hansen and MapBiomas use 0.00025° × 0.00025° ~ 0.0625 ha per pixel
         # Just compute summary stats
         mb_forest_pct = (mapbiomas == 3).mean()
         mb_pasture_pct = (mapbiomas == 15).mean()

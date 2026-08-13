@@ -92,7 +92,7 @@ def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> Dict[str, Di
     Returns dict with low/mid/high scenarios.
     """
     n_loss = int((lossyear > 0).sum())
-    area_ha = n_loss * 0.0625  # 30m pixel = 0.09 ha, using 0.0625 = approx
+    area_ha = n_loss * 0.0625  # Hansen GFC v1.11 pixel = 0.0625 ha at the equator
 
     agb_scenarios = {
         "low": {"tc": 30, "agb": 18},
@@ -156,11 +156,13 @@ def pixel_loss_rate(lossyear: np.ndarray) -> float:
     return float((flat > 0).sum() / flat.size)
 
 
-def loss_area_hectares(lossyear: np.ndarray, pixel_area_ha: float = 0.09) -> float:
+def loss_area_hectares(lossyear: np.ndarray, pixel_area_ha: float = 0.0625) -> float:
     """Convert loss pixel count to hectares.
 
-    Default pixel_area_ha = 0.09 (Sentinel-2 10m pixel = 0.01 ha, but
-    Hansen uses 30m which is 0.09 ha).
+    Default pixel_area_ha = 0.0625 (Hansen GFC v1.11 pixel = 0.00025° ×
+    0.00025° = 0.0625 ha at the equator; ~0.066 ha at Paraguay's -25°
+    latitude). Sentinel-2 10m pixel = 0.01 ha (pass this explicitly
+    when working with Sentinel-2 data).
     """
     n_loss = int((lossyear > 0).sum())
     return float(n_loss * pixel_area_ha)
