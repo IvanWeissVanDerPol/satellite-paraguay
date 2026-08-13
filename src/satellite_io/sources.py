@@ -158,7 +158,7 @@ def compute_ndvi(red_path: Path, nir_path: Path, output_path: Path) -> np.ndarra
     with rasterio.open(output_path, "w", **profile) as dst:
         dst.write(ndvi, 1)
 
-    return ndvi
+    return ndvi  # type: ignore[no-any-return]
 
 
 def cloud_mask_s2(scl_path: Path) -> np.ndarray:

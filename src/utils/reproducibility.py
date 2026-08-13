@@ -105,16 +105,16 @@ def get_system_info() -> Dict:
     try:
         import torch
 
-        info["cuda_available"] = torch.cuda.is_available()
+        info["cuda_available"] = torch.cuda.is_available()  # type: ignore[assignment]
         if torch.cuda.is_available():
-            info["cuda_version"] = torch.version.cuda
+            info["cuda_version"] = torch.version.cuda  # type: ignore[assignment]
             info["gpu_name"] = torch.cuda.get_device_name(0)
-            info["gpu_count"] = torch.cuda.device_count()
-            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            info["gpu_count"] = torch.cuda.device_count()  # type: ignore[assignment]
+            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (1024**3)  # type: ignore[assignment]  # noqa: E501
         else:
-            info["cuda_available"] = False
+            info["cuda_available"] = False  # type: ignore[assignment]
     except ImportError:
-        info["cuda_available"] = False
+        info["cuda_available"] = False  # type: ignore[assignment]
 
     try:
         import psutil
@@ -124,8 +124,8 @@ def get_system_info() -> Dict:
     except ImportError:
         pass
 
-    info["git_hash"] = get_git_hash()
-    info["git_branch"] = get_git_branch()
+    info["git_hash"] = get_git_hash()  # type: ignore[assignment]
+    info["git_branch"] = get_git_branch()  # type: ignore[assignment]
     info["timestamp"] = datetime.now().isoformat()
     info["cwd"] = str(Path.cwd())
 

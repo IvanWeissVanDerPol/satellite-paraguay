@@ -21,6 +21,7 @@ import logging
 import sys
 import time
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 import torch
@@ -33,7 +34,7 @@ def generate_realistic_chaco_tile(
     bbox: dict,
     n_months: int = 24,
     shape: tuple = (256, 256),
-    deforestation: dict = None,
+    deforestation: Optional[dict] = None,
     seed: int = 42,
 ) -> dict:
     """Generate realistic Chaco tile with multiple land cover classes + deforestation.
@@ -209,7 +210,7 @@ def generate_chaco_dataset(n_tiles: int = 50, n_months: int = 24, seed: int = 42
             tile_id=tile_id,
             bbox=bbox,
             n_months=n_months,
-            deforestation=deforestation,
+            deforestation=deforestation,  # type: ignore[arg-type]
             seed=seed + i,
         )
         tiles.append(tile)

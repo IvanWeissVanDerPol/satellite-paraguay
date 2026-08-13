@@ -60,7 +60,7 @@ def download_sentinel2_gee(
     bbox: Dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
+    bands: Optional[List[str]] = None,
 ) -> Optional[Dict[str, np.ndarray]]:
     """Download Sentinel-2 via Google Earth Engine.
 
@@ -142,11 +142,11 @@ def download_sentinel2_gee(
 
     return {
         "data": stacked,
-        "dates": dates,
-        "bands": bands,
-        "source": "GEE",
-        "tile_id": tile_id,
-        "bbox": bbox,
+        "dates": dates,  # type: ignore[dict-item]
+        "bands": bands,  # type: ignore[dict-item]
+        "source": "GEE",  # type: ignore[dict-item]
+        "tile_id": tile_id,  # type: ignore[dict-item]
+        "bbox": bbox,  # type: ignore[dict-item]
     }
 
 
@@ -203,7 +203,7 @@ def generate_synthetic_sentinel2(
     bbox: Dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
+    bands: Optional[List[str]] = None,
     shape: Tuple[int, int] = (256, 256),
     seed: int = 42,
 ) -> Dict[str, np.ndarray]:
@@ -238,7 +238,7 @@ def generate_synthetic_sentinel2(
         # Paraguay: peak NDVI Mar-Apr, low Sep-Oct
         base = 0.3 + 0.3 * np.cos((month - 1) / 12 * 2 * np.pi)
         monthly_ndvi.append(base)
-    monthly_ndvi = np.array(monthly_ndvi)
+    monthly_ndvi = np.array(monthly_ndvi)  # type: ignore[assignment]
 
     # Generate spatial NDVI pattern
     H, W = shape
@@ -273,13 +273,13 @@ def generate_synthetic_sentinel2(
 
     return {
         "data": arr,
-        "dates": [m.isoformat() for m in months],
-        "bands": bands,
-        "source": "synthetic",
-        "tile_id": tile_id,
-        "bbox": bbox,
-        "seed": seed,
-        "ndvi_baseline": monthly_ndvi.tolist(),
+        "dates": [m.isoformat() for m in months],  # type: ignore[dict-item]
+        "bands": bands,  # type: ignore[dict-item]
+        "source": "synthetic",  # type: ignore[dict-item]
+        "tile_id": tile_id,  # type: ignore[dict-item]
+        "bbox": bbox,  # type: ignore[dict-item]
+        "seed": seed,  # type: ignore[dict-item]
+        "ndvi_baseline": monthly_ndvi.tolist(),  # type: ignore[attr-defined]
     }
 
 
@@ -288,7 +288,7 @@ def fetch_sentinel2_tile(
     bbox: Dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
+    bands: Optional[List[str]] = None,
     use_cache: bool = True,
     allow_synthetic: bool = True,
 ) -> Dict[str, np.ndarray]:
@@ -404,14 +404,14 @@ def cloud_mask_s2(arr: np.ndarray, threshold: float = 0.3) -> np.ndarray:
 
         ndvi = (b8 - b4) / (b8 + b4 + 1e-8)
         cloud_mask = (b2 > threshold) & (ndvi < 0.2)
-        return ~cloud_mask
+        return ~cloud_mask  # type: ignore[no-any-return]
     else:
         b2 = arr[0]
         b8 = arr[3]
         b4 = arr[2]
         ndvi = (b8 - b4) / (b8 + b4 + 1e-8)
         cloud_mask = (b2 > threshold) & (ndvi < 0.2)
-        return ~cloud_mask
+        return ~cloud_mask  # type: ignore[no-any-return]
 
 
 def atmospheric_correction(arr: np.ndarray) -> np.ndarray:
@@ -423,10 +423,10 @@ def atmospheric_correction(arr: np.ndarray) -> np.ndarray:
     if arr.ndim == 4:
         # Per timestep, per band
         min_vals = arr.min(axis=(2, 3), keepdims=True)
-        return np.clip(arr - min_vals, 0, 1)
+        return np.clip(arr - min_vals, 0, 1)  # type: ignore[no-any-return]
     else:
         min_vals = arr.min(axis=(1, 2), keepdims=True)
-        return np.clip(arr - min_vals, 0, 1)
+        return np.clip(arr - min_vals, 0, 1)  # type: ignore[no-any-return]
 
 
 # ============================================

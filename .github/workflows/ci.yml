@@ -36,7 +36,7 @@ jobs:
       - name: Install mypy
         run: pip install mypy types-PyYAML types-requests
       - name: mypy
-        run: mypy --no-implicit-optional --ignore-missing-imports --no-strict-optional src/ || true
+        run: mypy --explicit-package-bases scripts/ src/
 
   test:
     name: Tests (pytest)

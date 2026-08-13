@@ -93,7 +93,7 @@ def download_hansen_real(
     # Fallback: synthetic
     logger.warning("Using synthetic Hansen data")
     arrs = generate_synthetic_hansen(bbox, start_year, end_year)
-    np.savez_compressed(cache_path, **arrs)
+    np.savez_compressed(cache_path, **arrs)  # type: ignore[arg-type]
     return arrs
 
 
@@ -154,7 +154,7 @@ def compute_deforestation_year(
     Returns binary mask where True = loss in that year.
     """
     year_code = year - 2000
-    return (lossyear == year_code).astype(np.uint8)
+    return (lossyear == year_code).astype(np.uint8)  # type: ignore[no-any-return]
 
 
 def compute_cumulative_deforestation(

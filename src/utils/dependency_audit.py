@@ -97,7 +97,7 @@ def _find_imports_in_file(py_file: Path) -> Set[str]:
 
 def find_used_imports(
     repo_root: Path,
-    directories: List[str] = None,
+    directories: Optional[List[str]] = None,
 ) -> Set[str]:
     """Find all Python imports used in src/, scripts/, tests/."""
     if directories is None:

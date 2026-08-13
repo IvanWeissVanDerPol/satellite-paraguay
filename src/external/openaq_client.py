@@ -37,7 +37,9 @@ ASUNCION_STATIONS = [
 ]
 
 
-def _request_with_retry(url: str, params: dict = None, headers: dict = None, max_retries: int = 3) -> Optional[dict]:
+def _request_with_retry(
+    url: str, params: Optional[dict] = None, headers: Optional[dict] = None, max_retries: int = 3
+) -> Optional[dict]:
     """Make API request with retry logic."""
     if headers is None:
         headers = {"User-Agent": USER_AGENT}
@@ -45,7 +47,7 @@ def _request_with_retry(url: str, params: dict = None, headers: dict = None, max
         try:
             response = requests.get(url, params=params, headers=headers, timeout=30)
             if response.status_code == 200:
-                return response.json()
+                return response.json()  # type: ignore[no-any-return]
             elif response.status_code == 429:
                 wait = 2**attempt
                 logger.warning(f"Rate limited, waiting {wait}s")
@@ -190,8 +192,8 @@ def fetch_openaq_asuncion(
     all_dfs = []
     for station in ASUNCION_STATIONS:
         df = fetch_openaq_for_location(
-            lat=station["lat"],
-            lon=station["lon"],
+            lat=station["lat"],  # type: ignore[arg-type]
+            lon=station["lon"],  # type: ignore[arg-type]
             parameter=parameter,
             date_from=date_from,
             date_to=date_to,

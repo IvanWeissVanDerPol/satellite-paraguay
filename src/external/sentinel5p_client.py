@@ -115,7 +115,7 @@ def fetch_sentinel5p_no2(
     if cache_path.exists():
         import json
 
-        return json.load(open(cache_path))
+        return json.load(open(cache_path))  # type: ignore[no-any-return]
 
     arr = fetch_sentinel5p_via_gee(bbox, "NO2", start_date, end_date)
     if arr is not None and len(arr) > 0:

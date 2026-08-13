@@ -151,12 +151,12 @@ def bootstrap_disparity(
     for _ in range(n_boot):
         boot_sample = rng.choice(territory_loss_pcts, size=n, replace=True)
         ratios.append(boot_sample.mean() / national_loss_pct)
-    ratios = np.array(ratios)
+    ratios = np.array(ratios)  # type: ignore[assignment]
 
-    p_value = (ratios > threshold).mean()
+    p_value = (ratios > threshold).mean()  # type: ignore[operator]
 
     return {
-        "bootstrap_mean_ratio": float(ratios.mean()),
+        "bootstrap_mean_ratio": float(ratios.mean()),  # type: ignore[attr-defined]
         "bootstrap_ci_lower": float(np.percentile(ratios, 2.5)),
         "bootstrap_ci_upper": float(np.percentile(ratios, 97.5)),
         "p_value_h1_gt_1_5x": float(p_value),

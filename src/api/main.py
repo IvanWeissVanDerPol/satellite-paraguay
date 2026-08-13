@@ -94,7 +94,7 @@ app.add_middleware(
 
 def load_json(path: Path) -> Optional[dict]:
     try:
-        return json.loads(path.read_text())
+        return json.loads(path.read_text())  # type: ignore[no-any-return]
     except FileNotFoundError:
         return None
 

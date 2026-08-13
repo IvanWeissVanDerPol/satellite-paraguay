@@ -90,4 +90,4 @@ def summarize_results(results: List[Dict]) -> Dict[str, int]:
 
 def total_elapsed(results: List[Dict]) -> float:
     """Sum elapsed time across all results."""
-    return sum(r.get("elapsed_s", 0) for r in results)
+    return sum(r.get("elapsed_s", 0) for r in results)  # type: ignore[no-any-return]

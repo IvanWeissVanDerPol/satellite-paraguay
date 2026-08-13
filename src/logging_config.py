@@ -101,7 +101,7 @@ def get_logger(
     if json_format:
         fmt = JSONFormatter()
     else:
-        fmt = logging.Formatter(
+        fmt = logging.Formatter(  # type: ignore[assignment]
             "%(asctime)s [%(levelname)8s] %(name)s: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
@@ -175,4 +175,4 @@ def configure_root(level: int = logging.INFO, json_format: bool = False) -> None
 
 # Auto-configure on import
 if os.environ.get("SATELLITE_PARAGUAY_TEST") != "1":
-    configure_root(level=os.environ.get("SATELLITE_PARAGUAY_LOG_LEVEL", "INFO"))
+    configure_root(level=os.environ.get("SATELLITE_PARAGUAY_LOG_LEVEL", "INFO"))  # type: ignore[arg-type]

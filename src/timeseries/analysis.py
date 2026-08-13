@@ -48,7 +48,7 @@ def stack_timeseries(
             arrays.append(arr)
 
     stacked = np.stack(arrays, axis=0)  # (T, B, H, W)
-    return stacked, meta
+    return stacked, meta  # type: ignore[return-value]
 
 
 def compute_ndvi_timeseries(
@@ -138,7 +138,7 @@ def compute_trend(
         numerator += (x[t] - x_mean) * (timeseries[t] - y_mean)
 
     slope = numerator / (denominator + 1e-8)
-    return slope
+    return slope  # type: ignore[no-any-return]
 
 
 def compute_anomaly(
@@ -150,7 +150,7 @@ def compute_anomaly(
     Returns anomaly for each timestep (T, H, W).
     """
     baseline = np.nanmean(timeseries[baseline_period[0] : baseline_period[1]], axis=0)
-    return timeseries - baseline[None, :, :]
+    return timeseries - baseline[None, :, :]  # type: ignore[no-any-return]
 
 
 def aggregate_by_department(

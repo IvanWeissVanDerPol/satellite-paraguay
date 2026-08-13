@@ -84,7 +84,7 @@ def download_mapbiomas_paraguay_real(
     cache_path = CACHE_DIR / f"mapbiomas_py_{year}.npy"
     if cache_path.exists():
         logger.info(f"MapBiomas cache hit for {year}")
-        return np.load(cache_path)
+        return np.load(cache_path)  # type: ignore[no-any-return]
 
     if use_gee:
         try:
@@ -124,7 +124,7 @@ def download_mapbiomas_paraguay_real(
                     arr = dataset.read(1)  # Single band
 
             np.save(cache_path, arr)
-            return arr
+            return arr  # type: ignore[no-any-return]
 
         except Exception as e:
             logger.warning(f"GEE MapBiomas failed: {e}")

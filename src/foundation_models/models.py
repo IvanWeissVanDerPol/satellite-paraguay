@@ -133,7 +133,7 @@ def compute_tile_embeddings(
     cache_path = cache_dir / f"{tile_id}_{model_name}.npy"
 
     if cache_path.exists():
-        return np.load(cache_path)
+        return np.load(cache_path)  # type: ignore[no-any-return]
 
     # Real implementation: load model, run inference on tile
     print(f"[{model_name}] Computing embeddings for {tile_id}")
@@ -164,9 +164,9 @@ def fuse_embeddings(
     if method == "concat":
         return np.concatenate(list(embeddings.values()))
     elif method == "mean":
-        return np.mean(list(embeddings.values()), axis=0)
+        return np.mean(list(embeddings.values()), axis=0)  # type: ignore[no-any-return]
     elif method == "max":
-        return np.max(list(embeddings.values()), axis=0)
+        return np.max(list(embeddings.values()), axis=0)  # type: ignore[no-any-return]
     else:
         raise ValueError(f"Unknown fusion method: {method}")
 

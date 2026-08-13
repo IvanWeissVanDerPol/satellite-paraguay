@@ -66,7 +66,7 @@ def confusion_matrix_segmentation(
     num_classes: Optional[int] = None,
 ) -> np.ndarray:
     """Confusion matrix for segmentation."""
-    return confusion_matrix(y_true.flatten(), y_pred.flatten(), labels=range(num_classes) if num_classes else None)
+    return confusion_matrix(y_true.flatten(), y_pred.flatten(), labels=range(num_classes) if num_classes else None)  # type: ignore[no-any-return]  # noqa: E501
 
 
 def detection_map(

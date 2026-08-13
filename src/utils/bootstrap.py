@@ -194,4 +194,4 @@ def run_all_checks(repo_root: Path, base_dir: Optional[Path] = None) -> Dict[str
 
 def is_ready(checks: Dict[str, Any]) -> bool:
     """Check if all critical checks passed."""
-    return checks["python"]["ok"] and checks["deps"]["ok"] and checks["data_dir"]["ok"]
+    return checks["python"]["ok"] and checks["deps"]["ok"] and checks["data_dir"]["ok"]  # type: ignore[no-any-return]

@@ -31,7 +31,7 @@ def linear_regression_baseline(
 
     model = Ridge(alpha=1.0)
     model.fit(features, target)
-    return model.predict(features)
+    return model.predict(features)  # type: ignore[no-any-return]
 
 
 def random_forest_regression_baseline(
@@ -48,7 +48,7 @@ def random_forest_regression_baseline(
 
     model = RandomForestRegressor(n_estimators=n_estimators, random_state=random_state, n_jobs=-1)
     model.fit(features, target)
-    return model.predict(features)
+    return model.predict(features)  # type: ignore[no-any-return]
 
 
 def persistence_baseline(target: np.ndarray) -> np.ndarray:
@@ -75,7 +75,7 @@ def run_all_baselines(
         preds = linear_regression_baseline(features, target)
         results["linear_regression"] = regression_metrics(target, preds)
     except Exception as e:
-        results["linear_regression"] = {"error": str(e)}
+        results["linear_regression"] = {"error": str(e)}  # type: ignore[dict-item]
 
     # 3. Random Forest
     print("Running Random Forest baseline...")
@@ -83,7 +83,7 @@ def run_all_baselines(
         preds = random_forest_regression_baseline(features, target, n_estimators=50)
         results["random_forest"] = regression_metrics(target, preds)
     except Exception as e:
-        results["random_forest"] = {"error": str(e)}
+        results["random_forest"] = {"error": str(e)}  # type: ignore[dict-item]
 
     return results
 

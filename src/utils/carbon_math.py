@@ -23,7 +23,7 @@ def chave_agb(treecover_pct) -> np.ndarray:
     Returns AGB in Mg/ha for each input pixel.
     """
     tc = np.clip(treecover_pct, 0, 100)
-    return CHAVE_COEFFICIENT * (tc / 100.0) ** 2.5
+    return CHAVE_COEFFICIENT * (tc / 100.0) ** 2.5  # type: ignore[no-any-return]
 
 
 def carbon_stock(treecover_pct) -> np.ndarray:

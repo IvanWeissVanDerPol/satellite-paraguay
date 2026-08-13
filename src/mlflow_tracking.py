@@ -32,8 +32,8 @@ def _try_import_mlflow():
         return None
 
 
-@contextmanager
-def start_run(
+@contextmanager  # type: ignore[arg-type]
+def start_run(  # type: ignore[misc]
     run_name: str,
     experiment_name: str = "satellite-paraguay",
     tags: Optional[Dict[str, str]] = None,

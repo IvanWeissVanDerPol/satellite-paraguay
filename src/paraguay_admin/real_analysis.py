@@ -47,7 +47,7 @@ def _find_indigenous_path(data_dir: Path) -> Optional[Path]:
     return None
 
 
-def load_catastro_parcels_real(data_dir: Path = None) -> gpd.GeoDataFrame:
+def load_catastro_parcels_real(data_dir: Optional[Path] = None) -> gpd.GeoDataFrame:
     """Load Catastro parcels from local Paraguay geodata."""
     if data_dir is None:
         data_dir = PG_DATA_DIR
@@ -80,7 +80,7 @@ def load_catastro_parcels_real(data_dir: Path = None) -> gpd.GeoDataFrame:
     return combined
 
 
-def load_indigenous_territories_real(data_dir: Path = None) -> gpd.GeoDataFrame:
+def load_indigenous_territories_real(data_dir: Optional[Path] = None) -> gpd.GeoDataFrame:
     """Load indigenous territories from local Paraguay geodata."""
     if data_dir is None:
         data_dir = PG_DATA_DIR
@@ -96,7 +96,7 @@ def load_indigenous_territories_real(data_dir: Path = None) -> gpd.GeoDataFrame:
 
 def detect_conflicts_real(
     buffer_m: float = 100,
-    data_dir: Path = None,
+    data_dir: Optional[Path] = None,
 ) -> Dict:
     """Detect real conflicts between Catastro parcels and indigenous territories.
 
@@ -174,7 +174,7 @@ def detect_conflicts_real(
 
 def get_parcels_in_department(
     department: str,
-    data_dir: Path = None,
+    data_dir: Optional[Path] = None,
 ) -> gpd.GeoDataFrame:
     """Get all parcels in a specific department."""
     parcels = load_catastro_parcels_real(data_dir)

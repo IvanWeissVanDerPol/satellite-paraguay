@@ -37,7 +37,7 @@ class YrupePipeline:
         if not f.exists():
             return {"soy_hectares": 0}
         with open(f) as fp:
-            return json.load(fp)
+            return json.load(fp)  # type: ignore[no-any-return]
 
     def delineate_fields(self, sentinel_path: Path) -> dict:
         """Use Delineate Anything v2 to delineate field boundaries."""

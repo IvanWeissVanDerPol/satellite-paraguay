@@ -30,7 +30,7 @@ st.set_page_config(
 
 def load_json(path: Path) -> dict:
     try:
-        return json.loads(path.read_text())
+        return json.loads(path.read_text())  # type: ignore[no-any-return]
     except FileNotFoundError:
         return {}
 

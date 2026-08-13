@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional
 def find_recent_logs(log_dir: Path, since_hours: int = 24) -> List[Path]:
     """Find log files modified in the last N hours."""
     cutoff = datetime.now() - timedelta(hours=since_hours)
-    logs = []
+    logs = []  # type: ignore[var-annotated]
     if not log_dir.exists():
         return logs
     for log_file in log_dir.rglob("*.log"):

@@ -149,7 +149,7 @@ def validate_one(paper_id: int) -> Dict[str, Any]:
     if paper_id not in _VALIDATORS:
         raise ValueError(f"Invalid paper id: {paper_id}. Must be 1-6.")
     try:
-        return _VALIDATORS[paper_id]()
+        return _VALIDATORS[paper_id]()  # type: ignore[no-any-return]
     except Exception as e:
         return {
             "paper": paper_id,

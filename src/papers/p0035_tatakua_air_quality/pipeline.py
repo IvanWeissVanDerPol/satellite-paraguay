@@ -60,7 +60,7 @@ class TatakuaPipeline:
         }
         try:
             response = requests.get(OPENAQ_API, params=params)
-            return response.json().get("results", [])
+            return response.json().get("results", [])  # type: ignore[no-any-return]
         except Exception as e:
             print(f"[openaq] Error: {e}")
             return []

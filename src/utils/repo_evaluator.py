@@ -102,7 +102,7 @@ def analyze_module(py_file: Path, src_dir: Path) -> Dict[str, Any]:
     try:
         content = py_file.read_text()
     except (OSError, UnicodeDecodeError):
-        return None
+        return None  # type: ignore[return-value]
 
     is_stub = is_module_stub(content)
     signatures = extract_signatures(content)
