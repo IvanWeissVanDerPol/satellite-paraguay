@@ -21,10 +21,10 @@ jobs:
           - p0026_kai_poaching
           - p0035_tatakua_air_quality
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       # Cache apt packages to avoid 30s+ install on every run
       - name: Cache apt
-        uses: actions/cache@v4
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4
         with:
           path: |
             /var/cache/apt/archives
@@ -72,7 +72,7 @@ jobs:
           test -s paper.pdf || (echo "paper.pdf is empty" && exit 1)
           file paper.pdf
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@c7d193f32edcb7bfad888921612eaeda4e2295e9  # v4
         with:
           name: paper-${{ matrix.paper }}
           path: papers/drafts/${{ matrix.paper }}/paper.pdf
