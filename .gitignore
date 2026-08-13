@@ -89,3 +89,6 @@ mlruns/
 
 # Local venv (created 2026-08-11 for tests)
 .venv/
+
+# pytest-benchmark output
+.benchmarks/
