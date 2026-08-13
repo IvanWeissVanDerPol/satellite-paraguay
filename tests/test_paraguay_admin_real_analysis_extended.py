@@ -11,6 +11,9 @@ import geopandas as gpd
 import pytest
 from shapely.geometry import box
 
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
+
 REAL_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")
 
 

@@ -17,6 +17,9 @@ from hypothesis import strategies as st
 from scripts.per_pixel_carbon import carbon_stock, chave_agb, co2e
 from scripts.uncertainty_quantification import pixel_bootstrap_fast
 
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 

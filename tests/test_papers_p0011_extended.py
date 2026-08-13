@@ -12,6 +12,8 @@ import pytest
 
 from src.papers.p0011_yvytu_deforestation.pipeline import YvytuPipeline as YvytuPipeline_Indirect
 
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
 
 @pytest.fixture
 def pipeline():

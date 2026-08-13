@@ -16,6 +16,9 @@ from src.satellite_io.sources import (
     download_via_gee,
 )
 
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
+
 # =========================
 # Constants
 # =========================

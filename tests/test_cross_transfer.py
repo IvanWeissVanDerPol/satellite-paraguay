@@ -4,7 +4,11 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest  # noqa: E402
 import torch
+
+pytest.importorskip("torch", reason="CI: requires optional system dep 'torch' (not installed)")  # noqa: E402
+
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

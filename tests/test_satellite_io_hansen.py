@@ -5,6 +5,7 @@ Coverage target: 60%+. Tests the synthetic data generation, helpers
 """
 
 import numpy as np
+import pytest  # noqa: E402
 
 from src.satellite_io import hansen as _hansen
 from src.satellite_io.hansen import (
@@ -14,6 +15,9 @@ from src.satellite_io.hansen import (
     download_hansen_real,
     generate_synthetic_hansen,
 )
+
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 
 # =========================
 # Constants
