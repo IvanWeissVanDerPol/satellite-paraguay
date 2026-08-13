@@ -1,5 +1,8 @@
 """Tests for src/utils/paper_validators.py."""
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 from unittest.mock import MagicMock, patch
 
 import pytest
