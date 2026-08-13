@@ -345,3 +345,44 @@ These can run partially in parallel after the core paper-writing + real-model-tr
 - [x] **Pass H + I** (commit 8f128fa + e951571): dashboard verified
       + STATUS.md refreshed.
 
+
+## Tier 2.5 — CI hardening pass landed (commit 5c82e11, 2026-08-13)
+
+- [x] Auto-fix 102 mypy errors via `hauntsaninja/no_implicit_optional`
+- [x] Manual fix: `YvutuPipeline` → `YvytuPipeline` typo
+- [x] Manual fix: `mlflow.tracking.MlflowClient` forward ref → `Any`
+- [x] Remove lenient mypy flags + `|| true` from CI workflows
+- [x] mypy now strict: 0 errors in 122 files
+- [x] CODEOWNERS file (IvanWeissVanDerPol as owner for all paths)
+- [x] Dependabot config (weekly pip + GH Actions updates)
+- [x] pytest-benchmark in requirements-ci.txt (fixes Performance job)
+- [x] pytest-xdist in requirements-ci.txt (parallel local testing)
+- [x] TeX Live apt cache in latex.yml (saves ~30s per paper)
+- [x] Secret scanning workflow (gitleaks-action@v2)
+- [x] Release drafter workflow
+- [x] CI/CD/CI/LaTeX workflow badges in README
+
+## Tier 3 — Tier 2.5 follow-up (next sprint)
+
+- [ ] Pin GitHub Actions to SHA (security hardening)
+- [ ] Add Renovate config (alternative to Dependabot)
+- [ ] Add SBOM generation (anchore/sbom-action)
+- [ ] Add `pyupgrade --py310-plus` to CI
+- [ ] Add `pycln` for unused imports
+- [ ] Add `vulture` for dead code
+- [ ] Refactor `src/papers/*/pipeline.py` to registry pattern
+- [ ] Consolidate `requirements.txt` to `pyproject.toml`
+- [ ] Add `pyproject.toml` Coverage fail_under=10 (was 3.92%)
+
+## Tier 4 — Tier 3 follow-up (next month)
+
+- [ ] Add CITATION.cff with new release tag
+- [ ] Add `docs/ARCHITECTURE.md` with diagrams
+- [ ] Add `docs/API.md` for public API
+- [ ] Add `docs/DATA.md` for data sources
+- [ ] Add `docs/PAPERS.md` for paper-by-paper docs
+- [ ] Add mkdocs documentation site
+- [ ] Add myst-parser for cross-references
+- [ ] Convert notebooks to markdown (jupytext)
+- [ ] Add `xdoctest` for doctest-based API examples
+- [ ] Add Sphinx autodoc for public API

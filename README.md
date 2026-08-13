@@ -1,6 +1,8 @@
 # SatelliteCV-Paraguay (Yvutu)
 
 [![CI/CD](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml)
+[![CI](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/ci.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/ci.yml)
+[![LaTeX](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/latex.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/latex.yml)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg)](LICENSE)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://zenodo.org/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](pyproject.toml)

@@ -22,6 +22,16 @@ jobs:
           - p0035_tatakua_air_quality
     steps:
       - uses: actions/checkout@v4
+      # Cache apt packages to avoid 30s+ install on every run
+      - name: Cache apt
+        uses: actions/cache@v4
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt/lists
+          key: apt-texlive-2026-08-13-v1
+          restore-keys: |
+            apt-texlive-
       - name: Install TeX
         run: |
           sudo apt-get update
