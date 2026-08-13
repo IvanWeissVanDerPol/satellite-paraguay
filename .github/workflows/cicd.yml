@@ -31,7 +31,7 @@ jobs:
       - name: Flake8
         run: flake8 --max-line-length=120 --extend-ignore=E203,W503,E225 scripts/ tests/ src/
       - name: MyPy
-        run: mypy scripts/ src/
+        run: mypy --explicit-package-bases scripts/ src/
       # Honest-reporting guard (added 2026-08-11): fails the build if any
       # unsanctioned high-headline numeric claim (F1>0.7, R²>0.7, mAP>0.6,
       # MAE<5) appears outside ACTUAL_RESULTS.md / README.md / WORKLOG_*.md /
