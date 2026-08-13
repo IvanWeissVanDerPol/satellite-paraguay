@@ -20,7 +20,6 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_ROOT / "logs"
@@ -79,7 +78,7 @@ class JSONFormatter(logging.Formatter):
 def get_logger(
     name: str,
     level: int = logging.INFO,
-    log_file: Optional[str] = None,
+    log_file: str | None = None,
     json_format: bool = False,
 ) -> logging.Logger:
     """Get a configured logger.

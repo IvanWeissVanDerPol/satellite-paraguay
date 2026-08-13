@@ -10,7 +10,6 @@ yields better than 80% accuracy for soybean yield prediction in Caaguazú.
 
 import json
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -20,7 +19,7 @@ from ...evaluation import regression_metrics
 class YrupePipeline:
     """Soybean yield prediction pipeline."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "caaguazu_bbox": {
                 "min_lon": -56.0,
@@ -49,7 +48,7 @@ class YrupePipeline:
         self,
         tile_id: str,
         ndvi_series: np.ndarray,
-        weather_data: Optional[dict] = None,
+        weather_data: dict | None = None,
     ) -> float:
         """Predict soybean yield (tons/hectare) for a tile.
 
@@ -64,12 +63,12 @@ class YrupePipeline:
         predicted_yield = 1.5 + mean_ndvi * 2.0
         return predicted_yield
 
-    def validate(self, predictions: np.ndarray, ground_truth: np.ndarray) -> Dict:
+    def validate(self, predictions: np.ndarray, ground_truth: np.ndarray) -> dict:
         """Validate predictions."""
         return regression_metrics(ground_truth, predictions)
 
 
-def run_yrupe_demo(data: Optional[np.ndarray] = None):
+def run_yrupe_demo(data: np.ndarray | None = None):
     """Demo: predict yield for 1 Caaguazú tile.
 
     Args:

@@ -12,7 +12,6 @@ import logging
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import geopandas as gpd
 import pandas as pd
@@ -23,7 +22,7 @@ logger = logging.getLogger(__name__)
 PG_DATA_DIR = Path(os.environ.get("PARAGUAY_GEODATA_PATH", "/root/paraguay-geodata/exports/web/data"))
 
 
-def _find_catastro_paths(data_dir: Path) -> List[Path]:
+def _find_catastro_paths(data_dir: Path) -> list[Path]:
     """Find Catastro files in either root or admin/ subdirectory."""
     paths = []
     for fname in ["catastro_parcels_sample.geojson", "catastro_urba.geojson", "catastro_dist.geojson"]:
@@ -38,7 +37,7 @@ def _find_catastro_paths(data_dir: Path) -> List[Path]:
     return paths
 
 
-def _find_indigenous_path(data_dir: Path) -> Optional[Path]:
+def _find_indigenous_path(data_dir: Path) -> Path | None:
     """Find indigenous territories file."""
     for subdir in ["", "admin"]:
         path = data_dir / subdir / "indigenous_territories.geojson"
@@ -47,7 +46,7 @@ def _find_indigenous_path(data_dir: Path) -> Optional[Path]:
     return None
 
 
-def load_catastro_parcels_real(data_dir: Optional[Path] = None) -> gpd.GeoDataFrame:
+def load_catastro_parcels_real(data_dir: Path | None = None) -> gpd.GeoDataFrame:
     """Load Catastro parcels from local Paraguay geodata."""
     if data_dir is None:
         data_dir = PG_DATA_DIR
@@ -80,7 +79,7 @@ def load_catastro_parcels_real(data_dir: Optional[Path] = None) -> gpd.GeoDataFr
     return combined
 
 
-def load_indigenous_territories_real(data_dir: Optional[Path] = None) -> gpd.GeoDataFrame:
+def load_indigenous_territories_real(data_dir: Path | None = None) -> gpd.GeoDataFrame:
     """Load indigenous territories from local Paraguay geodata."""
     if data_dir is None:
         data_dir = PG_DATA_DIR
@@ -96,8 +95,8 @@ def load_indigenous_territories_real(data_dir: Optional[Path] = None) -> gpd.Geo
 
 def detect_conflicts_real(
     buffer_m: float = 100,
-    data_dir: Optional[Path] = None,
-) -> Dict:
+    data_dir: Path | None = None,
+) -> dict:
     """Detect real conflicts between Catastro parcels and indigenous territories.
 
     A conflict occurs when a Catastro parcel overlaps or is within
@@ -174,7 +173,7 @@ def detect_conflicts_real(
 
 def get_parcels_in_department(
     department: str,
-    data_dir: Optional[Path] = None,
+    data_dir: Path | None = None,
 ) -> gpd.GeoDataFrame:
     """Get all parcels in a specific department."""
     parcels = load_catastro_parcels_real(data_dir)
@@ -190,7 +189,7 @@ def get_parcels_in_department(
 
 def compute_parcel_summary_stats(
     parcels: gpd.GeoDataFrame,
-) -> Dict:
+) -> dict:
     """Compute summary statistics for a set of parcels."""
     if parcels.empty:
         return {"count": 0}

@@ -4,9 +4,9 @@ Builds citation graph and BibTeX file for the thesis.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-SHARED_REFS: Dict[str, Dict[str, str]] = {
+SHARED_REFS: dict[str, dict[str, str]] = {
     "hansen2013": {
         "type": "article",
         "author": "Hansen, M. C. and Potapov, P. V. and Moore, R. and Hancher, M. and Turubanova, S. A. and Tyukavina, A. and Thau, D. and Stehman, S. V. and Goetz, S. J. and Loveland, T. R. and Kommareddy, A. and Egorov, A. and Chini, L. and Justice, C. O. and Townshend, J. R. G.",  # noqa: E501
@@ -114,7 +114,7 @@ SHARED_REFS: Dict[str, Dict[str, str]] = {
 }
 
 # Paper -> citations
-PAPER_CITES: Dict[str, List[str]] = {
+PAPER_CITES: dict[str, list[str]] = {
     "P0011_yvutu_deforestation": [
         "hansen2013",
         "mapbiomas2023",
@@ -140,7 +140,7 @@ PAPER_CITES: Dict[str, List[str]] = {
 }
 
 
-def bibtex_entry(key: str, ref: Dict[str, str]) -> str:
+def bibtex_entry(key: str, ref: dict[str, str]) -> str:
     """Format a BibTeX entry from key and ref dict."""
     fields = []
     for k, v in ref.items():
@@ -152,7 +152,7 @@ def bibtex_entry(key: str, ref: Dict[str, str]) -> str:
     return f"@{ref['type']}{{{key},\n" + ",\n".join(fields) + "\n}\n\n\n"
 
 
-def build_bibtex(refs: Optional[Dict[str, Dict[str, str]]] = None) -> str:
+def build_bibtex(refs: dict[str, dict[str, str]] | None = None) -> str:
     """Build full BibTeX file content."""
     if refs is None:
         refs = SHARED_REFS
@@ -166,15 +166,15 @@ def build_bibtex(refs: Optional[Dict[str, Dict[str, str]]] = None) -> str:
 
 
 def count_citations(
-    paper_cites: Optional[Dict[str, List[str]]] = None,
-    refs: Optional[Dict[str, Dict[str, str]]] = None,
-) -> Dict[str, int]:
+    paper_cites: dict[str, list[str]] | None = None,
+    refs: dict[str, dict[str, str]] | None = None,
+) -> dict[str, int]:
     """Count how many papers cite each reference."""
     if paper_cites is None:
         paper_cites = PAPER_CITES
     if refs is None:
         refs = SHARED_REFS
-    counts: Dict[str, int] = {key: 0 for key in refs}
+    counts: dict[str, int] = {key: 0 for key in refs}
     for paper, citations in paper_cites.items():
         for c in citations:
             if c in counts:
@@ -182,7 +182,7 @@ def count_citations(
     return counts
 
 
-def most_cited(citation_counts: Dict[str, int], min_count: int = 1) -> List[tuple]:
+def most_cited(citation_counts: dict[str, int], min_count: int = 1) -> list[tuple]:
     """Return list of (ref, count) sorted by count desc, filtered by min_count."""
     return sorted(
         [(r, c) for r, c in citation_counts.items() if c >= min_count],
@@ -191,10 +191,10 @@ def most_cited(citation_counts: Dict[str, int], min_count: int = 1) -> List[tupl
 
 
 def build_citation_graph(
-    paper_cites: Optional[Dict[str, List[str]]] = None,
-    refs: Optional[Dict[str, Dict[str, str]]] = None,
-    themes: Optional[Dict[str, List[str]]] = None,
-) -> Dict[str, Any]:
+    paper_cites: dict[str, list[str]] | None = None,
+    refs: dict[str, dict[str, str]] | None = None,
+    themes: dict[str, list[str]] | None = None,
+) -> dict[str, Any]:
     """Build full citation graph dict."""
     if paper_cites is None:
         paper_cites = PAPER_CITES
@@ -210,7 +210,7 @@ def build_citation_graph(
     }
 
 
-def write_bibtex_file(refs: Dict[str, Dict[str, str]], output_path) -> int:
+def write_bibtex_file(refs: dict[str, dict[str, str]], output_path) -> int:
     """Write BibTeX file. Returns number of entries written."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
     content = build_bibtex(refs)
@@ -218,7 +218,7 @@ def write_bibtex_file(refs: Dict[str, Dict[str, str]], output_path) -> int:
     return len(refs)
 
 
-def write_citation_graph(graph: Dict[str, Any], output_path) -> None:
+def write_citation_graph(graph: dict[str, Any], output_path) -> None:
     """Write citation graph JSON."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(graph, indent=2))

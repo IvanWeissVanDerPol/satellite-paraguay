@@ -11,7 +11,6 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional
 
 # Random seeds
 DEFAULT_SEED = 42
@@ -54,7 +53,7 @@ def set_seed(seed: int = DEFAULT_SEED) -> None:
         pass
 
 
-def get_git_hash() -> Optional[str]:
+def get_git_hash() -> str | None:
     """Get current git commit hash."""
     try:
         return (
@@ -70,7 +69,7 @@ def get_git_hash() -> Optional[str]:
         return None
 
 
-def get_git_branch() -> Optional[str]:
+def get_git_branch() -> str | None:
     """Get current git branch."""
     try:
         return (
@@ -91,7 +90,7 @@ def get_python_version() -> str:
     return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 
-def get_system_info() -> Dict:
+def get_system_info() -> dict:
     """Get comprehensive system info."""
     info = {
         "python_version": get_python_version(),
@@ -132,7 +131,7 @@ def get_system_info() -> Dict:
     return info
 
 
-def capture_environment(output_path: Path) -> Dict:
+def capture_environment(output_path: Path) -> dict:
     """Capture full environment info and save to JSON.
 
     Args:

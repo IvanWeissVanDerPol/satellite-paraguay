@@ -9,7 +9,6 @@ outperforms Hansen GFC on Chaco deforestation (F1 > 0.85).
 """
 
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -28,7 +27,7 @@ from ...timeseries import (
 class YvytuPipeline:
     """End-to-end pipeline for Chaco deforestation detection."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "tile_size_km": 10,
             "start_date": "2018-01-01",
@@ -49,7 +48,7 @@ class YvytuPipeline:
         self.model = load_prithvi("300m")
         return self.model
 
-    def select_tiles(self) -> List[str]:
+    def select_tiles(self) -> list[str]:
         """Select Chaco tiles for analysis."""
         from ...paraguay_admin import list_tiles_in_region
 
@@ -75,7 +74,7 @@ class YvytuPipeline:
         self,
         tile_id: str,
         ndvi_timeseries: np.ndarray,
-        dates: List[str],
+        dates: list[str],
     ) -> np.ndarray:
         """Detect deforestation in a tile using BFAST-like change detection.
 
@@ -106,9 +105,9 @@ class YvytuPipeline:
     def validate(
         self,
         predictions: np.ndarray,
-        mapbiomas_path: Optional[Path] = None,
-        hansen_path: Optional[Path] = None,
-    ) -> Dict:
+        mapbiomas_path: Path | None = None,
+        hansen_path: Path | None = None,
+    ) -> dict:
         """Validate predictions against MapBiomas + Hansen."""
         results = {}
         if mapbiomas_path:

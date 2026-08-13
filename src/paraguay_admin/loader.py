@@ -18,7 +18,6 @@ import json
 # PARAGUAY_GEODATA_DIR to point at a fixture directory.
 import os
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import geopandas as gpd
 import pandas as pd
@@ -102,7 +101,7 @@ def get_country_boundary() -> gpd.GeoDataFrame:
     )
 
 
-def get_tile_bbox(tile_id: str) -> Optional[Dict[str, float]]:
+def get_tile_bbox(tile_id: str) -> dict[str, float] | None:
     """Get bounding box for a tile by ID.
 
     Args:
@@ -129,9 +128,9 @@ def get_tile_bbox(tile_id: str) -> Optional[Dict[str, float]]:
 
 
 def list_tiles_in_region(
-    bbox: Dict[str, float],
-    tile_index: Optional[pd.DataFrame] = None,
-) -> List[str]:
+    bbox: dict[str, float],
+    tile_index: pd.DataFrame | None = None,
+) -> list[str]:
     """List tile IDs that intersect a bounding box.
 
     Args:

@@ -4,7 +4,6 @@ Handles intersection of satellite data with Catastro parcels and indigenous terr
 """
 
 from pathlib import Path
-from typing import Dict, Optional, Tuple
 
 import geopandas as gpd
 import numpy as np
@@ -16,8 +15,8 @@ from ..paraguay_admin import load_catastro_parcels, load_indigenous_territories
 
 
 def get_parcels_in_tile(
-    tile_bbox: Dict[str, float],
-    data_dir: Optional[Path] = None,
+    tile_bbox: dict[str, float],
+    data_dir: Path | None = None,
 ) -> gpd.GeoDataFrame:
     """Get Catastro parcels that intersect a tile bounding box.
 
@@ -40,8 +39,8 @@ def get_parcels_in_tile(
 
 
 def get_indigenous_in_tile(
-    tile_bbox: Dict[str, float],
-    data_dir: Optional[Path] = None,
+    tile_bbox: dict[str, float],
+    data_dir: Path | None = None,
 ) -> gpd.GeoDataFrame:
     """Get indigenous territories intersecting a tile."""
     indigenous = load_indigenous_territories(data_dir)  # type: ignore[arg-type]
@@ -58,8 +57,8 @@ def get_indigenous_in_tile(
 def clip_raster_to_parcel(
     raster_path: Path,
     parcel_geometry,
-    output_path: Optional[Path] = None,
-) -> Tuple[np.ndarray, dict]:
+    output_path: Path | None = None,
+) -> tuple[np.ndarray, dict]:
     """Clip a raster to a parcel polygon.
 
     Args:
@@ -94,8 +93,8 @@ def clip_raster_to_parcel(
 def compute_parcel_statistics(
     parcel_id: str,
     raster_path: Path,
-    data_dir: Optional[Path] = None,
-) -> Dict[str, float]:
+    data_dir: Path | None = None,
+) -> dict[str, float]:
     """Compute statistics of a raster over a parcel.
 
     Returns dict with mean, median, std, min, max, sum of pixel values.
@@ -123,9 +122,9 @@ def compute_parcel_statistics(
 
 def detect_parcel_conflicts(
     parcel_id: str,
-    indigenous_data_dir: Optional[Path] = None,
-    catastro_data_dir: Optional[Path] = None,
-) -> Dict:
+    indigenous_data_dir: Path | None = None,
+    catastro_data_dir: Path | None = None,
+) -> dict:
     """Detect conflicts between Catastro parcel and indigenous territory.
 
     Returns dict with conflict info for the Yvy (P0012) paper.

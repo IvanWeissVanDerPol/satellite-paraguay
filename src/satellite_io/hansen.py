@@ -11,7 +11,6 @@ Data: 30m forest loss/gain, 2000-2023
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -35,11 +34,11 @@ HANSEN_BANDS = {
 
 
 def download_hansen_real(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_year: int = 2018,
     end_year: int = 2023,
     use_gee: bool = True,
-) -> Optional[Dict[str, np.ndarray]]:
+) -> dict[str, np.ndarray] | None:
     """Download Hansen GFC for Paraguay.
 
     Returns dict with bands: treecover2000, loss, gain, lossyear
@@ -98,12 +97,12 @@ def download_hansen_real(
 
 
 def generate_synthetic_hansen(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_year: int = 2018,
     end_year: int = 2023,
     shape: tuple = (256, 256),
     seed: int = 42,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Generate synthetic Hansen-like data.
 
     For Paraguay:

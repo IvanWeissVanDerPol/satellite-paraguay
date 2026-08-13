@@ -3,8 +3,6 @@
 Bootstrap CIs and metric aggregation from confusion matrices.
 """
 
-from typing import Dict
-
 import numpy as np
 
 
@@ -16,7 +14,7 @@ def bootstrap_ci_from_confusion(
     n_bootstrap: int = 10000,
     ci: float = 0.95,
     seed: int = 42,
-) -> Dict[str, Dict[str, float]]:
+) -> dict[str, dict[str, float]]:
     """Bootstrap CI for precision, recall, F1 from confusion matrix counts.
 
     Returns dict with precision, recall, f1 each containing mean,
@@ -79,7 +77,7 @@ def bootstrap_ci_from_confusion(
     }
 
 
-def metric_stats_with_ci(metric_values: list, ci: float = 0.95) -> Dict[str, float]:
+def metric_stats_with_ci(metric_values: list, ci: float = 0.95) -> dict[str, float]:
     """Compute mean and CI for a list of metric values."""
     arr = np.array(metric_values)
     if len(arr) == 0:
@@ -94,7 +92,7 @@ def metric_stats_with_ci(metric_values: list, ci: float = 0.95) -> Dict[str, flo
     }
 
 
-def aggregate_metrics(metrics_list: list, ci: float = 0.95) -> Dict[str, Dict[str, float]]:
+def aggregate_metrics(metrics_list: list, ci: float = 0.95) -> dict[str, dict[str, float]]:
     """Aggregate metrics across multiple runs.
 
     metrics_list: list of dicts with 'f1', 'precision', 'recall' keys.
@@ -103,7 +101,7 @@ def aggregate_metrics(metrics_list: list, ci: float = 0.95) -> Dict[str, Dict[st
     return {k: metric_stats_with_ci([m.get(k, 0) for m in metrics_list], ci) for k in keys}
 
 
-def analyze_confusion_matrix(tp: int, fp: int, fn: int, tn: int) -> Dict[str, float]:
+def analyze_confusion_matrix(tp: int, fp: int, fn: int, tn: int) -> dict[str, float]:
     """Compute summary metrics from confusion matrix."""
     total = tp + fp + fn + tn
     if total == 0:

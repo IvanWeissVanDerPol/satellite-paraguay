@@ -23,7 +23,7 @@ import smtplib
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 REPO_ROOT = Path(__file__).parent.parent
 LOG_DIR = REPO_ROOT / "logs"
@@ -32,7 +32,7 @@ OUTPUTS_LOG = REPO_ROOT / "outputs/weekly"
 ALERT_CONFIG_PATH = REPO_ROOT / ".alert_config.json"
 
 
-def find_recent_logs(since_hours: int = 24) -> List[Path]:
+def find_recent_logs(since_hours: int = 24) -> list[Path]:
     """Find log files modified in the last N hours."""
     cutoff = datetime.now() - timedelta(hours=since_hours)
     logs = []
@@ -49,7 +49,7 @@ def find_recent_logs(since_hours: int = 24) -> List[Path]:
     return sorted(logs, key=lambda p: p.stat().st_mtime, reverse=True)
 
 
-def detect_traceback(content: str) -> Optional[str]:
+def detect_traceback(content: str) -> str | None:
     """Detect Python traceback in log content."""
     if "Traceback (most recent call last):" in content:
         # Extract traceback
@@ -61,7 +61,7 @@ def detect_traceback(content: str) -> Optional[str]:
     return None
 
 
-def detect_errors(content: str) -> List[str]:
+def detect_errors(content: str) -> list[str]:
     """Detect ERROR/FATAL/CRITICAL patterns."""
     errors = []
     for line in content.split("\n"):
@@ -70,7 +70,7 @@ def detect_errors(content: str) -> List[str]:
     return errors
 
 
-def detect_performance_regression(content: str, expected_seconds: float = 60) -> Optional[str]:
+def detect_performance_regression(content: str, expected_seconds: float = 60) -> str | None:
     """Detect if elapsed time exceeds expected by 2x."""
     m = re.search(r"(?:Total time|elapsed|Duration):\s*(\d+\.?\d*)\s*(?:s|sec|seconds)", content)
     if m:
@@ -80,7 +80,7 @@ def detect_performance_regression(content: str, expected_seconds: float = 60) ->
     return None
 
 
-def check_output_files(expected_outputs: List[str]) -> List[str]:
+def check_output_files(expected_outputs: list[str]) -> list[str]:
     """Check that expected output files exist."""
     missing = []
     for path in expected_outputs:
@@ -90,7 +90,7 @@ def check_output_files(expected_outputs: List[str]) -> List[str]:
     return missing
 
 
-def send_webhook(url: str, payload: Dict[str, Any]) -> bool:
+def send_webhook(url: str, payload: dict[str, Any]) -> bool:
     """Send JSON payload to webhook URL."""
     try:
         import requests
@@ -106,11 +106,11 @@ def send_email(
     smtp_host: str,
     smtp_port: int,
     from_addr: str,
-    to_addrs: List[str],
+    to_addrs: list[str],
     subject: str,
     body: str,
-    username: Optional[str] = None,
-    password: Optional[str] = None,
+    username: str | None = None,
+    password: str | None = None,
 ) -> bool:
     """Send email via SMTP."""
     try:

@@ -19,7 +19,6 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -38,7 +37,7 @@ def _cache_key(tile_id: str, start: str, end: str, bands: str) -> str:
     return h.hexdigest()[:16]
 
 
-def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Optional[Path]:
+def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Path | None:
     """Check if tile is cached."""
     key = _cache_key(tile_id, start, end, bands)
     cache_path = CACHE_DIR / f"{tile_id}_{key}.npz"
@@ -47,7 +46,7 @@ def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Optional[Path]
     return None
 
 
-def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: Dict) -> Path:
+def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: dict) -> Path:
     """Save tile data to cache."""
     key = _cache_key(tile_id, start, end, bands)
     cache_path = CACHE_DIR / f"{tile_id}_{key}.npz"
@@ -57,11 +56,11 @@ def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: Dict) -
 
 def download_sentinel2_gee(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: Optional[List[str]] = None,
-) -> Optional[Dict[str, np.ndarray]]:
+    bands: list[str] | None = None,
+) -> dict[str, np.ndarray] | None:
     """Download Sentinel-2 via Google Earth Engine.
 
     Requires `earthengine-api` + auth.
@@ -152,12 +151,12 @@ def download_sentinel2_gee(
 
 def download_sentinel2_copernicus(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    username: Optional[str] = None,
-    password: Optional[str] = None,
-) -> Optional[Dict[str, np.ndarray]]:
+    username: str | None = None,
+    password: str | None = None,
+) -> dict[str, np.ndarray] | None:
     """Download Sentinel-2 via Copernicus Open Access Hub.
 
     Requires free registration at https://scihub.copernicus.eu
@@ -200,13 +199,13 @@ def download_sentinel2_copernicus(
 
 def generate_synthetic_sentinel2(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: Optional[List[str]] = None,
-    shape: Tuple[int, int] = (256, 256),
+    bands: list[str] | None = None,
+    shape: tuple[int, int] = (256, 256),
     seed: int = 42,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Generate synthetic Sentinel-2 data for testing.
 
     Simulates NDVI patterns over time: higher NDVI in wet season (Dec-Mar in Paraguay),
@@ -285,13 +284,13 @@ def generate_synthetic_sentinel2(
 
 def fetch_sentinel2_tile(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: Optional[List[str]] = None,
+    bands: list[str] | None = None,
     use_cache: bool = True,
     allow_synthetic: bool = True,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Download Sentinel-2 tile with multi-source fallback.
 
     Order:

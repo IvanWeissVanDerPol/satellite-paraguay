@@ -3,7 +3,8 @@
 Validates predictions/outputs for each paper pipeline.
 """
 
-from typing import Any, Callable, Dict, List
+from collections.abc import Callable
+from typing import Any
 
 PAPER_VALIDATORS = {
     1: "validate_paper_1",
@@ -24,7 +25,7 @@ PAPER_NAMES = {
 }
 
 
-def validate_paper_1() -> Dict[str, Any]:
+def validate_paper_1() -> dict[str, Any]:
     """Validate P0011 Yvytu deforestation predictions."""
     from src.papers.p0011_yvytu_deforestation import YvytuPipeline
 
@@ -41,7 +42,7 @@ def validate_paper_1() -> Dict[str, Any]:
     }
 
 
-def validate_paper_2() -> Dict[str, Any]:
+def validate_paper_2() -> dict[str, Any]:
     """Validate P0100 Yvyra carbon predictions."""
     from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
 
@@ -55,7 +56,7 @@ def validate_paper_2() -> Dict[str, Any]:
     }
 
 
-def validate_paper_3() -> Dict[str, Any]:
+def validate_paper_3() -> dict[str, Any]:
     """Validate P0025 Yrupe yield predictions."""
     from src.papers.p0025_yrupe_yield import YrupePipeline
 
@@ -69,7 +70,7 @@ def validate_paper_3() -> Dict[str, Any]:
     }
 
 
-def validate_paper_4() -> Dict[str, Any]:
+def validate_paper_4() -> dict[str, Any]:
     """Validate P0012 Yvy indigenous conflicts."""
     from src.papers.p0012_yvy_indigenous import YvyPipeline
 
@@ -83,7 +84,7 @@ def validate_paper_4() -> Dict[str, Any]:
     }
 
 
-def validate_paper_5() -> Dict[str, Any]:
+def validate_paper_5() -> dict[str, Any]:
     """Validate P0026 Kai poaching detection."""
     from src.papers.p0026_kai_poaching import KaiPipeline
 
@@ -97,7 +98,7 @@ def validate_paper_5() -> Dict[str, Any]:
     }
 
 
-def validate_paper_6() -> Dict[str, Any]:
+def validate_paper_6() -> dict[str, Any]:
     """Validate P0035 Tatakua air quality."""
     from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
 
@@ -111,7 +112,7 @@ def validate_paper_6() -> Dict[str, Any]:
     }
 
 
-_VALIDATORS: Dict[int, Callable] = {
+_VALIDATORS: dict[int, Callable] = {
     1: validate_paper_1,
     2: validate_paper_2,
     3: validate_paper_3,
@@ -126,9 +127,9 @@ def get_validator(paper_id: int) -> Callable:
     return _VALIDATORS[paper_id]
 
 
-def validate_all() -> List[Dict[str, Any]]:
+def validate_all() -> list[dict[str, Any]]:
     """Run all paper validators and return results."""
-    results: List[Dict[str, Any]] = []
+    results: list[dict[str, Any]] = []
     for paper_id in range(1, 7):
         try:
             results.append(_VALIDATORS[paper_id]())
@@ -144,7 +145,7 @@ def validate_all() -> List[Dict[str, Any]]:
     return results
 
 
-def validate_one(paper_id: int) -> Dict[str, Any]:
+def validate_one(paper_id: int) -> dict[str, Any]:
     """Run a single paper validator."""
     if paper_id not in _VALIDATORS:
         raise ValueError(f"Invalid paper id: {paper_id}. Must be 1-6.")

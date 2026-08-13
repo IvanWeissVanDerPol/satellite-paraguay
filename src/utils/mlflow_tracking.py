@@ -5,11 +5,11 @@ Provides a unified interface for logging experiments across all 6 papers.
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 def setup_mlflow(
-    tracking_uri: Optional[str] = None,
+    tracking_uri: str | None = None,
     experiment_name: str = "satellite-paraguay",
 ) -> Any:  # MLflow optional, mlflow.tracking.MlflowClient at runtime
     """Set up MLflow tracking.
@@ -46,11 +46,11 @@ def setup_mlflow(
 
 def log_experiment(
     run_name: str,
-    params: Dict[str, Any],
-    metrics: Dict[str, float],
-    artifacts: Optional[Dict[str, str]] = None,
-    tags: Optional[Dict[str, str]] = None,
-    tracking_uri: Optional[str] = None,
+    params: dict[str, Any],
+    metrics: dict[str, float],
+    artifacts: dict[str, str] | None = None,
+    tags: dict[str, str] | None = None,
+    tracking_uri: str | None = None,
 ) -> str:
     """Log an experiment to MLflow.
 
@@ -98,7 +98,7 @@ def get_best_run(
     metric_name: str,
     experiment_name: str = "satellite-paraguay",
     ascending: bool = False,
-) -> Optional[Dict]:
+) -> dict | None:
     """Get best run by metric.
 
     Args:

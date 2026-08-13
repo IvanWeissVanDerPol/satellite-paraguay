@@ -10,7 +10,6 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -192,9 +191,9 @@ def fetch_gold_standard_paraguay() -> pd.DataFrame:
 
 def verify_carbon_credit_real(
     project_id: str,
-    tile_id: Optional[str] = None,
-    verra_df: Optional[pd.DataFrame] = None,
-) -> Dict:
+    tile_id: str | None = None,
+    verra_df: pd.DataFrame | None = None,
+) -> dict:
     """Verify a carbon credit project against satellite data.
 
     Args:
@@ -238,7 +237,7 @@ def compute_parcel_biomass(
     ndvi_timeseries: np.ndarray,
     area_ha: float,
     method: str = "ipcc",
-) -> Dict:
+) -> dict:
     """Estimate biomass for a parcel from NDVI time series.
 
     Methods:

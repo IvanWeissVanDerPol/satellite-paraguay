@@ -12,7 +12,6 @@ All sources are open-source and free.
 """
 
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import rasterio
@@ -25,12 +24,12 @@ PLANET_OUTPUT = DEFAULT_OUTPUT_DIR / "planet"
 
 def download_sentinel2_tile(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str = "2020-01-01",
     end_date: str = "2025-12-31",
     max_cloud_cover: int = 20,
     output_dir: Path = SENTINEL_OUTPUT,
-) -> List[Path]:
+) -> list[Path]:
     """Download Sentinel-2 L2A products for a tile.
 
     Uses the Copernicus Open Access Hub (FREE, requires free registration).
@@ -61,7 +60,7 @@ def download_sentinel2_tile(
 
 def download_via_gee(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     satellite: str = "sentinel2",
     start_date: str = "2020-01-01",
     end_date: str = "2025-12-31",

@@ -8,7 +8,6 @@ Implements:
 """
 
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import numpy as np
 from sklearn.metrics import (
@@ -29,7 +28,7 @@ def pixel_f1_score(y_true: np.ndarray, y_pred: np.ndarray, average: str = "macro
     return float(f1_score(y_true.flatten(), y_pred.flatten(), average=average, zero_division=0))
 
 
-def pixel_iou(y_true: np.ndarray, y_pred: np.ndarray, num_classes: Optional[int] = None) -> Dict:
+def pixel_iou(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int | None = None) -> dict:
     """Pixel-wise IoU (Intersection over Union) per class.
 
     Returns dict {class_id: iou}.
@@ -63,15 +62,15 @@ def mean_iou(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 def confusion_matrix_segmentation(
     y_true: np.ndarray,
     y_pred: np.ndarray,
-    num_classes: Optional[int] = None,
+    num_classes: int | None = None,
 ) -> np.ndarray:
     """Confusion matrix for segmentation."""
     return confusion_matrix(y_true.flatten(), y_pred.flatten(), labels=range(num_classes) if num_classes else None)  # type: ignore[no-any-return]  # noqa: E501
 
 
 def detection_map(
-    predictions: List[Dict],
-    ground_truth: List[Dict],
+    predictions: list[dict],
+    ground_truth: list[dict],
     iou_threshold: float = 0.5,
 ) -> float:
     """Compute mean Average Precision (mAP) for object detection.
@@ -87,7 +86,7 @@ def detection_map(
     return 0.0
 
 
-def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
+def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     """Regression metrics: MAE, RMSE, R²."""
     return {
         "mae": float(mean_absolute_error(y_true, y_pred)),
@@ -99,8 +98,8 @@ def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, floa
 def classification_metrics(
     y_true: np.ndarray,
     y_pred: np.ndarray,
-    y_score: Optional[np.ndarray] = None,
-) -> Dict[str, float]:
+    y_score: np.ndarray | None = None,
+) -> dict[str, float]:
     """Classification metrics: accuracy, F1, precision, recall, AUC."""
     metrics = {
         "accuracy": float(accuracy_score(y_true, y_pred)),
@@ -120,7 +119,7 @@ def benchmark_against_mapbiomas(
     predictions: np.ndarray,
     mapbiomas_path: Path,
     year: int = 2024,
-) -> Dict:
+) -> dict:
     """Benchmark predictions against MapBiomas Paraguay reference.
 
     Used for P0011 Yvytu validation.
@@ -145,8 +144,8 @@ def benchmark_against_mapbiomas(
 def benchmark_against_hansen(
     predictions: np.ndarray,
     hansen_path: Path,
-    bbox: Optional[Dict] = None,
-) -> Dict:
+    bbox: dict | None = None,
+) -> dict:
     """Benchmark predictions against Hansen GFC deforestation.
 
     Used for P0011 Yvytu validation.
@@ -166,7 +165,7 @@ def benchmark_against_hansen(
     }
 
 
-def print_metrics(metrics: Dict) -> None:
+def print_metrics(metrics: dict) -> None:
     """Pretty-print metrics dict."""
     print("\n=== METRICS ===")
     for k, v in metrics.items():

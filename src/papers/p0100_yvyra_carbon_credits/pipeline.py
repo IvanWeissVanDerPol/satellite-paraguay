@@ -8,8 +8,6 @@ Hypothesis: Satellite CV + Verra VCS API + Paraguayan carbon market can automate
 carbon credit verification with R² > 0.82 (matching AlphaEarth benchmark).
 """
 
-from typing import Dict, Optional
-
 import pandas as pd
 
 from ...evaluation import regression_metrics
@@ -21,7 +19,7 @@ VERRA_API_URL = "https://api.verra.org/v1/projects"
 class YvyraPipeline:
     """Carbon credit verification pipeline."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "min_lon": -62.5,
             "max_lon": -54.5,
@@ -63,9 +61,9 @@ class YvyraPipeline:
     def verify_carbon_credit(
         self,
         project_id: str,
-        parcel_id: Optional[str] = None,
-        tile_id: Optional[str] = None,
-    ) -> Dict:
+        parcel_id: str | None = None,
+        tile_id: str | None = None,
+    ) -> dict:
         """Verify a single carbon credit project against satellite data.
 
         Returns dict with verification status + carbon stock estimate.
@@ -86,7 +84,7 @@ class YvyraPipeline:
             "confidence": 0.82,
         }
 
-    def validate_predictions(self, predictions: pd.DataFrame) -> Dict:
+    def validate_predictions(self, predictions: pd.DataFrame) -> dict:
         """Validate predictions against ground truth."""
         if "claimed_carbon_tons" in predictions.columns and "estimated_carbon_tons" in predictions.columns:
             return regression_metrics(

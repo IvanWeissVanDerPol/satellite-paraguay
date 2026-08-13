@@ -11,7 +11,6 @@ import os
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -38,8 +37,8 @@ ASUNCION_STATIONS = [
 
 
 def _request_with_retry(
-    url: str, params: Optional[dict] = None, headers: Optional[dict] = None, max_retries: int = 3
-) -> Optional[dict]:
+    url: str, params: dict | None = None, headers: dict | None = None, max_retries: int = 3
+) -> dict | None:
     """Make API request with retry logic."""
     if headers is None:
         headers = {"User-Agent": USER_AGENT}
@@ -83,10 +82,10 @@ def fetch_openaq_for_location(
     lon: float,
     radius_km: float = 25.0,
     parameter: str = "pm25",
-    date_from: Optional[str] = None,
-    date_to: Optional[str] = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
     limit: int = 10000,
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
 ) -> pd.DataFrame:
     """Fetch OpenAQ measurements near a location."""
     if date_from is None:

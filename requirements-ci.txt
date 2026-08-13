@@ -1,3 +1,11 @@
+# DEPRECATED: This file is now superseded by the [ci] optional-dependencies
+# section in pyproject.toml. Use 'pip install -e ".[ci]"' instead.
+#
+# This file is kept for historical reference and any tooling that still
+# references it. It will be removed in v0.2.
+#
+# The single source of truth is now pyproject.toml [project.optional-dependencies].ci
+
 # CI-only dependencies.
 # Installed by .github/workflows/ci.yml before `pip install -e .` so that
 # system-lib-bound packages (rasterio, geopandas, GDAL) are skipped when the

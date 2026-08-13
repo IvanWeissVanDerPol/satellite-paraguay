@@ -8,7 +8,7 @@ import json
 import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 def compute_hash(path: Path, algo: str = "sha256") -> str:
@@ -18,14 +18,14 @@ def compute_hash(path: Path, algo: str = "sha256") -> str:
     return h.hexdigest()
 
 
-def index_directory(directory: Path) -> Dict[str, Dict[str, Any]]:
+def index_directory(directory: Path) -> dict[str, dict[str, Any]]:
     """Index all files in directory with hashes.
 
     Returns dict mapping relative_path -> {hash_sha256, size_bytes, modified}.
     """
     if not directory.exists():
         return {}
-    index: Dict[str, Dict[str, Any]] = {}
+    index: dict[str, dict[str, Any]] = {}
     for f in directory.rglob("*"):
         if f.is_file():
             rel = str(f.relative_to(directory))
@@ -37,7 +37,7 @@ def index_directory(directory: Path) -> Dict[str, Dict[str, Any]]:
     return index
 
 
-def save_index(index: Dict[str, Dict[str, Any]], index_path: Path) -> None:
+def save_index(index: dict[str, dict[str, Any]], index_path: Path) -> None:
     """Save test data index to disk."""
     index_path.parent.mkdir(parents=True, exist_ok=True)
     index_path.write_text(
@@ -52,7 +52,7 @@ def save_index(index: Dict[str, Dict[str, Any]], index_path: Path) -> None:
     )
 
 
-def verify_against_index(data_dir: Path, index_path: Path) -> Dict[str, Dict[str, Any]]:
+def verify_against_index(data_dir: Path, index_path: Path) -> dict[str, dict[str, Any]]:
     """Verify current files match stored index.
 
     Returns dict mapping rel_path -> {status, expected, actual}.
@@ -61,7 +61,7 @@ def verify_against_index(data_dir: Path, index_path: Path) -> Dict[str, Dict[str
     if not index_path.exists():
         return {}
     expected = json.loads(index_path.read_text()).get("files", {})
-    results: Dict[str, Dict[str, Any]] = {}
+    results: dict[str, dict[str, Any]] = {}
     for rel, info in expected.items():
         full = data_dir / rel
         if not full.exists():
@@ -77,7 +77,7 @@ def verify_against_index(data_dir: Path, index_path: Path) -> Dict[str, Dict[str
     return results
 
 
-def summarize_verification(results: Dict[str, Dict[str, Any]]) -> Dict[str, int]:
+def summarize_verification(results: dict[str, dict[str, Any]]) -> dict[str, int]:
     """Count match/modified/missing in verification results."""
     summary = {"match": 0, "modified": 0, "missing": 0}
     for r in results.values():

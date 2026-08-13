@@ -12,7 +12,6 @@ Data: 30m land cover, 1985-2024
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -67,10 +66,10 @@ MAPBIOMAS_CLASSES = {
 
 
 def download_mapbiomas_paraguay_real(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     year: int = 2022,
     use_gee: bool = True,
-) -> Optional[np.ndarray]:
+) -> np.ndarray | None:
     """Download MapBiomas Paraguay for a specific year.
 
     Args:
@@ -137,7 +136,7 @@ def download_mapbiomas_paraguay_real(
 
 
 def generate_synthetic_mapbiomas(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     year: int,
     shape: tuple = (256, 256),
     seed: int = 42,
@@ -185,7 +184,7 @@ def generate_synthetic_mapbiomas(
 def compute_parcel_statistics_real(
     mapbiomas: np.ndarray,
     parcel_geometry,
-) -> Dict:
+) -> dict:
     """Compute MapBiomas class statistics over a parcel.
 
     Returns dict with class fractions.

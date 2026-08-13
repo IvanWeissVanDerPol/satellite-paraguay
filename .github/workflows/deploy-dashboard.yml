@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e .
-          pip install -r requirements-ci.txt
+          pip install -e ".[ci]"
       - name: Test dashboard imports
         run: |
           python -c "import sys; sys.path.insert(0, 'dashboard'); import app" || echo "dashboard import test"
