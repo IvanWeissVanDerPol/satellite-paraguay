@@ -5,12 +5,13 @@ and rasterio.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-import sys
-from unittest.mock import MagicMock, patch
+import sys  # noqa: E402
+from unittest.mock import MagicMock, patch  # noqa: E402
 
-import numpy as np
+import numpy as np  # noqa: E402
 
 
 class TestDownloadHansenRealGEESuccess:

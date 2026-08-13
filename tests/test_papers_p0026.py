@@ -5,12 +5,13 @@ poaching detection in Defensores del Chaco.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from pathlib import Path  # noqa: E402
+from unittest.mock import MagicMock, patch  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
 
 class TestKaiPipeline:

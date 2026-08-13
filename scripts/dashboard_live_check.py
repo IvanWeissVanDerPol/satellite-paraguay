@@ -18,8 +18,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 def check_endpoint(url: str, timeout: int = 5) -> dict:
     """Check a single HTTP endpoint."""
-    import urllib.request
     import urllib.error
+    import urllib.request
 
     try:
         with urllib.request.urlopen(url, timeout=timeout) as response:
@@ -59,10 +59,7 @@ def check_api_health(port: int = 8000, timeout: int = 10) -> dict:
     ]
     return {
         "port": port,
-        "endpoints": {
-            name: check_endpoint(f"http://localhost:{port}{path}", timeout)
-            for path, name in endpoints
-        },
+        "endpoints": {name: check_endpoint(f"http://localhost:{port}{path}", timeout) for path, name in endpoints},
     }
 
 
@@ -135,9 +132,10 @@ def main() -> int:
     # Import check
     print("\n[1/5] Import check...")
     try:
-        import streamlit  # noqa: F401
-        import plotly  # noqa: F401
         import folium  # noqa: F401
+        import plotly  # noqa: F401
+        import streamlit  # noqa: F401
+
         print("  ✅ streamlit, plotly, folium all installed")
     except ImportError as e:
         print(f"  ❌ Missing dependency: {e}")

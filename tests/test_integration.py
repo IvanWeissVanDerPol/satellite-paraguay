@@ -5,13 +5,14 @@ and used end-to-end without crashes (smoke tests for the full pipeline).
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
-from pathlib import Path
-from unittest.mock import MagicMock
+from pathlib import Path  # noqa: E402
+from unittest.mock import MagicMock  # noqa: E402
 
-import numpy as np
-import pytest
+import numpy as np  # noqa: E402
+import pytest  # noqa: E402
 
 
 class TestUtilsImports:

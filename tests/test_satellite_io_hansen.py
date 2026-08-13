@@ -8,16 +8,14 @@ import numpy as np
 import pytest  # noqa: E402
 
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
-from src.satellite_io import hansen as _hansen
-from src.satellite_io.hansen import (
+from src.satellite_io import hansen as _hansen  # noqa: E402
+from src.satellite_io.hansen import (  # noqa: E402
     HANSEN_BANDS,
     compute_cumulative_deforestation,
     compute_deforestation_year,
     download_hansen_real,
     generate_synthetic_hansen,
 )
-
-
 
 # =========================
 # Constants

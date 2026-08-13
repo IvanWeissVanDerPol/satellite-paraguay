@@ -5,13 +5,14 @@ We test it with heavy mocking to avoid loading real models.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-from pathlib import Path
-from unittest.mock import patch
+from pathlib import Path  # noqa: E402
+from unittest.mock import patch  # noqa: E402
 
-import numpy as np
-import pytest
+import numpy as np  # noqa: E402
+import pytest  # noqa: E402
 
 
 class TestYvytuPipeline:

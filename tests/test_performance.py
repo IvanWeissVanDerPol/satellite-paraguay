@@ -7,14 +7,15 @@ Uses pytest-benchmark for accurate measurements.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-import sys
-import time
-from pathlib import Path
+import sys  # noqa: E402
+import time  # noqa: E402
+from pathlib import Path  # noqa: E402
 
-import numpy as np
-import pytest
+import numpy as np  # noqa: E402
+import pytest  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

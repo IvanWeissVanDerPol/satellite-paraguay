@@ -1,13 +1,14 @@
 """Tests for src.papers pipelines."""
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-import os
-import sys
-from pathlib import Path
+import os  # noqa: E402
+import sys  # noqa: E402
+from pathlib import Path  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

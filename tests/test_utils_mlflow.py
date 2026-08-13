@@ -6,12 +6,13 @@ in-memory SQLite tracking URI.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("mlflow", reason="CI: requires optional system dep 'mlflow' (not installed)")  # noqa: E402
 
-import sys
-from unittest.mock import patch
+import sys  # noqa: E402
+from unittest.mock import patch  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
 try:
     import mlflow  # noqa: F401

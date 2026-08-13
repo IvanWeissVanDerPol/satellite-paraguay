@@ -4,10 +4,10 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
-import pytest
+import pytest  # noqa: E402
 
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
-from src.satellite_io.sources import (
+from src.satellite_io.sources import (  # noqa: E402
     DEFAULT_OUTPUT_DIR,
     LANDSAT_OUTPUT,
     SENTINEL_OUTPUT,
@@ -16,8 +16,6 @@ from src.satellite_io.sources import (
     download_sentinel2_tile,
     download_via_gee,
 )
-
-
 
 # =========================
 # Constants

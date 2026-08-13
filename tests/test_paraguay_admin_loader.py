@@ -6,14 +6,15 @@ available, with synthetic fallbacks.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
 
-import json
-import os
-from pathlib import Path
-from unittest.mock import patch
+import json  # noqa: E402
+import os  # noqa: E402
+from pathlib import Path  # noqa: E402
+from unittest.mock import patch  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
 # Real data directory
 # 2026-08-13: Read from env var with a sane production default so CI/sandbox
