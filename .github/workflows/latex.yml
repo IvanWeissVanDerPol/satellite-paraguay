@@ -1,0 +1,52 @@
+name: LaTeX compile (per paper)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile-papers:
+    name: Compile ${{ matrix.paper }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        paper:
+          - p0011_yvutu_deforestation
+          - p0010_yvyra_carbon_credits
+          - p0012_yvy_indigenous
+          - p0025_yrupe_yield
+          - p0026_kai_poaching
+          - p0035_tatakua_air_quality
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install TeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-lang-spanish \
+            texlive-bibtex-extra \
+            biber \
+            latexmk
+      - name: Compile paper
+        working-directory: papers/drafts/${{ matrix.paper }}
+        run: |
+          latexmk -pdf -interaction=nonstopmode paper.tex
+          test -f paper.pdf || ( pdflatex -interaction=nonstopmode paper.tex && bibtex paper && pdflatex -interaction=nonstopmode paper.tex && pdflatex -interaction=nonstopmode paper.tex )
+      - name: Verify PDF
+        working-directory: papers/drafts/${{ matrix.paper }}
+        run: |
+          test -f paper.pdf || (echo "compile failed, no paper.pdf" && exit 1)
+          test -s paper.pdf || (echo "paper.pdf is empty" && exit 1)
+          file paper.pdf
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-${{ matrix.paper }}
+          path: papers/drafts/${{ matrix.paper }}/paper.pdf

@@ -1,0 +1,65 @@
+{
+  "dashboard": {
+    "port": 8501,
+    "health": {
+      "url": "http://localhost:8501/_stcore/health",
+      "status": 200,
+      "size_bytes": 2,
+      "ok": true
+    },
+    "main": {
+      "url": "http://localhost:8501/",
+      "status": 200,
+      "size_bytes": 10951,
+      "ok": true
+    }
+  },
+  "api": {
+    "port": 8000,
+    "endpoints": {
+      "root": {
+        "url": "http://localhost:8000/",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "docs": {
+        "url": "http://localhost:8000/docs",
+        "status": 200,
+        "size_bytes": 1027,
+        "ok": true
+      },
+      "metrics": {
+        "url": "http://localhost:8000/metrics",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "health": {
+        "url": "http://localhost:8000/api/v1/health",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "deforestation_summary": {
+        "url": "http://localhost:8000/api/v1/deforestation/summary",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "carbon_integrity": {
+        "url": "http://localhost:8000/api/v1/carbon/credit/integrity",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "indigenous_disparity": {
+        "url": "http://localhost:8000/api/v1/indigenous/disparity",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      },
+      "air_quality": {
+        "url": "http://localhost:8000/api/v1/air-quality/forecast",
+        "error": "HTTP Error 404: Not Found",
+        "ok": false
+      }
+    }
+  },
+  "dashboard_ok": true,
+  "api_ok": false
+}
