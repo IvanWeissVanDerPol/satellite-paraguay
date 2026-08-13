@@ -4,6 +4,9 @@ Coverage target: 70%+. The YrupePipeline class handles soybean
 yield prediction.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 import json
 from pathlib import Path
 

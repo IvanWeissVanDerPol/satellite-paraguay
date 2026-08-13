@@ -5,6 +5,9 @@ detect_changes_bfast, compute_trend, compute_anomaly,
 aggregate_by_department.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 from unittest.mock import MagicMock, patch
 
 import numpy as np

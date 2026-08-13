@@ -4,6 +4,9 @@ Coverage target: 70%+. The TatakuaPipeline class handles air quality
 forecasting for Asunción.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 import numpy as np
 import pytest
 

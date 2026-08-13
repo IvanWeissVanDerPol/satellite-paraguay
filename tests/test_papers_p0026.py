@@ -4,6 +4,9 @@ Coverage target: 70%+. The KaiPipeline class handles wildlife
 poaching detection in Defensores del Chaco.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
