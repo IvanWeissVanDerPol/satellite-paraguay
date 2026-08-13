@@ -8,11 +8,11 @@ Checks:
 
 Run: python3 scripts/audit_dependencies.py
 """
+
 import json
 import re
 import subprocess
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -133,7 +133,7 @@ def audit():
         print(f"    - {pkg}")
 
     # Check installed versions
-    print(f"\n  Installed versions:")
+    print("\n  Installed versions:")
     try:
         result = subprocess.run(
             ["pip", "list", "--format=json"],

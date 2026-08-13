@@ -2,12 +2,12 @@
 
 Returns structured results for each check. No side effects.
 """
+
 import importlib
 import sys
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
-
 
 REQUIRED_DEPENDENCIES = [
     "numpy",
@@ -127,6 +127,7 @@ def check_gpu() -> Dict[str, Any]:
     """Check GPU availability (best-effort)."""
     try:
         import torch
+
         available = torch.cuda.is_available()
         device = torch.cuda.get_device_name(0) if available else None
         return {

@@ -37,15 +37,19 @@ soybean yield prediction system for the Eastern Paraguay Pampas.
 We combine multi-temporal Sentinel-2 imagery, Hansen Global Forest Change
 historical forest cover, and a multi-task convolutional neural network with
 task-specific heads for (i) soybean-pixel classification, (ii) above-ground
-biomass prediction, and (iii) yield regression. The cross-domain transfer
-ratio from a deforestation-trained encoder to yield prediction is 0.74,
-approaching the threshold for literature relevance (typically $r>0.80$).
-At the pixel level, soybean classification achieves F1 = 0.83 on a held-out
-test set; at the field level, yield regression achieves MAE = 0.74\,t/ha
-on a 5-year retrospective (2018--2022) comparison against reported
-yields. This work contributes a reproducible open-source baseline
-for satellite-based yield estimation in a region with limited ground-truth
-data.
+biomass prediction, and (iii) yield regression.
+\textbf{Honest pilot result (8 epochs, CPU, synthetic labels, see
+\texttt{ACTUAL\_RESULTS.md}):} the multi-task CNN did not converge
+(F1 = 0.497, MAE = 3.20\,t/ha on constant predictions) and the
+cross-domain transfer ratio measured 0.082 --- well below the
+0.74 figure that earlier drafts of this abstract quoted and far below the
+typical $r>0.80$ threshold for meaningful transfer.
+The F1 = 0.83 / MAE = 0.74 / 5{,}000-field figures quoted in earlier drafts
+were aspirational targets, not measurements. We retain this paper as a
+reproducible failure-mode analysis and a baseline against which
+future INBIO-trained experiments can be compared.
+This work contributes an open-source pipeline for satellite-based
+yield estimation in a region with limited ground-truth data.
 \end{abstract}
 
 \begin{keywords}
@@ -102,10 +106,10 @@ considered weak transfer.
 \label{sec:results}
 
 \begin{itemize}
-\item Head 1 (soybean classification): F1 = 0.83 on held-out test set
-\item Head 2 (biomass regression): RMSE = \SI{22.4}{Mg\per ha} (R$^2$ = 0.62)
-\item Head 3 (yield regression): MAE = 0.74\,t/ha on 2018--2022 retro
-\item Cross-domain transfer ratio: 0.74 (close to threshold for relevance)
+\item Head 1 (soybean classification): \textbf{F1 = 0.497} on held-out test set (multi-task CNN did not converge; see \texttt{ACTUAL\_RESULTS.md}). The F1 = 0.83 figure that earlier drafts quoted was an aspirational target, not a measurement.
+\item Head 2 (biomass regression): \textbf{RMSE = not defined} (model output constant); the R$^2$ = 0.62 figure in earlier drafts was aspirational.
+\item Head 3 (yield regression): \textbf{MAE = 3.20\,t/ha} on constant predictions (vs.\ 0.74\,t/ha aspirational target in earlier drafts).
+\item Cross-domain transfer ratio: \textbf{0.082} (vs.\ 0.74 aspirational; well below the $<0.80$ ``weak transfer'' threshold).
 \end{itemize}
 
 \section{Discussion}

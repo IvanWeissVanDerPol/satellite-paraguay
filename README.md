@@ -1,12 +1,36 @@
 # SatelliteCV-Paraguay (Yvutu)
 
+[![CI/CD](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg)](LICENSE)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://zenodo.org/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](pyproject.toml)
+
 Multi-temporal satellite computer vision for Paraguay. Thesis substrate for
 6 papers on deforestation, carbon credits, indigenous rights, yield prediction,
 wildlife detection, and air quality.
 
 **Author:** Iván Hocht-VonDerPol (Universidad Nacional de Asunción)
 **Started:** 2026-07-22 (Hansen data acquisition)
-**Status:** Ship-ready. Pilot validation. All data real, all tests passing.
+**Status:** **Pilot stage.** ~25% submission-ready across 6 papers. Only P0035
+Tatakua has a real trained model (LSTM, RMSE = 14.7 µg/m³ measured on real
+OpenAQ data). See [`STATUS.md`](STATUS.md) for per-paper scorecards and
+[`BRUTAL_ROAST.md`](BRUTAL_ROAST.md) for the full self-audit. The 2026-08-10
+honest-reporting pass replaced all aspirational headline numbers with
+measured values; the 2026-08-11 fail-loud pass replaced silent
+`np.random.rand()` data fallbacks with `FileNotFoundError`.
+
+**Honest status flags:**
+- ✅ Infrastructure: LICENSE, CITATION.cff, FastAPI, Streamlit, Docker, CI/CD, 53 tests
+- ✅ Verra carbon credit analysis (P0010): real data, +35.9% under-claim finding
+- ✅ Indigenous disparity (P0012): real Hansen + 10 territories, χ² p<0.001
+- ✅ Country-scale deforestation (P0011): real Hansen, 16,628 km² measured
+- ✅ Air-quality forecasting (P0035): real OpenAQ + LSTM, RMSE 14.7 µg/m³ measured
+- ⚠️ Papers are template-stub: ~25% of journal-target word counts filled
+- ⚠️ Sentinel-2 coverage: 2/150 tiles; Hansen: 1/30 tiles; MapBiomas: 1 tile
+- ⚠️ Most "models" are code-only — `models/lstm_tatakua/best.pt` is the only trained .pt file
+- ❌ P0012 ethical block: 0/10 indigenous communities contacted (FPIC not done)
+- ❌ IRB, partnerships (INFONA/INDI/SENEPA/Verra/Guyra), and dashboard verification
+  — see [`AGENT_TODO.md`](AGENT_TODO.md) for the full 700-hour operational plan
 
 ## TL;DR — Headline findings
 
@@ -16,10 +40,11 @@ wildlife detection, and air quality.
 | Carbon emitted | 2,755 Mt CO₂e | Chave 2014 AGB |
 | Indigenous disparity | **3.0× national rate** | CI [1.7, 4.2]×, p<0.001 |
 | Worst territory (Carmelo Peralta) | 49.45% loss | Hansen GFC |
-| Verra under-claim | 35% average | 5/5 projects |
-| Prithvi foundation model | F1 > 0.85 | Pilot (GPU pending) |
-| U-Net from-scratch | F1 = 0.017 | Honest baseline |
-| Cross-paper transfer ratio | 0.080 | H3 NOT confirmed at 5 epochs |
+| Verra under-claim | 35.9% mean (range 33.3%-50.0%) | 5/5 projects, 124,310 ha |
+| Yvutu pilot — U-Net from scratch (CPU) | F1 = 0.559 (P=0.099, R=0.987) | 15 synthetic tiles, 5 epochs |
+| Yvutu pilot — Prithvi "Yvutu" (mock fallback) | F1 = 0.497 | transformers/numpy compat issue |
+| Cross-paper transfer ratio | 0.082 | H3 NOT confirmed at 5 epochs |
+| Tatakua air-quality — mean RMSE across 12 stations | 14.7 µg/m³ (24% over persistence) | OpenAQ + TROPOMI, 12-month retro |
 
 ## Repository structure
 

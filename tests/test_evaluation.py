@@ -1,20 +1,21 @@
 """Tests for src.evaluation module."""
+
 import sys
 from pathlib import Path
 
-import pytest
 import numpy as np
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
+import pytest
 
 from src.evaluation import (
+    classification_metrics,
+    confusion_matrix_segmentation,
+    mean_iou,
     pixel_f1_score,
     pixel_iou,
-    mean_iou,
-    confusion_matrix_segmentation,
     regression_metrics,
-    classification_metrics,
 )
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 def test_pixel_f1_score():

@@ -3,9 +3,9 @@
 Coverage target: 70%+. The TatakuaPipeline class handles air quality
 forecasting for Asunción.
 """
-import pytest
+
 import numpy as np
-from unittest.mock import patch, MagicMock
+import pytest
 
 
 class TestTatakuaPipeline:
@@ -14,7 +14,24 @@ class TestTatakuaPipeline:
     @pytest.fixture
     def pipeline(self):
         from src.papers.p0035_tatakua_air_quality.pipeline import TatakuaPipeline
+
         return TatakuaPipeline()
+
+    @pytest.fixture
+    def s5p_npz(self, tmp_path):
+        """Create a synthetic Sentinel-5P .npz file with NO2/SO2/CO arrays."""
+        days = 365
+        np.savez(
+            tmp_path / "s5p_paraguay.npz",
+            no2=np.linspace(1e15, 5e15, days),
+            so2=np.linspace(1e15, 3e15, days),
+            co=np.linspace(1e18, 5e18, days),
+            o3=np.linspace(1e18, 4e18, days),
+            ch4=np.linspace(1e3, 2e3, days),
+            aer_ai=np.linspace(-1.0, 1.0, days),
+            timestamps=np.arange(0, days, dtype="datetime64[D]"),
+        )
+        return tmp_path / "s5p_paraguay.npz"
 
     # --- __init__ ---
 
@@ -41,6 +58,7 @@ class TestTatakuaPipeline:
 
     def test_init_custom_config(self):
         from src.papers.p0035_tatakua_air_quality.pipeline import TatakuaPipeline
+
         cfg = {"forecast_horizon_days": 14}
         p = TatakuaPipeline(config=cfg)
         assert p.config["forecast_horizon_days"] == 14
@@ -59,21 +77,21 @@ class TestTatakuaPipeline:
 
     # --- fetch_sentinel5p ---
 
-    def test_fetch_sentinel5p_returns_dict(self, pipeline):
-        result = pipeline.fetch_sentinel5p(days=30)
+    def test_fetch_sentinel5p_returns_dict(self, pipeline, s5p_npz):
+        result = pipeline.fetch_sentinel5p(days=30, data_path=s5p_npz)
         assert isinstance(result, dict)
 
-    def test_fetch_sentinel5p_default_days(self, pipeline):
-        result = pipeline.fetch_sentinel5p()
+    def test_fetch_sentinel5p_default_days(self, pipeline, s5p_npz):
+        result = pipeline.fetch_sentinel5p(data_path=s5p_npz)
         assert isinstance(result, dict)
         # Should have NO2, SO2, CO keys
         assert "no2" in result
         assert "so2" in result
         assert "co" in result
 
-    def test_fetch_sentinel5p_array_shapes(self, pipeline):
+    def test_fetch_sentinel5p_array_shapes(self, pipeline, s5p_npz):
         """The returned arrays should match `days`."""
-        result = pipeline.fetch_sentinel5p(days=50)
+        result = pipeline.fetch_sentinel5p(days=50, data_path=s5p_npz)
         assert result["no2"].shape == (50,)
         assert result["so2"].shape == (50,)
         assert result["co"].shape == (50,)

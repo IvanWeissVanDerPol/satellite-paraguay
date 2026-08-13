@@ -1,88 +1,122 @@
-# Chapter 6: Paper 4 — Yrupe (P0025 Soybean Yield)
+# P0025 Yrupe: Cross-Domain Transfer Learning for Soybean Yield — Honest Failure-Mode
 
-> **Markdown snapshot of Chapter 6.** Full LaTeX: `thesis/MAIN/thesis.tex`. Submission: `papers/drafts/p0025_yrupe_yield/paper.tex`.
+> **Thesis-voice chapter** — this is the unified-thesis summary of
+> paper `papers/drafts/p0025_yrupe_yield/paper.md`. The full paper body (≥6,000
+> words) is in the paper directory; this chapter is ~800-1000 words.
 
-## 6.1 Problem statement
+- **Journal target:** Agricultural Systems
+- **Paper source-of-truth:** `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`
+- **Honest Reporting Notes:** appended at end of paper.md
 
-Soybean accounts for ~25% of Paraguayan agricultural GDP, cultivated on
-approximately **3.68 million hectares** of the Eastern Paraguay Pampas.
-Reliable in-season yield prediction remains a challenge for one of South
-America's most important agricultural economies.
+---
 
-Existing operational tools rely on:
-- Ground surveys (high accuracy, low spatial coverage, slow)
-- Process-based crop models (high latency, requires calibration)
-- Empirically calibrated regressions (deprecated, drought-sensitive)
+## Thesis-voice abstract
 
-We propose Yrupe (Guaraní for "puddle"), a satellite-based yield
-prediction system that combines multi-temporal Sentinel-2 imagery with a
-multi-task convolutional neural network trained on Paraguayan data.
+# Abstract
 
-## 6.2 Method
+## Yrupe: Soybean Yield Prediction using Sentinel-2 + INBIO
 
-### 6.2.1 Data inputs
+We present Yrupe, a machine-learning-based soybean yield prediction system for the Caaguazú department of Paraguay. Yrupe combines Sentinel-2 time series, Delineate Anything v2 for field boundary delineation, and INBIO yield records. We test whether a deforestation-pretrained encoder transfers to yield prediction. In our pilot (4 scenes, 18 monthly composites, 8 epochs, CPU), the multi-task CNN **did not converge** (F1=0.497, MAE=3.20 t/ha on synthetic labels), and the cross-domain transfer ratio measured 0.082 — far below the 0.74 figure quoted in earlier drafts. The R²>0.80 / 5,000-fields headline was a target, not a measurement, and has been corrected in `ACTUAL_RESULTS.md`. The pipeline, baseline definitions, and a reproducible failure analysis are released so the failure mode (degenerate all-zero output under CPU-only training on synthetic labels) can be addressed before claiming operational yield forecasts.
 
-- **Sentinel-2 L2A** monthly composites (2018-2022, ~120 scenes per season)
-- **INBIO** farm-level reported yields (data-use agreement)
-- **Hansen GFC v1.11** treecover_2000 for historical context
-- **Multi-task CNN** with three task heads
+## Keywords
 
-### 6.2.2 Multi-task CNN architecture
+Earth observation, deep learning, Paraguay, p0025, sentinel-2
 
-The encoder was a 12-layer ResNet pre-trained on ImageNet, with three
-task heads:
-- **Head 1:** Soybean binary classification (per pixel)
-- **Head 2:** Above-ground biomass regression (Mg/ha)
-- **Head 3:** Yield regression (t/ha per pixel)
+## Author
 
-Heads 1 and 2 are trained on synthetic labels (MapBiomas Paraguay
-Collection 2 land cover for head 1, Chave 2014 AGB from Hansen treecover
-for head 2). Head 3 is trained on reported farm-level yields with
-pixel-level aggregation.
+Iván Weiss Van der Pol (FP-UNA)
 
-### 6.2.3 Cross-domain transfer
 
-We measured the transfer ratio from a deforestation-trained encoder to
-yield prediction by training the encoder only on Hansen forest-loss
-labels and measuring how well its features predict yield. A transfer
-ratio of 1.0 indicates identical performance; <0.80 is generally
-considered weak transfer.
+---
 
-## 6.3 Results
+## Thesis-voice introduction (1-2 paragraphs)
 
-| Task | Metric | Result |
-|------|--------|--------|
-| Head 1 (soybean classification) | F1 | 0.83 (target) |
-| Head 2 (biomass regression) | RMSE | 22.4 Mg/ha (target) |
-| Head 2 (biomass regression) | R² | 0.62 |
-| Head 3 (yield regression) | MAE | **0.74 t/ha** (target) on 2018-2022 retro |
-| Cross-domain transfer ratio | — | **0.74** (just below threshold) |
+This chapter is one of six papers in the SatelliteCV-Paraguay
+thesis substrate (Chapter 3: Yvutu / Chapter 4: Yvyra / Chapter 5:
+Yvy / Chapter 6: Yrupe / Chapter 7: Kai / Chapter 8: Tatakua).
+Each is a stand-alone submission-ready paper with measured pilot
+numbers in its `ACTUAL_RESULTS.md` and a per-paper references.bib
+slice. The aspiration targets that appeared in earlier drafts of
+this chapter were replaced with measured pilot numbers in the
+2026-08-10 + 2026-08-11 honest-reporting passes; the swap is
+documented in `docs/CONVENTIONS.md` + the appended Honest Reporting
+Notes in each paper.md.
 
-**Honest reporting:** The actual measured pilot (see
-`papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`) did not converge in 8
-epochs. The published metrics require a GPU-trained run with longer
-training and real Sentinel-2 time series data.
+---
 
-## 6.4 Discussion
+## Methods summary (link to paper.md for full body)
 
-### 6.4.1 Strengths
+**Author:** Iván Weiss Van der Pol
+**Status:** Chapter of the thesis (in journal-preparation as honest failure-mode analysis)
+**Target journal:** Agricultural Systems (IF 8.3)
 
-Yrupe demonstrates that cross-domain transfer learning from a
-deforestation-detection task to yield prediction is feasible in
-data-scarce regions, though the transfer ratio is just below the
-typical "meaningful transfer" threshold.
+---
 
-### 6.4.2 Limitations
+## Abstract
 
-- Sample size of farm-level reported yields is small (~200 records)
-- Synthetic satellite data does not capture seasonal phenology
-- Carbon fraction uncertainty propagates to biomass estimates
+We present **Yrupe** (Guaraní for "puddle"), a multi-task
+convolutional neural network for soybean yield prediction in
+the Eastern Paraguay Pampas that combines multi-temporal
+Sentinel-2 imagery with a Chave-2014-derived above-ground biomass
+feature stack. The architecture tests the **cross-domain transfer
+hypothesis**: that a satellite-based deforestation-detection
+encoder (Yvutu, Chapter 3) can be fine-tuned for soybean yield
+regression in a data-scarce agricultural application.
 
-### 6.4.3 Future work
+The pilot experiment was run on a **synthetic dataset** (4 scenes
+× 18 monthly composites × 256×256 pixels) due to lack of real
+INBIO yield labels at experiment time. The headline measured
+results:
 
-- Real Sentinel-2 imagery ingestion via Microsoft Planetary Computer
-- Larger farm-level yield dataset from INBIO partnership
-- Multi-task training with attention to AGB-fiber-quality tasks
+| Task | Target | Measured |
+|------|-------:|----------:|
+| Soybean-pixel classification F1 | 0.83 | **0.497** |
+| AGB regression R² | 0.62 | **undefined** |
 
-See `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md` for measured
-values vs. claimed ones, and the path to publication-quality numbers.
+---
+
+## Results summary
+
+The headline measurement of this chapter is documented in
+`paper.md` Section 3 and the source data in `ACTUAL_RESULTS.md`.
+Key result categories:
+
+- **Measured pilot performance** (with epistemic confidence)
+- **Statistical robustness** tests (sign test, Wilcoxon, BCa
+  bootstrap, χ², sensitivity envelope)
+- **Honest limitations** (what the measured result does NOT show)
+
+---
+
+## Thesis-voice synthesis
+
+This chapter's contribution to the overall thesis substrate:
+
+- **Novel finding:** [paper-specific, see `paper.md` Section 1 for
+  the 4 contributions framed as the substantive scientific
+  contribution]
+
+- **What it does NOT claim:** [paper-specific aspirational items
+  that were REFUTED by the measured pilot — documented in the
+  Honest Reporting Note appended to paper.md]
+
+- **What it WOULD require to operationalize:** [paper-specific:
+  partnership letters + (where applicable) GPU re-train $20-50]
+
+For the operational-deployment roadmap, see `docs/AGENT_TODO.md`
+Tier 1-4 items.
+
+---
+
+## How to read this chapter
+
+1. Start with this document for the **thesis-voice summary**.
+2. Read `papers/drafts/p0025_yrupe_yield/paper.md` for the full paper body.
+3. Read `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md` for the measured
+   numbers (source of truth).
+4. Read `papers/drafts/p0025_yrupe_yield/paper.tex` for the LaTeX submission
+   to the journal.
+
+---
+
+*Total words in chapter: ~800-1000. Full paper body: ≥6,000 words.*

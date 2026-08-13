@@ -2,9 +2,9 @@
 
 Output: docs/REPORT.md with metrics + figures + summary per paper.
 """
-import json
-from pathlib import Path
+
 from datetime import datetime
+from pathlib import Path
 
 
 def main():
@@ -60,15 +60,17 @@ def main():
     with open(report, "w") as f:
         f.write("# SatelliteCV-Paraguay — Final Report\n\n")
         f.write(f"Generated: {datetime.now().isoformat()}\n\n")
-        f.write(f"Papers in this megaproyect: 6\n\n")
-        f.write(f"Status: All baselines implemented; ready for Iván to fine-tune.\n\n")
+        f.write("Papers in this megaproyect: 6\n\n")
+        f.write("Status: All baselines implemented; ready for Iván to fine-tune.\n\n")
         f.write("---\n\n")
 
         for paper_id, m in metrics.items():
             f.write(f"## {paper_id.upper()} — {m['title']}\n\n")
             f.write(f"- **Target journal:** {m['target']}\n")
             f.write(f"- **Metrics:** {m['metric_type']}\n")
-            f.write(f"- **Expected:** {m.get('expected_f1', m.get('expected_r2', m.get('expected_map', m.get('expected_mae', '?'))))}\n")
+            f.write(
+                f"- **Expected:** {m.get('expected_f1', m.get('expected_r2', m.get('expected_map', m.get('expected_mae', '?'))))}\n"  # noqa: E501
+            )
             f.write(f"- **Data:** {m['data']}\n\n")
             f.write("Status: ✅ Pipeline implemented, baseline runnable.\n\n")
             f.write("---\n\n")

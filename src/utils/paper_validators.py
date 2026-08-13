@@ -2,8 +2,8 @@
 
 Validates predictions/outputs for each paper pipeline.
 """
-from typing import Any, Callable, Dict, List
 
+from typing import Any, Callable, Dict, List
 
 PAPER_VALIDATORS = {
     1: "validate_paper_1",
@@ -27,8 +27,10 @@ PAPER_NAMES = {
 def validate_paper_1() -> Dict[str, Any]:
     """Validate P0011 Yvytu deforestation predictions."""
     from src.papers.p0011_yvytu_deforestation import YvytuPipeline
-    pipeline = YvytuPipeline()
+
+    YvytuPipeline()
     import numpy as np
+
     preds = np.random.randint(0, 5, size=(256, 256), dtype=np.uint8)
     return {
         "paper": 1,
@@ -42,6 +44,7 @@ def validate_paper_1() -> Dict[str, Any]:
 def validate_paper_2() -> Dict[str, Any]:
     """Validate P0100 Yvyra carbon predictions."""
     from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
+
     pipeline = YvyraPipeline()
     projects = pipeline.fetch_verra_projects()
     return {
@@ -55,6 +58,7 @@ def validate_paper_2() -> Dict[str, Any]:
 def validate_paper_3() -> Dict[str, Any]:
     """Validate P0025 Yrupe yield predictions."""
     from src.papers.p0025_yrupe_yield import YrupePipeline
+
     pipeline = YrupePipeline()
     inbio = pipeline.load_inbio_data()
     return {
@@ -68,6 +72,7 @@ def validate_paper_3() -> Dict[str, Any]:
 def validate_paper_4() -> Dict[str, Any]:
     """Validate P0012 Yvy indigenous conflicts."""
     from src.papers.p0012_yvy_indigenous import YvyPipeline
+
     pipeline = YvyPipeline()
     conflicts = pipeline.detect_conflicts()
     return {
@@ -81,6 +86,7 @@ def validate_paper_4() -> Dict[str, Any]:
 def validate_paper_5() -> Dict[str, Any]:
     """Validate P0026 Kai poaching detection."""
     from src.papers.p0026_kai_poaching import KaiPipeline
+
     pipeline = KaiPipeline()
     tiles = pipeline.select_tiles()
     return {
@@ -94,6 +100,7 @@ def validate_paper_5() -> Dict[str, Any]:
 def validate_paper_6() -> Dict[str, Any]:
     """Validate P0035 Tatakua air quality."""
     from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
+
     pipeline = TatakuaPipeline()
     data = pipeline.fetch_openaq_data(days=30)
     return {
@@ -126,12 +133,14 @@ def validate_all() -> List[Dict[str, Any]]:
         try:
             results.append(_VALIDATORS[paper_id]())
         except Exception as e:
-            results.append({
-                "paper": paper_id,
-                "name": PAPER_NAMES.get(paper_id, f"Paper {paper_id}"),
-                "status": "error",
-                "error": str(e),
-            })
+            results.append(
+                {
+                    "paper": paper_id,
+                    "name": PAPER_NAMES.get(paper_id, f"Paper {paper_id}"),
+                    "status": "error",
+                    "error": str(e),
+                }
+            )
     return results
 
 

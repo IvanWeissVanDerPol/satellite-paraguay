@@ -8,9 +8,9 @@ Steps:
 5. Initialize DVC for data versioning
 6. Generate data catalog
 """
-import os
-import sys
+
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -81,6 +81,7 @@ def check_gpu():
     print("[bootstrap] Checking GPU...")
     try:
         import torch
+
         if torch.cuda.is_available():
             print(f"  OK: GPU available ({torch.cuda.get_device_name(0)})")
         else:
@@ -94,6 +95,7 @@ def check_network():
     print("[bootstrap] Checking network...")
     try:
         import urllib.request
+
         urllib.request.urlopen("https://github.com", timeout=5)
         print("  OK: Network available")
     except Exception as e:

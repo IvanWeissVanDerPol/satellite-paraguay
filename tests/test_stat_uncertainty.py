@@ -1,8 +1,7 @@
 """Tests for src/utils/stat_analysis.py and src/utils/uncertainty.py."""
-import pytest
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+import pytest
 
 
 class TestStatAnalysis:
@@ -10,6 +9,7 @@ class TestStatAnalysis:
 
     def test_bootstrap_ci_basic(self):
         from src.utils.stat_analysis import bootstrap_ci_from_confusion
+
         # 100 tp, 10 fp, 20 fn, 1000 tn (typical classifier results)
         result = bootstrap_ci_from_confusion(100, 10, 20, 1000, n_bootstrap=100)
         assert "precision" in result
@@ -19,16 +19,19 @@ class TestStatAnalysis:
 
     def test_bootstrap_ci_zero_total(self):
         from src.utils.stat_analysis import bootstrap_ci_from_confusion
+
         result = bootstrap_ci_from_confusion(0, 0, 0, 0, n_bootstrap=10)
         assert all(v["mean"] == 0.0 for v in result.values())
 
     def test_bootstrap_ci_high_ci(self):
         from src.utils.stat_analysis import bootstrap_ci_from_confusion
+
         result = bootstrap_ci_from_confusion(50, 5, 10, 500, ci=0.99, n_bootstrap=100)
         assert "ci_lower" in result["f1"]
 
     def test_metric_stats_with_ci_basic(self):
         from src.utils.stat_analysis import metric_stats_with_ci
+
         result = metric_stats_with_ci([1.0, 2.0, 3.0, 4.0, 5.0])
         assert result["n"] == 5
         assert result["mean"] == 3.0
@@ -36,12 +39,14 @@ class TestStatAnalysis:
 
     def test_metric_stats_with_ci_empty(self):
         from src.utils.stat_analysis import metric_stats_with_ci
+
         result = metric_stats_with_ci([])
         assert result["n"] == 0
         assert result["mean"] == 0.0
 
     def test_aggregate_metrics(self):
         from src.utils.stat_analysis import aggregate_metrics
+
         metrics = [
             {"f1": 0.8, "precision": 0.85, "recall": 0.75},
             {"f1": 0.82, "precision": 0.87, "recall": 0.77},
@@ -55,6 +60,7 @@ class TestStatAnalysis:
 
     def test_analyze_confusion_matrix_basic(self):
         from src.utils.stat_analysis import analyze_confusion_matrix
+
         result = analyze_confusion_matrix(100, 10, 20, 1000)
         assert result["precision"] == 100 / 110
         assert result["recall"] == 100 / 120
@@ -63,12 +69,14 @@ class TestStatAnalysis:
 
     def test_analyze_confusion_matrix_zero(self):
         from src.utils.stat_analysis import analyze_confusion_matrix
+
         result = analyze_confusion_matrix(0, 0, 0, 0)
         assert result["precision"] == 0.0
         assert result["n"] == 0
 
     def test_analyze_confusion_matrix_no_positives(self):
         from src.utils.stat_analysis import analyze_confusion_matrix
+
         result = analyze_confusion_matrix(0, 0, 0, 100)
         assert result["precision"] == 0.0
         assert result["recall"] == 0.0
@@ -80,6 +88,7 @@ class TestUncertainty:
 
     def test_pixel_bootstrap_fast_basic(self):
         from src.utils.uncertainty import pixel_bootstrap_fast
+
         lossyear = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
         result = pixel_bootstrap_fast(lossyear, n_boot=100)
         assert "mean" in result
@@ -89,18 +98,21 @@ class TestUncertainty:
 
     def test_pixel_bootstrap_empty(self):
         from src.utils.uncertainty import pixel_bootstrap_fast
+
         lossyear = np.array([])
         result = pixel_bootstrap_fast(lossyear)
         assert result["mean"] == 0.0
 
     def test_pixel_bootstrap_all_zeros(self):
         from src.utils.uncertainty import pixel_bootstrap_fast
+
         lossyear = np.zeros((10, 10), dtype=int)
         result = pixel_bootstrap_fast(lossyear, n_boot=50)
         assert result["mean"] == 0.0
 
     def test_block_bootstrap_fast_basic(self):
         from src.utils.uncertainty import block_bootstrap_fast
+
         lossyear = np.random.randint(0, 5, size=(200, 200))
         result = block_bootstrap_fast(lossyear, block_size=50, n_boot=100)
         assert "mean" in result
@@ -108,12 +120,14 @@ class TestUncertainty:
 
     def test_block_bootstrap_too_small(self):
         from src.utils.uncertainty import block_bootstrap_fast
+
         lossyear = np.array([[0, 1], [2, 3]])
         result = block_bootstrap_fast(lossyear, block_size=100, n_boot=10)
         assert result["n_blocks"] == 0
 
     def test_agb_sensitivity_basic(self):
         from src.utils.uncertainty import agb_sensitivity
+
         lossyear = np.ones((10, 10), dtype=int)
         treecover = np.zeros((10, 10))
         result = agb_sensitivity(lossyear, treecover)
@@ -124,6 +138,7 @@ class TestUncertainty:
 
     def test_agb_sensitivity_high_above_low(self):
         from src.utils.uncertainty import agb_sensitivity
+
         lossyear = np.ones((10, 10), dtype=int)
         treecover = np.zeros((10, 10))
         result = agb_sensitivity(lossyear, treecover)
@@ -133,6 +148,7 @@ class TestUncertainty:
 
     def test_annual_loss_ci(self):
         from src.utils.uncertainty import annual_loss_ci
+
         lossyear = np.random.randint(0, 24, size=(100, 100))
         result = annual_loss_ci(lossyear, n_boot=50)
         assert "2001" in result
@@ -141,21 +157,25 @@ class TestUncertainty:
 
     def test_annual_loss_ci_empty(self):
         from src.utils.uncertainty import annual_loss_ci
+
         lossyear = np.array([])
         result = annual_loss_ci(lossyear)
         assert result == {}
 
     def test_pixel_loss_rate(self):
         from src.utils.uncertainty import pixel_loss_rate
+
         lossyear = np.array([[0, 1], [0, 1]])
         assert pixel_loss_rate(lossyear) == 0.5
 
     def test_pixel_loss_rate_empty(self):
         from src.utils.uncertainty import pixel_loss_rate
+
         assert pixel_loss_rate(np.array([])) == 0.0
 
     def test_loss_area_hectares(self):
         from src.utils.uncertainty import loss_area_hectares
+
         lossyear = np.array([[0, 1], [1, 1]])
         area = loss_area_hectares(lossyear)
         # 3 loss pixels * 0.09 ha = 0.27 ha
@@ -163,6 +183,7 @@ class TestUncertainty:
 
     def test_loss_area_custom_pixel(self):
         from src.utils.uncertainty import loss_area_hectares
+
         lossyear = np.array([[1, 1]])
         area = loss_area_hectares(lossyear, pixel_area_ha=0.01)
         assert area == pytest.approx(0.02, rel=0.01)

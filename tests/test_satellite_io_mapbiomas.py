@@ -3,18 +3,16 @@
 Coverage target: 70%+. Tests the synthetic data generation,
 parcel statistics, and module constants.
 """
-import pytest
+
 from unittest.mock import MagicMock
 
 import numpy as np
 
-from src.satellite_io import mapbiomas as _mb
 from src.satellite_io.mapbiomas import (
     MAPBIOMAS_CLASSES,
-    generate_synthetic_mapbiomas,
     compute_parcel_statistics_real,
+    generate_synthetic_mapbiomas,
 )
-
 
 # =========================
 # Constants
@@ -159,13 +157,13 @@ class TestComputeParcelStatistics:
         assert result["dominant_class"] == 39
 
 
-
 class TestDownloadMapbiomasReal:
     """Tests for download_mapbiomas_paraguay_real function."""
 
     def test_cache_hit(self, tmp_path, monkeypatch):
         """When cache exists, return cached array."""
         from src.satellite_io import mapbiomas as mb_mod
+
         cache_file = tmp_path / "mapbiomas_py_2022.npy"
         cached = np.zeros((10, 10), dtype=np.uint8)
         np.save(cache_file, cached)
@@ -182,6 +180,7 @@ class TestDownloadMapbiomasReal:
     def test_use_gee_false_returns_synthetic(self, tmp_path, monkeypatch):
         """When use_gee=False, generate synthetic MapBiomas data."""
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         result = mb_mod.download_mapbiomas_paraguay_real(
@@ -195,10 +194,12 @@ class TestDownloadMapbiomasReal:
     def test_gee_fails_falls_back_to_synthetic(self, tmp_path, monkeypatch):
         """When GEE fails, falls back to synthetic data."""
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         # Block ee import
         import sys as _sys
+
         saved = _sys.modules.get("ee")
         _sys.modules["ee"] = None
         try:

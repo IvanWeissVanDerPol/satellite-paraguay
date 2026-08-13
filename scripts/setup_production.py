@@ -11,11 +11,10 @@ Sets up:
 
 This is a deployment scaffolding script. Run on production server.
 """
-import sys
-import subprocess
+
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def setup_docker():
@@ -91,7 +90,7 @@ volumes:
   grafana_data:
 """
     (REPO_ROOT / "docker-compose.production.yml").write_text(docker_compose)
-    print(f"  Wrote: docker-compose.production.yml")
+    print("  Wrote: docker-compose.production.yml")
 
     # Dockerfile
     dockerfile = """FROM python:3.12-slim
@@ -112,10 +111,10 @@ COPY outputs/ outputs/
 
 EXPOSE 8000 8501
 
-CMD ["bash", "-c", "gunicorn src.api.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 & streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"]
+CMD ["bash", "-c", "gunicorn src.api.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 & streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"]  # noqa: E501
 """
     (REPO_ROOT / "Dockerfile.production").write_text(dockerfile)
-    print(f"  Wrote: Dockerfile.production")
+    print("  Wrote: Dockerfile.production")
 
     # GitHub Actions CI/CD
     github_actions = """name: CI/CD
@@ -157,7 +156,7 @@ jobs:
     github_path = REPO_ROOT / ".github/workflows/cicd.yml"
     github_path.parent.mkdir(parents=True, exist_ok=True)
     github_path.write_text(github_actions)
-    print(f"  Wrote: .github/workflows/cicd.yml")
+    print("  Wrote: .github/workflows/cicd.yml")
 
     # Prometheus config
     prometheus_config = """global:
@@ -173,16 +172,16 @@ scrape_configs:
 """
     (REPO_ROOT / "monitoring/prometheus.yml").parent.mkdir(parents=True, exist_ok=True)
     (REPO_ROOT / "monitoring/prometheus.yml").write_text(prometheus_config)
-    print(f"  Wrote: monitoring/prometheus.yml")
+    print("  Wrote: monitoring/prometheus.yml")
 
-    print(f"\n  DEPLOYMENT READY:")
-    print(f"  1. Set DB_PASSWORD env var")
-    print(f"  2. docker-compose -f docker-compose.production.yml up -d")
-    print(f"  3. Access:")
-    print(f"     - FastAPI: http://localhost:8000/docs")
-    print(f"     - Streamlit: http://localhost:8501")
-    print(f"     - Prometheus: http://localhost:9090")
-    print(f"     - Grafana: http://localhost:3000")
+    print("\n  DEPLOYMENT READY:")
+    print("  1. Set DB_PASSWORD env var")
+    print("  2. docker-compose -f docker-compose.production.yml up -d")
+    print("  3. Access:")
+    print("     - FastAPI: http://localhost:8000/docs")
+    print("     - Streamlit: http://localhost:8501")
+    print("     - Prometheus: http://localhost:9090")
+    print("     - Grafana: http://localhost:3000")
 
 
 if __name__ == "__main__":

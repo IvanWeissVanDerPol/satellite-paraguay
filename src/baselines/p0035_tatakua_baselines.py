@@ -5,9 +5,8 @@ Baselines:
 2. Linear regression on time
 3. Persistence (last value)
 """
-import numpy as np
 
-from src.evaluation import regression_metrics
+import numpy as np
 
 
 def mean_forecast_baseline(historical: np.ndarray, horizon: int) -> np.ndarray:
@@ -45,8 +44,24 @@ def run_all_baselines(historical: np.ndarray, horizon: int = 7) -> dict:
 
 
 if __name__ == "__main__":
-    np.random.seed(42)
-    historical = np.random.rand(30) * 25 + 5
+    # FAIL-LOUD (added 2026-08-11): no more np.random.rand() silent fallback.
+    # Pass real PM2.5 hourly history as a .npy file via CLI; otherwise
+    # raise FileNotFoundError so the user cannot accidentally benchmark
+    # against random numbers.
+    print("P0035 baselines demo (fail-loud mode)")
+    print("Pass real PM2.5 history as a .npy file:")
+    print("    python -m src.baselines.p0035_tatakua_baselines pm25_history.npy")
+    import sys
+
+    if len(sys.argv) >= 2:
+        historical = np.load(sys.argv[1])
+    else:
+        raise FileNotFoundError(
+            "P0035 baselines demo requires real PM2.5 history. "
+            "Download from OpenAQ via src/external/openaq_client.py and save "
+            "to data/cache/openaq/pm25_history.npy. "
+            "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+        )
     results = run_all_baselines(historical)
     for name, r in results.items():
         print(f"  {name}: mean forecast = {r['mean']:.2f} µg/m³")

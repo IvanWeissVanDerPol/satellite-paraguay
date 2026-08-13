@@ -5,11 +5,12 @@ Free, requires API key (free registration).
 
 Provides: MODIS + VIIRS fire detections globally.
 """
-import os
+
 import logging
+import os
+from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict, List
-from datetime import datetime, timedelta
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -62,6 +63,7 @@ def fetch_firms_fires(
         response.raise_for_status()
         # Parse CSV
         from io import StringIO
+
         df = pd.read_csv(StringIO(response.text))
         df.to_json(cache_path)
         return df
@@ -90,6 +92,7 @@ def fetch_firms_paraguay(
         response = requests.get(url, timeout=30)
         response.raise_for_status()
         from io import StringIO
+
         df = pd.read_csv(StringIO(response.text))
         df.to_json(cache_path)
         return df
@@ -155,21 +158,23 @@ def generate_synthetic_firms(bbox: Dict[str, float], days: int) -> pd.DataFrame:
 
     dates = pd.date_range(end=datetime.now(), periods=days, freq="D")
 
-    fires = pd.DataFrame({
-        "latitude": rng.uniform(bbox["min_lat"], bbox["max_lat"], n_fires),
-        "longitude": rng.uniform(bbox["min_lon"], bbox["max_lon"], n_fires),
-        "brightness": rng.uniform(300, 380, n_fires),
-        "scan": rng.uniform(0.4, 1.5, n_fires),
-        "track": rng.uniform(0.4, 1.5, n_fires),
-        "acq_date": rng.choice(dates.strftime("%Y-%m-%d"), n_fires),
-        "acq_time": rng.choice(["0000", "0600", "1200", "1800"], n_fires),
-        "satellite": "VIIRS_SNPP_NRT",
-        "confidence": rng.choice(["low", "nominal", "high"], n_fires),
-        "version": "2.0NRT",
-        "bright_t31": rng.uniform(280, 320, n_fires),
-        "frp": rng.uniform(1, 50, n_fires),
-        "daynight": rng.choice(["D", "N"], n_fires),
-    })
+    fires = pd.DataFrame(
+        {
+            "latitude": rng.uniform(bbox["min_lat"], bbox["max_lat"], n_fires),
+            "longitude": rng.uniform(bbox["min_lon"], bbox["max_lon"], n_fires),
+            "brightness": rng.uniform(300, 380, n_fires),
+            "scan": rng.uniform(0.4, 1.5, n_fires),
+            "track": rng.uniform(0.4, 1.5, n_fires),
+            "acq_date": rng.choice(dates.strftime("%Y-%m-%d"), n_fires),
+            "acq_time": rng.choice(["0000", "0600", "1200", "1800"], n_fires),
+            "satellite": "VIIRS_SNPP_NRT",
+            "confidence": rng.choice(["low", "nominal", "high"], n_fires),
+            "version": "2.0NRT",
+            "bright_t31": rng.uniform(280, 320, n_fires),
+            "frp": rng.uniform(1, 50, n_fires),
+            "daynight": rng.choice(["D", "N"], n_fires),
+        }
+    )
 
     return fires
 

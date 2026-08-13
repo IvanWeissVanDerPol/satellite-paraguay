@@ -5,13 +5,13 @@ API v3: https://api.openaq.org/v3/
 
 Free with API key (https://openaq.org/) for read access.
 """
-import os
-import json
-import time
+
 import logging
-from pathlib import Path
-from typing import Optional, Dict, List
+import os
+import time
 from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -47,7 +47,7 @@ def _request_with_retry(url: str, params: dict = None, headers: dict = None, max
             if response.status_code == 200:
                 return response.json()
             elif response.status_code == 429:
-                wait = 2 ** attempt
+                wait = 2**attempt
                 logger.warning(f"Rate limited, waiting {wait}s")
                 time.sleep(wait)
             elif response.status_code in (410, 404):
@@ -59,7 +59,7 @@ def _request_with_retry(url: str, params: dict = None, headers: dict = None, max
         except requests.RequestException as e:
             logger.warning(f"OpenAQ request failed: {e}")
             if attempt < max_retries - 1:
-                time.sleep(2 ** attempt)
+                time.sleep(2**attempt)
     return None
 
 
@@ -135,9 +135,7 @@ def fetch_openaq_for_location(
                             lambda x: x.get("datetimeFrom", {}).get("utc") if isinstance(x, dict) else None
                         )
                     elif "date" in df.columns:
-                        df["date_utc"] = df["date"].apply(
-                            lambda x: x.get("utc") if isinstance(x, dict) else None
-                        )
+                        df["date_utc"] = df["date"].apply(lambda x: x.get("utc") if isinstance(x, dict) else None)
                     df["date_utc"] = pd.to_datetime(df["date_utc"], errors="coerce")
                     df = df.dropna(subset=["date_utc"])
                     if "value" in df.columns:
@@ -168,14 +166,16 @@ def generate_synthetic_openaq_for_station(lat: float, lon: float, parameter: str
     else:
         values = [rng.uniform(0, 100) for _ in dates]
 
-    df = pd.DataFrame({
-        "date_utc": dates,
-        "value": values,
-        "unit": "µg/m³" if parameter == "pm25" else "ppb",
-        "parameter": parameter,
-        "location_id": int(abs(lat * lon * 1000)),
-        "location_name": f"Synthetic station {lat:.2f},{lon:.2f}",
-    })
+    df = pd.DataFrame(
+        {
+            "date_utc": dates,
+            "value": values,
+            "unit": "µg/m³" if parameter == "pm25" else "ppb",
+            "parameter": parameter,
+            "location_id": int(abs(lat * lon * 1000)),
+            "location_name": f"Synthetic station {lat:.2f},{lon:.2f}",
+        }
+    )
     return df
 
 
@@ -214,13 +214,17 @@ def aggregate_by_month(df: pd.DataFrame, value_col: str = "value") -> pd.DataFra
 
     df = df.copy()
     df["year_month"] = df["date_utc"].dt.to_period("M")
-    return df.groupby("year_month").agg(
-        mean=(value_col, "mean"),
-        std=(value_col, "std"),
-        min=(value_col, "min"),
-        max=(value_col, "max"),
-        count=(value_col, "count"),
-    ).reset_index()
+    return (
+        df.groupby("year_month")
+        .agg(
+            mean=(value_col, "mean"),
+            std=(value_col, "std"),
+            min=(value_col, "min"),
+            max=(value_col, "max"),
+            count=(value_col, "count"),
+        )
+        .reset_index()
+    )
 
 
 def generate_synthetic_openaq(

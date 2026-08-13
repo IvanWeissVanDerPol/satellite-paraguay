@@ -3,11 +3,12 @@
 Coverage target: 70%+. The YrupePipeline class handles soybean
 yield prediction.
 """
+
 import json
-import pytest
-import numpy as np
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+
+import numpy as np
+import pytest
 
 
 class TestYrupePipeline:
@@ -16,6 +17,7 @@ class TestYrupePipeline:
     @pytest.fixture
     def pipeline(self):
         from src.papers.p0025_yrupe_yield.pipeline import YrupePipeline
+
         return YrupePipeline()
 
     # --- __init__ ---
@@ -32,6 +34,7 @@ class TestYrupePipeline:
 
     def test_init_custom_config(self):
         from src.papers.p0025_yrupe_yield.pipeline import YrupePipeline
+
         cfg = {"caaguazu_bbox": {"custom": True}}
         p = YrupePipeline(config=cfg)
         assert "custom" in p.config["caaguazu_bbox"]

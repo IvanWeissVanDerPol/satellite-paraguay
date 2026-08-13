@@ -4,25 +4,22 @@ Coverage target: 80%+. The module has 3 main entry points and a fallback
 to curated data — testing the fallback paths gives the most coverage
 without requiring network mocks.
 """
+
 import json
-import os
-import sys
 import time
-import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
+import pytest
 
 from src.external import verra_client as _vc
 from src.external.verra_client import (
     PARAGUAY_PROJECTS,
-    fetch_verra_paraguay,
     _scrape_verra_registry,
-    fetch_gold_standard_paraguay,
-    verify_carbon_credit_real,
     compute_parcel_biomass,
-    CACHE_DIR,
+    fetch_gold_standard_paraguay,
+    fetch_verra_paraguay,
+    verify_carbon_credit_real,
 )
 
 
@@ -75,8 +72,13 @@ class TestFetchVerraParaguay:
     def test_columns_match_documented_schema(self, tmp_path, monkeypatch):
         df = fetch_verra_paraguay(use_cache=False)
         expected_cols = {
-            "id", "name", "country", "methodology", "project_type",
-            "area_ha", "estimated_annual_emission_reductions_tco2e",
+            "id",
+            "name",
+            "country",
+            "methodology",
+            "project_type",
+            "area_ha",
+            "estimated_annual_emission_reductions_tco2e",
         }
         assert expected_cols.issubset(set(df.columns))
 
@@ -86,22 +88,25 @@ class TestFetchVerraParaguay:
         cache_file = cache_dir / "verra_paraguay.json"
 
         # Write a minimal cache file with PARAGUAY_PROJECTS-compatible schema
-        sample = [{
-            "id": "TEST-001",
-            "name": "Test Project",
-            "country": "Paraguay",
-            "methodology": "VM0007",
-            "project_type": "REDD+",
-            "area_ha": 10000,
-            "estimated_annual_emission_reductions_tco2e": 50000,
-            "registered_at": "2020-01-01",
-            "developer": "Test",
-            "region": "Concepción",
-            "status": "Active",
-        }]
+        sample = [
+            {
+                "id": "TEST-001",
+                "name": "Test Project",
+                "country": "Paraguay",
+                "methodology": "VM0007",
+                "project_type": "REDD+",
+                "area_ha": 10000,
+                "estimated_annual_emission_reductions_tco2e": 50000,
+                "registered_at": "2020-01-01",
+                "developer": "Test",
+                "region": "Concepción",
+                "status": "Active",
+            }
+        ]
         cache_file.write_text(json.dumps(sample))
         # Make it appear fresh (1 hour ago)
         import os as _os
+
         one_hour_ago = time.time() - 3600
         _os.utime(cache_file, (one_hour_ago, one_hour_ago))
         df = fetch_verra_paraguay(use_cache=True)
@@ -116,6 +121,7 @@ class TestFetchVerraParaguay:
         # Make it appear 48 hours old
         two_days_ago = time.time() - 48 * 3600
         import os as _os
+
         _os.utime(cache_file, (two_days_ago, two_days_ago))
         # With cache_max_age_hours=24 (default) and 48h-old file, should refresh
         df = fetch_verra_paraguay(use_cache=True, cache_max_age_hours=24)
@@ -124,7 +130,7 @@ class TestFetchVerraParaguay:
 
     def test_bypasses_cache_when_use_cache_false(self, tmp_path, monkeypatch):
         """If use_cache=False, skip cache lookup entirely."""
-        cache_dir = tmp_path / "cache"
+        tmp_path / "cache"
         df = fetch_verra_paraguay(use_cache=False)
         # No cache exists, so falls through to fallback
         assert len(df) >= 5
@@ -148,10 +154,7 @@ class TestFetchVerraParaguay:
 
     def test_uses_live_data_when_available(self, tmp_path, monkeypatch):
         """If _scrape_verra_registry returns data, use it."""
-        live_df = pd.DataFrame([
-            {"id": "LIVE-001", "name": "Live Project", "country": "Paraguay",
-             "area_ha": 1000}
-        ])
+        live_df = pd.DataFrame([{"id": "LIVE-001", "name": "Live Project", "country": "Paraguay", "area_ha": 1000}])
         with patch(
             "src.external.verra_client._scrape_verra_registry",
             return_value=live_df,
@@ -248,6 +251,7 @@ class TestComputeParcelBiomass:
     def test_basic_call(self):
         """Basic call should not raise."""
         import numpy as np
+
         try:
             result = compute_parcel_biomass(
                 ndvi_timeseries=np.array([0.5, 0.6, 0.7]),
@@ -262,6 +266,7 @@ class TestComputeParcelBiomass:
     def test_ipcc_method(self):
         """IPCC method should return a dict with biomass/co2 values."""
         import numpy as np
+
         try:
             result = compute_parcel_biomass(
                 ndvi_timeseries=np.array([0.5, 0.6, 0.7]),
@@ -270,9 +275,6 @@ class TestComputeParcelBiomass:
             )
             if isinstance(result, dict):
                 # Keys: area_ha, biomass_tons, carbon_tons, co2_tons
-                assert any(
-                    k in result
-                    for k in ("biomass_tons", "carbon_tons", "co2_tons", "biomass", "co2", "co2e")
-                )
+                assert any(k in result for k in ("biomass_tons", "carbon_tons", "co2_tons", "biomass", "co2", "co2e"))
         except (NotImplementedError, TypeError, KeyError):
             pytest.skip("IPCC method not fully implemented")

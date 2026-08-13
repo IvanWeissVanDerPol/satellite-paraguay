@@ -10,8 +10,8 @@ Usage:
         log_metrics({"f1": 0.85, "precision": 0.85, "recall": 0.85})
         log_artifact("outputs/p0011/metrics.json")
 """
+
 import os
-import sys
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, ContextManager, Dict, Optional
@@ -111,6 +111,7 @@ def log_dict_as_json(data: Dict[str, Any], filename: str) -> None:
         # by writing to a temp dir with the target filename.
         import os
         import shutil
+
         tmp_dir = tempfile.mkdtemp()
         target = os.path.join(tmp_dir, filename)
         shutil.move(temp_path, target)

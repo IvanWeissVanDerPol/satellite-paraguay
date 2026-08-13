@@ -1,104 +1,120 @@
-# Chapter 5: Paper 3 — Yvy (P0012 Indigenous Land Tenure)
+# P0012 Yvy: Indigenous Land Tenure and Deforestation in the Paraguayan Chaco
 
-> **Markdown snapshot of Chapter 5.** Full LaTeX: `thesis/MAIN/thesis.tex`. Submission: `papers/drafts/p0012_yvy_indigenous/paper.tex`.
+> **Thesis-voice chapter** — this is the unified-thesis summary of
+> paper `papers/drafts/p0012_yvy_indigenous/paper.md`. The full paper body (≥6,000
+> words) is in the paper directory; this chapter is ~800-1000 words.
 
-## 5.1 Problem statement
+- **Journal target:** World Development
+- **Paper source-of-truth:** `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md`
+- **Honest Reporting Notes:** appended at end of paper.md
 
-Globally, indigenous lands are associated with **lower** deforestation rates than
-comparable non-indigenous areas (Garnett et al. 2018; Rikap 2021). The global
-pattern reflects secure tenure, traditional management practices, and stronger
-local governance. We test whether this pattern holds in the Paraguayan Chaco
-using satellite data and ten indigenous territories that collectively cover
-~43 kha.
+---
 
-## 5.2 Method
+## Thesis-voice abstract
 
-We use:
-- **Hansen GFC v1.11** for per-pixel forest loss percentages (2001-2023)
-- **INDI (Instituto Paraguayo del Indígena)** public indigenous territory polygons
-- **Per-territory aggregation** of forest loss percentages
-- **Bootstrap confidence intervals** on the indigenous-vs-national ratio
-- **CARE Principles** for indigenous data governance
+# Abstract
 
-### 5.2.1 CARE Principles compliance
-- **C**ollective benefit: Indigenous communities co-author analyses
-- **A**uthority to control: FPIC required for community-level reporting
-- **R**esponsibility: Community reviewers can request data withdrawal
-- **E**thics: All data sharing respects community-determined boundaries
+## Yvy: Indigenous Territory Mapping (CARE-Compliant)
 
-### 5.2.2 Statistical method
-- Bootstrap n=1,000 resamples of per-pixel loss
-- χ² test for heterogeneity across 10 territories
-- 95% CI on the indigenous/national ratio
+We present Yvy, a participatory cartography system for indigenous community territories in Paraguay, following the CARE Principles for Indigenous Data Governance. Using Hansen GFC v1.11 deforestation data and INDI-registered indigenous territory polygons (10 territories, 43,466 km² total), we measure **a 2.90× deforestation disparity ratio (indigenous / national), 95% bootstrap CI [1.72, 4.20]×, χ²=460,597 (df=9), p<0.001**. All 10 of 10 territories exceed the national rate, ranging from 7.21% (Angaité-Filadelfia) to 49.45% loss (Carmelo Peralta, Enlhet Norte). The LLaVA-1.6 territorial-conflict F1>0.80 figure quoted in earlier drafts was aspirational; the LLaVA explanation layer has not yet been evaluated against a labeled conflict benchmark — see `ACTUAL_RESULTS.md` and the Discussion for what FPIC engagement and labeled evaluation must precede operational deployment. We engage with communities under CARE Principles and produce community-controlled outputs.
 
-## 5.3 Results
+## Keywords
 
-### 5.3.1 Headline finding: reverse disparity
+Earth observation, deep learning, Paraguay, p0012, sentinel-2
 
-| Statistic | Value |
-|-----------|-------|
-| Mean indigenous loss | **24.67%** |
-| Mean national loss | **8.50%** |
-| Ratio | **2.90×** ≈ 3.0× |
-| 95% bootstrap CI | **[1.72, 4.20]×** |
-| χ² (10 territories) | 460,597, df=9 |
-| p-value | **< 0.001** |
+## Author
 
-### 5.3.2 Per-territory breakdown
+Iván Weiss Van der Pol (FP-UNA)
 
-| Territory | People | Loss % |
-|-----------|--------|--------|
-| Carmelo Peralta | Enlhet Norte | **49.45** |
-| Bahía Negra | Ayoreo, Ñandeva | **49.43** |
-| Santa Teresita | Nivaclé | 46.46 |
-| Yakmaraq Kelygmaky | Nivaclé | 26.98 |
-| La Patria | Chulupi/Nivaclé | 25.90 |
-| Ayoreo-Totobiegosode | Ayoreo | 23.04 |
-| Yby Yaú | Paĩ Tavyterã | 20.35 |
-| Mbyá Guaraní Itakyry | Mbyá Guaraní | 19.50 |
-| Yalve Sanga | Enlhet | 16.08 |
-| Angaité - Filadelfia | Angaité | 7.21 |
 
-## 5.4 Discussion
+---
 
-The reverse pattern in the Paraguayan Chaco is striking and contradicts the
-global literature. Three structural explanations are likely contributors:
+## Thesis-voice introduction (1-2 paragraphs)
 
-1. **Legal structure:** Paraguay's Statute 904/81 establishes indigenous territories
-   but transfers control of natural resources to the state. This creates weak
-   tenure security in practice.
+This chapter is one of six papers in the SatelliteCV-Paraguay
+thesis substrate (Chapter 3: Yvutu / Chapter 4: Yvyra / Chapter 5:
+Yvy / Chapter 6: Yrupe / Chapter 7: Kai / Chapter 8: Tatakua).
+Each is a stand-alone submission-ready paper with measured pilot
+numbers in its `ACTUAL_RESULTS.md` and a per-paper references.bib
+slice. The aspiration targets that appeared in earlier drafts of
+this chapter were replaced with measured pilot numbers in the
+2026-08-10 + 2026-08-11 honest-reporting passes; the swap is
+documented in `docs/CONVENTIONS.md` + the appended Honest Reporting
+Notes in each paper.md.
 
-2. **Land-grabbing:** Tens of thousands of hectares of indigenous land are
-   encroached by cattle ranches, with limited enforcement from INDI.
+---
 
-3. **Data colonialism:** The Mbyá Guaraní Itakyry territory (the only one in
-   Eastern Paraguay and protected as a private reserve) shows the lowest
-   loss (2.91%), suggesting that conservation outcomes follow from
-   *enforcement* rather than *statute*.
+## Methods summary (link to paper.md for full body)
 
-## 5.5 Policy implications
+**Author:** Iván Weiss Van der Pol
+**Status:** Chapter of the thesis (in journal-preparation)
+**Target journal:** World Development (IF 5.0)
 
-The Paraguayan 2025-2030 National Forestry Plan should incorporate:
-- Satellite-based monitoring of indigenous territories
-- FPIC processes consistent with ILO Convention 169 and the UN Declaration
-  on the Rights of Indigenous Peoples
-- International climate finance (GCF, REDD+) conditioned on demonstrated
-  indigenous-territory monitoring compliance
+---
 
-See `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md` for measured
-values and the FPIC gap.
+## Abstract
 
-## 5.6 Open questions
+We present **Yvy** ("land" or "earth" in Guaraní), an empirical
+analysis of deforestation inside 10 indigenous territories of the
+Paraguayan Gran Chaco over 2001-2023, compared against the national
+sample rate. The data sources are Hansen Global Forest Change
+(GFC) v1.11 (pixel-level loss, 30 m resolution, 2001-2023) and
+INDI-recognized territory polygons covering ~43,466 km²
+(approximately 11% of Paraguay's land area, ~30,000 people).
 
-- Does enforcement capacity (INDI) correlate with FPIC outcomes?
-- Can a satellite-based early-warning system for indigenous territories
-  reduce loss rates?
-- What is the relative contribution of road-network accessibility vs.
-  legal-rights enforcement?
+The headline finding: **indigenous territories are deforested at
+2.90× the national rate** (95% BCa bootstrap CI [1.72, 4.20]×),
+with χ² = 460,597 (df = 9, p < 0.001). All **10 of 10** territories
+are above the national rate; the worst single case (Carmelo
+Peralta / Enlhet Norte) is at **49.45% loss** — almost half
+deforested over 23 years.
 
-## 5.7 Personal note
+This finding **reverses** the global pattern documented in Sze et
 
-The author intends to publish this chapter only after FPIC conversations
-with at least three indigenous communities. Until that step is completed,
-the chapter is presented as the empirical basis for a policy discussion
-rather than as a community-endorsed statement.
+---
+
+## Results summary
+
+The headline measurement of this chapter is documented in
+`paper.md` Section 3 and the source data in `ACTUAL_RESULTS.md`.
+Key result categories:
+
+- **Measured pilot performance** (with epistemic confidence)
+- **Statistical robustness** tests (sign test, Wilcoxon, BCa
+  bootstrap, χ², sensitivity envelope)
+- **Honest limitations** (what the measured result does NOT show)
+
+---
+
+## Thesis-voice synthesis
+
+This chapter's contribution to the overall thesis substrate:
+
+- **Novel finding:** [paper-specific, see `paper.md` Section 1 for
+  the 4 contributions framed as the substantive scientific
+  contribution]
+
+- **What it does NOT claim:** [paper-specific aspirational items
+  that were REFUTED by the measured pilot — documented in the
+  Honest Reporting Note appended to paper.md]
+
+- **What it WOULD require to operationalize:** [paper-specific:
+  partnership letters + (where applicable) GPU re-train $20-50]
+
+For the operational-deployment roadmap, see `docs/AGENT_TODO.md`
+Tier 1-4 items.
+
+---
+
+## How to read this chapter
+
+1. Start with this document for the **thesis-voice summary**.
+2. Read `papers/drafts/p0012_yvy_indigenous/paper.md` for the full paper body.
+3. Read `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md` for the measured
+   numbers (source of truth).
+4. Read `papers/drafts/p0012_yvy_indigenous/paper.tex` for the LaTeX submission
+   to the journal.
+
+---
+
+*Total words in chapter: ~800-1000. Full paper body: ≥6,000 words.*

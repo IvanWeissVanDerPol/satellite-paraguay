@@ -6,9 +6,10 @@ takes a screenshot at 1600x900, and saves to outputs/screenshots/.
 Usage: while streamlit is running on :8501
    python3 scripts/capture_dashboard_screenshots.py
 """
+
+import json
 import sys
 import time
-import json
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -26,6 +27,7 @@ def main():
 
     print("\n[1/2] Streamlit is expected to be running at http://localhost:8501")
     import urllib.request
+
     try:
         response = urllib.request.urlopen("http://localhost:8501/_stcore/health", timeout=5)
         if response.status == 200:
@@ -72,12 +74,14 @@ def main():
                 filename = OUT_DIR / slug
                 page.screenshot(path=str(filename), full_page=False)
                 size = filename.stat().st_size
-                results.append({
-                    "page": label,
-                    "file": str(filename.relative_to(REPO_ROOT)),
-                    "size_bytes": size,
-                    "status": "ok",
-                })
+                results.append(
+                    {
+                        "page": label,
+                        "file": str(filename.relative_to(REPO_ROOT)),
+                        "size_bytes": size,
+                        "status": "ok",
+                    }
+                )
                 print(f"  OK {label}: {size:,} bytes")
             except Exception as e:
                 print(f"  FAIL {label}: {str(e)[:80]}")
@@ -89,10 +93,15 @@ def main():
 
     # Save index
     index_path = OUT_DIR / "index.json"
-    index_path.write_text(json.dumps({
-        "captured_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "results": results,
-    }, indent=2))
+    index_path.write_text(
+        json.dumps(
+            {
+                "captured_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "results": results,
+            },
+            indent=2,
+        )
+    )
 
     n_ok = sum(1 for r in results if r["status"] == "ok")
     print(f"\n  Summary: {n_ok}/{len(results)} captured")

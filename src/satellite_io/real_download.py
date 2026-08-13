@@ -11,17 +11,15 @@ This module is the production-quality replacement for the stub in `src/satellite
 NOTE: Function `fetch_sentinel2_tile` is the new name (sources.py has a stub `download_sentinel2_tile`
 that returns paths; this one returns a dict of arrays).
 """
-import os
-import io
-import time
+
 import hashlib
 import logging
-from pathlib import Path
-from typing import Optional, Dict, List, Tuple
-from datetime import datetime, timedelta
-import json
-import urllib.request
+import os
 import urllib.parse
+import urllib.request
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -71,6 +69,7 @@ def download_sentinel2_gee(
     """
     try:
         import ee
+
         # Try to initialize without explicit auth (assumes cached credentials)
         try:
             ee.Initialize()
@@ -87,13 +86,14 @@ def download_sentinel2_gee(
     logger.info(f"GEE download: tile={tile_id}, bbox={bbox}")
 
     # Build GEE collection
-    aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"],
-                                  bbox["max_lon"], bbox["max_lat"]])
-    s2 = (ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED")
-          .filterBounds(aoi)
-          .filterDate(start_date, end_date)
-          .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 20))
-          .select(bands))
+    aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"], bbox["max_lon"], bbox["max_lat"]])
+    s2 = (
+        ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED")
+        .filterBounds(aoi)
+        .filterDate(start_date, end_date)
+        .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 20))
+        .select(bands)
+    )
 
     # Get monthly composites
     months = []
@@ -110,18 +110,21 @@ def download_sentinel2_gee(
     for m_start, m_end in months:
         monthly = s2.filterDate(m_start.isoformat(), m_end.isoformat()).median()
         # Get thumbnail URL
-        url = monthly.getThumbURL({
-            "region": aoi,
-            "dimensions": 256,
-            "format": "GEO_TIFF",
-            "bands": bands,
-        })
+        url = monthly.getThumbURL(
+            {
+                "region": aoi,
+                "dimensions": 256,
+                "format": "GEO_TIFF",
+                "bands": bands,
+            }
+        )
 
         try:
             with urllib.request.urlopen(url, timeout=30) as response:
                 arr_bytes = response.read()
             # Use rasterio to read TIFF from bytes
             import rasterio
+
             with rasterio.io.MemoryFile(arr_bytes) as memfile:
                 with memfile.open() as dataset:
                     arr = dataset.read()
@@ -171,15 +174,18 @@ def download_sentinel2_copernicus(
     # Real implementation: query Copernicus DHUS
     # See: https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/ApiHubUserGuide
     base_url = "https://scihub.copernicus.eu/dhus/search"
-    query = (f"q=footprint:\"Intersects(POLYGON(({bbox['min_lon']} {bbox['min_lat']},"
-             f"{bbox['max_lon']} {bbox['min_lat']},{bbox['max_lon']} {bbox['max_lat']},"
-             f"{bbox['min_lon']} {bbox['max_lat']})))\" "
-             f"AND beginposition:[{start_date}T00:00:00.000Z TO {end_date}T23:59:59.999Z] "
-             f"AND platformname:Sentinel-2 AND producttype:S2MSI2A")
+    query = (
+        f"q=footprint:\"Intersects(POLYGON(({bbox['min_lon']} {bbox['min_lat']},"
+        f"{bbox['max_lon']} {bbox['min_lat']},{bbox['max_lon']} {bbox['max_lat']},"
+        f"{bbox['min_lon']} {bbox['max_lat']})))\" "
+        f"AND beginposition:[{start_date}T00:00:00.000Z TO {end_date}T23:59:59.999Z] "
+        f"AND platformname:Sentinel-2 AND producttype:S2MSI2A"
+    )
     url = f"{base_url}?{urllib.parse.quote(query)}&rows=10"
 
     try:
         import requests
+
         response = requests.get(url, auth=(username, password), timeout=30)
         response.raise_for_status()
         # Parse XML, download products, extract bands
@@ -327,22 +333,34 @@ def fetch_sentinel2_tile(
     result = download_sentinel2_gee(tile_id, bbox, start_date, end_date, bands)
     if result is not None:
         if use_cache:
-            _save_to_cache(tile_id, start_date, end_date, ",".join(bands), {
-                "data": result["data"],
-                "dates": np.array(result["dates"]),
-                "bands": np.array(result["bands"]),
-            })
+            _save_to_cache(
+                tile_id,
+                start_date,
+                end_date,
+                ",".join(bands),
+                {
+                    "data": result["data"],
+                    "dates": np.array(result["dates"]),
+                    "bands": np.array(result["bands"]),
+                },
+            )
         return result
 
     # 3. Try Copernicus
     result = download_sentinel2_copernicus(tile_id, bbox, start_date, end_date)
     if result is not None:
         if use_cache:
-            _save_to_cache(tile_id, start_date, end_date, ",".join(bands), {
-                "data": result["data"],
-                "dates": np.array(result["dates"]),
-                "bands": np.array(result["bands"]),
-            })
+            _save_to_cache(
+                tile_id,
+                start_date,
+                end_date,
+                ",".join(bands),
+                {
+                    "data": result["data"],
+                    "dates": np.array(result["dates"]),
+                    "bands": np.array(result["bands"]),
+                },
+            )
         return result
 
     # 4. Synthetic fallback
@@ -350,11 +368,17 @@ def fetch_sentinel2_tile(
         logger.warning(f"Using synthetic data for tile {tile_id}")
         result = generate_synthetic_sentinel2(tile_id, bbox, start_date, end_date, bands)
         if use_cache:
-            _save_to_cache(tile_id, start_date, end_date, ",".join(bands), {
-                "data": result["data"],
-                "dates": np.array(result["dates"]),
-                "bands": np.array(result["bands"]),
-            })
+            _save_to_cache(
+                tile_id,
+                start_date,
+                end_date,
+                ",".join(bands),
+                {
+                    "data": result["data"],
+                    "dates": np.array(result["dates"]),
+                    "bands": np.array(result["bands"]),
+                },
+            )
         return result
 
     raise RuntimeError(f"Could not download Sentinel-2 for tile {tile_id}")
@@ -363,6 +387,7 @@ def fetch_sentinel2_tile(
 # ============================================
 # Cloud masking + atmospheric correction
 # ============================================
+
 
 def cloud_mask_s2(arr: np.ndarray, threshold: float = 0.3) -> np.ndarray:
     """Cloud mask for Sentinel-2.

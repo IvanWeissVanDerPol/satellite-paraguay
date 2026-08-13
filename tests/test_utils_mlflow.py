@@ -4,16 +4,15 @@ Coverage target: 100%. The module wraps MLflow with thin helpers; each
 function is exercised via mocking or, when mlflow is available, an
 in-memory SQLite tracking URI.
 """
-import os
+
 import sys
-import tempfile
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pytest
 
 try:
     import mlflow  # noqa: F401
+
     _HAS_MLFLOW = True
 except ImportError:
     _HAS_MLFLOW = False
@@ -39,8 +38,9 @@ def _silence_mlflow_global_state(monkeypatch):
     yield
     if _HAS_MLFLOW:
         try:
-            import mlflow
-            mlflow.set_tracking_uri("")
+            import mlflow as _mlflow
+
+            _mlflow.set_tracking_uri("")
         except Exception:
             pass
 
@@ -57,23 +57,27 @@ class TestSetupMlflow:
             with patch.dict(sys.modules, {"mlflow.tracking": None}):
                 with pytest.raises(ImportError):
                     from src.utils.mlflow_tracking import setup_mlflow
+
                     setup_mlflow()
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_default_tracking_uri_uses_env(self, tmp_path, monkeypatch):
         """When MLFLOW_TRACKING_URI is set, use it as default."""
         from src.utils import mlflow_tracking as mt
+
         uri = f"sqlite:///{tmp_path / 'env_uri.db'}"
         monkeypatch.setenv("MLFLOW_TRACKING_URI", uri)
         client = mt.setup_mlflow()
         assert client is not None
         # Verify the URI was actually set
-        import mlflow
-        assert mlflow.get_tracking_uri() == uri
+        import mlflow as _mlflow
+
+        assert _mlflow.get_tracking_uri() == uri
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_with_explicit_tracking_uri(self, tmp_path):
         from src.utils import mlflow_tracking as mt
+
         uri = f"sqlite:///{tmp_path / 'explicit.db'}"
         client = mt.setup_mlflow(tracking_uri=uri)
         assert client is not None
@@ -81,6 +85,7 @@ class TestSetupMlflow:
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_custom_experiment_name(self, tmp_path):
         from src.utils import mlflow_tracking as mt
+
         uri = f"sqlite:///{tmp_path / 'exp_name.db'}"
         client = mt.setup_mlflow(
             tracking_uri=uri,
@@ -100,6 +105,7 @@ class TestLogExperiment:
             with patch.dict(sys.modules, {"mlflow.tracking": None}):
                 with pytest.raises(ImportError):
                     from src.utils.mlflow_tracking import log_experiment
+
                     log_experiment(
                         run_name="test",
                         params={},
@@ -110,6 +116,7 @@ class TestLogExperiment:
     def test_logs_params_and_metrics(self, tmp_path):
         """End-to-end log_experiment via real mlflow."""
         from src.utils.mlflow_tracking import log_experiment
+
         # Use sqlite backend (file backend is deprecated in mlflow 3.x)
         db = tmp_path / "mlflow.db"
         uri = f"sqlite:///{db}"
@@ -159,6 +166,7 @@ class TestLogExperiment:
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_logs_tags(self, tmp_path):
         from src.utils.mlflow_tracking import log_experiment
+
         db = tmp_path / "mlflow.db"
         run_id = log_experiment(
             run_name="tagged",
@@ -181,6 +189,7 @@ class TestGetBestRun:
             with patch.dict(sys.modules, {"mlflow.tracking": None}):
                 with pytest.raises(ImportError):
                     from src.utils.mlflow_tracking import get_best_run
+
                     get_best_run(metric_name="f1")
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
@@ -201,7 +210,7 @@ class TestGetBestRun:
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_finds_best_run(self, tmp_path, monkeypatch):
         """After logging two runs, get_best_run returns the highest-f1 run."""
-        from src.utils.mlflow_tracking import log_experiment, get_best_run
+        from src.utils.mlflow_tracking import get_best_run, log_experiment
 
         uri = f"sqlite:///{tmp_path / 'db.sqlite'}"
         monkeypatch.setenv("MLFLOW_TRACKING_URI", uri)
@@ -218,8 +227,9 @@ class TestGetBestRun:
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_ascending_lowest(self, tmp_path, monkeypatch):
-        from src.utils.mlflow_tracking import log_experiment, get_best_run
-        import mlflow
+        pass
+
+        from src.utils.mlflow_tracking import get_best_run, log_experiment
 
         uri = f"sqlite:///{tmp_path / 'db.sqlite'}"
         monkeypatch.setenv("MLFLOW_TRACKING_URI", uri)
@@ -257,39 +267,57 @@ class TestPaperWrappers:
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_p0011_wrapper(self, tmp_path):
         from src.utils.mlflow_tracking import log_p0011_experiment
+
         rid = log_p0011_experiment(
-            f1_macro=0.85, miou=0.80, params={"model": "unet"},
+            f1_macro=0.85,
+            miou=0.80,
+            params={"model": "unet"},
         )
         assert rid is not None
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_p0100_wrapper(self, tmp_path):
         from src.utils.mlflow_tracking import log_p0100_experiment
+
         rid = log_p0100_experiment(
-            r2=0.7, rmse=0.5, mae=0.3, params={"model": "alphaearth"},
+            r2=0.7,
+            rmse=0.5,
+            mae=0.3,
+            params={"model": "alphaearth"},
         )
         assert rid is not None
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_p0025_wrapper(self, tmp_path):
         from src.utils.mlflow_tracking import log_p0025_experiment
+
         rid = log_p0025_experiment(
-            r2=0.6, rmse=0.4, mae=0.2, params={"model": "lstm"},
+            r2=0.6,
+            rmse=0.4,
+            mae=0.2,
+            params={"model": "lstm"},
         )
         assert rid is not None
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_p0026_wrapper(self, tmp_path):
         from src.utils.mlflow_tracking import log_p0026_experiment
+
         rid = log_p0026_experiment(
-            map50=0.65, map50_95=0.45, epochs=30, params={"model": "yolov8"},
+            map50=0.65,
+            map50_95=0.45,
+            epochs=30,
+            params={"model": "yolov8"},
         )
         assert rid is not None
 
     @pytest.mark.skipif(not _HAS_MLFLOW, reason="mlflow not installed")
     def test_p0035_wrapper(self, tmp_path):
         from src.utils.mlflow_tracking import log_p0035_experiment
+
         rid = log_p0035_experiment(
-            val_mae=8.5, epochs=20, params={"horizon": 24},
+            val_mae=8.5,
+            epochs=20,
+            params={"horizon": 24},
         )
         assert rid is not None

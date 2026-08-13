@@ -9,31 +9,53 @@ Tests:
 Outputs:
     outputs/statistical_tests/test_results.json
 """
-import sys
+
 import json
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+import numpy as np
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
+
+try:
+    import rasterio
+    from rasterio.windows import Window
+
+    HAS_RASTERIO = True
+except ImportError:
+    HAS_RASTERIO = False
+    rasterio = None
+    Window = None
 
 OUT_DIR = REPO_ROOT / "outputs/statistical_tests"
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+# 2026-08-13: Defer mkdir to first write. Module-level mkdir fails in
+# sandbox/CI environments where the repo is at a different path or where
+# the user lacks write permission to /root.
+
+
+def _ensure_out_dir():
+    """Create OUT_DIR on first use (lazy)."""
+    global OUT_DIR
+    try:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+    except (PermissionError, OSError):
+        # If we can't write, fall back to /tmp so the script doesn't crash
+        OUT_DIR = Path("/tmp/statistical_tests")
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+
 
 HANSEN_DIR = REPO_ROOT / "data/hansen"
 
 
 def mcnemar_test(y_true, y_pred_a, y_pred_b):
     """McNemar's test for comparing two classifiers."""
-    # Build 2x2 contingency table
-    # 11: both correct, 12: a correct, b wrong, 21: a wrong, b correct, 22: both wrong
-    n11 = ((y_pred_a == y_true) & (y_pred_b == y_true)).sum()
+    # Build 2x2 contingency table. Only n12 (a correct, b wrong) and n21
+    # (a wrong, b correct) feed McNemar's statistic.
     n12 = ((y_pred_a == y_true) & (y_pred_b != y_true)).sum()
     n21 = ((y_pred_a != y_true) & (y_pred_b == y_true)).sum()
-    n22 = ((y_pred_a != y_true) & (y_pred_b != y_true)).sum()
 
     # McNemar's statistic with continuity correction
     n = n12 + n21
@@ -42,6 +64,7 @@ def mcnemar_test(y_true, y_pred_a, y_pred_b):
 
     # Use exact binomial test for small samples
     from scipy.stats import binomtest
+
     result = binomtest(min(int(n12), int(n21)), n=int(n), p=0.5)
     p_value = 2 * result.pvalue
     chi2 = (abs(n12 - n21) - 1) ** 2 / n if n > 0 else 0
@@ -65,10 +88,12 @@ def chi_squared_indigenous(observed_territories, expected_at_national_rate):
     from scipy.stats import chi2_contingency
 
     # Contingency table: territories vs national, lost vs not-lost
-    obs_table = np.array([
-        [observed_territories["lost"], observed_territories["total"] - observed_territories["lost"]],
-        [expected_at_national_rate["lost"], expected_at_national_rate["total"] - expected_at_national_rate["lost"]],
-    ])
+    obs_table = np.array(
+        [
+            [observed_territories["lost"], observed_territories["total"] - observed_territories["lost"]],
+            [expected_at_national_rate["lost"], expected_at_national_rate["total"] - expected_at_national_rate["lost"]],
+        ]
+    )
 
     chi2, p_value, dof, expected = chi2_contingency(obs_table)
 
@@ -173,11 +198,18 @@ def main():
     print("STATISTICAL SIGNIFICANCE TESTS")
     print("=" * 70)
 
+    if not HAS_RASTERIO:
+        print("[ERROR] rasterio not installed; install with `pip install rasterio`")
+        sys.exit(1)
+    if not (HANSEN_DIR / "hansen_lossyear_20S_060W.tif").exists():
+        print(f"[ERROR] Hansen data not found at {HANSEN_DIR}; " "download via scripts/download_all_data.py first.")
+        sys.exit(1)
+
     print("\n[1/4] Loading Hansen data...")
     with rasterio.open(HANSEN_DIR / "hansen_lossyear_20S_060W.tif") as src:
         lossyear = src.read(1, window=Window(0, 0, 2000, 2000))
     with rasterio.open(HANSEN_DIR / "hansen_treecover2000_20S_060W.tif") as src:
-        treecover = src.read(1, window=Window(0, 0, 2000, 2000))
+        treecover = src.read(1, window=Window(0, 0, 2000, 2000))  # noqa: F841
 
     # Annual loss
     annual_loss = {}
@@ -234,11 +266,12 @@ def main():
         },
     }
 
+    _ensure_out_dir()
     (OUT_DIR / "test_results.json").write_text(json.dumps(_clean(results), indent=2))
     print(f"\n  Saved: {OUT_DIR}/test_results.json")
 
     print(f"\n{'=' * 70}")
-    print(f"  SUMMARY:")
+    print("  SUMMARY:")
     print(f"    U-Net vs persistence: p={mcn['p_value']:.4f}")
     print(f"    Indigenous disparity chi2: p={chi['p_value']:.4f}")
     print(f"    3.3x disparity bootstrap: p={disparity_test['p_value_h1_gt_1_5x']:.4f}")

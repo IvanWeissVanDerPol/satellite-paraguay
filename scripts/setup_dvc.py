@@ -9,8 +9,8 @@ This script:
 
 Run: python3 scripts/setup_dvc.py
 """
+
 import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -35,13 +35,13 @@ def init_dvc():
     """Initialize DVC if not already done."""
     dvc_dir = REPO_ROOT / ".dvc"
     if dvc_dir.exists():
-        print(f"  ✓ DVC already initialized")
+        print("  ✓ DVC already initialized")
         return
     result = run("dvc init --no-scm", check=False)
     if result.returncode == 0:
-        print(f"  ✓ DVC initialized")
+        print("  ✓ DVC initialized")
     else:
-        print(f"  ⚠ DVC init failed (may not be installed)")
+        print("  ⚠ DVC init failed (may not be installed)")
 
 
 def setup_dvcignore():
@@ -60,7 +60,7 @@ htmlcov/
 outputs/weekly/*.log
 """
     dvcignore.write_text(content)
-    print(f"  ✓ .dvcignore created")
+    print("  ✓ .dvcignore created")
 
 
 def track_data():
@@ -91,7 +91,7 @@ def setup_remote():
     remote_path = REPO_ROOT / "data/dvc_remote"
     remote_path.mkdir(parents=True, exist_ok=True)
     run(f"dvc remote add -d local {remote_path}", check=False)
-    run(f"dvc remote modify local type local", check=False)
+    run("dvc remote modify local type local", check=False)
     print(f"  ✓ Local remote: {remote_path}")
 
 
@@ -99,7 +99,7 @@ def create_pipeline():
     """Create DVC pipeline definition."""
     dvc_yaml = REPO_ROOT / "dvc.yaml"
     if dvc_yaml.exists():
-        print(f"  ✓ dvc.yaml already exists")
+        print("  ✓ dvc.yaml already exists")
         return
 
     content = """# DVC pipeline for satellite-paraguay
@@ -198,7 +198,7 @@ stages:
       - docs/FINAL_REPORT.md
 """
     dvc_yaml.write_text(content)
-    print(f"  ✓ dvc.yaml created with 9 stages")
+    print("  ✓ dvc.yaml created with 9 stages")
 
 
 def main():
@@ -209,8 +209,8 @@ def main():
     print("\n[1/5] Checking DVC installation...")
     result = run("dvc --version", check=False)
     if result.returncode != 0:
-        print(f"  ⚠ DVC not installed. Install with: pip install dvc")
-        print(f"  Creating config files anyway for future use.")
+        print("  ⚠ DVC not installed. Install with: pip install dvc")
+        print("  Creating config files anyway for future use.")
     else:
         print(f"  ✓ DVC version: {result.stdout.strip()}")
 

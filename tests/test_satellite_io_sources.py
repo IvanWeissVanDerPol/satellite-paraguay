@@ -1,21 +1,22 @@
 """Tests for src/satellite_io/sources.py — multi-source satellite data API."""
-import pytest
-import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
-from src.satellite_io import sources as _sources
+from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
+
 from src.satellite_io.sources import (
+    DEFAULT_OUTPUT_DIR,
+    LANDSAT_OUTPUT,
+    SENTINEL_OUTPUT,
+    cloud_mask_s2,
+    compute_ndvi,
     download_sentinel2_tile,
     download_via_gee,
-    compute_ndvi,
-    cloud_mask_s2,
-    download_mapbiomas_paraguay,
-    download_hansen_gfc,
-    DEFAULT_OUTPUT_DIR,
-    SENTINEL_OUTPUT,
-    LANDSAT_OUTPUT,
 )
+
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
 
 # =========================
@@ -71,6 +72,7 @@ class TestDownloadViaGee:
     def test_raises_without_ee(self):
         """Without earthengine-api, should raise ImportError."""
         import sys as _sys
+
         saved = _sys.modules.get("ee")
         _sys.modules["ee"] = None  # type: ignore
         try:
@@ -173,13 +175,16 @@ class TestCloudMaskS2:
             "transform": from_bounds(0, 0, 5, 5, 5, 5),
         }
         # Mix of SCL values: 4 (vegetation), 9 (cloud high), 6 (water)
-        scl_data = np.array([
-            [4, 4, 4, 4, 4],
-            [4, 9, 9, 9, 4],
-            [4, 9, 6, 9, 4],
-            [4, 9, 9, 9, 4],
-            [4, 4, 4, 4, 4],
-        ], dtype=np.uint8)
+        scl_data = np.array(
+            [
+                [4, 4, 4, 4, 4],
+                [4, 9, 9, 9, 4],
+                [4, 9, 6, 9, 4],
+                [4, 9, 9, 9, 4],
+                [4, 4, 4, 4, 4],
+            ],
+            dtype=np.uint8,
+        )
         with rasterio.open(scl_path, "w", **profile) as dst:
             dst.write(scl_data, 1)
 
@@ -188,11 +193,11 @@ class TestCloudMaskS2:
         assert mask.shape == (5, 5)
         assert mask.dtype == bool
         # Vegetation (4) and water (6) should NOT be masked
-        assert mask[0, 0] == False  # vegetation
-        assert mask[2, 2] == False  # water
+        assert not mask[0, 0]  # vegetation
+        assert not mask[2, 2]  # water
         # Cloud (9) should be masked
-        assert mask[1, 1] == True
-        assert mask[1, 2] == True
+        assert mask[1, 1]
+        assert mask[1, 2]
 
     def test_all_clean_returns_no_mask(self, tmp_path):
         """All-vegetation pixels should not be masked."""
@@ -215,12 +220,12 @@ class TestCloudMaskS2:
         assert not mask.any()  # nothing masked
 
 
-
-class TestComputeNDVI:
-    """Tests for compute_ndvi function."""
+class TestComputeNDVISynthetic:
+    """Tests for compute_ndvi synthetic-data path."""
 
     def test_compute_ndvi(self, tmp_path):
         from src.satellite_io.sources import compute_ndvi
+
         red_path = tmp_path / "red.tif"
         nir_path = tmp_path / "nir.tif"
         out_path = tmp_path / "ndvi.tif"
@@ -238,11 +243,12 @@ class TestComputeNDVI:
         assert ndvi.shape == (2, 2)
 
 
-class TestCloudMaskS2:
-    """Tests for cloud_mask_s2 function."""
+class TestCloudMaskS2Synthetic:
+    """Tests for cloud_mask_s2 synthetic-data path."""
 
     def test_cloud_mask(self, tmp_path):
         from src.satellite_io.sources import cloud_mask_s2
+
         scl_path = tmp_path / "scl.tif"
         scl_path.write_text("dummy")
 
@@ -263,6 +269,7 @@ class TestDownloadMapbiomas:
 
     def test_returns_path(self, tmp_path):
         from src.satellite_io.sources import download_mapbiomas_paraguay
+
         result = download_mapbiomas_paraguay(output_dir=tmp_path)
         assert isinstance(result, Path)
 
@@ -272,6 +279,7 @@ class TestDownloadHansenGfc:
 
     def test_returns_path(self, tmp_path):
         from src.satellite_io.sources import download_hansen_gfc
+
         result = download_hansen_gfc(output_dir=tmp_path)
         assert isinstance(result, Path)
 
@@ -279,15 +287,16 @@ class TestDownloadHansenGfc:
 class TestModuleConstants:
     def test_default_output_dir(self):
         from src.satellite_io import sources
+
         assert sources.DEFAULT_OUTPUT_DIR is not None
 
 
-
-class TestDownloadViaGee:
-    """Tests for download_via_gee function."""
+class TestDownloadViaGeeSynthetic:
+    """Tests for download_via_gee synthetic-data path."""
 
     def test_sentinel2_path(self, tmp_path, monkeypatch):
         from src.satellite_io.sources import download_via_gee
+
         # Mock ee module
         mock_ee = MagicMock()
         mock_ee.Geometry.Rectangle.return_value = "mock_region"
@@ -317,6 +326,7 @@ class TestDownloadViaGee:
 
     def test_landsat9_path(self, tmp_path):
         from src.satellite_io.sources import download_via_gee
+
         mock_ee = MagicMock()
         mock_ee.Geometry.Rectangle.return_value = "mock_region"
         mock_ee.ImageCollection.return_value = mock_ee
@@ -340,6 +350,7 @@ class TestDownloadViaGee:
 
     def test_unknown_satellite_raises(self, tmp_path):
         from src.satellite_io.sources import download_via_gee
+
         mock_ee = MagicMock()
         mock_ee.Geometry.Rectangle.return_value = "mock_region"
         mock_ee.Initialize.return_value = None
@@ -354,9 +365,11 @@ class TestDownloadViaGee:
                 )
 
     def test_ee_import_error(self):
-        from src.satellite_io.sources import download_via_gee
         # Block ee import
         import sys as _sys
+
+        from src.satellite_io.sources import download_via_gee
+
         saved = _sys.modules.get("ee")
         _sys.modules["ee"] = None
         try:
@@ -374,6 +387,7 @@ class TestDownloadViaGee:
     def test_download_url_failure_falls_back(self, tmp_path):
         """When getDownloadURL fails, returns the path anyway."""
         from src.satellite_io.sources import download_via_gee
+
         mock_ee = MagicMock()
         mock_ee.Geometry.Rectangle.return_value = "mock_region"
         mock_ee.ImageCollection.return_value = mock_ee

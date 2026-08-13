@@ -34,11 +34,11 @@ Every week has exactly ONE shippable deliverable. Chore work (fixes, refactors, 
 
 **Shipped by end of month 3:**
 - ✅ All 6 papers at 5,000+ words each
-- ✅ P0011 GPU result: F1 > 0.85 on real data
-- ✅ P0026 YOLOv8 result: mAP > 0.7
-- ✅ P0035 LSTM result: MAE < 5 µg/m³
-- ✅ P0012 LLaVA result: 84 conflicts annotated
-- ✅ P0010 Verra: 5 projects documented
+- ✅ P0011 CPU pilot (15 tiles, 5 epochs): U-Net F1=0.559 (P=0.099), Prithvi mock F1=0.497 — see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`. Prithvi fine-tune on real data was **not** run in this period.
+- ✅ P0026 YOLOv8 CPU pilot (5,000 real Guyra images): mAP@0.5 = 0.50 synthetic, 0.18 real — see `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`. mAP>0.7 was an aspirational target, not a measurement.
+- ✅ P0035 LSTM CPU pilot (12 stations, 12-month retro): mean RMSE = 14.7 µg/m³, 24% over persistence — see `papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md`. MAE<5 µg/m³ was aspirational, not measured.
+- ✅ P0012 LLaVA result: 84 conflicts annotated (curated, not LLaVA-generated)
+- ✅ P0010 Verra: 5 projects documented (124,310 ha)
 - ✅ P0025 INBIO: 10 yield trials documented
 - ✅ 50 ground-truth plots collected
 - ✅ Bootstrap CIs on every metric

@@ -3,7 +3,7 @@
 Tests the unet_baseline function (PyTorch-based) and other
 uncovered code paths.
 """
-import pytest
+
 import numpy as np
 
 
@@ -13,6 +13,7 @@ class TestUnetBaseline:
     def test_unet_baseline_basic(self):
         """Basic UNet training + inference."""
         from src.baselines.p0011_yvytu_baselines import unet_baseline
+
         # Small time series: 5 timesteps, 100x100 image
         T = 5
         ndvi = np.random.rand(T, 100, 100).astype(np.float32)
@@ -23,6 +24,7 @@ class TestUnetBaseline:
     def test_unet_baseline_smaller_than_256(self):
         """Image smaller than 256x256 should be padded."""
         from src.baselines.p0011_yvytu_baselines import unet_baseline
+
         T = 4
         ndvi = np.random.rand(T, 50, 50).astype(np.float32)
         gt = np.zeros((50, 50), dtype=np.int64)
@@ -32,6 +34,7 @@ class TestUnetBaseline:
     def test_unet_baseline_larger_than_256(self):
         """Image larger than 256x256 gets cropped to 256x256 internally."""
         from src.baselines.p0011_yvytu_baselines import unet_baseline
+
         T = 3
         ndvi = np.random.rand(T, 300, 300).astype(np.float32)
         gt = np.zeros((300, 300), dtype=np.int64)
@@ -42,6 +45,7 @@ class TestUnetBaseline:
     def test_unet_baseline_exactly_256(self):
         """Image exactly 256x256."""
         from src.baselines.p0011_yvytu_baselines import unet_baseline
+
         T = 3
         ndvi = np.random.rand(T, 256, 256).astype(np.float32)
         gt = np.zeros((256, 256), dtype=np.int64)
@@ -54,18 +58,21 @@ class TestExistingBaselinesExtended:
 
     def test_persistence_baseline_with_dates(self):
         from src.baselines.p0011_yvytu_baselines import persistence_baseline
+
         ndvi = np.random.rand(10, 30, 30).astype(np.float32)
         mask = persistence_baseline(ndvi)
         assert mask.shape == (30, 30)
 
     def test_linear_trend_baseline_small(self):
         from src.baselines.p0011_yvytu_baselines import linear_trend_baseline
+
         ndvi = np.random.rand(8, 30, 30).astype(np.float32)
         mask = linear_trend_baseline(ndvi)
         assert mask.shape == (30, 30)
 
     def test_random_forest_baseline_basic(self):
         from src.baselines.p0011_yvytu_baselines import random_forest_baseline
+
         T = 8
         ndvi = np.random.rand(T, 30, 30).astype(np.float32)
         gt = np.random.randint(0, 3, (30, 30), dtype=np.int64)
@@ -78,6 +85,7 @@ class TestPersistenceEdgeCases:
 
     def test_persistence_no_change(self):
         from src.baselines.p0011_yvytu_baselines import persistence_baseline
+
         ndvi = np.full((10, 30, 30), 0.5, dtype=np.float32)
         mask = persistence_baseline(ndvi)
         # No change -> minimal loss pixels (just check it runs)
@@ -85,6 +93,7 @@ class TestPersistenceEdgeCases:
 
     def test_persistence_complete_loss(self):
         from src.baselines.p0011_yvytu_baselines import persistence_baseline
+
         # NDVI drops to 0 in second half
         ndvi = np.full((10, 30, 30), 0.8, dtype=np.float32)
         ndvi[5:, :, :] = 0.0
@@ -97,6 +106,7 @@ class TestLinearTrendVariants:
 
     def test_increasing_trend(self):
         from src.baselines.p0011_yvytu_baselines import linear_trend_baseline
+
         # Increasing NDVI trend (no loss)
         ndvi = np.zeros((10, 20, 20), dtype=np.float32)
         for t in range(10):
@@ -107,6 +117,7 @@ class TestLinearTrendVariants:
 
     def test_decreasing_trend(self):
         from src.baselines.p0011_yvytu_baselines import linear_trend_baseline
+
         # Decreasing NDVI (deforestation)
         ndvi = np.full((10, 20, 20), 0.9, dtype=np.float32)
         for t in range(10):

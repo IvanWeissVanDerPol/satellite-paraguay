@@ -16,20 +16,20 @@ Outputs:
     outputs/p0011/ndvi/ndvi_animation.gif (if matplotlib anim works)
     outputs/p0011/ndvi/ndvi_per_dept.json
 """
-import sys
+
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
-
+import matplotlib.pyplot as plt
 import numpy as np
 import rasterio
-from rasterio.features import rasterize
 from rasterio.windows import Window
-import geopandas as gpd
-import matplotlib.pyplot as plt
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/ndvi"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -116,15 +116,17 @@ def main():
     with rasterio.open(treecover_path) as src:
         treecover = src.read(1, window=Window(win_x, win_y, win_size, win_size))
 
-    print(f"  Treecover: mean={treecover.mean():.1f}%, "
-          f"loss pixels: {(lossyear>0).sum():,} "
-          f"({100*(lossyear>0).mean():.2f}%)")
+    print(
+        f"  Treecover: mean={treecover.mean():.1f}%, "
+        f"loss pixels: {(lossyear>0).sum():,} "
+        f"({100*(lossyear>0).mean():.2f}%)"
+    )
 
     # Generate NDVI time series
     print("\nGenerating NDVI per year...")
     ndvi = ndvi_from_treecover(treecover, lossyear)
-    evi = evi_from_ndvi(ndvi)
-    print(f"  NDVI: mean per year:")
+    evi_from_ndvi(ndvi)
+    print("  NDVI: mean per year:")
     for y in range(ndvi.shape[0]):
         yr = 2000 + y
         print(f"    {yr}: {ndvi[y].mean():.3f}")
@@ -136,10 +138,13 @@ def main():
     # Mean NDVI per year
     ax = axes[0, 0]
     ax.plot(years, [ndvi[y].mean() for y in range(24)], "-o", color="green", lw=2, label="Mean NDVI")
-    ax.fill_between(years,
-                    [ndvi[y].mean() - ndvi[y].std() for y in range(24)],
-                    [ndvi[y].mean() + ndvi[y].std() for y in range(24)],
-                    alpha=0.2, color="green")
+    ax.fill_between(
+        years,
+        [ndvi[y].mean() - ndvi[y].std() for y in range(24)],
+        [ndvi[y].mean() + ndvi[y].std() for y in range(24)],
+        alpha=0.2,
+        color="green",
+    )
     ax.set_xlabel("Year")
     ax.set_ylabel("NDVI")
     ax.set_title("Mean NDVI over Window (Hansen-derived)")
@@ -165,9 +170,11 @@ def main():
     ax.set_title(f"NDVI decline (2000-2023)\nMean: {diff.mean():.3f}")
     plt.colorbar(im, ax=ax)
 
-    plt.suptitle(f"Paraguay NDVI Time Series from Hansen GFC\n"
-                 f"Window: {win_x},{win_y} - {win_x+win_size},{win_y+win_size} in tile {tile}",
-                 fontsize=14)
+    plt.suptitle(
+        f"Paraguay NDVI Time Series from Hansen GFC\n"
+        f"Window: {win_x},{win_y} - {win_x+win_size},{win_y+win_size} in tile {tile}",
+        fontsize=14,
+    )
     plt.tight_layout()
     plt.savefig(OUT_DIR / "ndvi_timeseries.png", dpi=150, bbox_inches="tight")
     plt.close()
@@ -196,7 +203,7 @@ def main():
     print(f"\n{'=' * 70}")
     print(f"Saved: {OUT_DIR}/ndvi_timeseries.png")
     print(f"Saved: {OUT_DIR}/ndvi_stats.json")
-    print(f"\nKey insights:")
+    print("\nKey insights:")
     print(f"  NDVI declined by {stats['ndvi_change_2000_2023']:.3f} from 2000 to 2023")
     print(f"  (Mean across {win_size*win_size:,} pixels in window)")
 

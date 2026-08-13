@@ -4,24 +4,20 @@ Coverage target: 80%+. The module has both live-API and synthetic
 fallback paths. Testing the synthetic-fallback paths gives the most
 coverage without requiring a FIRMS API key.
 """
-import json
-import time
-import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
-import numpy as np
+import json
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
+import pytest
 
 from src.external import firms_client as _fc
 from src.external.firms_client import (
+    compute_fire_clusters,
     fetch_firms_fires,
     fetch_firms_paraguay,
-    compute_fire_clusters,
     generate_synthetic_firms,
     generate_synthetic_firms_paraguay,
-    FIRMS_BASE,
-    CACHE_DIR,
 )
 
 
@@ -49,9 +45,21 @@ class TestGenerateSyntheticFirms:
     def test_has_expected_columns(self):
         bbox = {"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20}
         df = generate_synthetic_firms(bbox, days=7)
-        expected = {"latitude", "longitude", "brightness", "scan", "track",
-                    "acq_date", "acq_time", "satellite", "confidence",
-                    "version", "bright_t31", "frp", "daynight"}
+        expected = {
+            "latitude",
+            "longitude",
+            "brightness",
+            "scan",
+            "track",
+            "acq_date",
+            "acq_time",
+            "satellite",
+            "confidence",
+            "version",
+            "bright_t31",
+            "frp",
+            "daynight",
+        }
         assert expected.issubset(set(df.columns))
 
     def test_lat_lon_within_bbox(self):
@@ -77,7 +85,7 @@ class TestGenerateSyntheticFirms:
 
     def test_days_affects_date_range(self):
         bbox = {"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20}
-        df_7 = generate_synthetic_firms(bbox, days=7)
+        df_7 = generate_synthetic_firms(bbox, days=7)  # noqa: F841
         df_30 = generate_synthetic_firms(bbox, days=30)
         # Longer period means more date variety (not strictly necessary to test
         # but checks that the function doesn't crash with bigger days values)
@@ -123,11 +131,23 @@ class TestFetchFirmsFires:
         """When cache exists, read from it instead of fetching."""
         # Write a cache file
         cache_path = _tmp_cache_dir / "firms_VIIRS_SNPP_NRT_7d.json"
-        sample = [{"latitude": -23.5, "longitude": -58.5, "brightness": 320.0,
-                   "scan": 1.0, "track": 1.0, "acq_date": "2025-01-01",
-                   "acq_time": "0000", "satellite": "VIIRS_SNPP_NRT",
-                   "confidence": "high", "version": "2.0NRT", "bright_t31": 300.0,
-                   "frp": 25.0, "daynight": "D"}]
+        sample = [
+            {
+                "latitude": -23.5,
+                "longitude": -58.5,
+                "brightness": 320.0,
+                "scan": 1.0,
+                "track": 1.0,
+                "acq_date": "2025-01-01",
+                "acq_time": "0000",
+                "satellite": "VIIRS_SNPP_NRT",
+                "confidence": "high",
+                "version": "2.0NRT",
+                "bright_t31": 300.0,
+                "frp": 25.0,
+                "daynight": "D",
+            }
+        ]
         cache_path.write_text(json.dumps(sample))
 
         bbox = {"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20}
@@ -165,8 +185,7 @@ class TestFetchFirmsFires:
 
     def test_live_fetch_failure_falls_back(self, _tmp_cache_dir):
         """If live fetch fails (network error), fall back to synthetic."""
-        with patch("src.external.firms_client.requests.get",
-                   side_effect=Exception("network down")):
+        with patch("src.external.firms_client.requests.get", side_effect=Exception("network down")):
             bbox = {"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20}
             df = fetch_firms_fires(bbox, days=7, api_key="test_key", use_cache=False)
         assert len(df) > 0  # synthetic
@@ -209,11 +228,23 @@ class TestFetchFirmsParaguay:
 
     def test_uses_cache_when_present(self, _tmp_cache_dir):
         cache_path = _tmp_cache_dir / "firms_paraguay_7d.json"
-        sample = [{"latitude": -23.5, "longitude": -58.5, "brightness": 320.0,
-                   "scan": 1.0, "track": 1.0, "acq_date": "2025-01-01",
-                   "acq_time": "0000", "satellite": "VIIRS_SNPP_NRT",
-                   "confidence": "high", "version": "2.0NRT", "bright_t31": 300.0,
-                   "frp": 25.0, "daynight": "D"}]
+        sample = [
+            {
+                "latitude": -23.5,
+                "longitude": -58.5,
+                "brightness": 320.0,
+                "scan": 1.0,
+                "track": 1.0,
+                "acq_date": "2025-01-01",
+                "acq_time": "0000",
+                "satellite": "VIIRS_SNPP_NRT",
+                "confidence": "high",
+                "version": "2.0NRT",
+                "bright_t31": 300.0,
+                "frp": 25.0,
+                "daynight": "D",
+            }
+        ]
         cache_path.write_text(json.dumps(sample))
         df = fetch_firms_paraguay(days=7)
         assert len(df) == 1
@@ -233,8 +264,7 @@ class TestFetchFirmsParaguay:
         assert len(df) == 1
 
     def test_live_fetch_failure_falls_back(self, _tmp_cache_dir):
-        with patch("src.external.firms_client.requests.get",
-                   side_effect=Exception("timeout")):
+        with patch("src.external.firms_client.requests.get", side_effect=Exception("timeout")):
             df = fetch_firms_paraguay(days=7, api_key="key")
         assert len(df) > 0  # synthetic
 
@@ -257,23 +287,27 @@ class TestComputeFireClusters:
 
     def test_basic_clustering(self):
         """Two clusters of fires should be detected."""
-        df = pd.DataFrame({
-            "latitude": [-23.5, -23.51, -23.52, -25.0, -25.01],
-            "longitude": [-58.5, -58.51, -58.52, -60.0, -60.01],
-            "brightness": [320.0, 322.0, 318.0, 330.0, 325.0],
-            "frp": [10.0, 12.0, 8.0, 20.0, 18.0],
-        })
+        df = pd.DataFrame(
+            {
+                "latitude": [-23.5, -23.51, -23.52, -25.0, -25.01],
+                "longitude": [-58.5, -58.51, -58.52, -60.0, -60.01],
+                "brightness": [320.0, 322.0, 318.0, 330.0, 325.0],
+                "frp": [10.0, 12.0, 8.0, 20.0, 18.0],
+            }
+        )
         clusters = compute_fire_clusters(df, distance_km=10.0)
         assert isinstance(clusters, list)
         assert len(clusters) >= 1
 
     def test_cluster_dict_structure(self):
-        df = pd.DataFrame({
-            "latitude": [-23.5, -23.51, -23.52],
-            "longitude": [-58.5, -58.51, -58.52],
-            "brightness": [320.0, 322.0, 318.0],
-            "frp": [10.0, 12.0, 8.0],
-        })
+        df = pd.DataFrame(
+            {
+                "latitude": [-23.5, -23.51, -23.52],
+                "longitude": [-58.5, -58.51, -58.52],
+                "brightness": [320.0, 322.0, 318.0],
+                "frp": [10.0, 12.0, 8.0],
+            }
+        )
         clusters = compute_fire_clusters(df, distance_km=10.0)
         if clusters:
             c = clusters[0]
@@ -284,12 +318,14 @@ class TestComputeFireClusters:
 
     def test_distance_km_parameter_accepted(self):
         """Function accepts different distance_km values without error."""
-        df = pd.DataFrame({
-            "latitude": [-23.5, -23.51, -23.52, -25.0, -25.01],
-            "longitude": [-58.5, -58.51, -58.52, -60.0, -60.01],
-            "brightness": [320.0, 322.0, 318.0, 330.0, 325.0],
-            "frp": [10.0, 12.0, 8.0, 20.0, 18.0],
-        })
+        df = pd.DataFrame(
+            {
+                "latitude": [-23.5, -23.51, -23.52, -25.0, -25.01],
+                "longitude": [-58.5, -58.51, -58.52, -60.0, -60.01],
+                "brightness": [320.0, 322.0, 318.0, 330.0, 325.0],
+                "frp": [10.0, 12.0, 8.0, 20.0, 18.0],
+            }
+        )
         # Just verify different distance values work without crashing
         for d in [1.0, 10.0, 100.0, 1000.0]:
             clusters = compute_fire_clusters(df, distance_km=d)

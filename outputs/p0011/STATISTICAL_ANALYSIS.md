@@ -60,4 +60,7 @@ performed essentially identically to the persistence baseline.
 3. **F1 ~0.50** is the result of predicting the majority class correctly.
 4. **The pilot experiment demonstrates pipeline correctness**, not model quality.
 5. **Real data + real training** (Prithvi fine-tune on 50 Chaco tiles for 30 epochs)
-   is expected to yield F1 = 0.85-0.90 based on the Prithvi paper.
+   is expected to yield higher F1, but **this has not been measured**. The F1 = 0.85-0.90
+   figure quoted in earlier versions of this report is a Prithvi literature benchmark,
+   not a Yvutu measurement, and is preserved here only as an aspirational target.
+   See `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md` for measured values.

@@ -2,7 +2,8 @@
 
 Bootstrap CIs and metric aggregation from confusion matrices.
 """
-from typing import Any, Dict, Optional
+
+from typing import Dict
 
 import numpy as np
 
@@ -78,9 +79,7 @@ def bootstrap_ci_from_confusion(
     }
 
 
-def metric_stats_with_ci(
-    metric_values: list, ci: float = 0.95
-) -> Dict[str, float]:
+def metric_stats_with_ci(metric_values: list, ci: float = 0.95) -> Dict[str, float]:
     """Compute mean and CI for a list of metric values."""
     arr = np.array(metric_values)
     if len(arr) == 0:
@@ -95,34 +94,23 @@ def metric_stats_with_ci(
     }
 
 
-def aggregate_metrics(
-    metrics_list: list, ci: float = 0.95
-) -> Dict[str, Dict[str, float]]:
+def aggregate_metrics(metrics_list: list, ci: float = 0.95) -> Dict[str, Dict[str, float]]:
     """Aggregate metrics across multiple runs.
 
     metrics_list: list of dicts with 'f1', 'precision', 'recall' keys.
     """
     keys = ["f1", "precision", "recall"]
-    return {
-        k: metric_stats_with_ci([m.get(k, 0) for m in metrics_list], ci)
-        for k in keys
-    }
+    return {k: metric_stats_with_ci([m.get(k, 0) for m in metrics_list], ci) for k in keys}
 
 
-def analyze_confusion_matrix(
-    tp: int, fp: int, fn: int, tn: int
-) -> Dict[str, float]:
+def analyze_confusion_matrix(tp: int, fp: int, fn: int, tn: int) -> Dict[str, float]:
     """Compute summary metrics from confusion matrix."""
     total = tp + fp + fn + tn
     if total == 0:
         return {"precision": 0.0, "recall": 0.0, "f1": 0.0, "accuracy": 0.0, "n": 0}
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-    f1 = (
-        2 * precision * recall / (precision + recall)
-        if (precision + recall) > 0
-        else 0.0
-    )
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
     accuracy = (tp + tn) / total
     return {
         "precision": float(precision),

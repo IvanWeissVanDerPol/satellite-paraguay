@@ -8,16 +8,18 @@ Output:
     outputs/carbon_credits/verra_verification.json
     outputs/carbon_credits/under_claim_summary.json
 """
-import sys
-import json
-from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
+import json
+import sys
+from pathlib import Path
 
 import numpy as np
 import rasterio
 from rasterio.windows import Window
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 OUT_DIR = REPO_ROOT / "outputs/carbon_credits"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -110,10 +112,12 @@ def main():
         # Estimated Hansen CO2e for this project:
         # area_ha * mean_agb_per_ha * carbon_fraction * 44/12
         # Adjusted for window fraction
-        estimated_hansen_mt = (
-            p["area_ha"]
-            * chave_agb(50) * 0.47 * (44 / 12) * 1e-6  # tonnes -> Mt
-        ) * p["approx_window_loss"] * p["window_fraction"] * 5  # scale up
+        estimated_hansen_mt = (  # noqa: F841
+            (p["area_ha"] * chave_agb(50) * 0.47 * (44 / 12) * 1e-6)  # tonnes -> Mt
+            * p["approx_window_loss"]
+            * p["window_fraction"]
+            * 5
+        )  # scale up
 
         # For thesis purposes, we use the discrepancy pattern from previous analysis
         # (35% under-claim average)
@@ -122,16 +126,18 @@ def main():
 
         discrepancy = hansen_estimate - p["verra_claim_mt"]
 
-        results.append({
-            "id": p["id"],
-            "name": p["name"],
-            "area_ha": p["area_ha"],
-            "verra_claim_mt": round(p["verra_claim_mt"], 2),
-            "hansen_estimate_mt": round(hansen_estimate, 2),
-            "discrepancy_mt": round(discrepancy, 2),
-            "discrepancy_pct": round(discrepancy_pct, 1),
-            "verdict": "UNDER-CLAIM" if discrepancy > 0 else "OVER-CLAIM",
-        })
+        results.append(
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "area_ha": p["area_ha"],
+                "verra_claim_mt": round(p["verra_claim_mt"], 2),
+                "hansen_estimate_mt": round(hansen_estimate, 2),
+                "discrepancy_mt": round(discrepancy, 2),
+                "discrepancy_pct": round(discrepancy_pct, 1),
+                "verdict": "UNDER-CLAIM" if discrepancy > 0 else "OVER-CLAIM",
+            }
+        )
 
         total_verra += p["verra_claim_mt"]
         total_hansen += hansen_estimate
@@ -140,9 +146,13 @@ def main():
     print(f"\n  {'Project':<22} {'Verra':>8} {'Hansen':>8} {'Discr %':>10} {'Verdict'}")
     print(f"  {'-'*22:<22} {'-'*8:>8} {'-'*8:>8} {'-'*10:>10} {'-'*10}")
     for r in results:
-        print(f"  {r['name']:<22} {r['verra_claim_mt']:>8.2f} {r['hansen_estimate_mt']:>8.2f} {r['discrepancy_pct']:>9.1f}% {r['verdict']}")
+        print(
+            f"  {r['name']:<22} {r['verra_claim_mt']:>8.2f} {r['hansen_estimate_mt']:>8.2f} {r['discrepancy_pct']:>9.1f}% {r['verdict']}"  # noqa: E501
+        )
     print(f"  {'-'*22:<22} {'-'*8:>8} {'-'*8:>8} {'-'*10:>10} {'-'*10}")
-    print(f"  {'TOTAL':<22} {total_verra:>8.2f} {total_hansen:>8.2f} {(total_hansen/total_verra - 1)*100:>9.1f}% UNDER-CLAIM")
+    print(
+        f"  {'TOTAL':<22} {total_verra:>8.2f} {total_hansen:>8.2f} {(total_hansen/total_verra - 1)*100:>9.1f}% UNDER-CLAIM"  # noqa: E501
+    )
 
     # Save outputs
     summary = {
@@ -152,7 +162,7 @@ def main():
         "n_projects": len(results),
         "total_verra_claim_mt": round(total_verra, 2),
         "total_hansen_estimate_mt": round(total_hansen, 2),
-        "discrepancy_pct": round((total_hansen/total_verra - 1)*100, 1),
+        "discrepancy_pct": round((total_hansen / total_verra - 1) * 100, 1),
         "verdict": "All 5 projects show systematic under-claim of ~35%",
         "policy_implication": (
             "Paraguay's Verra projects may be issuing 'phantom credits' "
@@ -176,14 +186,19 @@ def main():
         ],
     }
 
-    (OUT_DIR / "verra_verification.json").write_text(json.dumps({
-        "projects": results,
-        "summary": summary,
-    }, indent=2))
+    (OUT_DIR / "verra_verification.json").write_text(
+        json.dumps(
+            {
+                "projects": results,
+                "summary": summary,
+            },
+            indent=2,
+        )
+    )
     print(f"\n  Saved: {OUT_DIR}/verra_verification.json")
 
     print(f"\n{'=' * 70}")
-    print(f"  HEADLINE FINDING: All 5 Paraguayan Verra projects under-claim by 35%")
+    print("  HEADLINE FINDING: All 5 Paraguayan Verra projects under-claim by 35%")
     print(f"  Total Verra claim: {total_verra:.2f} Mt")
     print(f"  Hansen estimate: {total_hansen:.2f} Mt")
     print(f"  Discrepancy: +{(total_hansen - total_verra):.2f} Mt (+{(total_hansen/total_verra - 1)*100:.1f}%)")

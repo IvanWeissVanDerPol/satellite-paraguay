@@ -12,18 +12,18 @@ Saves:
     outputs/p0011/carbon/carbon_by_department.json
     outputs/p0011/carbon/per_year_loss.json
 """
-import sys
-import json
-from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
+import json
+import sys
+from pathlib import Path
 
 import numpy as np
 import rasterio
 from rasterio.windows import Window
-from rasterio.features import rasterize
-import geopandas as gpd
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/carbon"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -114,21 +114,28 @@ def main():
             "agb_mg_per_ha_mean": float(agb[year_mask].mean()) if year_mask.any() else 0,
         }
     for year, vals in list(per_year_loss.items())[:5]:
-        print(f"  {year}: {vals['pixels']:,} px, {vals['co2e_mt']:.2f} Mt CO2e, AGB mean {vals['agb_mg_per_ha_mean']:.2f}")
+        print(
+            f"  {year}: {vals['pixels']:,} px, {vals['co2e_mt']:.2f} Mt CO2e, AGB mean {vals['agb_mg_per_ha_mean']:.2f}"
+        )
 
     # Save outputs
     print("\n  Saving outputs...")
 
     # Per-year JSON
-    (OUT_DIR / "per_year_loss.json").write_text(json.dumps({
-        "model": "Chave 2014 approximation: AGB = 12.0 * (tc/100)^1.5",
-        "carbon_fraction": 0.47,
-        "co2_c_ratio": 44.0 / 12.0,
-        "pixel_area_ha": PIXEL_AREA_HA,
-        "total_co2e_loss_mt": float(total_co2e_loss / 1e6),
-        "total_loss_pixels": int(total_loss_pixels),
-        "per_year": per_year_loss,
-    }, indent=2))
+    (OUT_DIR / "per_year_loss.json").write_text(
+        json.dumps(
+            {
+                "model": "Chave 2014 approximation: AGB = 12.0 * (tc/100)^1.5",
+                "carbon_fraction": 0.47,
+                "co2_c_ratio": 44.0 / 12.0,
+                "pixel_area_ha": PIXEL_AREA_HA,
+                "total_co2e_loss_mt": float(total_co2e_loss / 1e6),
+                "total_loss_pixels": int(total_loss_pixels),
+                "per_year": per_year_loss,
+            },
+            indent=2,
+        )
+    )
 
     # Per-pixel map (small window)
     out_map = OUT_DIR / "per_pixel_carbon_map.tif"
@@ -146,11 +153,11 @@ def main():
 
     # Summary
     print(f"\n{'=' * 70}")
-    print(f"  KEY RESULTS:")
+    print("  KEY RESULTS:")
     print(f"    Total CO2e loss (in window): {total_co2e_loss/1e6:.2f} Mt")
     print(f"    Total loss pixels: {total_loss_pixels:,}")
     print(f"    Mean AGB: {agb.mean():.2f} Mg/ha")
-    print(f"    Note: This is a 2000x2000 pixel window; full Paraguay is 50x larger")
+    print("    Note: This is a 2000x2000 pixel window; full Paraguay is 50x larger")
     print(f"    Estimated full Paraguay CO2e loss: ~{total_co2e_loss/1e6 * 50:.2f} Mt")
 
 

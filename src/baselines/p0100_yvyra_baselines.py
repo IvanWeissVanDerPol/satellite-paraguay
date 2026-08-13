@@ -5,10 +5,10 @@ Baselines:
 2. Random Forest
 3. Persistence (mean of training set)
 """
-from typing import Optional
+
 import numpy as np
 
-from src.evaluation import regression_metrics, print_metrics
+from src.evaluation import print_metrics, regression_metrics
 
 
 def linear_regression_baseline(
@@ -89,12 +89,27 @@ def run_all_baselines(
 
 
 if __name__ == "__main__":
-    print("P0100 baselines demo")
-    np.random.seed(42)
-    n_samples = 100
-    n_features = 50
-    features = np.random.randn(n_samples, n_features).astype(np.float32)
-    target = features[:, 0] * 1000 + np.random.randn(n_samples) * 100  # carbon
+    # FAIL-LOUD (added 2026-08-11): no more np.random.rand() silent fallback.
+    # P0100 baselines require real Verra project features + measured carbon
+    # claims. Use scripts/carbon_credit_verifier.py to download + load them
+    # from data/cache/verra/, then pass via CLI.
+    print("P0100 baselines demo (fail-loud mode)")
+    print("Pass real Verra features + claims:")
+    print("    python -m src.baselines.p0100_yvyra_baselines features.npy claims.npy")
+    import sys
 
-    results = run_all_baselines(features, target)
-    print_metrics(results)
+    if len(sys.argv) >= 3:
+        features = np.load(sys.argv[1])
+        target = np.load(sys.argv[2])
+        if features.ndim != 2:
+            raise FileNotFoundError(f"features must be 2D (n_samples, n_features); got {features.shape}")
+        if target.shape != (features.shape[0],):
+            raise FileNotFoundError(f"target shape {target.shape} != n_samples {features.shape[0]}")
+        results = run_all_baselines(features, target)
+        print_metrics(results)
+    else:
+        raise FileNotFoundError(
+            "P0100 baselines demo requires real Verra data. "
+            "Run scripts/carbon_credit_verifier.py first to populate data/cache/verra/. "
+            "Silent random-fill was removed 2026-08-11 — see BRUTAL_ROAST.md."
+        )

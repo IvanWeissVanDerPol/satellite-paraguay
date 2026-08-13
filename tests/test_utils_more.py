@@ -1,7 +1,4 @@
 """Tests for src/utils/reproducibility_verify, repo_evaluator, repo_verify."""
-import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 class TestReproducibilityVerify:
@@ -9,6 +6,7 @@ class TestReproducibilityVerify:
 
     def test_file_hash_sha256(self, tmp_path):
         from src.utils.reproducibility_verify import file_hash
+
         f = tmp_path / "test.txt"
         f.write_text("hello world")
         h = file_hash(f, "sha256")
@@ -18,6 +16,7 @@ class TestReproducibilityVerify:
 
     def test_file_hash_sha512(self, tmp_path):
         from src.utils.reproducibility_verify import file_hash
+
         f = tmp_path / "test.txt"
         f.write_text("hello")
         h = file_hash(f, "sha512")
@@ -25,6 +24,7 @@ class TestReproducibilityVerify:
 
     def test_run_script_success(self, tmp_path):
         from src.utils.reproducibility_verify import run_script
+
         # Create a simple script
         script = tmp_path / "test.py"
         script.write_text("print('hello')")
@@ -34,6 +34,7 @@ class TestReproducibilityVerify:
 
     def test_run_script_failure(self, tmp_path):
         from src.utils.reproducibility_verify import run_script
+
         script = tmp_path / "fail.py"
         script.write_text("import sys; sys.exit(1)")
         rc, stdout, stderr = run_script(tmp_path, "fail.py")
@@ -41,6 +42,7 @@ class TestReproducibilityVerify:
 
     def test_check_outputs_exist_all_present(self, tmp_path):
         from src.utils.reproducibility_verify import check_outputs_exist
+
         (tmp_path / "a.txt").write_text("x")
         (tmp_path / "b.txt").write_text("y")
         missing = check_outputs_exist(tmp_path, ["a.txt", "b.txt"])
@@ -48,12 +50,14 @@ class TestReproducibilityVerify:
 
     def test_check_outputs_exist_some_missing(self, tmp_path):
         from src.utils.reproducibility_verify import check_outputs_exist
+
         (tmp_path / "a.txt").write_text("x")
         missing = check_outputs_exist(tmp_path, ["a.txt", "missing.txt"])
         assert missing == ["missing.txt"]
 
     def test_hash_outputs_existing(self, tmp_path):
         from src.utils.reproducibility_verify import hash_outputs
+
         (tmp_path / "a.txt").write_text("hello")
         hashes = hash_outputs(tmp_path, ["a.txt", "missing.txt"])
         assert "a.txt" in hashes
@@ -61,16 +65,18 @@ class TestReproducibilityVerify:
 
     def test_verify_script_pass(self, tmp_path):
         from src.utils.reproducibility_verify import verify_script
+
         # Create a script that creates an output
         script = tmp_path / "create.py"
         script.write_text("open('output.txt', 'w').write('data')")
-        rc, _, _ = (0, "", "")  # placeholder
+        rc, _, _ = (0, "", "")  # placeholder  # noqa: F841
         result = verify_script(tmp_path, "create.py", ["output.txt"])
         # Either pass or fail depending on script behavior
         assert "status" in result
 
     def test_verify_script_timeout(self, tmp_path):
         from src.utils.reproducibility_verify import verify_script
+
         script = tmp_path / "sleep.py"
         script.write_text("import time; time.sleep(60)")
         result = verify_script(tmp_path, "sleep.py", [], timeout=2)
@@ -78,6 +84,7 @@ class TestReproducibilityVerify:
 
     def test_summarize_results(self):
         from src.utils.reproducibility_verify import summarize_results
+
         results = [
             {"status": "pass"},
             {"status": "pass"},
@@ -91,11 +98,13 @@ class TestReproducibilityVerify:
 
     def test_summarize_results_unknown_status(self):
         from src.utils.reproducibility_verify import summarize_results
+
         counts = summarize_results([{"status": "unknown"}])
         assert counts == {"pass": 0, "fail": 0, "timeout": 0}
 
     def test_total_elapsed(self):
         from src.utils.reproducibility_verify import total_elapsed
+
         results = [
             {"elapsed_s": 1.0},
             {"elapsed_s": 2.5},
@@ -105,6 +114,7 @@ class TestReproducibilityVerify:
 
     def test_total_elapsed_no_field(self):
         from src.utils.reproducibility_verify import total_elapsed
+
         assert total_elapsed([{"foo": "bar"}]) == 0
 
 
@@ -113,6 +123,7 @@ class TestRepoEvaluator:
 
     def test_count_files_by_type(self, tmp_path):
         from src.utils.repo_evaluator import count_files_by_type
+
         (tmp_path / "a.py").write_text("")
         (tmp_path / "b.md").write_text("")
         (tmp_path / "c.yaml").write_text("")
@@ -125,6 +136,7 @@ class TestRepoEvaluator:
 
     def test_count_files_excludes_git(self, tmp_path):
         from src.utils.repo_evaluator import count_files_by_type
+
         git_dir = tmp_path / ".git"
         git_dir.mkdir()
         (git_dir / "config").write_text("")
@@ -135,6 +147,7 @@ class TestRepoEvaluator:
 
     def test_count_files_handles_images(self, tmp_path):
         from src.utils.repo_evaluator import count_files_by_type
+
         (tmp_path / "a.png").write_text("")
         (tmp_path / "b.jpg").write_text("")
         (tmp_path / "c.gif").write_text("")
@@ -143,6 +156,7 @@ class TestRepoEvaluator:
 
     def test_count_loc(self, tmp_path):
         from src.utils.repo_evaluator import count_loc
+
         (tmp_path / "a.py").write_text("# comment\ndef f():\n    pass\n\n# another\nprint('x')\n")
         loc = count_loc(tmp_path)
         # def f(), pass, print('x') = 3 non-blank, non-comment lines
@@ -150,16 +164,19 @@ class TestRepoEvaluator:
 
     def test_count_loc_zero_for_comments_only(self, tmp_path):
         from src.utils.repo_evaluator import count_loc
+
         (tmp_path / "a.py").write_text("# only comments\n# more\n")
         assert count_loc(tmp_path) == 0
 
     def test_count_test_files_nonexistent(self, tmp_path):
         from src.utils.repo_evaluator import count_test_files
+
         result = count_test_files(tmp_path / "missing")
         assert result == []
 
     def test_count_test_files(self, tmp_path):
         from src.utils.repo_evaluator import count_test_files
+
         (tmp_path / "test_a.py").write_text("")
         (tmp_path / "test_b.py").write_text("")
         (tmp_path / "not_a_test.py").write_text("")
@@ -168,6 +185,7 @@ class TestRepoEvaluator:
 
     def test_is_module_stub(self):
         from src.utils.repo_evaluator import is_module_stub
+
         assert is_module_stub("def f():\n    pass  # TODO\n")
         assert is_module_stub("def f():\n    raise NotImplementedError\n")
         assert is_module_stub("# TODO: fix this\n")
@@ -176,14 +194,15 @@ class TestRepoEvaluator:
 
     def test_extract_signatures_basic(self):
         from src.utils.repo_evaluator import extract_signatures
-        code = '''
+
+        code = """
 class Foo:
     def bar(self):
         pass
 
 def baz():
     pass
-'''
+"""
         sigs = extract_signatures(code)
         assert "class Foo" in sigs
         assert "def baz" in sigs
@@ -192,17 +211,20 @@ def baz():
 
     def test_extract_signatures_invalid(self):
         from src.utils.repo_evaluator import extract_signatures
+
         sigs = extract_signatures("def broken(:\n  invalid python")
         assert sigs == []
 
     def test_extract_signatures_limits(self):
         from src.utils.repo_evaluator import extract_signatures
+
         code = "\n".join([f"def f{i}():\n    pass" for i in range(20)])
         sigs = extract_signatures(code, max_signatures=5)
         assert len(sigs) == 5
 
     def test_analyze_module_returns_dict(self, tmp_path):
         from src.utils.repo_evaluator import analyze_module
+
         src = tmp_path / "src"
         src.mkdir()
         mod = src / "mod.py"
@@ -215,6 +237,7 @@ def baz():
 
     def test_analyze_modules(self, tmp_path):
         from src.utils.repo_evaluator import analyze_modules
+
         src = tmp_path / "src"
         src.mkdir()
         (src / "a.py").write_text("def f(): pass\n")
@@ -225,6 +248,7 @@ def baz():
 
     def test_count_real_vs_stub(self):
         from src.utils.repo_evaluator import count_real_vs_stub
+
         modules = [
             {"is_stub": False},
             {"is_stub": False},
@@ -237,6 +261,7 @@ def baz():
 
     def test_total_loc_by_status(self):
         from src.utils.repo_evaluator import total_loc_by_status
+
         modules = [
             {"is_stub": False, "loc": 100},
             {"is_stub": False, "loc": 50},
@@ -252,6 +277,7 @@ class TestRepoVerify:
 
     def test_verify_imports_success(self):
         from src.utils.repo_verify import verify_imports
+
         result = verify_imports(modules=["os", "sys"])
         assert result["ok"] is True
         assert "os" in result["imported"]
@@ -259,6 +285,7 @@ class TestRepoVerify:
 
     def test_verify_imports_failure(self):
         from src.utils.repo_verify import verify_imports
+
         result = verify_imports(modules=["nonexistent_module_xyz_123"])
         assert result["ok"] is False
         assert len(result["failed"]) == 1
@@ -266,34 +293,35 @@ class TestRepoVerify:
     def test_verify_pipelines_success(self):
         """Use real pipeline that we know exists."""
         from src.utils.repo_verify import verify_pipelines
+
         # YvutuPipeline is in p0011 (correct name: Y-v-u-t-y-u, not YvutuPipeline)
-        result = verify_pipelines(
-            pipeline_specs=[("src.papers.p0011_yvytu_deforestation.pipeline", "YvytuPipeline")]
-        )
+        result = verify_pipelines(pipeline_specs=[("src.papers.p0011_yvytu_deforestation.pipeline", "YvytuPipeline")])
         assert result["ok"] is True
         assert "YvytuPipeline" in result["instantiated"]
 
     def test_verify_pipelines_failure(self):
         from src.utils.repo_verify import verify_pipelines
-        result = verify_pipelines(
-            pipeline_specs=[("nonexistent.module", "NonExistentClass")]
-        )
+
+        result = verify_pipelines(pipeline_specs=[("nonexistent.module", "NonExistentClass")])
         assert result["ok"] is False
         assert len(result["failed"]) == 1
 
     def test_all_checks_passed(self):
         from src.utils.repo_verify import all_checks_passed
+
         assert all_checks_passed({"ok": True}, {"ok": True}) is True
         assert all_checks_passed({"ok": True}, {"ok": False}) is False
         assert all_checks_passed({"foo": "bar"}) is False
 
     def test_overall_summary(self):
         from src.utils.repo_verify import overall_summary
+
         summary = overall_summary({"ok": True}, {"ok": True})
         assert summary["ok"] is True
         assert summary["n_checks"] == 2
 
     def test_overall_summary_mixed(self):
         from src.utils.repo_verify import overall_summary
+
         summary = overall_summary({"ok": True}, {"ok": False})
         assert summary["ok"] is False

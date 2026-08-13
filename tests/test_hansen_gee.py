@@ -3,12 +3,11 @@
 Coverage target: 90%+. Tests download_hansen_real with mocked GEE
 and rasterio.
 """
-import os
+
 import sys
-import pytest
+from unittest.mock import MagicMock, patch
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 class TestDownloadHansenRealGEESuccess:
@@ -17,6 +16,7 @@ class TestDownloadHansenRealGEESuccess:
     def test_cache_hit_returns_immediately(self, tmp_path, monkeypatch):
         """When cache file exists, returns it without GEE call."""
         from src.satellite_io import hansen as h_mod
+
         monkeypatch.setattr(h_mod, "CACHE_DIR", tmp_path)
 
         # Pre-populate cache
@@ -49,11 +49,12 @@ class TestDownloadHansenRealGEESuccess:
     def test_gee_no_auth_returns_synthetic(self, tmp_path, monkeypatch):
         """When ee.Initialize fails, falls back to synthetic."""
         from src.satellite_io import hansen as h_mod
+
         monkeypatch.setattr(h_mod, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
         try:
-            result = h_mod.download_hansen_real(
+            result = h_mod.download_hansen_real(  # noqa: F841
                 bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
             )
         finally:
@@ -65,6 +66,7 @@ class TestDownloadHansenRealGEESuccess:
     def test_gee_import_error_returns_synthetic(self, tmp_path, monkeypatch):
         """When ee import fails, returns synthetic."""
         from src.satellite_io import hansen as h_mod
+
         monkeypatch.setattr(h_mod, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
@@ -85,6 +87,7 @@ class TestDownloadHansenRealGEESuccess:
     def test_use_gee_false_skips_gee(self, tmp_path, monkeypatch):
         """When use_gee=False, skips GEE entirely."""
         from src.satellite_io import hansen as h_mod
+
         monkeypatch.setattr(h_mod, "CACHE_DIR", tmp_path)
         result = h_mod.download_hansen_real(
             bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
@@ -93,14 +96,15 @@ class TestDownloadHansenRealGEESuccess:
         assert isinstance(result, dict)
 
 
-
 class TestDownloadHansenRealGEEWorking:
     """Tests where GEE chain is mocked."""
 
     def test_full_gee_chain_returns_data(self, tmp_path, monkeypatch):
         """Mock full GEE chain — returns numpy arrays."""
         import io
+
         from src.satellite_io import hansen as h_mod
+
         monkeypatch.setattr(h_mod, "CACHE_DIR", tmp_path)
 
         # Mock ee with chains
@@ -118,6 +122,7 @@ class TestDownloadHansenRealGEEWorking:
         try:
             import rasterio
             from rasterio.io import MemoryFile
+
             profile = {
                 "driver": "GTiff",
                 "dtype": "uint8",

@@ -8,12 +8,14 @@ Produces STATS.md with actual metrics:
 - Stub modules
 - Fabricated vs measured metrics
 """
+
 import ast
 import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/root/satellite-paraguay")
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
 
 
 def count_files(root):
@@ -60,21 +62,21 @@ def count_loc(root):
             continue
         try:
             total += sum(1 for line in p.open() if line.strip() and not line.strip().startswith("#"))
-        except:
+        except BaseException:
             pass
     return total
 
 
 def count_tests():
     """Count test files."""
-    test_dir = Path("/root/satellite-paraguay/tests")
+    test_dir = Path("str(REPO)/tests")
     return list(test_dir.glob("test_*.py"))
 
 
 def analyze_modules():
     """Analyze each module for actual vs stub status."""
     modules = []
-    src_dir = Path("/root/satellite-paraguay/src")
+    src_dir = Path("str(REPO)/src")
     for py_file in src_dir.rglob("*.py"):
         if ".git" in py_file.parts or "__pycache__" in py_file.parts:
             continue
@@ -82,7 +84,7 @@ def analyze_modules():
             continue
         try:
             content = py_file.read_text()
-        except:
+        except BaseException:
             continue
 
         # Check if has stub patterns
@@ -107,19 +109,21 @@ def analyze_modules():
             for fn in functions:
                 if not fn.name.startswith("_"):
                     signatures.append(f"def {fn.name}")
-        except:
+        except BaseException:
             pass
 
         loc = sum(1 for line in content.split("\n") if line.strip() and not line.strip().startswith("#"))
 
-        modules.append({
-            "path": str(py_file.relative_to(src_dir)),
-            "loc": loc,
-            "n_classes": len(classes),
-            "n_functions": len(functions),
-            "is_stub": is_stub,
-            "signatures": signatures[:10],
-        })
+        modules.append(
+            {
+                "path": str(py_file.relative_to(src_dir)),
+                "loc": loc,
+                "n_classes": len(classes),
+                "n_functions": len(functions),
+                "is_stub": is_stub,
+                "signatures": signatures[:10],
+            }
+        )
     return modules
 
 
@@ -128,11 +132,11 @@ def main():
     print("SatelliteCV-Paraguay — Real Repo Evaluation")
     print("=" * 70)
 
-    repo = Path("/root/satellite-paraguay")
+    repo = Path(str(Path(__file__).resolve().parent.parent))
 
     # File counts
     counts = count_files(repo)
-    print(f"\nFiles:")
+    print("\nFiles:")
     for k, v in counts.items():
         if v > 0:
             print(f"  {k:12s}: {v}")
@@ -176,18 +180,18 @@ def main():
         for k, v in counts.items():
             if v > 0:
                 f.write(f"- **{k}:** {v}\n")
-        f.write(f"\n## Code metrics\n\n")
+        f.write("\n## Code metrics\n\n")
         f.write(f"- **Python LOC** (non-empty, non-comment): **{loc}**\n")
         f.write(f"- **Test files:** {len(tests)}\n")
-        f.write(f"\n## Module analysis\n\n")
+        f.write("\n## Module analysis\n\n")
         f.write(f"- **Real modules** (no TODO/stub markers): {len(real)}\n")
         f.write(f"- **Stub modules** (contains TODO/NotImplementedError): {len(stubs)}\n")
-        f.write(f"\n## What's actually working\n\n")
+        f.write("\n## What's actually working\n\n")
         for m in real[:20]:
             f.write(f"- `{m['path']}` ({m['loc']} LOC, {m['n_classes']} classes, {m['n_functions']} funcs)\n")
         if len(real) > 20:
             f.write(f"- ... and {len(real) - 20} more\n")
-        f.write(f"\n## What's stub\n\n")
+        f.write("\n## What's stub\n\n")
         for m in stubs[:20]:
             f.write(f"- `{m['path']}` ({m['loc']} LOC)\n")
         if len(stubs) > 20:

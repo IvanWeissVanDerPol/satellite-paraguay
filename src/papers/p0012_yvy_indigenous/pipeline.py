@@ -7,12 +7,11 @@ Timeline: 12 weeks
 Hypothesis: VLM (LLaVA-1.6) + Catastro intersection can identify indigenous
 territory conflicts with F1 > 0.80, CARE-compliant.
 """
-from pathlib import Path
-from typing import Optional, Dict
-import numpy as np
 
-from ...paraguay_admin import load_indigenous_territories, load_catastro_parcels
-from ...parcel_analysis import detect_parcel_conflicts
+from pathlib import Path
+from typing import Dict, Optional
+
+from ...paraguay_admin import load_catastro_parcels, load_indigenous_territories
 
 
 class YvyPipeline:
@@ -60,6 +59,7 @@ class YvyPipeline:
             # Use GPT-4V if user explicitly opts in
             try:
                 import openai
+
                 response = openai.ChatCompletion.create(
                     model="gpt-4-vision-preview",
                     messages=[

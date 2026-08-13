@@ -10,19 +10,14 @@ Handles:
 
 All sources are open-source and free.
 """
+
 from pathlib import Path
-from typing import Optional, List, Dict, Tuple
-import os
-import time
+from typing import Dict, List
 
 import numpy as np
-import pandas as pd
-import geopandas as gpd
 import rasterio
-from rasterio.windows import from_bounds
-from shapely.geometry import box
 
-DEFAULT_OUTPUT_DIR = Path("/root/satellite-paraguay/data/raw")
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "raw"
 SENTINEL_OUTPUT = DEFAULT_OUTPUT_DIR / "sentinel2"
 LANDSAT_OUTPUT = DEFAULT_OUTPUT_DIR / "landsat9"
 PLANET_OUTPUT = DEFAULT_OUTPUT_DIR / "planet"
@@ -99,10 +94,14 @@ def download_via_gee(
         print("[gee] Run: earthengine authenticate")
         raise
 
-    region = ee.Geometry.Rectangle([
-        bbox["min_lon"], bbox["min_lat"],
-        bbox["max_lon"], bbox["max_lat"],
-    ])
+    region = ee.Geometry.Rectangle(
+        [
+            bbox["min_lon"],
+            bbox["min_lat"],
+            bbox["max_lon"],
+            bbox["max_lat"],
+        ]
+    )
 
     if satellite == "sentinel2":
         collection = (
@@ -113,11 +112,7 @@ def download_via_gee(
         )
         image = collection.median().clip(region)
     elif satellite == "landsat9":
-        collection = (
-            ee.ImageCollection("LANDSAT/LC09/C02/T1_L2")
-            .filterBounds(region)
-            .filterDate(start_date, end_date)
-        )
+        collection = ee.ImageCollection("LANDSAT/LC09/C02/T1_L2").filterBounds(region).filterDate(start_date, end_date)
         image = collection.median().clip(region)
     else:
         raise ValueError(f"Unknown satellite: {satellite}")
@@ -128,11 +123,13 @@ def download_via_gee(
 
     # Get download URL
     try:
-        url = image.getDownloadURL({
-            "scale": 10,
-            "region": region,
-            "format": "GEO_TIFF",
-        })
+        url = image.getDownloadURL(
+            {
+                "scale": 10,
+                "region": region,
+                "format": "GEO_TIFF",
+            }
+        )
         print(f"[gee] Download URL: {url[:100]}...")
         print(f"[gee] Output: {out_path}")
         # Real download: requests.get(url)
@@ -216,7 +213,7 @@ def download_hansen_gfc(output_dir: Path = DEFAULT_OUTPUT_DIR) -> Path:
     out_path = output_dir / "hansen_gfc" / "hansen_paraguay.tif"
 
     # Hansen GFC URL pattern
-    url = "https://storage.googleapis.com/earthenginepartners-hansen/GFC-2023-v1.11/Hansen_GFC-2023-v1.11_lossyear_20S_060W.tif"
+    url = "https://storage.googleapis.com/earthenginepartners-hansen/GFC-2023-v1.11/Hansen_GFC-2023-v1.11_lossyear_20S_060W.tif"  # noqa: E501
 
     print(f"[hansen] Downloading deforestation data from {url}")
     print(f"[hansen] Output: {out_path}")

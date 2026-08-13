@@ -3,20 +3,19 @@
 Coverage target: 80%+. The module has both live API and synthetic
 fallback paths.
 """
-import pytest
-from unittest.mock import patch, MagicMock
+
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
 
 from src.external.openaq_client import (
     _parameter_id,
     _request_with_retry,
-    generate_synthetic_openaq_for_station,
-    generate_synthetic_openaq,
-    fetch_openaq_asuncion,
     aggregate_by_month,
+    fetch_openaq_asuncion,
+    generate_synthetic_openaq,
+    generate_synthetic_openaq_for_station,
 )
-
 
 # =========================
 # _parameter_id
@@ -88,16 +87,15 @@ class TestRequestWithRetry:
         mock_200.status_code = 200
         mock_200.json.return_value = {"results": []}
 
-        with patch("src.external.openaq_client.requests.get",
-                   side_effect=[mock_429, mock_200]):
+        with patch("src.external.openaq_client.requests.get", side_effect=[mock_429, mock_200]):
             with patch("src.external.openaq_client.time.sleep"):  # avoid waiting
                 result = _request_with_retry("https://example.com")
         assert result == {"results": []}
 
     def test_returns_none_on_request_exception(self):
         import requests as _req
-        with patch("src.external.openaq_client.requests.get",
-                   side_effect=_req.RequestException("connection failed")):
+
+        with patch("src.external.openaq_client.requests.get", side_effect=_req.RequestException("connection failed")):
             with patch("src.external.openaq_client.time.sleep"):
                 result = _request_with_retry("https://example.com", max_retries=1)
         assert result is None
@@ -204,10 +202,12 @@ class TestAggregateByMonth:
 
     def test_basic_aggregation(self):
         dates = pd.date_range("2025-01-01", periods=60, freq="D")
-        df = pd.DataFrame({
-            "date_utc": dates,
-            "value": list(range(60)),
-        })
+        df = pd.DataFrame(
+            {
+                "date_utc": dates,
+                "value": list(range(60)),
+            }
+        )
         result = aggregate_by_month(df, value_col="value")
         assert "year_month" in result.columns
         assert "mean" in result.columns
@@ -221,10 +221,12 @@ class TestAggregateByMonth:
     def test_value_col_parameter(self):
         """Custom value column name is honored."""
         dates = pd.date_range("2025-01-01", periods=30, freq="D")
-        df = pd.DataFrame({
-            "date_utc": dates,
-            "custom_value": list(range(30)),
-        })
+        df = pd.DataFrame(
+            {
+                "date_utc": dates,
+                "custom_value": list(range(30)),
+            }
+        )
         result = aggregate_by_month(df, value_col="custom_value")
         assert "mean" in result.columns
         assert result["mean"].iloc[0] == 14.5  # mean of 0..29

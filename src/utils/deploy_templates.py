@@ -93,7 +93,7 @@ COPY outputs/ outputs/
 
 EXPOSE 8000 8501
 
-CMD ["bash", "-c", "gunicorn src.api.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 & streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"]
+CMD ["bash", "-c", "gunicorn src.api.main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 & streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"]  # noqa: E501
 """
 
 

@@ -7,18 +7,19 @@ non-forest as grey.
 Output:
     outputs/p0011/figures/deforestation_timeline.gif
 """
+
 import sys
-import json
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
-
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
 import numpy as np
 import rasterio
 from rasterio.windows import Window
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 OUT_DIR = REPO_ROOT / "outputs/p0011/figures"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -47,8 +48,7 @@ def main():
         treecover = src.read(1, window=Window(win_x, win_y, win_size, win_size))
 
     print(f"  Window: {win_x}-{win_x+win_size}, {win_y}-{win_y+win_size}")
-    print(f"  Loss pixels: {(lossyear > 0).sum():,} "
-          f"({100*(lossyear>0).mean():.2f}%)")
+    print(f"  Loss pixels: {(lossyear > 0).sum():,} " f"({100*(lossyear>0).mean():.2f}%)")
 
     # Create figure
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -66,13 +66,22 @@ def main():
     rgb[initial_state == 0] = [0.6, 0.6, 0.55]  # non-forest grey
 
     im = ax.imshow(rgb)
-    ax.set_title("Paraguay Deforestation 2001-2023\n"
-                 f"Window {win_x}-{win_x+win_size}, {win_y}-{win_y+win_size}\n"
-                 "Green = Forest, Red = Deforested, Grey = Non-forest")
+    ax.set_title(
+        "Paraguay Deforestation 2001-2023\n"
+        f"Window {win_x}-{win_x+win_size}, {win_y}-{win_y+win_size}\n"
+        "Green = Forest, Red = Deforested, Grey = Non-forest"
+    )
     ax.axis("off")
-    txt = ax.text(0.02, 0.98, "Year: 2000", transform=ax.transAxes,
-                  fontsize=14, fontweight="bold", va="top",
-                  bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
+    txt = ax.text(
+        0.02,
+        0.98,
+        "Year: 2000",
+        transform=ax.transAxes,
+        fontsize=14,
+        fontweight="bold",
+        va="top",
+        bbox=dict(boxstyle="round", facecolor="white", alpha=0.8),
+    )
 
     def update(frame_idx):
         """Update to year 2001 + frame_idx."""
@@ -90,17 +99,13 @@ def main():
         rgb = np.zeros((win_size, win_size, 3), dtype=np.float32)
         rgb[current_state == 2] = [0.18, 0.55, 0.34]  # forest green
         rgb[current_state == 1] = [0.85, 0.20, 0.10]  # deforestation red
-        rgb[current_state == 0] = [0.6, 0.6, 0.55]    # non-forest grey
+        rgb[current_state == 0] = [0.6, 0.6, 0.55]  # non-forest grey
 
         im.set_array(rgb)
-        txt.set_text(f"Year: {year}\n"
-                    f"Loss: {lost_mask.sum():,} pixels "
-                    f"({100*lost_mask.sum()/win_size**2:.2f}%)")
+        txt.set_text(f"Year: {year}\n" f"Loss: {lost_mask.sum():,} pixels " f"({100*lost_mask.sum()/win_size**2:.2f}%)")
         return im, txt
 
-    anim = animation.FuncAnimation(
-        fig, update, frames=23, interval=300, blit=False
-    )
+    anim = animation.FuncAnimation(fig, update, frames=23, interval=300, blit=False)
 
     out_gif = OUT_DIR / "deforestation_timeline.gif"
     print(f"\nSaving animation to {out_gif}...")
@@ -108,8 +113,8 @@ def main():
     plt.close()
 
     print(f"\n✓ Saved: {out_gif}")
-    print(f"  23 frames, one per year (2001-2023)")
-    print(f"  Forest → red as pixels are lost")
+    print("  23 frames, one per year (2001-2023)")
+    print("  Forest → red as pixels are lost")
 
 
 if __name__ == "__main__":

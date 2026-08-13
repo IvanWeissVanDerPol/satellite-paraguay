@@ -7,8 +7,8 @@ Run: mutmut run --target scripts/per_pixel_carbon.py --tests-dir tests/
 
 This is a wrapper to make mutation testing easy to run.
 """
+
 import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -59,23 +59,23 @@ def main():
     for t in targets:
         print(f"  - {t}")
 
-    print(f"\nMutation testing introduces small code changes and verifies")
-    print(f"that tests catch them. A low mutation score means tests are weak.")
+    print("\nMutation testing introduces small code changes and verifies")
+    print("that tests catch them. A low mutation score means tests are weak.")
 
     if not check_mutmut():
-        print(f"\n  ⚠ mutmut not installed.")
-        print(f"  Install with: pip install mutmut")
-        print(f"  Then run: mutmut run --target=scripts/per_pixel_carbon.py")
+        print("\n  ⚠ mutmut not installed.")
+        print("  Install with: pip install mutmut")
+        print("  Then run: mutmut run --target=scripts/per_pixel_carbon.py")
 
-    print(f"\nQuick start:")
-    print(f"  pip install mutmut")
-    print(f"  mutmut run --target=scripts/per_pixel_carbon.py \\")
-    print(f"           --runner='python -m pytest tests/test_per_pixel_carbon.py --no-cov -x'")
+    print("\nQuick start:")
+    print("  pip install mutmut")
+    print("  mutmut run --target=scripts/per_pixel_carbon.py \\")
+    print("           --runner='python -m pytest tests/test_per_pixel_carbon.py --no-cov -x'")
 
-    print(f"\nExpected results:")
-    print(f"  - Mutation score > 70%: Good test coverage")
-    print(f"  - Mutation score 50-70%: Adequate, can be improved")
-    print(f"  - Mutation score < 50%: Tests need strengthening")
+    print("\nExpected results:")
+    print("  - Mutation score > 70%: Good test coverage")
+    print("  - Mutation score 50-70%: Adequate, can be improved")
+    print("  - Mutation score < 50%: Tests need strengthening")
 
     # Try to run if mutmut is available
     if check_mutmut():

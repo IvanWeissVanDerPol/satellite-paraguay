@@ -3,11 +3,11 @@
 Coverage target: 70%+. The YvyraPipeline class handles carbon
 credit verification against Verra/Gold Standard projects.
 """
-import pytest
+
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
-import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+import pytest
 
 
 class TestYvyraPipeline:
@@ -16,6 +16,7 @@ class TestYvyraPipeline:
     @pytest.fixture
     def pipeline(self):
         from src.papers.p0100_yvyra_carbon_credits.pipeline import YvyraPipeline
+
         return YvyraPipeline()
 
     # --- __init__ ---
@@ -37,6 +38,7 @@ class TestYvyraPipeline:
 
     def test_init_custom_config(self):
         from src.papers.p0100_yvyra_carbon_credits.pipeline import YvyraPipeline
+
         cfg = {"min_lon": -60, "max_lon": -55}
         p = YvyraPipeline(config=cfg)
         assert p.config["min_lon"] == -60
@@ -128,11 +130,13 @@ class TestYvyraPipeline:
 
     def test_validate_predictions_with_required_columns(self, pipeline):
         """When both columns exist, returns regression metrics."""
-        df = pd.DataFrame({
-            "project_id": ["P1", "P2", "P3"],
-            "claimed_carbon_tons": [10000, 20000, 30000],
-            "estimated_carbon_tons": [10500, 19500, 29500],
-        })
+        df = pd.DataFrame(
+            {
+                "project_id": ["P1", "P2", "P3"],
+                "claimed_carbon_tons": [10000, 20000, 30000],
+                "estimated_carbon_tons": [10500, 19500, 29500],
+            }
+        )
         result = pipeline.validate_predictions(df)
         assert isinstance(result, dict)
 

@@ -10,22 +10,20 @@ Outputs:
     outputs/real/real_metrics.json
     outputs/real/real_figures/*
 """
-import sys
+
 import json
-import time
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
-
 import numpy as np
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
 
 
 def load_real_data():
     """Load real Hansen + MapBiomas data."""
     import rasterio
-    from rasterio.mask import mask
-    import geopandas as gpd
 
     print("Loading real Hansen GFC + MapBiomas data...")
 
@@ -76,6 +74,7 @@ def prepare_tiles(data, n_tiles=10, tile_size=256):
 
     # Resize MapBiomas to match Hansen
     from scipy.ndimage import zoom
+
     h, w = hansen.shape
     mb_resized = zoom(mapbiomas, (h / mapbiomas.shape[0], w / mapbiomas.shape[1]), order=0)
 
@@ -106,15 +105,15 @@ def prepare_tiles(data, n_tiles=10, tile_size=256):
         n_attempts += 1
         y = rng.integers(0, H - tile_size)
         x = rng.integers(0, W - tile_size)
-        tile = multi[:, y:y+tile_size, x:x+tile_size]
-        mb_tile = mb_resized[y:y+tile_size, x:x+tile_size]
+        tile = multi[:, y : y + tile_size, x : x + tile_size]
+        mb_tile = mb_resized[y : y + tile_size, x : x + tile_size]
 
         # Label: 1 if any deforestation event in tile (loss year > 0)
-        has_loss = (hansen[y:y+tile_size, x:x+tile_size] > 0).any()
+        has_loss = (hansen[y : y + tile_size, x : x + tile_size] > 0).any()
 
         # Balance classes
         if has_loss and n_with_loss < n_tiles // 2:
-            label = (hansen[y:y+tile_size, x:x+tile_size] > 0).astype(np.int64)
+            label = (hansen[y : y + tile_size, x : x + tile_size] > 0).astype(np.int64)
             tiles.append({"bands": tile, "label": label, "mapbiomas": mb_tile})
             n_with_loss += 1
         elif not has_loss and n_without_loss < n_tiles - n_tiles // 2:
@@ -159,7 +158,6 @@ def train_simple_cnn(tiles, n_epochs=10):
     for epoch in range(n_epochs):
         total_loss = 0
         for tile in tiles:
-            x_mean = torch.from_numpy(tile["bands"]).float().mean(dim=(1, 2)).unsqueeze(0).unsqueeze(-1).unsqueeze(-1)
             # Actually need (B, C, H, W). Let's aggregate to small tile.
             x = torch.from_numpy(tile["bands"]).float().unsqueeze(0)  # (1, 4, H, W)
             # Downsample to 64x64 for speed
@@ -206,14 +204,17 @@ def evaluate_real(model, tiles):
 
     metrics = {
         "n_tiles": len(tiles),
-        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "tn": tn,
         "precision": precision,
         "recall": recall,
         "f1": f1,
         "accuracy": accuracy,
     }
 
-    print(f"\nResults on REAL data:")
+    print("\nResults on REAL data:")
     print(f"  Precision: {precision:.3f}")
     print(f"  Recall:    {recall:.3f}")
     print(f"  F1:        {f1:.3f}")

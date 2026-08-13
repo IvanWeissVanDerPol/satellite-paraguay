@@ -3,23 +3,21 @@
 Coverage target: 80%+. Tests the synthetic-fallback paths and the
 aggregate_atmospheric_by_month function.
 """
+
 import json
-import pytest
-from pathlib import Path
 from unittest.mock import patch
 
-import numpy as np
 import pandas as pd
+import pytest
 
 from src.external import sentinel5p_client as _s5p
 from src.external.sentinel5p_client import (
-    fetch_sentinel5p_via_gee,
+    aggregate_atmospheric_by_month,
     fetch_sentinel5p_no2,
     fetch_sentinel5p_o3,
+    fetch_sentinel5p_via_gee,
     generate_synthetic_s5p_no2,
     generate_synthetic_s5p_o3,
-    aggregate_atmospheric_by_month,
-    CACHE_DIR,
 )
 
 
@@ -179,10 +177,12 @@ class TestAggregateAtmosphericByMonth:
 
     def test_basic_aggregation(self):
         dates = pd.date_range("2024-01-01", periods=90, freq="D")
-        openaq_df = pd.DataFrame({
-            "date_utc": dates,
-            "value": list(range(90)),
-        })
+        openaq_df = pd.DataFrame(
+            {
+                "date_utc": dates,
+                "value": list(range(90)),
+            }
+        )
         s5p = {
             "2024-01-01T00:00:00": 0.0001,
             "2024-02-01T00:00:00": 0.00012,
@@ -197,10 +197,12 @@ class TestAggregateAtmosphericByMonth:
     def test_no2_value_from_s5p(self):
         """NO2 column should be populated from s5p_data."""
         dates = pd.date_range("2024-01-01", periods=31, freq="D")
-        openaq_df = pd.DataFrame({
-            "date_utc": dates,
-            "value": [10.0] * 31,
-        })
+        openaq_df = pd.DataFrame(
+            {
+                "date_utc": dates,
+                "value": [10.0] * 31,
+            }
+        )
         s5p = {"2024-01-01T00:00:00": 0.00025}
         result = aggregate_atmospheric_by_month(openaq_df, s5p)
         if len(result) > 0:

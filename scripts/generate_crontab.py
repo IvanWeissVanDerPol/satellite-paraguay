@@ -4,7 +4,7 @@ Generates crontab entries for all periodic tasks.
 
 Run: python3 scripts/generate_crontab.py
 """
-import sys
+
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -32,30 +32,28 @@ def generate_crontab():
 0 4 1 * * cd {REPO_ROOT} && python3 scripts/audit_dependencies.py >> logs/cron_monthly.log 2>&1
 
 # ====== Quarterly: Performance benchmarks + report ======
-0 5 1 */3 * cd {REPO_ROOT} && python3 -m pytest tests/test_performance.py -m performance --no-cov --benchmark-only --benchmark-autosave >> logs/cron_quarterly.log 2>&1
+0 5 1 */3 * cd {REPO_ROOT} && python3 -m pytest tests/test_performance.py -m performance --no-cov --benchmark-only --benchmark-autosave >> logs/cron_quarterly.log 2>&1  # noqa: E501
 
 # ====== Hourly: Log rotation (prevent disk fill) ======
-0 * * * * cd {REPO_ROOT} && find logs/ -name "*.log" -mtime +7 -delete && find outputs/weekly -name "*.log" -mtime +30 -delete
+0 * * * * cd {REPO_ROOT} && find logs/ -name "*.log" -mtime +7 -delete && find outputs/weekly -name "*.log" -mtime +30 -delete  # noqa: E501
 
 # ====== Daily: Backup outputs to remote ======
-0 23 * * * cd {REPO_ROOT} && tar czf /tmp/satellite-paraguay-$(date +\\%Y\\%m\\%d).tar.gz outputs/ && (rsync -avz /tmp/satellite-paraguay-$(date +\\%Y\\%m\\%d).tar.gz remote:/backups/ || echo "Backup failed" >> logs/cron_daily.log)
-""".format(
-        REPO_ROOT=str(REPO_ROOT)
-    )
+0 23 * * * cd {REPO_ROOT} && tar czf /tmp/satellite-paraguay-$(date +\\%Y\\%m\\%d).tar.gz outputs/ && (rsync -avz /tmp/satellite-paraguay-$(date +\\%Y\\%m\\%d).tar.gz remote:/backups/ || echo "Backup failed" >> logs/cron_daily.log)  # noqa: E501
+""".format(REPO_ROOT=str(REPO_ROOT))
 
     out_path = REPO_ROOT / "scripts/crontab.txt"
     out_path.write_text(crontab)
     print(f"Generated: {out_path}")
-    print(f"\nTo install:")
+    print("\nTo install:")
     print(f"  crontab {out_path}")
-    print(f"\nCron schedule:")
-    print(f"  - Hourly: Health check")
-    print(f"  - Daily 02:30 UTC: Reproducibility check")
-    print(f"  - Weekly Sunday 06:00 UTC: Full pipeline")
-    print(f"  - Monthly 1st 04:00 UTC: Dependency audit")
-    print(f"  - Quarterly 1st 05:00 UTC: Performance benchmarks")
-    print(f"  - Hourly: Log rotation")
-    print(f"  - Daily 23:00 UTC: Backup outputs")
+    print("\nCron schedule:")
+    print("  - Hourly: Health check")
+    print("  - Daily 02:30 UTC: Reproducibility check")
+    print("  - Weekly Sunday 06:00 UTC: Full pipeline")
+    print("  - Monthly 1st 04:00 UTC: Dependency audit")
+    print("  - Quarterly 1st 05:00 UTC: Performance benchmarks")
+    print("  - Hourly: Log rotation")
+    print("  - Daily 23:00 UTC: Backup outputs")
 
 
 def main():

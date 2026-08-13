@@ -3,13 +3,12 @@
 Coverage target: 90%+. Tests the GEE download function, Copernicus download,
 and fetch_sentinel2_tile multi-source fallback with mocked GEE/rasterio.
 """
-import os
+
 import sys
-import json
-import pytest
+from unittest.mock import MagicMock, patch
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+import pytest
 
 
 @pytest.fixture(autouse=True)
@@ -28,7 +27,6 @@ class TestDownloadSentinel2GEESuccess:
 
         # Build a mock ee module installed in sys.modules
         # Each .filterDate().median() should produce an image with a Thumb URL
-        month_counter = [0]
 
         def make_collection(*args, **kwargs):
             coll = MagicMock()
@@ -49,6 +47,7 @@ class TestDownloadSentinel2GEESuccess:
         # Mock urlopen to return sample TIFF bytes
         # rasterio can read a simple in-memory TIFF that we generate
         import io
+
         try:
             import rasterio
             from rasterio.io import MemoryFile
@@ -100,6 +99,7 @@ class TestDownloadSentinel2GEESuccess:
     def test_custom_bands(self):
         """When bands is None, defaults are used."""
         from src.satellite_io import real_download
+
         # ee import error → returns None
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
@@ -123,6 +123,7 @@ class TestDownloadSentinel2Copernicus:
 
     def test_no_credentials_returns_none(self):
         from src.satellite_io import real_download
+
         result = real_download.download_sentinel2_copernicus(
             tile_id="T_TEST",
             bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
@@ -134,6 +135,7 @@ class TestDownloadSentinel2Copernicus:
     def test_with_credentials_and_mocked_request(self, monkeypatch):
         """When credentials + mocked request, returns None (stub)."""
         from src.satellite_io import real_download
+
         monkeypatch.setenv("COPERNICUS_USER", "test_user")
         monkeypatch.setenv("COPERNICUS_PASS", "test_pass")
 
@@ -154,8 +156,10 @@ class TestDownloadSentinel2Copernicus:
 
     def test_with_credentials_and_request_error(self, monkeypatch):
         """When credentials + request fails, returns None."""
-        from src.satellite_io import real_download
         import requests as req_lib
+
+        from src.satellite_io import real_download
+
         monkeypatch.setenv("COPERNICUS_USER", "test_user")
         monkeypatch.setenv("COPERNICUS_PASS", "test_pass")
 
@@ -173,6 +177,7 @@ class TestDownloadSentinel2Copernicus:
     def test_credentials_only_username(self, monkeypatch):
         """Missing password should also return None."""
         from src.satellite_io import real_download
+
         monkeypatch.setenv("COPERNICUS_USER", "test_user")
         monkeypatch.delenv("COPERNICUS_PASS", raising=False)
         result = real_download.download_sentinel2_copernicus(
@@ -186,6 +191,7 @@ class TestDownloadSentinel2Copernicus:
     def test_credentials_explicit_args(self, monkeypatch):
         """Passing credentials as args works too."""
         from src.satellite_io import real_download
+
         monkeypatch.delenv("COPERNICUS_USER", raising=False)
         monkeypatch.delenv("COPERNICUS_PASS", raising=False)
 
@@ -218,6 +224,7 @@ class TestFetchSentinel2TileCache:
     def test_cache_hit_returns_immediately(self, tmp_path, monkeypatch):
         """When cache hit, returns from cache and skips download."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
 
         # Pre-populate cache
@@ -227,6 +234,7 @@ class TestFetchSentinel2TileCache:
             "bands": np.array(["B2", "B3", "B4", "B8"]),
         }
         from src.satellite_io.real_download import _cache_key
+
         key = _cache_key("T_CACHED", "2024-01-01", "2024-06-01", "B2,B3,B4,B8")
         cache_path = tmp_path / f"T_CACHED_{key}.npz"
         np.savez_compressed(cache_path, **cache_data)
@@ -257,6 +265,7 @@ class TestFetchSentinel2TileCache:
     def test_cache_miss_then_synthetic(self, tmp_path, monkeypatch):
         """No cache + no GEE + no Copernicus → synthetic."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
 
         # Block GEE
@@ -274,6 +283,7 @@ class TestFetchSentinel2TileCache:
                 assert result["source"] == "synthetic"
                 # Should cache it now
                 from src.satellite_io.real_download import _cache_key
+
                 key = _cache_key("T_NOSRC", "2024-01-01", "2024-03-01", "B2,B3,B4,B8")
                 cache_path = tmp_path / f"T_NOSRC_{key}.npz"
                 assert cache_path.exists()
@@ -286,6 +296,7 @@ class TestFetchSentinel2TileCache:
     def test_allow_synthetic_false_raises(self, tmp_path, monkeypatch):
         """When all sources fail and synthetic disabled, raises RuntimeError."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
@@ -308,10 +319,12 @@ class TestFetchSentinel2TileCache:
     def test_use_cache_false_skips_cache(self, tmp_path, monkeypatch):
         """use_cache=False skips cache lookup."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
 
         # Pre-populate cache (would match if checked)
         from src.satellite_io.real_download import _cache_key
+
         key = _cache_key("T_SKIP", "2024-01-01", "2024-03-01", "B2,B3,B4,B8")
         cache_path = tmp_path / f"T_SKIP_{key}.npz"
         cache_data = {
@@ -342,6 +355,7 @@ class TestFetchSentinel2TileCache:
     def test_custom_bands_passed_through(self, tmp_path, monkeypatch):
         """Custom bands should be honored (regression test)."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
@@ -370,10 +384,12 @@ class TestCacheFailure:
     def test_corrupted_cache_raises(self, tmp_path, monkeypatch):
         """A corrupted cache file raises ValueError — known bug."""
         from src.satellite_io import real_download
+
         monkeypatch.setattr(real_download, "CACHE_DIR", tmp_path)
 
         # Create a corrupted cache file
         from src.satellite_io.real_download import _cache_key
+
         key = _cache_key("T_CORRUPT", "2024-01-01", "2024-03-01", "B2,B3,B4,B8")
         cache_path = tmp_path / f"T_CORRUPT_{key}.npz"
         cache_path.write_bytes(b"not a valid npz file")

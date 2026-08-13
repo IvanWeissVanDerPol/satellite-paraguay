@@ -11,16 +11,17 @@ Endpoints:
 - /docs — OpenAPI documentation
 - /redoc — alternative documentation
 """
-from fastapi import FastAPI, HTTPException, Depends, Query
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPBearer
-from pydantic import BaseModel, Field
-from typing import Optional, List, Dict
-from pathlib import Path
+
 import json
 import sys
+from pathlib import Path
+from typing import List, Optional
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 
@@ -139,28 +140,58 @@ def list_territories():
     """List indigenous territories with deforestation statistics."""
     return [
         IndigenousTerritory(
-            name="Carmelo Peralta", people="Enlhet", region="Chaco",
-            loss_pct=49.45, loss_km2=1483, co2e_mt=24.6, disparity=5.8,
+            name="Carmelo Peralta",
+            people="Enlhet",
+            region="Chaco",
+            loss_pct=49.45,
+            loss_km2=1483,
+            co2e_mt=24.6,
+            disparity=5.8,
         ),
         IndigenousTerritory(
-            name="Bahía Negra", people="Ayoreo", region="Chaco",
-            loss_pct=49.43, loss_km2=1384, co2e_mt=22.9, disparity=5.8,
+            name="Bahía Negra",
+            people="Ayoreo",
+            region="Chaco",
+            loss_pct=49.43,
+            loss_km2=1384,
+            co2e_mt=22.9,
+            disparity=5.8,
         ),
         IndigenousTerritory(
-            name="Santa Teresita", people="Nivaclé", region="Chaco",
-            loss_pct=46.46, loss_km2=743, co2e_mt=12.3, disparity=5.5,
+            name="Santa Teresita",
+            people="Nivaclé",
+            region="Chaco",
+            loss_pct=46.46,
+            loss_km2=743,
+            co2e_mt=12.3,
+            disparity=5.5,
         ),
         IndigenousTerritory(
-            name="Xakmaraq Kelygmaky", people="Nivaclé", region="Chaco",
-            loss_pct=26.98, loss_km2=2994, co2e_mt=49.6, disparity=3.2,
+            name="Xakmaraq Kelygmaky",
+            people="Nivaclé",
+            region="Chaco",
+            loss_pct=26.98,
+            loss_km2=2994,
+            co2e_mt=49.6,
+            disparity=3.2,
         ),
         IndigenousTerritory(
-            name="La Patria", people="Chulupi/Nivaclé", region="Chaco",
-            loss_pct=25.90, loss_km2=1813, co2e_mt=30.0, disparity=3.0,
+            name="La Patria",
+            people="Chulupi/Nivaclé",
+            region="Chaco",
+            loss_pct=25.90,
+            loss_km2=1813,
+            co2e_mt=30.0,
+            disparity=3.0,
         ),
         IndigenousTerritory(
-            name="Mbyá Guaraní Itakyry", people="Mbyá Guaraní", region="Eastern",
-            loss_pct=2.91, loss_km2=102, co2e_mt=1.7, disparity=0.34,
+            name="Mbyá Guaraní Itakyry",
+            people="Mbyá Guaraní",
+            region="Eastern",
+            loss_pct=2.91,
+            loss_km2=102,
+            co2e_mt=1.7,
+            disparity=0.34,
         ),
     ]
 
@@ -169,16 +200,21 @@ def list_territories():
 def list_verra_projects():
     """List Verra carbon credit projects with discrepancy analysis."""
     return [
-        VerraProject(id="1", name="Chaco Project A", area_ha=45000,
-                     verra_co2e_mt=1.1, hansen_co2e_mt=1.5, discrepancy_pct=36),
-        VerraProject(id="2", name="Chaco Project B", area_ha=28000,
-                     verra_co2e_mt=0.9, hansen_co2e_mt=1.2, discrepancy_pct=33),
-        VerraProject(id="3", name="Eastern Project A", area_ha=22000,
-                     verra_co2e_mt=0.6, hansen_co2e_mt=0.8, discrepancy_pct=33),
-        VerraProject(id="4", name="Chaco Project C", area_ha=18000,
-                     verra_co2e_mt=0.5, hansen_co2e_mt=0.7, discrepancy_pct=40),
-        VerraProject(id="5", name="Eastern Project B", area_ha=10000,
-                     verra_co2e_mt=0.2, hansen_co2e_mt=0.3, discrepancy_pct=50),
+        VerraProject(
+            id="1", name="Chaco Project A", area_ha=45000, verra_co2e_mt=1.1, hansen_co2e_mt=1.5, discrepancy_pct=36
+        ),
+        VerraProject(
+            id="2", name="Chaco Project B", area_ha=28000, verra_co2e_mt=0.9, hansen_co2e_mt=1.2, discrepancy_pct=33
+        ),
+        VerraProject(
+            id="3", name="Eastern Project A", area_ha=22000, verra_co2e_mt=0.6, hansen_co2e_mt=0.8, discrepancy_pct=33
+        ),
+        VerraProject(
+            id="4", name="Chaco Project C", area_ha=18000, verra_co2e_mt=0.5, hansen_co2e_mt=0.7, discrepancy_pct=40
+        ),
+        VerraProject(
+            id="5", name="Eastern Project B", area_ha=10000, verra_co2e_mt=0.2, hansen_co2e_mt=0.3, discrepancy_pct=50
+        ),
     ]
 
 
@@ -205,22 +241,26 @@ def uncertainty():
     results = []
     pix = data.get("pixel_bootstrap", {})
     if pix:
-        results.append(BootstrapCI(
-            metric="loss_pixels_parametric",
-            mean=pix.get("mean", 0),
-            ci_lower_95=pix.get("ci_lower_95", 0),
-            ci_upper_95=pix.get("ci_upper_95", 0),
-            method=pix.get("method", "parametric"),
-        ))
+        results.append(
+            BootstrapCI(
+                metric="loss_pixels_parametric",
+                mean=pix.get("mean", 0),
+                ci_lower_95=pix.get("ci_lower_95", 0),
+                ci_upper_95=pix.get("ci_upper_95", 0),
+                method=pix.get("method", "parametric"),
+            )
+        )
     blk = data.get("block_bootstrap", {})
     if blk:
-        results.append(BootstrapCI(
-            metric="loss_pixels_block",
-            mean=blk.get("mean", 0),
-            ci_lower_95=blk.get("ci_lower_95", 0),
-            ci_upper_95=blk.get("ci_upper_95", 0),
-            method=f"block bootstrap (size={blk.get('block_size')})",
-        ))
+        results.append(
+            BootstrapCI(
+                metric="loss_pixels_block",
+                mean=blk.get("mean", 0),
+                ci_lower_95=blk.get("ci_lower_95", 0),
+                ci_upper_95=blk.get("ci_upper_95", 0),
+                method=f"block bootstrap (size={blk.get('block_size')})",
+            )
+        )
     return results
 
 
@@ -228,14 +268,33 @@ def uncertainty():
 def model_metrics():
     """Performance metrics for all trained models."""
     return [
-        ModelMetric(name="persistence", f1=0.000, precision=0.000, recall=0.000,
-                    iou=0.000, notes="Predict no loss (naive baseline)"),
-        ModelMetric(name="random_forest", f1=0.018, precision=0.271, recall=0.009,
-                    iou=0.009, notes="100 trees, 30 features"),
-        ModelMetric(name="unet_scratch", f1=0.017, precision=0.379, recall=0.008,
-                    iou=0.008, notes="30 channels, 80 train tiles, 20 epochs"),
-        ModelMetric(name="prithvi_lite", f1=0.85, precision=0.85, recall=0.85,
-                    iou=0.74, notes="A100 GPU, 30 epochs, fine-tune"),
+        ModelMetric(
+            name="persistence",
+            f1=0.000,
+            precision=0.000,
+            recall=0.000,
+            iou=0.000,
+            notes="Predict no loss (naive baseline)",
+        ),
+        ModelMetric(
+            name="random_forest", f1=0.018, precision=0.271, recall=0.009, iou=0.009, notes="100 trees, 30 features"
+        ),
+        ModelMetric(
+            name="unet_scratch",
+            f1=0.017,
+            precision=0.379,
+            recall=0.008,
+            iou=0.008,
+            notes="30 channels, 80 train tiles, 20 epochs",
+        ),
+        ModelMetric(
+            name="prithvi_lite",
+            f1=0.497,
+            precision=0.000,
+            recall=0.000,
+            iou=0.494,
+            notes="A100 GPU PENDING — current value is the mock-backbone fallback (F1=0.497) reported in ACTUAL_RESULTS.md. The f1=0.85 figure in earlier drafts of this file was aspirational.",  # noqa: E501
+        ),
     ]
 
 
@@ -284,4 +343,5 @@ def summary():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

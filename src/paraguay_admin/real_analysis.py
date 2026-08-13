@@ -7,24 +7,20 @@ Uses local Paraguay geodata (already in /root/paraguay-geodata/) for:
 
 Production-grade replacement for the stub in src/parcel_analysis/intersect.py.
 """
-import os
-import logging
-from pathlib import Path
-from typing import Optional, Dict, List
-from datetime import datetime
 
-import numpy as np
-import pandas as pd
+import logging
+import os
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
+
 import geopandas as gpd
-from shapely.geometry import box, Point
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
 
-PG_DATA_DIR = Path(os.environ.get(
-    "PARAGUAY_GEODATA_PATH",
-    "/root/paraguay-geodata/exports/web/data"
-))
+PG_DATA_DIR = Path(os.environ.get("PARAGUAY_GEODATA_PATH", "/root/paraguay-geodata/exports/web/data"))
 
 
 def _find_catastro_paths(data_dir: Path) -> List[Path]:
@@ -149,6 +145,7 @@ def detect_conflicts_real(
 
     # Compute overlap area
     if not conflicts.empty:
+
         def compute_overlap(g):
             try:
                 if g.intersects(indigenous_union):
@@ -233,4 +230,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error: {e}")
         import traceback
+
         traceback.print_exc()

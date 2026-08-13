@@ -2,6 +2,7 @@
 
 Verifies imports, paper pipelines, and data loaders.
 """
+
 from typing import Any, Dict, List, Optional, Tuple
 
 REQUIRED_MODULES = [
@@ -87,13 +88,14 @@ def verify_data_loaders(data_dir=None) -> Dict[str, Any]:
     """
     if data_dir is not None:
         import sys
+
         sys.path.insert(0, str(data_dir.parent))
     from src.paraguay_admin import (
+        load_catastro_parcels,
         load_departamentos,
         load_distritos,
-        load_tile_index,
-        load_catastro_parcels,
         load_indigenous_territories,
+        load_tile_index,
     )
 
     results: Dict[str, Any] = {}

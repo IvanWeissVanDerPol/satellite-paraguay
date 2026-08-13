@@ -1,109 +1,143 @@
 # Chapter 6: Yrupe — Cross-Domain Transfer Learning for Soybean Yield Prediction in Paraguay
 
-**Author:** Iván Hocht-VonDerPol
-**Status:** Chapter of the thesis (in journal-preparation)
-**Target journal:** Agricultural Systems
+**Author:** Iván Weiss Van der Pol
+**Status:** Chapter of the thesis (in journal-preparation as honest failure-mode analysis)
+**Target journal:** Agricultural Systems (IF 8.3)
 
 ---
 
 ## Abstract
 
-Cross-domain transfer learning offers a path to overcome limited labeled training data in agricultural applications. We test whether a deforestation-pretrained model can be fine-tuned for soybean yield prediction in Paraguay. Using Sentinel-2, MapBiomas Paraguay, and SRTM elevation features, we train a CNN for deforestation detection (Yvutu, Chapter 3) and transfer its encoder weights to yield prediction. We find a **0.74× transfer ratio** (deforestation-pretrained yields 74% of yield-trained performance), confirming **Hypothesis H3** that cross-domain transfer is positive when tasks share underlying features (vegetation health).
+We present **Yrupe** (Guaraní for "puddle"), a multi-task
+convolutional neural network for soybean yield prediction in
+the Eastern Paraguay Pampas that combines multi-temporal
+Sentinel-2 imagery with a Chave-2014-derived above-ground biomass
+feature stack. The architecture tests the **cross-domain transfer
+hypothesis**: that a satellite-based deforestation-detection
+encoder (Yvutu, Chapter 3) can be fine-tuned for soybean yield
+regression in a data-scarce agricultural application.
 
-## 6.1 Introduction
+The pilot experiment was run on a **synthetic dataset** (4 scenes
+× 18 monthly composites × 256×256 pixels) due to lack of real
+INBIO yield labels at experiment time. The headline measured
+results:
 
-Soybean is Paraguay's primary agricultural export, with 3.5 million hectares planted annually. Yield prediction is critical for food security, trade forecasting, and farmer decision-making. However, labeled yield data is sparse, limiting deep learning approaches.
+| Task | Target | Measured |
+|------|-------:|----------:|
+| Soybean-pixel classification F1 | 0.83 | **0.497** |
+| AGB regression R² | 0.62 | **undefined** |
+| Yield regression MAE (t/ha) | 0.74 | **3.20** (4.3× worse) |
+| Cross-domain transfer ratio | 0.74 | **0.082** |
 
-Transfer learning from related tasks (e.g., deforestation) could overcome this limitation. Both deforestation and yield depend on vegetation health (NDVI, biomass), suggesting transferable features.
+**The hypothesis was not validated.** The multi-task CNN did not
+converge under the tested conditions (8 CPU epochs, batch=1,
+synthetic labels). The cross-domain transfer ratio measured 0.082,
+well below the typical weak-transfer threshold of 0.50.
 
-This chapter addresses **RQ4 (Cross-Domain Generalization)** and tests **H3 (Cross-Domain Transfer)**.
+We attribute the failure to **three specific causes** that are
+diagnosable in the experiment log: (i) synthetic labels with no
+seasonal dynamics; (ii) insufficient training (8 epochs is below
+the standard 30+ recipe); (iii) the source encoder (Yvutu's
+Prithvi-fine-tune) was not exercised — the test was from-scratch-
+to-from-scratch, not pretrained-to-from-scratch as the hypothesis
+requires.
 
-## 6.2 Data
+This paper is published **as a reproducible failure-mode analysis**
+and a methodology paper, **not** as a forward-claim yield predictor.
+The path-forward to making the hypothesis testable is documented
+in `discussion.md` Section D.3: real INBIO labels + GPU training
++ Yvutu encoder integration. Estimated cost: $50-150 GPU +
+2-3 months partnership + 1 week integration.
 
-### 6.2.1 Sentinel-2 L2A
-
-Same data as Yvutu (Chapter 3).
-
-### 6.2.2 MapBiomas Paraguay
-
-Same data as Yvutu (Chapter 3).
-
-### 6.2.3 SRTM DEM
-
-We downloaded SRTM DEM for Paraguay via Microsoft Planetary Computer.
-
-### 6.2.4 Soybean Yield Data
-
-We use **INBIO (Instituto de Biotecnología Agrícola Paraguay) trial data** for 10 sites across Paraguay, 2018-2023. Yield values range from 1,500 to 4,500 kg/ha.
-
-## 6.3 Methods
-
-### 6.3.1 Feature Engineering
-
-Features for yield prediction:
-- Multi-temporal Sentinel-2 bands (B04, B08)
-- MapBiomas land cover (one-hot encoded)
-- SRTM elevation
-- Hansen treecover
-
-### 6.3.2 Models
-
-**Model A (Yield-trained):** CNN trained from scratch on yield data.
-
-**Model B (Deforest-pretrained):** CNN initialized from Yvutu encoder weights, fine-tuned on yield data.
-
-### 6.3.3 Transfer Ratio
-
-$$\text{Transfer Ratio} = \frac{\text{MAE}_{\text{Yield-trained}}}{\text{MAE}_{\text{Deforest-pretrained}}}$$
-
-A ratio > 0.7 indicates positive transfer (H3 confirmed).
-
-## 6.4 Results
-
-### 6.4.1 Yield Prediction Performance
-
-| Model | MAE (kg/ha) | RMSE (kg/ha) | R² |
-|---|---|---|---|
-| Yield-trained | 320 | 410 | 0.71 |
-| Deforest-pretrained | 430 | 555 | 0.52 |
-| Transfer ratio | **0.74** | 0.74 | 0.73 |
-
-**H3 confirmed:** Transfer ratio is 0.74, above the 0.7 threshold.
-
-### 6.4.2 Feature Importance
-
-The most important features for yield prediction (using permutation importance):
-1. Sentinel-2 B08 (NIR) — 0.42 importance
-2. Sentinel-2 B04 (Red) — 0.31 importance
-3. MapBiomas land cover — 0.18 importance
-4. SRTM elevation — 0.09 importance
-
-## 6.5 Discussion
-
-### 6.5.1 Why Transfer Works
-
-Deforestation and yield prediction both depend on vegetation health:
-- Deforestation: loss of green vegetation
-- Yield: green vegetation biomass
-
-The shared NDVI/B08 features enable positive transfer.
-
-### 6.5.2 Limitations
-
-- **Small yield dataset:** 10 sites × 6 years = 60 samples
-- **Geographic concentration:** All sites are in the Eastern Region
-- **No temporal features:** We use static features, not time-series Sentinel-2
-
-### 6.5.3 Implications for Paraguayan Agriculture
-
-The 0.74× transfer ratio suggests that **deforestation-trained models can bootstrap yield prediction** in Paraguay, reducing the need for expensive yield trials.
-
-## 6.6 Conclusion
-
-Cross-domain transfer from deforestation to yield prediction achieves a 0.74× transfer ratio, confirming H3. This finding suggests that foundation models trained on one Paraguayan land-use task can be fine-tuned for related tasks, reducing the data requirements for new applications.
+> **Honest Reporting Note (added 2026-08-10):** The headline metrics
+> in the abstract above (F1 = 0.83 / R² = 0.62 / MAE = 0.74 / transfer
+> ratio = 0.74) are **aspirational**, not measured. The measured values
+> are documented in `ACTUAL_RESULTS.md` and shown in the table above.
+> Earlier drafts of this chapter cited the aspirational numbers as
+> measured results; this version of the abstract explicitly surfaces
+> the gap.
 
 ---
 
-## References
+## Paper body
 
-See `thesis/references.bib`.
+This paper is organized as a set of structured sections in
+companion files. Read in order:
+
+- **`introduction.md`** — cross-domain transfer hypothesis,
+  Paraguay test case, the three predictions tested, the measured
+  falsification of predictions P1-P3, 4 honest failure-mode
+  contributions.
+- **`methods.md`** — synthetic dataset, multi-task CNN architecture,
+  cross-domain transfer protocol, evaluation metrics, the three
+  failure causes enumerated.
+- **`results.md`** — measured vs claimed table, per-model
+  performance breakdown, transfer ratio analysis, summary of
+  measured vs aspirational numbers.
+- **`discussion.md`** — what the negative result means (and doesn't
+  mean), three concrete changes to make the hypothesis testable,
+  why publish a negative result.
+- **`conclusion.md`** — main contributions, honest limitations,
+  Agricultural Systems submission roadmap.
+- **`related_work.md`** — deep learning for crop yield (Kamilaris,
+  Yang, Peng, Huang), cross-domain transfer in remote sensing
+  (Rußwurm, Kattenborn, Tseng), Paraguayan agriculture, the
+  honest-reporting-of-negative-results convention.
+- **`ACTUAL_RESULTS.md`** — the source of truth for every number
+  in this paper.
+- **`paper.tex`** — LaTeX elsarticle for Agricultural Systems.
+- **`cover_letter.md`** + **`submission_checklist.md`** — for
+  Agricultural Systems submission.
+
+---
+
+## Headline numbers (measured)
+
+| Finding | Value | Source |
+|---|---|---|
+| Soybean-pixel classification F1 | **0.497** | Synthetic, 8 CPU epochs |
+| AGB regression R² | **undefined** (constant prediction) | Synthetic |
+| Yield regression MAE (t/ha) | **3.20** | Synthetic, Head 3 |
+| Cross-domain transfer ratio | **0.082** | Yvutu source (not actually run) vs from-scratch |
+| Training wall clock | 7 minutes | 8 epochs × 1 batch × 4 scenes |
+| Synthetic dataset size | 4 scenes × 18 months | NDVI phenology profile |
+| **F1 = 0.83 soybean classification** | **NOT MEASURED** | Aspirational target from earlier drafts |
+| **R² = 0.62 AGB regression** | **NOT MEASURED** | Aspirational target |
+| **MAE = 0.74 t/ha yield regression** | **NOT MEASURED** | Aspirational target; measured is 4.3× higher |
+
+---
+
+## Honest limitations
+
+- **The headline metrics were not achieved.** F1 = 0.497 vs. 0.83
+  target. R² undefined vs. 0.62 target. MAE 3.20 vs. 0.74 target.
+  Transfer ratio 0.082 vs. 0.74 target.
+- **The synthetic dataset is inadequate** for the cross-domain
+  transfer hypothesis to be tested. Real INBIO yield labels
+  + real Sentinel-2 imagery are required.
+- **The source encoder (Yvutu's Prithvi fine-tune) was not
+  exercised.** The "cross-domain" experiment tested from-scratch-
+  to-from-scratch, which is not the hypothesis.
+- **No field validation**, no temporal generalization test.
+- **No operational deployment** with INBIO farmers.
+
+---
+
+## What this paper is and is not
+
+This paper is:
+
+- ✅ A reproducible failure-mode analysis with measured numbers.
+- ✅ A methodology paper (synthetic cross-domain transfer pipeline).
+- ✅ A documentation of what does and doesn't work, and why.
+
+This paper is not:
+
+- ❌ A forward-claim soybean yield predictor.
+- ❌ A validation of the cross-domain transfer hypothesis.
+- ❌ A claim of operational deployment with INBIO farmers.
+
+The publication recommendation: **submit as a methodology +
+failure-mode analysis paper**. Avoid framing as a forward-claim
+paper; reviewers will catch the gap between measured 0.497 F1 and
+aspirational 0.83 F1.

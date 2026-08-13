@@ -9,15 +9,21 @@ Handles:
 
 All data is loaded from /root/paraguay-geodata/ (already available).
 """
-from pathlib import Path
-from typing import Optional, List, Dict
+
 import json
+
+# Default path to paraguay-geodata
+# 2026-08-13: Make this configurable via env var with a sensible default.
+# Production uses /root/paraguay-geodata; CI/sandbox can set
+# PARAGUAY_GEODATA_DIR to point at a fixture directory.
+import os
+from pathlib import Path
+from typing import Dict, List, Optional
 
 import geopandas as gpd
 import pandas as pd
 
-# Default path to paraguay-geodata
-DEFAULT_DATA_DIR = Path("/root/paraguay-geodata/exports/web/data")
+DEFAULT_DATA_DIR = Path(os.environ.get("PARAGUAY_GEODATA_DIR", "/root/paraguay-geodata/exports/web/data"))
 
 
 def load_departamentos(data_dir: Path = DEFAULT_DATA_DIR) -> gpd.GeoDataFrame:

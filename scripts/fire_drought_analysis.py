@@ -6,16 +6,18 @@ Also computes SPI (Standardized Precipitation Index) for Paraguay.
 Outputs:
     outputs/fire_drought/fire_drought_analysis.json
 """
-import sys
-import json
-from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
-sys.path.insert(0, str(REPO_ROOT))
+import json
+import sys
+from pathlib import Path
 
 import numpy as np
 import rasterio
 from rasterio.windows import Window
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 
 OUT_DIR = REPO_ROOT / "outputs/fire_drought"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -143,10 +145,10 @@ def main():
     print(f"\n  Saved: {out_path}")
 
     print(f"\n{'=' * 70}")
-    print(f"  KEY FINDINGS:")
-    print(f"    Fire + drought correlate with peak deforestation (2012)")
+    print("  KEY FINDINGS:")
+    print("    Fire + drought correlate with peak deforestation (2012)")
     print(f"    Drought years: {drought['drought_multiplier']:.2f}x loss of non-drought years")
-    print(f"    Fire is dominant driver of Chaco deforestation")
+    print("    Fire is dominant driver of Chaco deforestation")
 
 
 if __name__ == "__main__":

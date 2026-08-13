@@ -2,6 +2,7 @@
 
 Re-runs analysis scripts and verifies outputs match expected hashes.
 """
+
 import hashlib
 import subprocess
 from datetime import datetime
@@ -16,9 +17,7 @@ def file_hash(path: Path, algo: str = "sha256") -> str:
     return h.hexdigest()
 
 
-def run_script(
-    repo_root: Path, script_path: str, timeout: int = 120
-) -> Tuple[int, str, str]:
+def run_script(repo_root: Path, script_path: str, timeout: int = 120) -> Tuple[int, str, str]:
     """Run a script and return (returncode, stdout, stderr)."""
     result = subprocess.run(
         ["python3", str(repo_root / script_path)],
@@ -30,16 +29,12 @@ def run_script(
     return result.returncode, result.stdout, result.stderr
 
 
-def check_outputs_exist(
-    repo_root: Path, expected_outputs: List[str]
-) -> List[str]:
+def check_outputs_exist(repo_root: Path, expected_outputs: List[str]) -> List[str]:
     """Return list of missing expected output paths (relative)."""
     return [o for o in expected_outputs if not (repo_root / o).exists()]
 
 
-def hash_outputs(
-    repo_root: Path, expected_outputs: List[str]
-) -> Dict[str, str]:
+def hash_outputs(repo_root: Path, expected_outputs: List[str]) -> Dict[str, str]:
     """Compute hashes of existing expected outputs."""
     hashes = {}
     for o in expected_outputs:

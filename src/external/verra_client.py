@@ -5,15 +5,12 @@ Registry: https://registry.verra.org/
 
 Note: Verra's public registry search is a webpage (not JSON API). We scrape it.
 """
-import os
-import re
-import json
-import time
+
 import logging
+import os
+import time
 from pathlib import Path
-from typing import Optional, Dict, List
-from datetime import datetime
-import urllib.parse
+from typing import Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -150,7 +147,7 @@ def _scrape_verra_registry() -> pd.DataFrame:
         response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
 
-        soup = BeautifulSoup(response.text, "html.parser")
+        BeautifulSoup(response.text, "html.parser")
         # Real impl: parse table rows, extract project details
         # For now, return empty (fallback to curated list)
         return pd.DataFrame()

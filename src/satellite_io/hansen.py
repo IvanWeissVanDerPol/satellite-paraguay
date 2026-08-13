@@ -7,11 +7,11 @@ Strategy:
 Hansen GFC: https://www.globalforestwatch.org/
 Data: 30m forest loss/gain, 2000-2023
 """
-import os
+
 import logging
+import os
 from pathlib import Path
-from typing import Optional, Dict
-import json
+from typing import Dict, Optional
 
 import numpy as np
 
@@ -53,27 +53,31 @@ def download_hansen_real(
     if use_gee:
         try:
             import ee
+
             try:
                 ee.Initialize()
             except Exception:
                 raise RuntimeError("no GEE auth")
 
-            aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"],
-                                          bbox["max_lon"], bbox["max_lat"]])
+            aoi = ee.Geometry.Rectangle([bbox["min_lon"], bbox["min_lat"], bbox["max_lon"], bbox["max_lat"]])
             hansen = ee.Image("UMD/hansen/global_forest_change_2023_v1_11")
 
             bands = ["treecover2000", "loss", "gain", "lossyear"]
             arrs = {}
             for band in bands:
                 img_band = hansen.select(band)
-                url = img_band.getThumbURL({
-                    "region": aoi,
-                    "dimensions": 256,
-                    "format": "GEO_TIFF",
-                })
+                url = img_band.getThumbURL(
+                    {
+                        "region": aoi,
+                        "dimensions": 256,
+                        "format": "GEO_TIFF",
+                    }
+                )
 
                 import urllib.request
+
                 import rasterio
+
                 with urllib.request.urlopen(url, timeout=60) as response:
                     arr_bytes = response.read()
                 with rasterio.io.MemoryFile(arr_bytes) as memfile:
@@ -173,5 +177,5 @@ if __name__ == "__main__":
         print(f"  gain: shape={arrs['gain'].shape}, total={arrs['gain'].sum()} pixels")
         # Compute annual deforestation
         for year in [2018, 2020, 2022]:
-            annual = compute_deforestation_year(arrs['lossyear'], year)
+            annual = compute_deforestation_year(arrs["lossyear"], year)
             print(f"  Loss in {year}: {annual.sum()} pixels")

@@ -1,11 +1,13 @@
 """Tests for src/baselines/p0100_yvyra_baselines.py — regression baselines
 for carbon credit estimation.
 """
-import pytest
+
 import numpy as np
+import pytest
 
 try:
     import sklearn  # noqa: F401
+
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
@@ -17,6 +19,7 @@ class TestP0100Baselines:
     @pytest.fixture
     def module(self):
         from src.baselines import p0100_yvyra_baselines
+
         return p0100_yvyra_baselines
 
     @pytest.fixture
@@ -69,19 +72,13 @@ class TestP0100Baselines:
 
     @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
     def test_random_forest_returns_correct_shape(self, module, features, target):
-        preds = module.random_forest_regression_baseline(
-            features, target, n_estimators=10
-        )
+        preds = module.random_forest_regression_baseline(features, target, n_estimators=10)
         assert preds.shape == target.shape
 
     @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
     def test_random_forest_deterministic(self, module, features, target):
-        a = module.random_forest_regression_baseline(
-            features, target, n_estimators=10, random_state=42
-        )
-        b = module.random_forest_regression_baseline(
-            features, target, n_estimators=10, random_state=42
-        )
+        a = module.random_forest_regression_baseline(features, target, n_estimators=10, random_state=42)
+        b = module.random_forest_regression_baseline(features, target, n_estimators=10, random_state=42)
         np.testing.assert_array_equal(a, b)
 
     # --- run_all_baselines ---

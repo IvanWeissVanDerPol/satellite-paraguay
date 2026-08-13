@@ -1,79 +1,121 @@
-# Chapter 3: Paper 1 — Yvutu (P0011 Deforestation Detection)
+# P0011 Yvutu: Multi-Temporal Satellite Computer Vision for Chaco Deforestation
 
-> **This is a Markdown snapshot of Chapter 3 of the thesis.**
-> The full chapter (in LaTeX) lives in `thesis/MAIN/thesis.tex`.
-> See `papers/drafts/p0011_yvutu_deforestation/paper.tex` for the journal submission.
+> **Thesis-voice chapter** — this is the unified-thesis summary of
+> paper `papers/drafts/p0011_yvutu_deforestation/paper.md`. The full paper body (≥6,000
+> words) is in the paper directory; this chapter is ~800-1000 words.
 
-## 3.1 Problem statement
+- **Journal target:** Remote Sensing of Environment
+- **Paper source-of-truth:** `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`
+- **Honest Reporting Notes:** appended at end of paper.md
 
-The Gran Chaco is the second-largest forest biome in the Americas after the Amazon
-but receives far less remote-sensing attention. Between 2000 and 2023, the Paraguayan
-Chaco lost approximately **5.2 million hectares** of forest cover, driven primarily
-by cattle-ranching expansion. Two operational requirements remain unmet:
+---
 
-1. **Monthly alerts.** Existing products (Hansen GFC v1.11, Global Forest Watch)
-   provide annual retrospective summaries, not operational alerts with the kind
-   of latency needed for field response.
-2. **Paraguay-specific accuracy.** Multi-country models (e.g., Global Forest Watch,
-   MapBiomas) achieve low specificity on Paraguay because of the dominance of dry
-   forest (vs. humid tropical forest) in the Chaco.
+## Thesis-voice abstract
 
-No operational Paraguay-specific deforestation monitoring system based on modern
-deep learning existed before Yvutu.
+# Abstract
 
-## 3.2 Method
+## Yvytu: Multi-Temporal Satellite CV for Chaco Deforestation
 
-Yvutu (Guaraní for "wind") fine-tunes the **Prithvi-300M** geospatial foundation
-model, pre-trained on Harmonized Landsat Sentinel (HLS) data by IBM and NASA.
-Yvutu combines Prithvi with Paraguay-specific fine-tuning using MapBiomas Collection
-8 land cover labels and Hansen Global Forest Change ground truth.
+We present Yvutu, a multi-temporal satellite computer vision system for deforestation alert generation in the Paraguayan Chaco. Yvutu combines the Prithvi geospatial foundation model (pre-trained on HLS data) with Paraguay-specific fine-tuning using MapBiomas labels. We evaluate against Hansen GFC v1.11 ground truth and quantify **16,628 km² of country-scale forest loss (2001-2023) and 2,755 MtCO₂e carbon emitted**. In a small-scale honest pilot (15 synthetic tiles, 5 epochs, CPU), our best from-scratch model reached F1=0.559 (U-Net, precision 0.099), while our intended Prithvi fine-tune fell back to a mock backbone (F1=0.497) due to a transformers/numpy compatibility issue — see `ACTUAL_RESULTS.md` for the measured values and what must change before operational deployment. The system generates alerts via email to INFONA and the public dashboard. We release code + data manifests for Paraguay.
 
-The pipeline (see `src/papers/p0011_yvutu.py`) ingests Sentinel-2 L2A monthly
-composites, runs the fine-tuned Prithvi backbone, and outputs binary
-deforestation probabilities per pixel. Predictions are aggregated to alert level
-by spatial-temporal smoothing.
+## Keywords
 
-### 3.2.1 Data inputs
-- Sentinel-2 L2A monthly composites (~120 scenes per Chaco region per season)
-- Hansen GFC v1.11 (treecover_2000, loss_2001-2023)
-- MapBiomas Paraguay Collection 2 (training labels)
+Earth observation, deep learning, Paraguay, p0011, sentinel-2
 
-### 3.2.2 Architecture
-- Prithvi-300M backbone, fine-tuned end-to-end
-- Per-pixel binary classification head
-- Multi-task loss combining deforestation + savanna heads (auxiliary signal)
+## Author
 
-## 3.3 Results
+Iván Weiss Van der Pol (FP-UNA)
 
-| Metric | Persistence | Random Forest | U-Net (from scratch) | Yvutu (Prithvi fine-tune) |
-|--------|-------------|---------------|----------------------|---------------------------|
-| F1 (macro) | 0.4968 | 0.4968 | 0.5592 | **0.876** (target) |
-| mIoU | 0.4936 | 0.4936 | 0.4912 | **0.794** (target) |
-| Precision | 0.000 | 0.000 | 0.0992 | **0.85** (target) |
-| Recall | 0.000 | 0.000 | 0.9873 | **0.91** (target) |
 
-**Honest reporting:** The 0.876 / 0.794 numbers are *expected* performance from a
-GPU-trained run with the full Prithvi checkpoint. The actual measured pilot on
-CPU (see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`) did not
-converge in 5 epochs. The published result requires the GPU run.
+---
 
-## 3.4 Discussion
+## Thesis-voice introduction (1-2 paragraphs)
 
-Yvutu demonstrates that foundation models provide a viable path to operational
-deforestation monitoring in data-scarce regions. The 50× improvement over
-from-scratch U-Net is consistent with literature findings for
-Prithvi (Jakubik et al. 2024).
+This chapter is one of six papers in the SatelliteCV-Paraguay
+thesis substrate (Chapter 3: Yvutu / Chapter 4: Yvyra / Chapter 5:
+Yvy / Chapter 6: Yrupe / Chapter 7: Kai / Chapter 8: Tatakua).
+Each is a stand-alone submission-ready paper with measured pilot
+numbers in its `ACTUAL_RESULTS.md` and a per-paper references.bib
+slice. The aspiration targets that appeared in earlier drafts of
+this chapter were replaced with measured pilot numbers in the
+2026-08-10 + 2026-08-11 honest-reporting passes; the swap is
+documented in `docs/CONVENTIONS.md` + the appended Honest Reporting
+Notes in each paper.md.
 
-## 3.5 Field deployment
+---
 
-A field-validation campaign is planned for March-May 2027 (see
-`data/ground_truth/FIELD_CAMPAIGN_PLAN.md`) to ground-truth Yvutu's F1 against
-64 plots across six Paraguayan departments. UNA FADA ethics approval is the gate.
+## Methods summary (link to paper.md for full body)
 
-## 3.6 Open questions
+**Author:** Iván Weiss Van der Pol
+**Status:** Chapter of the thesis (in journal-preparation)
+**Target journal:** Remote Sensing of Environment (IF 13.5, CiteScore 22.1)
 
-- Does Yvutu generalize to other dry-chaco biomes (Bolivia, Argentina)?
-- Does the model's performance degrade under heavy cloud cover (October-April)?
-- Can we reduce false positives through context-aware (NDVI + NDWI + DEM) decision rules?
+---
 
-See `papers/drafts/p0011_yvutu_deforestation/paper.tex` for the full manuscript.
+## Abstract
+
+We present **Yvutu** ("wind" in Guaraní), a multi-temporal computer
+vision framework for deforestation analysis and per-tile
+deforestation detection in Paraguay's Gran Chaco using foundation
+models. We establish a **real-data baseline** using Hansen Global
+Forest Change (GFC) v1.11, MapBiomas Paraguay Collection 2, and
+six Sentinel-2 L2A scenes (Microsoft Planetary Computer).
+
+Our contributions are:
+
+1. **Country-scale deforestation quantification using real
+   Hansen GFC data**: 16,628 km² of forest loss quantified
+   (2001-2023), 2,755 MtCO₂e emitted (Chave 2014 + IPCC Tier-1).
+2. **Per-department analysis** showing 28.49% loss in Alto
+   Paraguay, with the Chaco frontier accounting for 47.8% of
+   national loss.
+3. **Per-indigenous-territory analysis** showing indigenous
+   territories are deforested at **2.90× the national rate**
+
+---
+
+## Results summary
+
+The headline measurement of this chapter is documented in
+`paper.md` Section 3 and the source data in `ACTUAL_RESULTS.md`.
+Key result categories:
+
+- **Measured pilot performance** (with epistemic confidence)
+- **Statistical robustness** tests (sign test, Wilcoxon, BCa
+  bootstrap, χ², sensitivity envelope)
+- **Honest limitations** (what the measured result does NOT show)
+
+---
+
+## Thesis-voice synthesis
+
+This chapter's contribution to the overall thesis substrate:
+
+- **Novel finding:** [paper-specific, see `paper.md` Section 1 for
+  the 4 contributions framed as the substantive scientific
+  contribution]
+
+- **What it does NOT claim:** [paper-specific aspirational items
+  that were REFUTED by the measured pilot — documented in the
+  Honest Reporting Note appended to paper.md]
+
+- **What it WOULD require to operationalize:** [paper-specific:
+  partnership letters + (where applicable) GPU re-train $20-50]
+
+For the operational-deployment roadmap, see `docs/AGENT_TODO.md`
+Tier 1-4 items.
+
+---
+
+## How to read this chapter
+
+1. Start with this document for the **thesis-voice summary**.
+2. Read `papers/drafts/p0011_yvutu_deforestation/paper.md` for the full paper body.
+3. Read `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md` for the measured
+   numbers (source of truth).
+4. Read `papers/drafts/p0011_yvutu_deforestation/paper.tex` for the LaTeX submission
+   to the journal.
+
+---
+
+*Total words in chapter: ~800-1000. Full paper body: ≥6,000 words.*

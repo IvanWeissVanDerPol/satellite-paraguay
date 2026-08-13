@@ -7,12 +7,11 @@ Timeline: 10 weeks
 Hypothesis: YOLOv8 + COCO-zoo transfer learning + NASA FIRMS fire alerts
 detects poaching camps in Defensores del Chaco with mAP@0.5 > 0.70.
 """
-from pathlib import Path
-from typing import Optional, Dict
-import numpy as np
 
-from ...paraguay_admin import get_tile_bbox, list_tiles_in_region
-from ...evaluation import detection_map, print_metrics
+from pathlib import Path
+from typing import Dict, Optional
+
+from ...paraguay_admin import list_tiles_in_region
 
 
 class KaiPipeline:
@@ -56,7 +55,7 @@ class KaiPipeline:
             self.load_model()
 
         # Real implementation: model.predict(image_path)
-        results = self.model(image_path) if self.model else []
+        self.model(image_path) if self.model else []
 
         return {
             "tile_id": tile_id,

@@ -2,11 +2,11 @@
 
 Coverage target: 90%+.
 """
+
 import sys
-import pytest
+from unittest.mock import MagicMock, patch
+
 import numpy as np
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 class TestDownloadMapBiomasGeeSuccess:
@@ -15,7 +15,9 @@ class TestDownloadMapBiomasGeeSuccess:
     def test_full_gee_chain_returns_array(self, tmp_path, monkeypatch):
         """Mock full GEE chain — returns numpy array."""
         import io
+
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         # Mock ee with chains
@@ -33,6 +35,7 @@ class TestDownloadMapBiomasGeeSuccess:
         # Build real TIFF for rasterio
         import rasterio
         from rasterio.io import MemoryFile
+
         profile = {
             "driver": "GTiff",
             "dtype": "uint8",
@@ -74,6 +77,7 @@ class TestDownloadMapBiomasFallback:
 
     def test_no_gee_returns_synthetic(self, tmp_path, monkeypatch):
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
         saved = sys.modules.get("ee")
         sys.modules["ee"] = None
@@ -91,6 +95,7 @@ class TestDownloadMapBiomasFallback:
 
     def test_use_gee_false_skips(self, tmp_path, monkeypatch):
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
         result = mb_mod.download_mapbiomas_paraguay_real(
             bbox={"min_lon": -60, "max_lon": -55, "min_lat": -25, "max_lat": -20},
@@ -106,6 +111,7 @@ class TestDownloadMapBiomasCache:
     def test_cache_hit_returns_immediately(self, tmp_path, monkeypatch):
         """Pre-populated cache returns without GEE call."""
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         # Pre-populate cache
@@ -129,13 +135,13 @@ class TestDownloadMapBiomasCache:
                 sys.modules["ee"] = saved
 
 
-
 class TestDownloadMapBiomasEdgeCases:
     """Additional edge case coverage."""
 
     def test_gee_initialize_raises(self, tmp_path, monkeypatch):
         """When ee.Initialize raises, fall back."""
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         mock_ee = MagicMock()
@@ -152,6 +158,7 @@ class TestDownloadMapBiomasEdgeCases:
     def test_full_gee_download_fails_falls_back(self, tmp_path, monkeypatch):
         """When urlopen fails, fall back to synthetic."""
         from src.satellite_io import mapbiomas as mb_mod
+
         monkeypatch.setattr(mb_mod, "CACHE_DIR", tmp_path)
 
         mock_year_img = MagicMock()

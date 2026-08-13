@@ -2,12 +2,12 @@
 
 Coverage target: 70%+. Tests JSONFormatter, get_logger, configure_root.
 """
+
 import json
 import logging
 import os
+
 import pytest
-from unittest.mock import patch, MagicMock
-from io import StringIO
 
 
 @pytest.fixture(autouse=True)
@@ -24,6 +24,7 @@ class TestJSONFormatter:
 
     def test_format_basic_record(self):
         from src.logging_config import JSONFormatter
+
         formatter = JSONFormatter()
         record = logging.LogRecord(
             name="test",
@@ -42,10 +43,16 @@ class TestJSONFormatter:
 
     def test_format_includes_timestamp(self):
         from src.logging_config import JSONFormatter
+
         formatter = JSONFormatter()
         record = logging.LogRecord(
-            name="test", level=logging.INFO, pathname="x.py", lineno=1,
-            msg="msg", args=None, exc_info=None,
+            name="test",
+            level=logging.INFO,
+            pathname="x.py",
+            lineno=1,
+            msg="msg",
+            args=None,
+            exc_info=None,
         )
         output = formatter.format(record)
         parsed = json.loads(output)
@@ -55,10 +62,16 @@ class TestJSONFormatter:
 
     def test_format_includes_extra(self):
         from src.logging_config import JSONFormatter
+
         formatter = JSONFormatter()
         record = logging.LogRecord(
-            name="test", level=logging.INFO, pathname="x.py", lineno=1,
-            msg="msg", args=None, exc_info=None,
+            name="test",
+            level=logging.INFO,
+            pathname="x.py",
+            lineno=1,
+            msg="msg",
+            args=None,
+            exc_info=None,
         )
         record.tile_id = "20S_055W"
         output = formatter.format(record)
@@ -67,14 +80,21 @@ class TestJSONFormatter:
 
     def test_format_includes_exception(self):
         from src.logging_config import JSONFormatter
+
         formatter = JSONFormatter()
         try:
             raise ValueError("test error")
         except ValueError:
             import sys
+
             record = logging.LogRecord(
-                name="test", level=logging.ERROR, pathname="x.py", lineno=1,
-                msg="failed", args=None, exc_info=sys.exc_info(),
+                name="test",
+                level=logging.ERROR,
+                pathname="x.py",
+                lineno=1,
+                msg="failed",
+                args=None,
+                exc_info=sys.exc_info(),
             )
         output = formatter.format(record)
         parsed = json.loads(output)
@@ -83,10 +103,16 @@ class TestJSONFormatter:
     def test_format_handles_non_json_extra(self):
         """Non-serializable extras should be stringified."""
         from src.logging_config import JSONFormatter
+
         formatter = JSONFormatter()
         record = logging.LogRecord(
-            name="test", level=logging.INFO, pathname="x.py", lineno=1,
-            msg="msg", args=None, exc_info=None,
+            name="test",
+            level=logging.INFO,
+            pathname="x.py",
+            lineno=1,
+            msg="msg",
+            args=None,
+            exc_info=None,
         )
         # Set a non-serializable object
         record.complex_obj = object()
@@ -103,12 +129,14 @@ class TestGetLogger:
 
     def test_returns_logger(self):
         from src.logging_config import get_logger
+
         logger = get_logger("test.module1")
         assert isinstance(logger, logging.Logger)
 
     def test_returns_same_logger(self):
         """Calling get_logger twice should return same instance."""
         from src.logging_config import get_logger
+
         l1 = get_logger("test.module2")
         l2 = get_logger("test.module2")
         assert l1 is l2
@@ -116,6 +144,7 @@ class TestGetLogger:
     def test_idempotent(self):
         """get_logger should not add handlers on second call."""
         from src.logging_config import get_logger
+
         logger = get_logger("test.module3")
         n_handlers = len(logger.handlers)
         logger2 = get_logger("test.module3")
@@ -125,20 +154,24 @@ class TestGetLogger:
 
     def test_respects_level(self):
         from src.logging_config import get_logger
+
         logger = get_logger("test.level", level=logging.WARNING)
         assert logger.level == logging.WARNING
 
     def test_with_json_format(self):
         from src.logging_config import get_logger
+
         logger = get_logger("test.json", json_format=True)
         assert isinstance(logger, logging.Logger)
         # Check at least one handler uses JSONFormatter
         from src.logging_config import JSONFormatter
+
         has_json = any(isinstance(h.formatter, JSONFormatter) for h in logger.handlers if h.formatter)
         assert has_json
 
     def test_with_extra_log_file(self, tmp_path):
         from src.logging_config import get_logger
+
         log_file = tmp_path / "extra.log"
         logger = get_logger("test.extra_log", log_file=str(log_file))
         assert isinstance(logger, logging.Logger)
@@ -149,6 +182,7 @@ class TestConfigureRoot:
 
     def test_idempotent(self):
         from src.logging_config import configure_root
+
         # Reset
         root = logging.getLogger()
         for h in list(root.handlers):
@@ -160,7 +194,8 @@ class TestConfigureRoot:
         assert len(root.handlers) == n_handlers
 
     def test_with_json_format(self):
-        from src.logging_config import configure_root, JSONFormatter
+        from src.logging_config import JSONFormatter, configure_root
+
         # Reset
         root = logging.getLogger()
         for h in list(root.handlers):
@@ -171,6 +206,7 @@ class TestConfigureRoot:
 
     def test_respects_level(self):
         from src.logging_config import configure_root
+
         # Reset
         root = logging.getLogger()
         for h in list(root.handlers):
@@ -184,8 +220,10 @@ class TestConstants:
 
     def test_log_dir_exists(self):
         from src.logging_config import LOG_DIR
+
         assert LOG_DIR.exists()
 
     def test_repo_root_is_parent_of_logging(self):
         from src.logging_config import REPO_ROOT
+
         assert REPO_ROOT.is_dir()

@@ -8,20 +8,23 @@ Provides:
 - Performance timer fixtures
 - Test data versioning fixtures
 """
-import json
+
 import os
-import shutil
-import sys
-import tempfile
 import time
-from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pytest
-import rasterio
-from rasterio.io import MemoryFile
-from rasterio.transform import from_bounds
+
+# rasterio is optional — the fixtures that need it (tmp_hansen_dir, tmp_mapbiomas_dir)
+# skip cleanly if GDAL system libs are unavailable.
+try:
+    import rasterio  # noqa: F401
+    from rasterio.transform import from_bounds
+
+    HAS_RASTERIO = True
+except ImportError:
+    HAS_RASTERIO = False
 
 # ========== Path fixtures ==========
 
@@ -156,6 +159,8 @@ def tmp_path_isolated(tmp_path):
 
 @pytest.fixture
 def tmp_hansen_dir(tmp_path, synthetic_hansen_window):
+    if not HAS_RASTERIO:
+        pytest.skip("rasterio not installed (no GDAL)")
     """Create a temporary Hansen directory with synthetic data."""
     lossyear, treecover = synthetic_hansen_window
     H, W = lossyear.shape
@@ -185,6 +190,8 @@ def tmp_hansen_dir(tmp_path, synthetic_hansen_window):
 
 @pytest.fixture
 def tmp_mapbiomas_dir(tmp_path, synthetic_mapbiomas):
+    if not HAS_RASTERIO:
+        pytest.skip("rasterio not installed (no GDAL)")
     """Create a temporary MapBiomas directory with synthetic data."""
     mb = tmp_path / "mapbiomas"
     mb.mkdir()

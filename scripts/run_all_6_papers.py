@@ -3,9 +3,10 @@
 
 Generates a unified report of all 6 papers.
 """
+
+import json
 import sys
 import time
-import json
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -48,8 +49,15 @@ def main():
         try:
             pipeline = pipeline_class()
             # Try to find + run main method
-            for method in ['select_tiles', 'detect_deforestation', 'detect_conflicts', 'predict_yield',
-                           'select_defensores_tiles', 'forecast', 'verify_carbon_credit']:
+            for method in [
+                "select_tiles",
+                "detect_deforestation",
+                "detect_conflicts",
+                "predict_yield",
+                "select_defensores_tiles",
+                "forecast",
+                "verify_carbon_credit",
+            ]:
                 if hasattr(pipeline, method):
                     try:
                         result = getattr(pipeline, method)()
@@ -76,7 +84,7 @@ def main():
                     "task": task,
                     "elapsed_seconds": time.time() - start,
                 }
-                print(f"  ✓ Pipeline instantiated OK")
+                print("  ✓ Pipeline instantiated OK")
         except Exception as e:
             results["papers"][paper_id] = {
                 "status": "error",

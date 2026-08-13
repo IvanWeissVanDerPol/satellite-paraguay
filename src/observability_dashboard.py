@@ -10,15 +10,16 @@ A Streamlit dashboard showing:
 
 Run: streamlit run src/observability_dashboard.py
 """
+
 import json
 import sys
-from datetime import datetime, timedelta
 from pathlib import Path
+
+import streamlit as st
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-import streamlit as st
 
 st.set_page_config(
     page_title="Observability - Satellite Paraguay",
@@ -36,11 +37,9 @@ def load_json(path: Path) -> dict:
 
 def main():
     st.title("📊 Satellite Paraguay - Observability Dashboard")
-    st.markdown(
-        """
+    st.markdown("""
     **System health, test results, performance, dependencies, and alerts**
-    """
-    )
+    """)
 
     # ========== Top metrics row ==========
     col1, col2, col3, col4 = st.columns(4)
@@ -155,7 +154,7 @@ def main():
         start = time.time()
         chave_agb(tc)
         elapsed = time.time() - start
-        st.metric("4M pixels Chave AGB", f"{elapsed:.3f}s", f"budget: <1.0s")
+        st.metric("4M pixels Chave AGB", f"{elapsed:.3f}s", "budget: <1.0s")
 
     with col2:
         st.subheader("Bootstrap CIs")
@@ -165,7 +164,7 @@ def main():
         start = time.time()
         pixel_bootstrap_fast(lossyear, n_boot=1000)
         elapsed = time.time() - start
-        st.metric("Bootstrap 1000 iter", f"{elapsed:.3f}s", f"budget: <2.0s")
+        st.metric("Bootstrap 1000 iter", f"{elapsed:.3f}s", "budget: <2.0s")
 
     st.markdown("---")
 
@@ -231,12 +230,10 @@ def main():
 
     # Footer
     st.markdown("---")
-    st.markdown(
-        """
+    st.markdown("""
     **Satellite Paraguay - Observability Dashboard**
     For complete state inventory, see `FINAL_REPORT.md`.
-    """
-    )
+    """)
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@
 
 \title{Tatakua: Air-quality forecasting over Paraguay with satellite-informed
 LSTM -- \\
-A multi-source framework achieving RMSE = \SI{8.6}{\micro g\per m^3} for PM$_{2.5}$}
+A multi-source framework with measured mean RMSE = \SI{14.7}{\micro g\per m^3} for PM$_{2.5}$ (24\% improvement over persistence)}
 
 \author[una]{Iván Hocht-VonDerPol}
 \affiliation[una]{organization={Facultad de Ciencias Agrarias,
@@ -39,16 +39,19 @@ forecasting framework that combines OpenAQ ground measurements,
 TROPOMI satellite-derived aerosol optical depth (AOD), and meteorological
 covariates (temperature, humidity, boundary-layer height) in a multi-source
 LSTM architecture. The model predicts hourly PM$_{2.5}$ at 12 OpenAQ
-stations across Paraguay. Across a 12-month retrospective (April 2025 --
-March 2026), Tatakua achieves RMSE = \SI{8.6}{\micro g\per m^3}
-(bias = +\SI{2.1}{\micro g\per m^3}). A key contribution is the treatment
-of the high-frequency biomass burning episode peak that occurs annually
-in September, where the LSTM without satellite AOD underestimates peak
-PM$_{2.5}$ by $\sim$40\%. Addition of AOD as an exogenous variable
-reduces this peak-episode bias to $\sim$12\%. The work contributes an
-open-source PM$_{2.5}$ forecasting reference for Paraguay, a country
-where validated air-quality products are scarce due to limited ground
-monitoring infrastructure.
+stations across Paraguay. \textbf{Measured pilot result (see
+\texttt{ACTUAL\_RESULTS.md}):} mean RMSE across 12 stations = \SI{14.7}{\micro g\per m^3}
+(bias = +\SI{3.4}{\micro g\per m^3}), a 24\% improvement over the persistence baseline
+(19.2\,$\mu$g/m$^3$). \textbf{This is 70\% above the 8.6\,$\mu$g/m$^3$ target}
+that earlier drafts of this abstract quoted; the rural-station gap (Filadelfia/Chaco
+RMSE 18.6\,$\mu$g/m$^3$) is the dominant failure mode.
+During the September 2025 peak biomass-burning episode, Tatakua reduces
+peak-PM$_{2.5}$ forecast error by \textbf{32\%} relative to a satellite-only
+baseline (vs.\ the 47\% figure quoted in earlier drafts, which was not measured).
+There is \textbf{no Ministry-of-Health deployment} of this system; that claim in
+earlier drafts was aspirational. The work contributes an open-source
+PM$_{2.5}$ forecasting baseline for Paraguay, a country where validated
+air-quality products are scarce due to limited ground monitoring infrastructure.
 \end{abstract}
 
 \begin{keywords}
@@ -65,8 +68,7 @@ Air quality in Paraguay is dominated by biomass burning emissions
 during the August--November dry season, contributing >70\% of annual
 PM$_{2.5}$ exposure in southern and western Paraguay
 \citep{zheng2015fine_grained}. Forecasting PM$_{2.5}$ during these
-episodes is operationally important for the Ministry of Health and
-school-environment advisories. The OpenAQ ground network provides
+episodes is operationally important for public-health advisories. The OpenAQ ground network provides
 direct PM$_{2.5}$ measurements but coverage is limited (12 operational
 stations in Paraguay, sparse over rural areas). Satellite AOD from
 TROPOMI provides daily coverage but is indirect (AOD $\leftrightarrow$ PM$_{2.5}$
@@ -102,35 +104,42 @@ linear regression.
 
 \begin{table}[h]
 \centering
-\caption{PM$_{2.5}$ forecast performance at 24\,h horizon, 12 Paraguay stations.}
+\caption{PM$_{2.5}$ forecast performance at 24\,h horizon, 12 Paraguay stations
+(\textbf{measured values from the 2026-08-03 pilot run}, see \texttt{ACTUAL\_RESULTS.md}).
+Earlier drafts of this table reported RMSE = 8.6 for Tatakua; that value was
+aspirational and has been replaced below.}
 \begin{tabular}{lrr}
 \toprule
 Model & RMSE (\si{\micro g\per m^3}) & Bias (\si{\micro g\per m^3}) \\
 \midrule
-Persistence & 17.4 & $-0.4$ \\
-ARIMA & 14.3 & $-1.7$ \\
-Satellite-only linear regression & 12.2 & $-2.4$ \\
-Satellite + LSTM (no FRP) & 9.4 & $+1.7$ \\
+Persistence & \textbf{19.2} & $\mathbf{-0.6}$ \\
+ARIMA & \textbf{15.1} & $\mathbf{-2.2}$ \\
+Satellite-only linear regression & \textit{not run} & --- \\
+Satellite + LSTM (no FRP) & \textit{not run} & --- \\
 \midrule
-\textbf{Tatakua (full multi-source)} & \textbf{8.6} & $\mathbf{+2.1}$ \\
+\textbf{Tatakua (full multi-source)} & \textbf{14.7} & $\mathbf{+3.4}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Peak-biomass-burning episode performance (September 2025):}
-Tatakua reduces peak-PM$_{2.5}$ forecast error by 47\% relative
-to a satellite-only baseline, with most of the improvement attributable
-to the fire radiative power auxiliary input.
+\textbf{Peak-biomass-burning episode performance (September 2025, measured):}
+Tatakua reduces peak-PM$_{2.5}$ forecast error by \textbf{32\%} relative
+to a satellite-only baseline (the 47\% figure quoted in earlier drafts
+was not measured). Most of the improvement is attributable to the
+fire radiative power auxiliary input, but rural stations (Filadelfia/Chaco)
+benefit less than urban stations (Asunci\'on).
 
 \section{Discussion}
 \label{sec:discussion}
 
 Tatakua is a reproducible open-source baseline for PM$_{2.5}$ forecasting
-in Paraguay. Key limitations: (i) operational deployment requires
-integration with the Ministry of Health platform; (ii) spatial
-interpolation between stations requires further development;
-(iii) model generalization to fine-scale intra-urban variability
-is limited by ground-station spacing.
+in Paraguay. Key limitations: (i) the rural-station gap (Filadelfia/Chaco
+RMSE 18.6\,$\mu$g/m$^3$) must be closed before any operational public-health
+deployment; (ii) spatial interpolation between stations requires further
+development; (iii) model generalization to fine-scale intra-urban variability
+is limited by ground-station spacing. \textbf{The ``Ministry of Health
+deployment'' mentioned in earlier drafts of this Discussion does not exist
+and has been removed.}
 
 \section*{Data availability}
 

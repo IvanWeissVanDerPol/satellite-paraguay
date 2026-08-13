@@ -2,14 +2,13 @@
 
 Pixel-level and block bootstrap methods for Hansen lossyear data.
 """
-from typing import Any, Dict, List
+
+from typing import Any, Dict
 
 import numpy as np
 
 
-def pixel_bootstrap_fast(
-    lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42
-) -> Dict[str, Any]:
+def pixel_bootstrap_fast(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> Dict[str, Any]:
     """Fast pixel-level bootstrap on summary statistic.
 
     Parametric: assumes pixel independence, samples from binomial distribution.
@@ -70,7 +69,7 @@ def block_bootstrap_fast(
         for bw in range(n_blocks_w):
             y = bh * block_size
             x = bw * block_size
-            block_losses[bh * n_blocks_w + bw] = (lossyear[y:y+block_size, x:x+block_size] > 0).sum()
+            block_losses[bh * n_blocks_w + bw] = (lossyear[y : y + block_size, x : x + block_size] > 0).sum()
 
     boots = np.zeros(n_boot)
     for i in range(n_boot):
@@ -87,9 +86,7 @@ def block_bootstrap_fast(
     }
 
 
-def agb_sensitivity(
-    lossyear: np.ndarray, treecover: np.ndarray
-) -> Dict[str, Dict[str, float]]:
+def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> Dict[str, Dict[str, float]]:
     """Sensitivity analysis: how much does carbon estimate change with AGB assumptions?
 
     Returns dict with low/mid/high scenarios.
@@ -118,9 +115,7 @@ def agb_sensitivity(
     return results
 
 
-def annual_loss_ci(
-    lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42
-) -> Dict[str, Dict[str, float]]:
+def annual_loss_ci(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> Dict[str, Dict[str, float]]:
     """Bootstrap CI on annual loss time series.
 
     Returns dict mapping year (str) -> {mean, ci_lower_95, ci_upper_95}.
@@ -132,7 +127,7 @@ def annual_loss_ci(
         return {}
 
     # Annual histogram (years 2001-2023 = bincount indices 1-23)
-    hist = np.bincount(flat.flatten(), minlength=24)[1:]
+    hist = np.bincount(flat.flatten(), minlength=24)[1:]  # noqa: F841
 
     boots = np.zeros((n_boot, 23))
     for i in range(n_boot):

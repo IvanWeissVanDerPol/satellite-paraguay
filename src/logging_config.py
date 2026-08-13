@@ -12,6 +12,7 @@ Usage:
     logger = get_logger(__name__)
     logger.info("processing", extra={"tile": "20S_060W"})
 """
+
 import json
 import logging
 import logging.handlers

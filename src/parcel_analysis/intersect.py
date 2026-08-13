@@ -2,13 +2,15 @@
 
 Handles intersection of satellite data with Catastro parcels and indigenous territories.
 """
+
 from pathlib import Path
-from typing import Optional, Dict, List, Tuple
-import numpy as np
+from typing import Dict, Optional, Tuple
+
 import geopandas as gpd
-from shapely.geometry import box, Polygon
+import numpy as np
 import rasterio
 from rasterio.mask import mask as rasterio_mask
+from shapely.geometry import box
 
 from ..paraguay_admin import load_catastro_parcels, load_indigenous_territories
 

@@ -2,6 +2,7 @@
 
 Content-addressable storage (CAS) for test fixtures using SHA256.
 """
+
 import hashlib
 import json
 import shutil
@@ -51,9 +52,7 @@ def save_index(index: Dict[str, Dict[str, Any]], index_path: Path) -> None:
     )
 
 
-def verify_against_index(
-    data_dir: Path, index_path: Path
-) -> Dict[str, Dict[str, Any]]:
+def verify_against_index(data_dir: Path, index_path: Path) -> Dict[str, Dict[str, Any]]:
     """Verify current files match stored index.
 
     Returns dict mapping rel_path -> {status, expected, actual}.

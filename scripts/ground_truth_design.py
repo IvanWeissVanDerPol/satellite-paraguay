@@ -13,17 +13,15 @@ The plots will be used to:
 - Verify MapBiomas land cover classes
 - Establish a permanent monitoring network
 """
-import sys
-import json
+
 import csv
+import json
+import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-import numpy as np
-import rasterio
-from rasterio.windows import Window
 
 OUT_DIR = REPO_ROOT / "data/ground_truth"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -47,25 +45,22 @@ def generate_sample_design(n_plots=75):
     print(f"\nTarget: {n_plots} plots across 6 departments")
 
     # Stratified design
-    departments = ["Alto Paraguay", "Boquerón", "Presidente Hayes",
-                   "San Pedro", "Canindeyu", "Caaguazú"]
-    strata = ["forest_with_loss", "forest_no_loss",
-              "nonforest_with_loss", "nonforest_no_loss"]
+    departments = ["Alto Paraguay", "Boquerón", "Presidente Hayes", "San Pedro", "Canindeyu", "Caaguazú"]
+    strata = ["forest_with_loss", "forest_no_loss", "nonforest_with_loss", "nonforest_no_loss"]
 
     # Proportional allocation based on actual loss
     allocations = {
-        "Alto Paraguay": {"forest_with_loss": 6, "forest_no_loss": 2,
-                          "nonforest_with_loss": 4, "nonforest_no_loss": 2},
-        "Boquerón": {"forest_with_loss": 4, "forest_no_loss": 2,
-                     "nonforest_with_loss": 3, "nonforest_no_loss": 2},
-        "Presidente Hayes": {"forest_with_loss": 4, "forest_no_loss": 2,
-                             "nonforest_with_loss": 3, "nonforest_no_loss": 2},
-        "San Pedro": {"forest_with_loss": 4, "forest_no_loss": 2,
-                      "nonforest_with_loss": 3, "nonforest_no_loss": 2},
-        "Canindeyu": {"forest_with_loss": 3, "forest_no_loss": 2,
-                      "nonforest_with_loss": 2, "nonforest_no_loss": 2},
-        "Caaguazú": {"forest_with_loss": 2, "forest_no_loss": 2,
-                     "nonforest_with_loss": 2, "nonforest_no_loss": 2},
+        "Alto Paraguay": {"forest_with_loss": 6, "forest_no_loss": 2, "nonforest_with_loss": 4, "nonforest_no_loss": 2},
+        "Boquerón": {"forest_with_loss": 4, "forest_no_loss": 2, "nonforest_with_loss": 3, "nonforest_no_loss": 2},
+        "Presidente Hayes": {
+            "forest_with_loss": 4,
+            "forest_no_loss": 2,
+            "nonforest_with_loss": 3,
+            "nonforest_no_loss": 2,
+        },
+        "San Pedro": {"forest_with_loss": 4, "forest_no_loss": 2, "nonforest_with_loss": 3, "nonforest_no_loss": 2},
+        "Canindeyu": {"forest_with_loss": 3, "forest_no_loss": 2, "nonforest_with_loss": 2, "nonforest_no_loss": 2},
+        "Caaguazú": {"forest_with_loss": 2, "forest_no_loss": 2, "nonforest_with_loss": 2, "nonforest_no_loss": 2},
     }
 
     plots = []
@@ -76,21 +71,23 @@ def generate_sample_design(n_plots=75):
             n = allocations[dept][stratum]
             for _ in range(n):
                 plot_id += 1
-                plots.append({
-                    "plot_id": f"PY-{plot_id:03d}",
-                    "department": dept,
-                    "stratum": stratum,
-                    "gps_lat": None,  # to be filled in field
-                    "gps_lon": None,
-                    "field_date": None,
-                    "treecover_2000": None,
-                    "loss_year": None,
-                    "loss_pixel_count": None,
-                    "biomass_mg_per_ha": None,
-                    "photo_file": None,
-                    "notes": "",
-                    "verified_by": "",
-                })
+                plots.append(
+                    {
+                        "plot_id": f"PY-{plot_id:03d}",
+                        "department": dept,
+                        "stratum": stratum,
+                        "gps_lat": None,  # to be filled in field
+                        "gps_lon": None,
+                        "field_date": None,
+                        "treecover_2000": None,
+                        "loss_year": None,
+                        "loss_pixel_count": None,
+                        "biomass_mg_per_ha": None,
+                        "photo_file": None,
+                        "notes": "",
+                        "verified_by": "",
+                    }
+                )
 
     return plots
 
@@ -110,14 +107,14 @@ def main():
 
     # Print summary
     print(f"\n  Total plots: {len(plots)}")
-    print(f"\n  By department:")
+    print("\n  By department:")
     by_dept = {}
     for p in plots:
         by_dept.setdefault(p["department"], []).append(p)
     for dept, ps in by_dept.items():
         print(f"    {dept}: {len(ps)} plots")
 
-    print(f"\n  By stratum:")
+    print("\n  By stratum:")
     by_stratum = {}
     for p in plots:
         by_stratum.setdefault(p["stratum"], []).append(p)
@@ -173,11 +170,11 @@ def main():
         ],
     }
     (OUT_DIR / "field_plot_design.json").write_text(json.dumps(metadata, indent=2))
-    print(f"\n  Saved: data/ground_truth/field_plot_design.json")
-    print(f"\n  Estimated cost: $25,000")
-    print(f"  Estimated duration: 12 weeks")
-    print(f"  Team: 4 fieldworkers + 1 supervisor")
-    print(f"\n  Next: Submit IRB, recruit team, acquire equipment")
+    print("\n  Saved: data/ground_truth/field_plot_design.json")
+    print("\n  Estimated cost: $25,000")
+    print("  Estimated duration: 12 weeks")
+    print("  Team: 4 fieldworkers + 1 supervisor")
+    print("\n  Next: Submit IRB, recruit team, acquire equipment")
 
 
 if __name__ == "__main__":

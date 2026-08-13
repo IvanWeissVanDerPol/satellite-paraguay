@@ -7,18 +7,13 @@ Timeline: 12 weeks
 Hypothesis: Satellite CV + Verra VCS API + Paraguayan carbon market can automate
 carbon credit verification with R² > 0.82 (matching AlphaEarth benchmark).
 """
-from pathlib import Path
-from typing import Optional, Dict, List
-import numpy as np
+
+from typing import Dict, Optional
+
 import pandas as pd
-import requests
 
-from ...satellite_io import download_via_gee
-from ...foundation_models import load_alphaearth, compute_tile_embeddings
-from ...paraguay_admin import get_tile_bbox, load_catastro_parcels
-from ...parcel_analysis import get_parcels_in_tile
-from ...evaluation import regression_metrics, print_metrics
-
+from ...evaluation import regression_metrics
+from ...foundation_models import load_alphaearth
 
 VERRA_API_URL = "https://api.verra.org/v1/projects"
 
@@ -45,17 +40,21 @@ class YvyraPipeline:
         # Real implementation: query Verra API
         # For now, return sample data
         print(f"[verra] Fetching VCS projects for {country}")
-        return pd.DataFrame([
-            {"id": "VCS-001", "name": "Paraguay Forest Conservation", "area_ha": 5000},
-            {"id": "VCS-002", "name": "Chaco Reforestation", "area_ha": 12000},
-        ])
+        return pd.DataFrame(
+            [
+                {"id": "VCS-001", "name": "Paraguay Forest Conservation", "area_ha": 5000},
+                {"id": "VCS-002", "name": "Chaco Reforestation", "area_ha": 12000},
+            ]
+        )
 
     def fetch_gold_standard(self) -> pd.DataFrame:
         """Fetch Gold Standard projects for Paraguay."""
         print("[gold] Fetching Gold Standard projects for Paraguay")
-        return pd.DataFrame([
-            {"id": "GS-001", "name": "Sustainable Forestry PY", "area_ha": 8000},
-        ])
+        return pd.DataFrame(
+            [
+                {"id": "GS-001", "name": "Sustainable Forestry PY", "area_ha": 8000},
+            ]
+        )
 
     def load_foundation_model(self):
         """Load AlphaEarth foundation model."""

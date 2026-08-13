@@ -1,21 +1,22 @@
 """Validate predictions for each paper."""
+
 import argparse
-from pathlib import Path
 
 from src.papers.p0011_yvytu_deforestation import YvytuPipeline
-from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
-from src.papers.p0025_yrupe_yield import YrupePipeline
 from src.papers.p0012_yvy_indigenous import YvyPipeline
+from src.papers.p0025_yrupe_yield import YrupePipeline
 from src.papers.p0026_kai_poaching import KaiPipeline
 from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
+from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
 
 
 def validate_paper_1():
     """Validate P0011 Yvytu deforestation predictions."""
     print("\n=== P0011 Yvytu (Chaco deforestation) ===")
-    pipeline = YvytuPipeline()
+    YvytuPipeline()
     # Simulate predictions
     import numpy as np
+
     preds = np.random.randint(0, 5, size=(256, 256), dtype=np.uint8)
     print(f"  Predictions shape: {preds.shape}")
     print(f"  Deforested pixels: {(preds == 2).sum()}")

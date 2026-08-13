@@ -2,9 +2,10 @@
 
 Coverage target: 100%+. Covers error handling paths.
 """
-import pytest
+
+from unittest.mock import patch
+
 import numpy as np
-from unittest.mock import patch, MagicMock
 
 
 class TestRunAllBaselines:
@@ -13,6 +14,7 @@ class TestRunAllBaselines:
     def test_runs_all_baselines(self):
         """When all baselines succeed, returns 3 results."""
         from src.baselines.p0100_yvyra_baselines import run_all_baselines
+
         # 50 samples × 5 features, balanced target
         np.random.seed(42)
         features = np.random.rand(50, 5)
@@ -32,8 +34,9 @@ class TestRunAllBaselines:
         target = np.array([1.0, 2.0])
 
         # Mock Ridge.fit to raise
-        with patch("src.baselines.p0100_yvyra_baselines.linear_regression_baseline",
-                   side_effect=ValueError("solver failed")):
+        with patch(
+            "src.baselines.p0100_yvyra_baselines.linear_regression_baseline", side_effect=ValueError("solver failed")
+        ):
             result = run_all_baselines(features, target)
 
         # persistence should still run
@@ -49,8 +52,10 @@ class TestRunAllBaselines:
         features = np.array([[1.0], [2.0]])
         target = np.array([1.0, 2.0])
 
-        with patch("src.baselines.p0100_yvyra_baselines.random_forest_regression_baseline",
-                   side_effect=ValueError("n_estimators invalid")):
+        with patch(
+            "src.baselines.p0100_yvyra_baselines.random_forest_regression_baseline",
+            side_effect=ValueError("n_estimators invalid"),
+        ):
             result = run_all_baselines(features, target)
 
         assert "random_forest" in result
@@ -63,10 +68,13 @@ class TestRunAllBaselines:
         features = np.array([[1.0]])
         target = np.array([1.0])
 
-        with patch("src.baselines.p0100_yvyra_baselines.linear_regression_baseline",
-                   side_effect=RuntimeError("lr fail")):
-            with patch("src.baselines.p0100_yvyra_baselines.random_forest_regression_baseline",
-                       side_effect=RuntimeError("rf fail")):
+        with patch(
+            "src.baselines.p0100_yvyra_baselines.linear_regression_baseline", side_effect=RuntimeError("lr fail")
+        ):
+            with patch(
+                "src.baselines.p0100_yvyra_baselines.random_forest_regression_baseline",
+                side_effect=RuntimeError("rf fail"),
+            ):
                 result = run_all_baselines(features, target)
 
         assert "persistence" in result

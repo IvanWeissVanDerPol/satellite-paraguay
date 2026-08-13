@@ -1,0 +1,87 @@
+cff-version: 1.2.0
+message: "If you use this work in a research output, please cite the thesis and the relevant paper(s) below."
+title: "SatelliteCV-Paraguay (Yvutu): Multi-Temporal Earth Observation of Paraguay"
+abstract: >
+  A thesis substrate and Python package comprising six papers on
+  deforestation, carbon credit integrity, indigenous land tenure,
+  soybean yield, wildlife detection, and air quality forecasting for
+  Paraguay, using Hansen GFC v1.11, Sentinel-2 L2A, MapBiomas Paraguay,
+  OpenAQ, Verra VCS, and TROPOMI as primary data sources.
+type: thesis
+date-released: 2026-07-22
+license: CC-BY-NC-4.0
+keywords:
+  - remote-sensing
+  - deforestation
+  - carbon-credits
+  - paraguay
+  - indigenous-data-sovereignty
+  - prithvi
+  - yolov8
+  - lstm
+  - gran-chaco
+authors:
+  - family-names: Weiss Van der Pol
+    given-names: Iván
+    affiliation: Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción
+    orcid: 0000-0000-0000-0000
+  - family-names: Cristaldo
+    given-names: Juan Carlos
+    affiliation: Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción
+preferred-citation:
+  type: thesis
+  title: "Multi-Temporal Earth Observation of Paraguay: Six Papers from One Python Package"
+  author:
+    - family-names: Weiss Van der Pol
+      given-names: Iván
+  institution: Universidad Nacional de Asunción
+  year: 2026
+references:
+  - type: article
+    title: "Yvutu: Multi-Temporal Satellite Computer Vision for Deforestation Alert Generation in the Paraguayan Chaco"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "Remote Sensing of Environment (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0011_yvutu_deforestation/"
+  - type: article
+    title: "Yvyra: Carbon Credit Integrity Verification in Paraguay Using Hansen Deforestation"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "Nature Climate Change (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0010_yvyra_carbon_credits/"
+  - type: article
+    title: "Yvy: Indigenous Land Tenure and Deforestation in Paraguay's Gran Chaco"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "World Development (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0012_yvy_indigenous/"
+  - type: article
+    title: "Yrupe: Cross-Domain Transfer Learning for Soybean Yield Prediction in Paraguay"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "Agricultural Systems (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0025_yrupe_yield/"
+  - type: article
+    title: "Kai: Wildlife Detection in the Gran Chaco Using Satellite Imagery and Object Detection"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "Conservation Biology (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0026_kai_poaching/"
+  - type: article
+    title: "Tatakua: Air Quality Forecasting in Paraguay Using LSTM and Sentinel-5P"
+    author:
+      - family-names: Weiss Van der Pol
+        given-names: Iván
+    journal: "Atmospheric Environment (in preparation)"
+    year: 2026
+    notes: "See papers/drafts/p0035_tatakua_air_quality/"

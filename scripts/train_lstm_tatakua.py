@@ -3,11 +3,11 @@
 Usage:
     python scripts/train_lstm_tatakua.py --config configs/p0035_tatakua.yaml --epochs 50
 """
+
 import argparse
 import logging
-from pathlib import Path
 import sys
-import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -47,6 +47,7 @@ def main():
     if openaq.empty or "value" not in openaq.columns:
         logger.warning("OpenAQ empty; using synthetic")
         from src.external.openaq_client import generate_synthetic_openaq_for_station
+
         openaq = generate_synthetic_openaq_for_station(-25.26, -57.58, "pm25")
 
     # Aggregate to monthly
@@ -88,8 +89,8 @@ def main():
     sequence_length = 6  # 6 months input
     X, y = [], []
     for i in range(len(values_norm) - sequence_length - args.horizon + 1):
-        X.append(values_norm[i:i + sequence_length])
-        y.append(values_norm[i + sequence_length:i + sequence_length + args.horizon, 0])  # PM2.5 only
+        X.append(values_norm[i : i + sequence_length])
+        y.append(values_norm[i + sequence_length : i + sequence_length + args.horizon, 0])  # PM2.5 only
 
     X = np.array(X, dtype=np.float32)
     y = np.array(y, dtype=np.float32)
@@ -109,8 +110,11 @@ def main():
         def __init__(self, input_dim, hidden_dim, n_layers, horizon):
             super().__init__()
             self.lstm = torch.nn.LSTM(
-                input_dim, hidden_dim, n_layers,
-                batch_first=True, dropout=0.2 if n_layers > 1 else 0,
+                input_dim,
+                hidden_dim,
+                n_layers,
+                batch_first=True,
+                dropout=0.2 if n_layers > 1 else 0,
             )
             self.fc = torch.nn.Linear(hidden_dim, horizon)
 
@@ -147,8 +151,8 @@ def main():
 
         # Mini-batch training
         for i in range(0, len(X_train_t), args.batch_size):
-            batch_X = X_train_t[i:i + args.batch_size]
-            batch_y = y_train_t[i:i + args.batch_size]
+            batch_X = X_train_t[i : i + args.batch_size]
+            batch_y = y_train_t[i : i + args.batch_size]
 
             optimizer.zero_grad()
             pred = model(batch_X)
@@ -171,21 +175,22 @@ def main():
             val_mae = float(np.mean(np.abs(val_pred_unnorm - val_y_unnorm)))
 
         logger.info(
-            f"Epoch {epoch+1}/{args.epochs} | "
-            f"Train Loss: {avg_loss:.4f} | "
-            f"Val MAE: {val_mae:.2f} µg/m³"
+            f"Epoch {epoch+1}/{args.epochs} | " f"Train Loss: {avg_loss:.4f} | " f"Val MAE: {val_mae:.2f} µg/m³"
         )
 
         # Save best
         if val_mae < best_val_mae:
             best_val_mae = val_mae
-            torch.save({
-                "model_state_dict": model.state_dict(),
-                "epoch": epoch,
-                "best_val_mae": best_val_mae,
-                "mean": mean.tolist(),
-                "std": std.tolist(),
-            }, checkpoint_dir / "best.pt")
+            torch.save(
+                {
+                    "model_state_dict": model.state_dict(),
+                    "epoch": epoch,
+                    "best_val_mae": best_val_mae,
+                    "mean": mean.tolist(),
+                    "std": std.tolist(),
+                },
+                checkpoint_dir / "best.pt",
+            )
 
     # Final
     final_path = checkpoint_dir / "final.pt"
@@ -196,6 +201,7 @@ def main():
     # MLflow logging
     try:
         from src.utils.mlflow_tracking import log_p0035_experiment
+
         log_p0035_experiment(
             val_mae=best_val_mae,
             epochs=args.epochs,

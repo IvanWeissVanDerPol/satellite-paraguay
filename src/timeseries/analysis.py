@@ -6,12 +6,13 @@ For:
 - P0035 Tatakua (air quality time series)
 - P0025 Yrupe (crop yield time series)
 """
+
 from pathlib import Path
-from typing import Optional, List, Dict, Tuple
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
 import rasterio
-from rasterio.windows import from_bounds
 
 
 def stack_timeseries(
@@ -148,7 +149,7 @@ def compute_anomaly(
 
     Returns anomaly for each timestep (T, H, W).
     """
-    baseline = np.nanmean(timeseries[baseline_period[0]:baseline_period[1]], axis=0)
+    baseline = np.nanmean(timeseries[baseline_period[0] : baseline_period[1]], axis=0)
     return timeseries - baseline[None, :, :]
 
 

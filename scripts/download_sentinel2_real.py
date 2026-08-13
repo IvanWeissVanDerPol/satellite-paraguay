@@ -7,13 +7,15 @@ Usage:
     python3 scripts/download_sentinel2_real.py --bbox -60.5 -24.5 -58.5 -22.5 --max-cloud 10 --n-scenes 5
     python3 scripts/download_sentinel2_real.py --bbox -60.5 -24.5 -58.5 -22.5 --max-cloud 5 --months 2024-08 2024-09
 """
+
+import argparse
+import json
 import sys
 import time
 import urllib.request
-import json
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 # Auto-install if missing
@@ -22,28 +24,35 @@ try:
     import pystac_client
 except ImportError:
     import subprocess
-    subprocess.run([
-        sys.executable, "-m", "pip", "install",
-        "planetary-computer", "pystac-client", "rasterio",
-        "--break-system-packages", "-q"
-    ], check=True)
+
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "planetary-computer",
+            "pystac-client",
+            "rasterio",
+            "--break-system-packages",
+            "-q",
+        ],
+        check=True,
+    )
     import planetary_computer
     import pystac_client
 
-import argparse
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument("--bbox", type=float, nargs=4, required=True,
-                       help="Bounding box: min_lon min_lat max_lon max_lat")
-argparser.add_argument("--max-cloud", type=float, default=20,
-                       help="Max cloud cover percentage (default 20)")
-argparser.add_argument("--n-scenes", type=int, default=5,
-                       help="Number of scenes to download (default 5)")
-argparser.add_argument("--months", type=str, nargs="+", default=None,
-                       help="YYYY-MM months to filter (default: all)")
-argparser.add_argument("--bands", type=str, nargs="+",
-                       default=["B02", "B03", "B04", "B08"],
-                       help="Bands to download (default RGB+NIR)")
+argparser.add_argument(
+    "--bbox", type=float, nargs=4, required=True, help="Bounding box: min_lon min_lat max_lon max_lat"
+)
+argparser.add_argument("--max-cloud", type=float, default=20, help="Max cloud cover percentage (default 20)")
+argparser.add_argument("--n-scenes", type=int, default=5, help="Number of scenes to download (default 5)")
+argparser.add_argument("--months", type=str, nargs="+", default=None, help="YYYY-MM months to filter (default: all)")
+argparser.add_argument(
+    "--bands", type=str, nargs="+", default=["B02", "B03", "B04", "B08"], help="Bands to download (default RGB+NIR)"
+)
 argparser.add_argument("--output-dir", type=str, default="data/sentinel2")
 args = argparser.parse_args()
 
@@ -78,7 +87,7 @@ if args.months:
     items = [i for i in items if any(i.datetime.strftime("%Y-%m") == m for m in args.months)]
 
 # Take first n
-items = items[:args.n_scenes]
+items = items[: args.n_scenes]
 print(f"Downloading {len(items)} scenes")
 
 # Download each

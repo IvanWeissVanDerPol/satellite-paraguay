@@ -5,14 +5,15 @@ Run with:
 
 Uses pytest-benchmark for accurate measurements.
 """
+
 import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 import numpy as np
 import pytest
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 @pytest.mark.performance
@@ -93,7 +94,7 @@ class TestStatisticalTests:
             obs = np.array([[100, 50], [200, 150]])
             return chi2_contingency(obs)
 
-        result = benchmark(run)
+        benchmark(run)
 
 
 @pytest.mark.performance
@@ -103,7 +104,6 @@ class TestEndToEndBenchmarks:
     def test_full_chave_carbon_pipeline(self, tmp_hansen_dir):
         """Full per-pixel carbon pipeline."""
         import rasterio
-        from rasterio.windows import Window
 
         from scripts.per_pixel_carbon import chave_agb
 

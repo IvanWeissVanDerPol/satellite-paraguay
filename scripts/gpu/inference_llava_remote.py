@@ -6,13 +6,14 @@ Run on GPU:
 Expected runtime: 3-4 hours on A100
 Expected cost: $3-4
 """
-import sys
+
 import argparse
 import json
+import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path("/root/satellite-paraguay")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 
@@ -34,25 +35,26 @@ def main():
         return
 
     import geopandas as gpd
+
     gdf = gpd.read_file(str(conflict_path))
     print(f"  {len(gdf)} conflicts to annotate")
 
     # Try loading LLaVA
     try:
-        from transformers import LlavaNextProcessor, LlavaNextForConditionalGeneration
         import torch
+        from transformers import LlavaNextForConditionalGeneration, LlavaNextProcessor
 
         model_id = "llava-hf/llava-v1.6-mistral-7b-hf"
-        processor = LlavaNextProcessor.from_pretrained(model_id)
-        model = LlavaNextForConditionalGeneration.from_pretrained(
+        LlavaNextProcessor.from_pretrained(model_id)
+        model = LlavaNextForConditionalGeneration.from_pretrained(  # noqa: F841
             model_id,
             torch_dtype=torch.float16,
             device_map="auto",
         )
-        print(f"  LLaVA loaded successfully")
+        print("  LLaVA loaded successfully")
     except Exception as e:
         print(f"  LLaVA load failed: {e}")
-        print(f"  Falling back to rule-based explanations")
+        print("  Falling back to rule-based explanations")
 
         # Rule-based fallback
         explanations = []
@@ -66,10 +68,12 @@ Reason: Catastro property claim exists within recognized indigenous land boundar
 Recommended action: Verify with INDI; freeze parcel transactions pending FPIC.
 Confidence: MEDIUM (based on bbox overlap, not legal boundaries).
 """
-            explanations.append({
-                "parcel_id": row.get('id', idx),
-                "explanation": explanation.strip(),
-            })
+            explanations.append(
+                {
+                    "parcel_id": row.get("id", idx),
+                    "explanation": explanation.strip(),
+                }
+            )
 
         out = {
             "model": "rule-based fallback",

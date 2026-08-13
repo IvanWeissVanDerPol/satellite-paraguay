@@ -7,14 +7,21 @@ Implements:
 - Paired t-test for metric differences across folds
 - Effect size (Cohen's d) for practical significance
 """
+
+from typing import Dict, Tuple
+
 import numpy as np
-from typing import Tuple, Optional, Dict, List
 from scipy import stats
 
 
-def bootstrap_ci(y_true: np.ndarray, y_pred: np.ndarray,
-                metric_func: callable, n_bootstrap: int = 1000,
-                ci: float = 0.95, seed: int = 42) -> Tuple[float, float, float]:
+def bootstrap_ci(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    metric_func: callable,
+    n_bootstrap: int = 1000,
+    ci: float = 0.95,
+    seed: int = 42,
+) -> Tuple[float, float, float]:
     """Compute bootstrap confidence interval for a metric.
 
     Args:
@@ -57,8 +64,8 @@ def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> 
         dict with chi2, p-value, contingency table
     """
     # Both correct
-    a_correct = (pred_a == y_true)
-    b_correct = (pred_b == y_true)
+    a_correct = pred_a == y_true
+    b_correct = pred_b == y_true
 
     # b01: A wrong, B right
     b01 = int((~a_correct & b_correct).sum())
@@ -70,6 +77,7 @@ def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> 
         chi2, p_value = 0.0, 1.0
     else:
         from scipy.stats import binomtest
+
         # Use exact binomial test for McNemar's test (more compatible)
         n_disagree = b01 + b10
         result = binomtest(b01, n_disagree, p=0.5)
@@ -110,11 +118,9 @@ def paired_ttest(scores1: np.ndarray, scores2: np.ndarray) -> Dict:
 
 def generate_confidence_intervals_table(results: Dict, output_path: str) -> Dict:
     """Generate CI table for all models on all metrics."""
-    from src.evaluation import pixel_f1_score, mean_iou
 
     # This is a placeholder - actual implementation requires
     # raw predictions per tile to bootstrap over
-    pass
 
 
 if __name__ == "__main__":

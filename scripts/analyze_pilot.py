@@ -6,9 +6,11 @@ Reads outputs/p0011/metrics.json and produces:
 - Per-class metrics
 - CIs as JSON for paper inclusion
 """
+
 import json
 import sys
 from pathlib import Path
+
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -26,7 +28,7 @@ def bootstrap_ci_from_confusion(tp, fp, fn, tn, n_bootstrap=10000, ci=0.95, seed
 
     for _ in range(n_bootstrap):
         # Sample with replacement from the implied multinomial
-        counts = rng.multinomial(n, [tp/n, fp/n, fn/n, tn/n])
+        counts = rng.multinomial(n, [tp / n, fp / n, fn / n, tn / n])
         tp_b, fp_b, fn_b, tn_b = counts
         if tp_b + fp_b == 0:
             p = 0.0
@@ -99,7 +101,10 @@ def analyze_pilot():
             print(f"  {metric_name:10s}: {ci['mean']:.4f} [{ci['ci_lower']:.4f}, {ci['ci_upper']:.4f}]")
 
         results[model_name] = {
-            "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "tn": tn,
             "n_total": n,
             "n_positive": tp + fn,
             "n_negative": tn + fp,
@@ -138,15 +143,17 @@ def analyze_pilot():
         f.write("|-------|---------------------------|------------------------|--------------------|\n")
         for model_name, r in results.items():
             cis = r["bootstrap_cis"]
-            f.write(f"| {model_name} | "
-                   f"{cis['precision']['mean']:.4f} [{cis['precision']['ci_lower']:.4f}, {cis['precision']['ci_upper']:.4f}] | "
-                   f"{cis['recall']['mean']:.4f} [{cis['recall']['ci_lower']:.4f}, {cis['recall']['ci_upper']:.4f}] | "
-                   f"{cis['f1']['mean']:.4f} [{cis['f1']['ci_lower']:.4f}, {cis['f1']['ci_upper']:.4f}] |\n")
+            f.write(
+                f"| {model_name} | "
+                f"{cis['precision']['mean']:.4f} [{cis['precision']['ci_lower']:.4f}, {cis['precision']['ci_upper']:.4f}] | "  # noqa: E501
+                f"{cis['recall']['mean']:.4f} [{cis['recall']['ci_lower']:.4f}, {cis['recall']['ci_upper']:.4f}] | "
+                f"{cis['f1']['mean']:.4f} [{cis['f1']['ci_lower']:.4f}, {cis['f1']['ci_upper']:.4f}] |\n"
+            )
         f.write("\n## Confusion matrices\n\n")
         for model_name, r in results.items():
             f.write(f"### {model_name}\n\n")
-            f.write(f"| | Predicted + | Predicted - |\n")
-            f.write(f"|---|---|---|\n")
+            f.write("| | Predicted + | Predicted - |\n")
+            f.write("|---|---|---|\n")
             f.write(f"| Actual + | {r['tp']:,} | {r['fn']:,} |\n")
             f.write(f"| Actual - | {r['fp']:,} | {r['tn']:,} |\n\n")
         f.write("\n## What this means\n\n")
@@ -157,7 +164,10 @@ def analyze_pilot():
         f.write("3. **F1 ~0.50** is the result of predicting the majority class correctly.\n")
         f.write("4. **The pilot experiment demonstrates pipeline correctness**, not model quality.\n")
         f.write("5. **Real data + real training** (Prithvi fine-tune on 50 Chaco tiles for 30 epochs)\n")
-        f.write("   is expected to yield F1 = 0.85-0.90 based on the Prithvi paper.\n")
+        f.write("   is expected to yield higher F1, but **this has not been measured**. The F1 = 0.85-0.90\n")
+        f.write("   figure quoted in earlier versions of this report is a Prithvi literature benchmark,\n")
+        f.write("   not a Yvutu measurement, and is preserved here only as an aspirational target.\n")
+        f.write("   See papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md for measured values.\n")
     print(f"Markdown report saved to {md_path}")
 
     return results
