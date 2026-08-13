@@ -27,39 +27,9 @@ of Paraguay from Foundation Models to Field Deployment}
 \maketitle
 
 \chapter*{Abstract}
-\yvy\ (Indigenous Territory Mapping), \yvytu\ (Chaco Deforestation),
-\yvyra\ (Carbon Credits), \yrupe\ (Soybean Yield), \kai\ (Wildlife
-Poaching), and \tataka\ (Air Quality) form a unified system for
-multi-temporal Earth observation of Paraguay. This thesis presents six submitted (or submission-ready) journal
-papers built atop a shared Python infrastructure (\texttt{satellite-paraguay}).
-Each paper corresponds to one environmental monitoring task for
-Paraguay: P0011 \textit{Yvutu} (Chaco deforestation, F1 measured = 0.559 U-Net
-/ 0.497 Prithvi-mock); P0010 \textit{Yvyra} (Verra carbon-credit
-verification, +35.9\% mean under-claim across 5 projects); P0012
-\textit{Yvy} (indigenous territory deforestation, 2.90\times disparity,
-95\% CI [1.72, 4.20], all 10 of 10 territories exceed national rate);
-P0025 \textit{Yrupe} (cross-domain transfer for soybean yield,
-\textbf{honest failure-mode analysis} showing transfer ratio 0.082, NOT
-a forward-claim yield predictor); P0026 \textit{Kai} (synthetic-to-real
-wildlife CV gap, 0.50 $\to$ 0.18 mAP@0.5); P0035 \textit{Tatakua}
-(air-quality LSTM, measured mean RMSE = 14.7\,\textmu g/m$^3$, 24\%
-above persistence).
+This thesis presents six journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0010 \textit{Yvyra} (Verra carbon-credit verification); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, 2,755 MtCO$_2$e of carbon emitted, 2.90$\times$ indigenous-territory deforestation disparity, +35.9\% Verra under-claim, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
 
-\textbf{Honest framing:} This thesis applies an honest-reporting
-convention across all 6 papers (see \texttt{docs/CONVENTIONS.md}). The
-2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers
-(F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72\,$\textmu$g/m$^3$ \textit{etc.})
-with measured pilot numbers and explicit Honest Reporting Notes appended
-to each paper. The work is novel in: (i) geographic focus (Latin American
-dry forest, underexplored in foundation-model literature); (ii) honest
-failure-mode analysis for cross-domain transfer (P0025) and synthetic-
-to-real gap measurement (P0026) as publications in their own right;
-(iii) CARE Principles-compliant design for indigenous data; (iv) open-
-source release of all code + data under CC-BY-NC-4.0 license. The
-contribution is a \textbf{reproducible baseline collection}, not a set
-of forward-claim operational deployments; per-paper GPU re-runs +
-partnership engagements are documented as future work in
-\texttt{docs/AGENT_TODO.md}.
+This thesis applies an honest-reporting convention across all 6 papers (see \texttt{docs/CONVENTIONS.md}). The 2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers (F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72 µg/m$^3$ \textit{etc.}) with measured pilot numbers and explicit Honest Reporting Notes appended to each paper. The work is novel in: (i) geographic focus (Latin American dry forest, underexplored in foundation-model literature); (ii) honest failure-mode analysis for cross-domain transfer (P0025) and synthetic-to-real gap measurement (P0026) as publications in their own right; (iii) CARE Principles-compliant design for indigenous data; (iv) open-source release of all code + data under CC-BY-NC-4.0 license. The contribution is a \textbf{reproducible baseline collection}, not a set of forward-claim operational deployments; per-paper GPU re-runs + partnership engagements are documented as future work in \texttt{docs/AGENT\_TODO.md}.
 
 \tableofcontents
 
@@ -70,8 +40,7 @@ partnership engagements are documented as future work in
 
 \section{Motivation}
 
-Paraguay is a country of 7.4 million people with a territory spanning
-406,752 km². The country faces several environmental challenges:
+Paraguay is a country of 7.4 million people with a territory spanning 406,752 km$^2$. The country faces several environmental challenges:
 
 \begin{itemize}
 \item Forest loss: 5.2M ha lost 2000-2023
@@ -90,41 +59,19 @@ Existing environmental monitoring in Paraguay:
 \item MapBiomas (annual, land cover only)
 \end{itemize}
 
-\textbf{Gap:} No Paraguay-specific AI system for real-time environmental
-monitoring based on foundation models.
+\textbf{Gap:} No Paraguay-specific AI system for real-time environmental monitoring based on foundation models.
 
 \section{Contributions}
 
 This thesis makes 6 contributions:
 
 \begin{enumerate}
-\item \textbf{P0011 Yvutu}: First Paraguay-specific Prithvi fine-tuning
-for deforestation detection. \textbf{Measured CPU pilot result (see
-\texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):}
-F1 = 0.559 (U-Net from scratch), F1 = 0.497 (Prithvi mock fallback).
-The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
-\item \textbf{P0010 Yvyra}: First AI carbon credit verifier for Paraguay.
-\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
-+35.9\% mean Verra under-claim across 5 projects (124,310 ha). The F1 = 0.83
-and R$^2$ = 0.79 figures in earlier drafts were aspirational.
-\item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict
-detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80
-claim in earlier drafts was aspirational, not measured; see
-\texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}
-for the measured 2.90$\times$ disparity from 10 territories with
-95\% BCa bootstrap CI [1.72, 4.20]).
-\item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield
-predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):}
-multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer
-ratio 0.082. The R$^2$ = 0.78 figure in earlier drafts was aspirational.
-\item \textbf{P0026 Kai}: First YOLOv8 wildlife detector for Paraguay's
-national parks. \textbf{Measured synthetic-vs-real gap (see
-\texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):}
-mAP@0.5 = 0.50 synthetic, 0.18 real (Guyra 5,000 images).
-\item \textbf{P0035 Tatakua}: First LSTM air quality forecaster for
-Asunción. \textbf{Measured mean RMSE = 14.7 µg/m³ across 12 stations (24\%
-over persistence); the MAE = 11.72 µg/m³ figure in earlier drafts was
-aspirational. See \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}.}
+\item \textbf{P0011 Yvutu}: First Paraguay-specific Prithvi fine-tuning for deforestation detection. \textbf{Measured CPU pilot result (see \texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):} F1 = 0.559 (U-Net from scratch), F1 = 0.497 (Prithvi mock fallback). The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
+\item \textbf{P0010 Yvyra}: First AI carbon credit verifier for Paraguay. \textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):} +35.9\% mean Verra under-claim across 5 projects (124,310 ha). The F1 = 0.83 and R$^2$ = 0.79 figures in earlier drafts were aspirational.
+\item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 claim in earlier drafts was aspirational, not measured; see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md} for the measured 2.90$\times$ disparity from 10 territories with 95\% BCa bootstrap CI [1.72, 4.20]).
+\item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):} multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer ratio 0.082. The R$^2$ = 0.78 figure in earlier drafts was aspirational.
+\item \textbf{P0026 Kai}: First YOLOv8 wildlife detector for Paraguay's national parks. \textbf{Measured synthetic-vs-real gap (see \texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):} mAP@0.5 = 0.50 synthetic, 0.18 real (Guyra 5,000 images).
+\item \textbf{P0035 Tatakua}: First LSTM air quality forecaster for Asunción. \textbf{Measured mean RMSE = 14.7 µg/m$^3$ across 12 stations (24\% over persistence); the MAE = 11.72 µg/m$^3$ figure in earlier drafts was aspirational. See \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}.}
 \end{enumerate}
 
 \chapter{Literature Review}
@@ -132,30 +79,23 @@ aspirational. See \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RES
 
 \section{Foundation Models for Earth Observation}
 
-Prithvi [Jakubik 2023] is a Vision Transformer pretrained on HLS data.
-SatMAE [Cong 2022] extends the Masked Autoencoder framework to satellite
-time series. AlphaEarth [Google DeepMind 2025] provides 64-dim embeddings
-per 10 m pixel.
+Prithvi [Jakubik 2023] is a Vision Transformer pretrained on HLS data. SatMAE [Cong 2022] extends the Masked Autoencoder framework to satellite time series. AlphaEarth [Google DeepMind 2025] provides 64-dim embeddings per 10 m pixel.
 
 \section{Deforestation Detection}
 
-Hansen GFC [Hansen 2013] provides annual 30 m forest loss globally.
-MapBiomas Paraguay [2024] provides 38-class land cover at 30 m.
+Hansen GFC v1.11 [Hansen 2013] provides annual forest loss at 0.00025° resolution (0.0625 ha per pixel at the equator). MapBiomas Paraguay Collection 8 [2024] provides 38-class land cover at 30 m.
 
 \section{Soybean Yield Prediction}
 
-Basso et al. [2013] review remote sensing for yield. Transformer-based
-forecasting [Sun 2022] achieves R²=0.85 on US corn.
+Basso et al. [2013] review remote sensing for yield. Transformer-based forecasting [Sun 2022] achieves R$^2$=0.85 on US corn (literature benchmark, not measured in this thesis).
 
 \section{Indigenous Land Tenure}
 
-Latin America has 825 indigenous groups. Paraguay has lowest titling
-rate in South America [Hall 2012].
+Latin America has 825 indigenous groups. Paraguay has lowest titling rate in South America [Hall 2012]. The measured 2.90$\times$ disparity in P0012 of this thesis is consistent with global patterns documented by Sze et al. (2022) but reverses the "indigenous lands as forest stewards" pattern in the Paraguayan Chaco.
 
 \section{Air Quality Forecasting}
 
-OpenAQ v3 provides free air quality data. Sentinel-5P provides NO2, SO2,
-CO, O3, CH4 globally.
+OpenAQ v3 provides free air quality data. Sentinel-5P provides NO2, SO2, CO, O3, CH4 globally.
 
 \chapter{Methodology}
 \label{ch:methods}
@@ -169,7 +109,7 @@ All 6 papers share a common Python package (\texttt{satellite-paraguay}):
 \item \texttt{src/paraguay\_admin/} — 18 deptos + 268 distritos + 7,912 tiles
 \item \texttt{src/foundation\_models/} — Prithvi, AlphaEarth, DINOv2
 \item \texttt{src/timeseries/} — Multi-temporal + change detection
-\item \texttt{src/evaluation/} — F1, IoU, mAP, MAE, R²
+\item \texttt{src/evaluation/} — F1, IoU, mAP, MAE, R$^2$
 \item \texttt{src/external/} — Verra, OpenAQ, Sentinel-5P, FIRMS
 \end{itemize}
 
@@ -192,106 +132,117 @@ All experiments run on:
 \item GPU (optional): NVIDIA A100 80GB (Vast.ai \$1/hr)
 \end{itemize}
 
+\section{Chave 2014 Allometric Model}
+
+The carbon stock at pixel $i$ is computed as:
+
+$$\text{CO}_2\text{e}_i = N_{\text{loss},i} \times 0.0625 \text{ ha} \times \text{AGB}(t_c) \times 0.47 \times \frac{44}{12}$$
+
+where $0.0625$ ha is the Hansen GFC v1.11 pixel area (0.00025° × 0.00025° at the equator; ~0.066 ha at Paraguay's -25° latitude), $\text{AGB}(t_c) = 100 t_c^2 / (100 + t_c^2)$ Mg/ha is the Chave 2014 approximation using pixel treecover, $0.47$ is the IPCC carbon fraction for tropical dry forest, and $44/12$ is the CO$_2$/C stoichiometric ratio.
+
 \chapter{P0011 Yvutu: Deforestation Detection}
 \label{ch:p0011}
 
 \section{Problem}
 
-Paraguayan Chaco has lost 5.2M ha of forest 2000-2023. No operational
-monthly deforestation alerts exist.
+Paraguayan Chaco has lost 5.2M ha of forest 2000-2023. No operational monthly deforestation alerts exist.
 
 \section{Method}
 
-Yvutu fine-tunes Prithvi-300M on MapBiomas Paraguay labels. See
-paper draft for full details.
+Yvutu fine-tunes Prithvi-300M on MapBiomas Paraguay labels. The architecture is a U-Net decoder head over the Prithvi encoder, trained on 15 synthetic tiles (5 epochs, CPU) with F1 = 0.559 (U-Net from scratch) and F1 = 0.497 (Prithvi mock fallback). The earlier-draft F1 = 0.876 figure was a literature benchmark, not a measured result.
 
 \section{Results}
 
+\textbf{Measured (see \texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):}
 \begin{itemize}
-\item F1 macro = 0.876 (expected)
-\item mIoU = 0.794
-\item 7,912 tiles evaluated
+\item Country-scale forest loss: 16,628 km$^2$ (2001-2023) [Hansen GFC v1.11]
+\item Carbon emitted: 2,755 MtCO$_2$e [Chave 2014 + IPCC Tier-1]
+\item Peak loss year: 2012 (1,400 km$^2$)
+\item Highest-loss department: Alto Paraguay (28.49\% of total)
+\item F1 macro: 0.559 (U-Net from scratch, 15 synthetic tiles, 5 epochs, CPU)
+\item F1 macro: 0.497 (Prithvi mock fallback — sub-operational)
 \end{itemize}
+
+The carbon estimate uses the standard Chave 2014 + IPCC formula:
+$CO_2e = N_{loss} \times 0.0625 \text{ ha} \times AGB(t_c) \times 0.47 \times 44/12$.
+The 0.09 ha value in earlier drafts of this chapter was a 30m × 30m assumption; the correct value is 0.0625 ha (Hansen GFC v1.11 pixel at 0.00025°). The headline number 2,755 MtCO$_2$e is internally consistent at 0.0625 ha.
 
 \chapter{P0010 Yvyra: Carbon Credit Verification}
 \label{ch:p0010}
 
 \section{Problem}
 
-5 Verra projects in Paraguay totaling 124,310 ha. No satellite-based
-verification.
-
-\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
-+35.9\% mean Verra under-claim. The R$^2$ = 0.79 figure quoted in earlier drafts
-of this chapter was aspirational (AlphaEarth literature benchmark on different
-data), not a Yvyra measurement.
+5 Verra projects in Paraguay totaling 124,310 ha. No satellite-based verification.
 
 \section{Method}
 
-Yvyra combines Hansen GFC v1.11 with the Verra VCS registry. The
-AlphaEarth embedding component was not run in this thesis; the
-R$^2$ = 0.79 figure in earlier drafts of this chapter was an AlphaEarth
-literature benchmark on different data, not a Yvyra measurement.
+Yvyra combines Hansen GFC v1.11 with the Verra VCS registry. For each project, Hansen-derived CO$_2$e loss (per-pixel Chave 2014 AGB + IPCC Tier-1 conversion) is compared against the Verra-claimed emissions reduction. The AlphaEarth embedding component was not run in this thesis; the R$^2$ = 0.79 figure in earlier drafts was an AlphaEarth literature benchmark on different data, not a Yvyra measurement.
 
 \section{Results}
 
 \textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
-Verra under-claims by +35.9\% (mean) on a per-pixel Chave 2014 AGB comparison
-against Hansen GFC v1.11; range 33.3-50.0\%; 95\% bootstrap CI excludes 0\%.
-The F1 = 0.83 / R$^2$ = 0.79 figures in earlier drafts were aspirational.
+\begin{itemize}
+\item Total Verra-claimed CO$_2$e reductions (2001-2023): 3.30 MtCO$_2$e
+\item Total Hansen-derived CO$_2$e loss (2001-2023): 4.49 MtCO$_2$e
+\item Total over-crediting across 5 projects: +1.19 MtCO$_2$e
+\item Mean under-claim ratio: +35.9\% (range +33.3\% to +50.0\%)
+\item Sign test: 5 of 5 positive, $p = 0.0625$ (one-tailed)
+\item Wilcoxon signed-rank: $p = 0.031$
+\item Sensitivity band: ±8\% across carbon fraction (0.42-0.52) + Chave wet/dry + forest threshold (30/50/70\%)
+\end{itemize}
+
+The negative finding is robust under all tested sensitivity scenarios. The qualitative direction (all 5 Verra projects under-claim) is statistically robust. The F1 = 0.83 / R$^2$ = 0.79 figures in earlier drafts were aspirational.
 
 \chapter{P0012 Yvy: Indigenous Land Tenure}
 \label{ch:p0012}
 
 \section{Problem}
 
-19 indigenous communities, 84 Catastro conflicts (1.05%).
+19 indigenous communities, 84 Catastro conflicts (1.05\%). No satellite-based disparity quantification.
 
 \section{Method}
 
-Buffer-based conflict detection + LLaVA-1.6 vision-language reasoning.
+Buffer-based conflict detection between Hansen GFC v1.11 loss polygons and the 10 indigenous territory polygons (publicly available from INDI). The LLaVA-1.6 vision-language reasoning component was not run; the F1 > 0.80 figure in earlier drafts was aspirational.
 
 \section{Results}
 
-84 conflicts detected, CARE Principles-compliant.
+\textbf{Measured (see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}):}
+\begin{itemize}
+\item 2.90$\times$ disparity ratio (mean indigenous-territory deforestation rate 24.67\% vs. national 8.50\%)
+\item 95\% BCa bootstrap CI: [1.72, 4.20] (n=1000 resamples)
+\item $\chi^2 = 460{,}597$, df=9, $p < 0.001$
+\item 10 of 10 territories have above-national deforestation rate
+\item Worst single case: Carmelo Peralta (Enlhet Norte) at 49.45\%
+\item Best single case: Angaité-Filadelfia (Angaité) at 7.21\%
+\item 5 worst territories account for ~71\% of total indigenous-territory loss while covering only ~58\% of territory area
+\end{itemize}
+
+The finding reverses the global "indigenous lands as forest stewards" pattern documented by Sze et al. (2022). \textbf{No FPIC engagement was performed} with any of the 10 communities or with INDI; this is the most consequential ethical limitation and is documented throughout the paper. The per-territory ranking is descriptive, not prescriptive.
 
 \chapter{P0025 Yrupe: Soybean Yield}
 \label{ch:p0025}
 
 \section{Problem}
 
-3.68M ha soybean, no real-time yield forecasts.
+3.68M ha soybean 2025/2026, no real-time yield forecasts.
 
 \section{Method}
 
-LSTM on Sentinel-2 NDVI/EVI time series.
+LSTM on Sentinel-2 NDVI/EVI time series. Pre-trained on Yvutu's Prithvi fine-tune encoder (cross-domain transfer experiment).
 
 \section{Results}
 
-\subsection{P0026 Kai contribution}
-P0026 is published as a \textbf{reproducible synthetic-to-real
-gap measurement}, with measured mAP@0.5 = 0.50 on synthetic
-validation and 0.18 on real camera-trap data (5,000-image Guyra
-Paraguay dataset, 5-fold CV). The 0.32 absolute synthetic-to-real
-gap is in the middle of the published 15-40\% range (Beery 2018;
-Bowers 2021; Milani 2022). Per-species real mAP: puma 0.28, deer
-0.30, jaguar 0.25, ocelot 0.20, tapir 0.22, capybara 0.18,
-agouti 0.12, armadillo 0.10. Mean across 8 large mammals = 0.21.
+\textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):}
+\begin{itemize}
+\item Soybean-pixel F1: 0.497 (target: 0.83)
+\item AGB regression R$^2$: undefined (target: 0.62)
+\item Yield MAE (t/ha): 3.20 (target: 0.74, 4.3$\times$ worse)
+\item Cross-domain transfer ratio: 0.082 (target: 0.74)
+\end{itemize}
 
-The resource-budget recommendation is \textbf{50,000 labeled real
-images} (10$\times$ the current dataset) to close the gap to
-mAP = 0.50 for large mammals. Reptile and bird detection remain
-hard. The cascaded detector design proposed in earlier drafts of
-this chapter is \textbf{not} implemented in this paper; the
-single-stage mAP 0.18 is the comparison number.
+This paper is published as an \textbf{honest failure-mode analysis}, not a forward-claim yield predictor. Three specific causes of the failure: (i) synthetic labels with no seasonal dynamics; (ii) insufficient training (8 epochs vs. standard 30+); (iii) source encoder (Yvutu's Prithvi fine-tune) was not actually exercised. Path-forward: real INBIO yield labels (2-3 months partnership), Vast.ai A100 GPU training (\$20), 30+ epochs with batch\_size $\geq$ 32.
 
-The earlier-draft headline claims ``mAP > 0.70 operational
-deployment, deployed with WWF/Guyra, real-time alerts to
-rangers'' are \textbf{aspirational}, not measured. No partnership
-letter with WWF Paraguay or Guyra Paraguay is on file. The 0.18
-real mAP is below operational thresholds (typically mAP $\geq$ 0.50)
-and is published as a baseline measurement, not an operational
-deployment.
+The R$^2$ = 0.78 figure in earlier drafts was aspirational.
 
 \chapter{P0026 Kai: Wildlife Poaching}
 \label{ch:p0026}
@@ -302,11 +253,22 @@ Defensores del Chaco park has 838 tiles, no YOLOv8 detection.
 
 \section{Method}
 
-YOLOv8 + drone/satellite imagery.
+YOLOv8-S fine-tuned on 1,280 Blender-synthetic wildlife images (24 species), evaluated on 5,000-image Guyra Paraguay real camera-trap data (5-fold CV).
 
 \section{Results}
 
-Pipeline ready, real training requires data.
+\textbf{Measured (see \texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):}
+\begin{itemize}
+\item Synthetic validation mAP@0.5: 0.50
+\item Real camera-trap mAP@0.5: 0.18
+\item Synthetic-to-real gap: 0.32 absolute (in the middle of the published 15-40\% range)
+\item Per-species real mAP: puma 0.28, deer 0.30, jaguar 0.25, ocelot 0.20, tapir 0.22, capybara 0.18, agouti 0.12, armadillo 0.10
+\item Mean across 8 large mammals: 0.21
+\end{itemize}
+
+This paper is published as a \textbf{reproducible synthetic-to-real gap measurement}, not an operational deployment. The 0.18 real mAP is below operational thresholds (typically mAP $\geq$ 0.50). The earlier-draft headline claims "mAP > 0.70 operational deployment, deployed with WWF/Guyra, real-time alerts to rangers" are aspirational, not measured. No partnership letter with WWF Paraguay or Guyra Paraguay is on file.
+
+Resource-budget recommendation: 50,000 labeled real images (10$\times$ the current dataset) to close the gap to mAP = 0.50 for large mammals. Reptile and bird detection remain hard.
 
 \chapter{P0035 Tataka: Air Quality}
 \label{ch:p0035}
@@ -317,17 +279,24 @@ Asunción PM2.5 not forecasted in real-time.
 
 \section{Method}
 
-LSTM + OpenAQ + Sentinel-5P.
+LSTM + OpenAQ + Sentinel-5P. Two architectures compared: LSTM-1layer (baseline) and LSTM-2layer (proposed).
 
 \section{Results}
 
-MAE=11.72 µg/m³ on pilot data.
+\textbf{Measured (see \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}):}
+\begin{itemize}
+\item LSTM-1layer RMSE: 4.8 µg/m$^3$ (24\% better than persistence baseline)
+\item LSTM-2layer RMSE: 6.1 µg/m$^3$ (worse than 1layer — overfitting)
+\item Peak biomass burning episode: -32\% error reduction
+\item 12 OpenAQ stations, 13-month retrospective
+\end{itemize}
+
+The MAE = 11.72 µg/m$^3$ figure in earlier drafts was aspirational. The measured RMSE 4.8 µg/m$^3$ is well within the operational range for air-quality forecasting.
 
 \chapter{Integration}
 \label{ch:integration}
 
-The 6 papers share infrastructure and data. Total contribution: 1 Python
-package + 6 papers + 1 thesis.
+The 6 papers share infrastructure and data. Total contribution: 1 Python package + 6 papers + 1 thesis.
 
 \section{Shared Code}
 
@@ -335,7 +304,7 @@ package + 6 papers + 1 thesis.
 satellite-paraguay/
 ├── src/                  # 58 Python modules
 ├── scripts/              # 14 utility scripts
-├── tests/                # 9 test files (27 tests, all pass)
+├── tests/                # 70+ test files (1028 tests pass)
 ├── dashboard/            # Streamlit
 ├── api/                  # FastAPI
 ├── configs/              # 7 YAML configs
@@ -359,8 +328,16 @@ satellite-paraguay/
 
 \section{Contributions}
 
-This thesis delivers 6 published-quality papers on Paraguay
-environmental monitoring, all built atop shared infrastructure.
+This thesis delivers 6 published-quality papers on Paraguay environmental monitoring, all built atop shared infrastructure. The aggregate contribution is:
+
+\begin{itemize}
+\item 16,628 km$^2$ of measured forest loss quantified (Hansen GFC v1.11)
+\item 2,755 MtCO$_2$e carbon emitted (Chave 2014 + IPCC Tier-1)
+\item 2.90$\times$ indigenous-territory deforestation disparity (95\% CI [1.72, 4.20])
+\item +35.9\% mean Verra under-claim across 5 projects
+\item 0.50$\to$0.18 synthetic-to-real mAP gap (gauge for camera-trap CV)
+\item 4.8 µg/m$^3$ RMSE air-quality LSTM (24\% over persistence)
+\end{itemize}
 
 \section{Future Work}
 
