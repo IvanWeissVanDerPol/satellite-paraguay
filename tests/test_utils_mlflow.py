@@ -5,6 +5,9 @@ function is exercised via mocking or, when mlflow is available, an
 in-memory SQLite tracking URI.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("mlflow", reason="CI: requires optional system dep 'mlflow' (not installed)")  # noqa: E402
+
 import sys
 from unittest.mock import patch
 

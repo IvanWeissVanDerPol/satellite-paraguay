@@ -4,6 +4,9 @@ Coverage target: 90%+. Tests the GEE download function, Copernicus download,
 and fetch_sentinel2_tile multi-source fallback with mocked GEE/rasterio.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 import sys
 from unittest.mock import MagicMock, patch
 

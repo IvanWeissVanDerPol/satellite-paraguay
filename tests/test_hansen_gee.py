@@ -4,6 +4,9 @@ Coverage target: 90%+. Tests download_hansen_real with mocked GEE
 and rasterio.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
+
 import sys
 from unittest.mock import MagicMock, patch
 

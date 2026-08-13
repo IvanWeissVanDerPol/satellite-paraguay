@@ -5,6 +5,9 @@ geodata from /root/paraguay-geodata/exports/web/data when
 available, with synthetic fallbacks.
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
 import json
 import os
 from pathlib import Path

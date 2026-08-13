@@ -11,6 +11,9 @@ Covers:
 - verify_reproducibility() — repeatable / not-reproducible cases
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("tensorflow", reason="CI: requires optional system dep 'tensorflow' (not installed)")  # noqa: E402
+
 import json
 import os
 import subprocess  # for the patch tests above

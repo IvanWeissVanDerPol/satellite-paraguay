@@ -4,6 +4,9 @@ These tests verify that the modules can be imported, instantiated,
 and used end-to-end without crashes (smoke tests for the full pipeline).
 """
 
+import pytest  # noqa: E402
+pytest.importorskip("geopandas", reason="CI: requires optional system dep 'geopandas' (not installed)")  # noqa: E402
+
 from pathlib import Path
 from unittest.mock import MagicMock
 
