@@ -5,13 +5,14 @@ synthetic REPO_ROOT data.
 """
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-import json
-import sys
-from unittest.mock import MagicMock
+import json  # noqa: E402
+import sys  # noqa: E402
+from unittest.mock import MagicMock  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
 
 def _make_col():

@@ -1,12 +1,13 @@
 """Tests for Chave 2014 AGB model."""
 
 import pytest  # noqa: E402
+
 pytest.importorskip("rasterio", reason="CI: requires optional system dep 'rasterio' (not installed)")  # noqa: E402
 
-import sys
-from pathlib import Path
+import sys  # noqa: E402
+from pathlib import Path  # noqa: E402
 
-import numpy as np
+import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
