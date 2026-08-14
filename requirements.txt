@@ -28,7 +28,7 @@ Pillow>=10.0
 
 # Foundation models
 huggingface-hub>=0.19
-sentencepiece>=0.1
+sentencepiece>=0.2.2
 accelerate>=0.24
 
 # Geo-specific
