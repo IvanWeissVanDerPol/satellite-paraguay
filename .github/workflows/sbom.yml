@@ -28,31 +28,23 @@ jobs:
           pip install cyclonedx-bom
           pip install -e ".[ci]" --no-deps
 
-      - name: Generate CycloneDX SBOM
+      - name: Generate CycloneDX SBOM (from requirements.txt)
         run: |
           mkdir -p sbom
-          cyclonedx-py requirements \
-            --input requirements.txt \
-            --output sbom/satellite-paraguay-sbom.json \
-            --spec-format cyclonedx \
-            --output-format json \
-            --meta application/satellite-paraguay \
-            --name satellite-paraguay \
-            --version 0.1.0 || \
-          cyclonedx-py env \
-            --output sbom/satellite-paraguay-sbom.json \
-            --spec-format cyclonedx \
-            --output-format json \
-            --meta application/satellite-paraguay \
-            --name satellite-paraguay \
-            --version 0.1.0
-        env:
-          PIP_DISABLE_PIP_VERSION_CHECK: 1
+          # Build from pip-freeze of the installed environment, validated by pyproject.toml
+          python -m pip freeze --local --require-virtualenv \
+            | cyclonedx-py requirements - \
+              --pyproject pyproject.toml \
+              --mc-type application \
+              --of JSON \
+              --spec-version 1.6 \
+              -o sbom/satellite-paraguay-sbom.json \
+              --validate
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: sbom
           path: sbom/satellite-paraguay-sbom.json
-          retention-days: 30
-          if-no-files-found: warn
+          retention-days: 90
+          if-no-files-found: error
