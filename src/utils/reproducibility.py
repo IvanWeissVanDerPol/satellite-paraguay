@@ -11,7 +11,6 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional
 
 # Random seeds
 DEFAULT_SEED = 42
@@ -54,7 +53,7 @@ def set_seed(seed: int = DEFAULT_SEED) -> None:
         pass
 
 
-def get_git_hash() -> Optional[str]:
+def get_git_hash() -> str | None:
     """Get current git commit hash."""
     try:
         return (
@@ -70,7 +69,7 @@ def get_git_hash() -> Optional[str]:
         return None
 
 
-def get_git_branch() -> Optional[str]:
+def get_git_branch() -> str | None:
     """Get current git branch."""
     try:
         return (
@@ -91,7 +90,7 @@ def get_python_version() -> str:
     return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 
-def get_system_info() -> Dict:
+def get_system_info() -> dict:
     """Get comprehensive system info."""
     info = {
         "python_version": get_python_version(),
@@ -105,16 +104,18 @@ def get_system_info() -> Dict:
     try:
         import torch
 
-        info["cuda_available"] = torch.cuda.is_available()
+        info["cuda_available"] = torch.cuda.is_available()  # type: ignore[assignment]
         if torch.cuda.is_available():
-            info["cuda_version"] = torch.version.cuda
+            info["cuda_version"] = torch.version.cuda  # type: ignore[assignment]
             info["gpu_name"] = torch.cuda.get_device_name(0)
-            info["gpu_count"] = torch.cuda.device_count()
-            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            info["gpu_count"] = torch.cuda.device_count()  # type: ignore[assignment]
+            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (  # type: ignore[assignment]
+                1024**3
+            )  # noqa: E501  # type: ignore[assignment]
         else:
-            info["cuda_available"] = False
+            info["cuda_available"] = False  # type: ignore[assignment]
     except ImportError:
-        info["cuda_available"] = False
+        info["cuda_available"] = False  # type: ignore[assignment]
 
     try:
         import psutil
@@ -124,15 +125,15 @@ def get_system_info() -> Dict:
     except ImportError:
         pass
 
-    info["git_hash"] = get_git_hash()
-    info["git_branch"] = get_git_branch()
+    info["git_hash"] = get_git_hash()  # type: ignore[assignment]
+    info["git_branch"] = get_git_branch()  # type: ignore[assignment]
     info["timestamp"] = datetime.now().isoformat()
     info["cwd"] = str(Path.cwd())
 
     return info
 
 
-def capture_environment(output_path: Path) -> Dict:
+def capture_environment(output_path: Path) -> dict:
     """Capture full environment info and save to JSON.
 
     Args:

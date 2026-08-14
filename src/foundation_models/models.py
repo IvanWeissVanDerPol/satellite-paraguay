@@ -9,7 +9,6 @@ All open-source. Each can be used for transfer learning on Paraguay satellite ti
 """
 
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -112,10 +111,10 @@ def load_dinov2(model_size: str = "large", allow_fallback: bool = True):
 
 def compute_tile_embeddings(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     model_name: str = "prithvi",
     cache_dir: Path = DEFAULT_CACHE_DIR,
-    embedding_dim: Optional[int] = None,
+    embedding_dim: int | None = None,
 ) -> np.ndarray:
     """Compute foundation model embeddings for a tile.
 
@@ -133,7 +132,7 @@ def compute_tile_embeddings(
     cache_path = cache_dir / f"{tile_id}_{model_name}.npy"
 
     if cache_path.exists():
-        return np.load(cache_path)
+        return np.load(cache_path)  # type: ignore[no-any-return]
 
     # Real implementation: load model, run inference on tile
     print(f"[{model_name}] Computing embeddings for {tile_id}")
@@ -149,7 +148,7 @@ def compute_tile_embeddings(
 
 
 def fuse_embeddings(
-    embeddings: Dict[str, np.ndarray],
+    embeddings: dict[str, np.ndarray],
     method: str = "concat",
 ) -> np.ndarray:
     """Fuse multiple foundation model embeddings.
@@ -164,9 +163,9 @@ def fuse_embeddings(
     if method == "concat":
         return np.concatenate(list(embeddings.values()))
     elif method == "mean":
-        return np.mean(list(embeddings.values()), axis=0)
+        return np.mean(list(embeddings.values()), axis=0)  # type: ignore[no-any-return]
     elif method == "max":
-        return np.max(list(embeddings.values()), axis=0)
+        return np.max(list(embeddings.values()), axis=0)  # type: ignore[no-any-return]
     else:
         raise ValueError(f"Unknown fusion method: {method}")
 

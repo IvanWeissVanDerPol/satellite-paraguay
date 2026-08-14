@@ -5,14 +5,14 @@ Counts files, lines of code, tests, and analyzes module stub status.
 
 import ast
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 EXCLUDED_DIRS = (".git", ".dvc", "__pycache__", "node_modules", "mlruns")
 
 STUB_PATTERNS = ["pass  # TODO", "raise NotImplementedError", "TODO", "FIXME"]
 
 
-def count_files_by_type(root: Path) -> Dict[str, int]:
+def count_files_by_type(root: Path) -> dict[str, int]:
     """Count files by extension type."""
     counts = {
         "total": 0,
@@ -65,7 +65,7 @@ def count_loc(root: Path) -> int:
     return total
 
 
-def count_test_files(test_dir: Path) -> List[Path]:
+def count_test_files(test_dir: Path) -> list[Path]:
     """Return list of test files matching test_*.py pattern."""
     if not test_dir.exists():
         return []
@@ -80,9 +80,9 @@ def is_module_stub(content: str) -> bool:
     return False
 
 
-def extract_signatures(content: str, max_signatures: int = 10) -> List[str]:
+def extract_signatures(content: str, max_signatures: int = 10) -> list[str]:
     """Extract class and function signatures from Python code."""
-    signatures: List[str] = []
+    signatures: list[str] = []
     try:
         tree = ast.parse(content)
         classes = [n for n in ast.walk(tree) if isinstance(n, ast.ClassDef)]
@@ -97,12 +97,12 @@ def extract_signatures(content: str, max_signatures: int = 10) -> List[str]:
     return signatures[:max_signatures]
 
 
-def analyze_module(py_file: Path, src_dir: Path) -> Dict[str, Any]:
+def analyze_module(py_file: Path, src_dir: Path) -> dict[str, Any]:
     """Analyze a single module for stub status and signatures."""
     try:
         content = py_file.read_text()
     except (OSError, UnicodeDecodeError):
-        return None
+        return None  # type: ignore[return-value]
 
     is_stub = is_module_stub(content)
     signatures = extract_signatures(content)
@@ -129,7 +129,7 @@ def analyze_module(py_file: Path, src_dir: Path) -> Dict[str, Any]:
     }
 
 
-def analyze_modules(src_dir: Path) -> List[Dict[str, Any]]:
+def analyze_modules(src_dir: Path) -> list[dict[str, Any]]:
     """Analyze all Python modules in src_dir."""
     modules = []
     for py_file in src_dir.rglob("*.py"):
@@ -143,14 +143,14 @@ def analyze_modules(src_dir: Path) -> List[Dict[str, Any]]:
     return modules
 
 
-def count_real_vs_stub(modules: List[Dict[str, Any]]) -> Dict[str, int]:
+def count_real_vs_stub(modules: list[dict[str, Any]]) -> dict[str, int]:
     """Count real (non-stub) and stub modules."""
     real = sum(1 for m in modules if not m["is_stub"])
     stub = sum(1 for m in modules if m["is_stub"])
     return {"real": real, "stub": stub, "total": len(modules)}
 
 
-def total_loc_by_status(modules: List[Dict[str, Any]]) -> Dict[str, int]:
+def total_loc_by_status(modules: list[dict[str, Any]]) -> dict[str, int]:
     """Sum LOC for real vs stub modules."""
     real_loc = sum(m["loc"] for m in modules if not m["is_stub"])
     stub_loc = sum(m["loc"] for m in modules if m["is_stub"])

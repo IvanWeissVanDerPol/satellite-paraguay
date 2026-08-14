@@ -8,7 +8,7 @@ Pure statistical functions for:
 5. Numpy type cleaning for JSON serialization
 """
 
-from typing import Any, Dict, List, Union
+from typing import Any
 
 import numpy as np
 
@@ -17,7 +17,7 @@ def mcnemar_test(
     y_true: np.ndarray,
     y_pred_a: np.ndarray,
     y_pred_b: np.ndarray,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """McNemar's test for comparing two classifiers.
 
     Returns dict with chi2, p_value, n12, n21, n_total, significant_at_005.
@@ -54,9 +54,9 @@ def mcnemar_test(
 
 
 def chi_squared_indigenous(
-    observed_territories: Dict[str, int],
-    expected_at_national_rate: Dict[str, int],
-) -> Dict[str, Any]:
+    observed_territories: dict[str, int],
+    expected_at_national_rate: dict[str, int],
+) -> dict[str, Any]:
     """Chi-squared test for indigenous territory deforestation disparity.
 
     H0: territories have same deforestation rate as national.
@@ -93,10 +93,10 @@ def chi_squared_indigenous(
 
 
 def paired_ttest_drought(
-    annual_loss: Dict[int, float],
-    drought_years: List[int],
-    non_drought_years: List[int],
-) -> Dict[str, Any]:
+    annual_loss: dict[int, float],
+    drought_years: list[int],
+    non_drought_years: list[int],
+) -> dict[str, Any]:
     """Welch's t-test for drought vs non-drought year loss.
 
     Args:
@@ -132,12 +132,12 @@ def paired_ttest_drought(
 
 
 def bootstrap_disparity(
-    territory_loss_pcts: Union[List[float], np.ndarray],
+    territory_loss_pcts: list[float] | np.ndarray,
     national_loss_pct: float,
     n_boot: int = 10000,
     threshold_ratio: float = 1.5,
     seed: int = 42,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Bootstrap test for disparity ratio.
 
     H0: territory mean = national rate.
@@ -151,12 +151,12 @@ def bootstrap_disparity(
     for _ in range(n_boot):
         boot_sample = rng.choice(territory_loss_pcts, size=n, replace=True)
         ratios.append(boot_sample.mean() / national_loss_pct)
-    ratios = np.array(ratios)
+    ratios = np.array(ratios)  # type: ignore[assignment]
 
-    p_value = (ratios > threshold).mean()
+    p_value = (ratios > threshold).mean()  # type: ignore[operator]
 
     return {
-        "bootstrap_mean_ratio": float(ratios.mean()),
+        "bootstrap_mean_ratio": float(ratios.mean()),  # type: ignore[attr-defined]
         "bootstrap_ci_lower": float(np.percentile(ratios, 2.5)),
         "bootstrap_ci_upper": float(np.percentile(ratios, 97.5)),
         "p_value_h1_gt_1_5x": float(p_value),

@@ -8,7 +8,6 @@ For:
 """
 
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -16,9 +15,9 @@ import rasterio
 
 
 def stack_timeseries(
-    raster_paths: List[Path],
-    bands: Optional[List[int]] = None,
-) -> Tuple[np.ndarray, dict]:
+    raster_paths: list[Path],
+    bands: list[int] | None = None,
+) -> tuple[np.ndarray, dict]:
     """Stack multiple raster files into a 3D time-series array.
 
     Args:
@@ -48,12 +47,12 @@ def stack_timeseries(
             arrays.append(arr)
 
     stacked = np.stack(arrays, axis=0)  # (T, B, H, W)
-    return stacked, meta
+    return stacked, meta  # type: ignore[return-value]
 
 
 def compute_ndvi_timeseries(
-    red_paths: List[Path],
-    nir_paths: List[Path],
+    red_paths: list[Path],
+    nir_paths: list[Path],
 ) -> np.ndarray:
     """Compute NDVI time series from red + NIR bands.
 
@@ -77,9 +76,9 @@ def compute_ndvi_timeseries(
 
 def detect_changes_bfast(
     timeseries: np.ndarray,
-    dates: List[str],
+    dates: list[str],
     h: float = 0.25,
-) -> Dict:
+) -> dict:
     """Detect changes using BFAST-like algorithm.
 
     Args:
@@ -117,7 +116,7 @@ def detect_changes_bfast(
 
 def compute_trend(
     timeseries: np.ndarray,
-    dates: List[str],
+    dates: list[str],
 ) -> np.ndarray:
     """Compute linear trend per pixel.
 
@@ -138,25 +137,25 @@ def compute_trend(
         numerator += (x[t] - x_mean) * (timeseries[t] - y_mean)
 
     slope = numerator / (denominator + 1e-8)
-    return slope
+    return slope  # type: ignore[no-any-return]
 
 
 def compute_anomaly(
     timeseries: np.ndarray,
-    baseline_period: Tuple[int, int] = (0, 12),
+    baseline_period: tuple[int, int] = (0, 12),
 ) -> np.ndarray:
     """Compute anomaly relative to baseline period.
 
     Returns anomaly for each timestep (T, H, W).
     """
     baseline = np.nanmean(timeseries[baseline_period[0] : baseline_period[1]], axis=0)
-    return timeseries - baseline[None, :, :]
+    return timeseries - baseline[None, :, :]  # type: ignore[no-any-return]
 
 
 def aggregate_by_department(
     timeseries: np.ndarray,
     department_shapes,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Aggregate time series values by department.
 
     Returns {department_name: time_series_array}.

@@ -3,12 +3,12 @@
 Pixel-level and block bootstrap methods for Hansen lossyear data.
 """
 
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 
 
-def pixel_bootstrap_fast(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> Dict[str, Any]:
+def pixel_bootstrap_fast(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> dict[str, Any]:
     """Fast pixel-level bootstrap on summary statistic.
 
     Parametric: assumes pixel independence, samples from binomial distribution.
@@ -46,7 +46,7 @@ def pixel_bootstrap_fast(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 4
 
 def block_bootstrap_fast(
     lossyear: np.ndarray, block_size: int = 100, n_boot: int = 1000, seed: int = 42
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Fast block bootstrap preserving spatial structure."""
     rng = np.random.default_rng(seed)
     H, W = lossyear.shape
@@ -86,7 +86,7 @@ def block_bootstrap_fast(
     }
 
 
-def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> Dict[str, Dict[str, float]]:
+def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> dict[str, dict[str, float]]:
     """Sensitivity analysis: how much does carbon estimate change with AGB assumptions?
 
     Returns dict with low/mid/high scenarios.
@@ -100,7 +100,7 @@ def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> Dict[str, Di
         "high": {"tc": 80, "agb": 156},
     }
 
-    results: Dict[str, Dict[str, float]] = {}
+    results: dict[str, dict[str, float]] = {}
     for name, params in agb_scenarios.items():
         agb = params["agb"]
         carbon = area_ha * agb * 0.47
@@ -115,7 +115,7 @@ def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> Dict[str, Di
     return results
 
 
-def annual_loss_ci(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> Dict[str, Dict[str, float]]:
+def annual_loss_ci(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> dict[str, dict[str, float]]:
     """Bootstrap CI on annual loss time series.
 
     Returns dict mapping year (str) -> {mean, ci_lower_95, ci_upper_95}.
@@ -137,7 +137,7 @@ def annual_loss_ci(lossyear: np.ndarray, n_boot: int = 1000, seed: int = 42) -> 
         boots[i] = sample_hist
 
     years = list(range(2001, 2024))
-    cis: Dict[str, Dict[str, float]] = {}
+    cis: dict[str, dict[str, float]] = {}
     for j, year in enumerate(years):
         cis[str(year)] = {
             "mean": float(boots[:, j].mean()),

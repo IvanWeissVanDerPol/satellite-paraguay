@@ -8,8 +8,6 @@ Implements:
 - Effect size (Cohen's d) for practical significance
 """
 
-from typing import Dict, Tuple
-
 import numpy as np
 from scipy import stats
 
@@ -17,11 +15,11 @@ from scipy import stats
 def bootstrap_ci(
     y_true: np.ndarray,
     y_pred: np.ndarray,
-    metric_func: callable,
+    metric_func: callable,  # type: ignore[valid-type]
     n_bootstrap: int = 1000,
     ci: float = 0.95,
     seed: int = 42,
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     """Compute bootstrap confidence interval for a metric.
 
     Args:
@@ -37,14 +35,14 @@ def bootstrap_ci(
     """
     rng = np.random.default_rng(seed)
     n = len(y_true)
-    point_est = metric_func(y_true, y_pred)
+    point_est = metric_func(y_true, y_pred)  # type: ignore[misc]
 
     boot_scores = []
     for _ in range(n_bootstrap):
         idx = rng.integers(0, n, size=n)
-        boot_scores.append(metric_func(y_true[idx], y_pred[idx]))
+        boot_scores.append(metric_func(y_true[idx], y_pred[idx]))  # type: ignore[misc]
 
-    boot_scores = np.array(boot_scores)
+    boot_scores = np.array(boot_scores)  # type: ignore[assignment]
     alpha = (1 - ci) / 2
     lower = np.percentile(boot_scores, alpha * 100)
     upper = np.percentile(boot_scores, (1 - alpha) * 100)
@@ -52,7 +50,7 @@ def bootstrap_ci(
     return float(point_est), float(lower), float(upper)
 
 
-def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> Dict:
+def mcnemar_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> dict:
     """McNemar's test for comparing two classifiers.
 
     Args:
@@ -101,10 +99,10 @@ def cohens_d(group1: np.ndarray, group2: np.ndarray) -> float:
     pooled_std = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
     if pooled_std == 0:
         return 0.0  # identical groups -> no effect
-    return (group1.mean() - group2.mean()) / pooled_std
+    return (group1.mean() - group2.mean()) / pooled_std  # type: ignore[no-any-return]
 
 
-def paired_ttest(scores1: np.ndarray, scores2: np.ndarray) -> Dict:
+def paired_ttest(scores1: np.ndarray, scores2: np.ndarray) -> dict:
     """Paired t-test for two sets of scores (e.g., cross-validation folds)."""
     t_stat, p_value = stats.ttest_rel(scores1, scores2)
     return {
@@ -116,7 +114,7 @@ def paired_ttest(scores1: np.ndarray, scores2: np.ndarray) -> Dict:
     }
 
 
-def generate_confidence_intervals_table(results: Dict, output_path: str) -> Dict:
+def generate_confidence_intervals_table(results: dict, output_path: str) -> dict:  # type: ignore[empty-body]
     """Generate CI table for all models on all metrics."""
 
     # This is a placeholder - actual implementation requires

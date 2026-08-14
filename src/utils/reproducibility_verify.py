@@ -7,7 +7,6 @@ import hashlib
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 
 def file_hash(path: Path, algo: str = "sha256") -> str:
@@ -17,7 +16,7 @@ def file_hash(path: Path, algo: str = "sha256") -> str:
     return h.hexdigest()
 
 
-def run_script(repo_root: Path, script_path: str, timeout: int = 120) -> Tuple[int, str, str]:
+def run_script(repo_root: Path, script_path: str, timeout: int = 120) -> tuple[int, str, str]:
     """Run a script and return (returncode, stdout, stderr)."""
     result = subprocess.run(
         ["python3", str(repo_root / script_path)],
@@ -29,12 +28,12 @@ def run_script(repo_root: Path, script_path: str, timeout: int = 120) -> Tuple[i
     return result.returncode, result.stdout, result.stderr
 
 
-def check_outputs_exist(repo_root: Path, expected_outputs: List[str]) -> List[str]:
+def check_outputs_exist(repo_root: Path, expected_outputs: list[str]) -> list[str]:
     """Return list of missing expected output paths (relative)."""
     return [o for o in expected_outputs if not (repo_root / o).exists()]
 
 
-def hash_outputs(repo_root: Path, expected_outputs: List[str]) -> Dict[str, str]:
+def hash_outputs(repo_root: Path, expected_outputs: list[str]) -> dict[str, str]:
     """Compute hashes of existing expected outputs."""
     hashes = {}
     for o in expected_outputs:
@@ -47,9 +46,9 @@ def hash_outputs(repo_root: Path, expected_outputs: List[str]) -> Dict[str, str]
 def verify_script(
     repo_root: Path,
     script_path: str,
-    expected_outputs: List[str],
+    expected_outputs: list[str],
     timeout: int = 120,
-) -> Dict:
+) -> dict:
     """Run script and verify its outputs exist.
 
     Returns dict with: script, status, returncode, elapsed_s,
@@ -78,7 +77,7 @@ def verify_script(
     }
 
 
-def summarize_results(results: List[Dict]) -> Dict[str, int]:
+def summarize_results(results: list[dict]) -> dict[str, int]:
     """Count pass/fail/timeout in verification results."""
     counts = {"pass": 0, "fail": 0, "timeout": 0}
     for r in results:
@@ -88,6 +87,6 @@ def summarize_results(results: List[Dict]) -> Dict[str, int]:
     return counts
 
 
-def total_elapsed(results: List[Dict]) -> float:
+def total_elapsed(results: list[dict]) -> float:
     """Sum elapsed time across all results."""
-    return sum(r.get("elapsed_s", 0) for r in results)
+    return sum(r.get("elapsed_s", 0) for r in results)  # type: ignore[no-any-return]

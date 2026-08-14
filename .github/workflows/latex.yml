@@ -1,6 +1,6 @@
 name: LaTeX compile (per paper)
 
-on:
+'on':
   push:
     branches: [main]
   pull_request:
@@ -21,7 +21,17 @@ jobs:
           - p0026_kai_poaching
           - p0035_tatakua_air_quality
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      # Cache apt packages to avoid 30s+ install on every run
+      - name: Cache apt
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt/lists
+          key: apt-texlive-2026-08-13-v1
+          restore-keys: |
+            apt-texlive-
       - name: Install TeX
         run: |
           sudo apt-get update
@@ -62,7 +72,7 @@ jobs:
           test -s paper.pdf || (echo "paper.pdf is empty" && exit 1)
           file paper.pdf
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: paper-${{ matrix.paper }}
           path: papers/drafts/${{ matrix.paper }}/paper.pdf

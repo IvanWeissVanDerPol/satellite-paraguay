@@ -1,0 +1,66 @@
+name: Dependabot auto-merge
+
+# Auto-merge Dependabot PRs that:
+# - Have the `dependencies` label (set by Dependabot)
+# - Are patch or minor updates (per Dependabot groups)
+# - Have all CI checks passing
+#
+# Dependabot runs on Mondays, opens up to 5 PRs, this workflow squashes
+# the qualifying ones into main. Major updates and breaking changes
+# are NOT auto-merged (Dependabot won't group them as "minor"/"patch").
+#
+# Requires:
+# 1. Org-level: Settings -> General -> Allow auto-merge
+# 2. Repo-level: Actions -> Allow GH Actions to create/approve PRs
+#    (Settings -> Actions -> General -> Workflow permissions)
+
+'on':
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  dependabot-merge:
+    name: Auto-merge patch/minor Dependabot PRs
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@d4c5f57b7c2cd96bf3a51e7e21c5b67e0d29b6e8  # v2.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if PR is patch/minor AND CI is green
+        id: should_merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          update_type="${{ steps.metadata.outputs.update-type }}"
+          # Only auto-merge patch + minor version updates
+          if [[ "$update_type" != "version-update:semver-patch" && \
+                "$update_type" != "version-update:semver-minor" ]]; then
+            echo "Skipping: update-type is $update_type (only patch/minor auto-merged)"
+            exit 1
+          fi
+          # Check CI status
+          for check in $(gh pr checks "$PR_URL" --json name --jq '.[].name'); do
+            state=$(gh pr checks "$PR_URL" --json name,state --jq ".[] | select(.name == \"$check\") | .state")
+            if [[ "$state" != "SUCCESS" && "$state" != "SKIPPED" && "$state" != "NEUTRAL" ]]; then
+              echo "Skipping: check '$check' state is $state"
+              exit 1
+            fi
+          done
+          echo "All checks passed, ready to merge"
+
+      - name: Enable auto-merge
+        if: steps.should_merge.conclusion == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

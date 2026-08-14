@@ -19,7 +19,6 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -38,7 +37,7 @@ def _cache_key(tile_id: str, start: str, end: str, bands: str) -> str:
     return h.hexdigest()[:16]
 
 
-def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Optional[Path]:
+def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Path | None:
     """Check if tile is cached."""
     key = _cache_key(tile_id, start, end, bands)
     cache_path = CACHE_DIR / f"{tile_id}_{key}.npz"
@@ -47,7 +46,7 @@ def _is_cached(tile_id: str, start: str, end: str, bands: str) -> Optional[Path]
     return None
 
 
-def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: Dict) -> Path:
+def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: dict) -> Path:
     """Save tile data to cache."""
     key = _cache_key(tile_id, start, end, bands)
     cache_path = CACHE_DIR / f"{tile_id}_{key}.npz"
@@ -57,11 +56,11 @@ def _save_to_cache(tile_id: str, start: str, end: str, bands: str, data: Dict) -
 
 def download_sentinel2_gee(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
-) -> Optional[Dict[str, np.ndarray]]:
+    bands: list[str] | None = None,
+) -> dict[str, np.ndarray] | None:
     """Download Sentinel-2 via Google Earth Engine.
 
     Requires `earthengine-api` + auth.
@@ -142,22 +141,22 @@ def download_sentinel2_gee(
 
     return {
         "data": stacked,
-        "dates": dates,
-        "bands": bands,
-        "source": "GEE",
-        "tile_id": tile_id,
-        "bbox": bbox,
+        "dates": dates,  # type: ignore[dict-item]
+        "bands": bands,  # type: ignore[dict-item]
+        "source": "GEE",  # type: ignore[dict-item]
+        "tile_id": tile_id,  # type: ignore[dict-item]
+        "bbox": bbox,  # type: ignore[dict-item]
     }
 
 
 def download_sentinel2_copernicus(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    username: Optional[str] = None,
-    password: Optional[str] = None,
-) -> Optional[Dict[str, np.ndarray]]:
+    username: str | None = None,
+    password: str | None = None,
+) -> dict[str, np.ndarray] | None:
     """Download Sentinel-2 via Copernicus Open Access Hub.
 
     Requires free registration at https://scihub.copernicus.eu
@@ -200,13 +199,13 @@ def download_sentinel2_copernicus(
 
 def generate_synthetic_sentinel2(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
-    shape: Tuple[int, int] = (256, 256),
+    bands: list[str] | None = None,
+    shape: tuple[int, int] = (256, 256),
     seed: int = 42,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Generate synthetic Sentinel-2 data for testing.
 
     Simulates NDVI patterns over time: higher NDVI in wet season (Dec-Mar in Paraguay),
@@ -238,7 +237,7 @@ def generate_synthetic_sentinel2(
         # Paraguay: peak NDVI Mar-Apr, low Sep-Oct
         base = 0.3 + 0.3 * np.cos((month - 1) / 12 * 2 * np.pi)
         monthly_ndvi.append(base)
-    monthly_ndvi = np.array(monthly_ndvi)
+    monthly_ndvi = np.array(monthly_ndvi)  # type: ignore[assignment]
 
     # Generate spatial NDVI pattern
     H, W = shape
@@ -273,25 +272,25 @@ def generate_synthetic_sentinel2(
 
     return {
         "data": arr,
-        "dates": [m.isoformat() for m in months],
-        "bands": bands,
-        "source": "synthetic",
-        "tile_id": tile_id,
-        "bbox": bbox,
-        "seed": seed,
-        "ndvi_baseline": monthly_ndvi.tolist(),
+        "dates": [m.isoformat() for m in months],  # type: ignore[dict-item]
+        "bands": bands,  # type: ignore[dict-item]
+        "source": "synthetic",  # type: ignore[dict-item]
+        "tile_id": tile_id,  # type: ignore[dict-item]
+        "bbox": bbox,  # type: ignore[dict-item]
+        "seed": seed,  # type: ignore[dict-item]
+        "ndvi_baseline": monthly_ndvi.tolist(),  # type: ignore[attr-defined]
     }
 
 
 def fetch_sentinel2_tile(
     tile_id: str,
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str,
     end_date: str,
-    bands: List[str] = None,
+    bands: list[str] | None = None,
     use_cache: bool = True,
     allow_synthetic: bool = True,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Download Sentinel-2 tile with multi-source fallback.
 
     Order:
@@ -404,14 +403,14 @@ def cloud_mask_s2(arr: np.ndarray, threshold: float = 0.3) -> np.ndarray:
 
         ndvi = (b8 - b4) / (b8 + b4 + 1e-8)
         cloud_mask = (b2 > threshold) & (ndvi < 0.2)
-        return ~cloud_mask
+        return ~cloud_mask  # type: ignore[no-any-return]
     else:
         b2 = arr[0]
         b8 = arr[3]
         b4 = arr[2]
         ndvi = (b8 - b4) / (b8 + b4 + 1e-8)
         cloud_mask = (b2 > threshold) & (ndvi < 0.2)
-        return ~cloud_mask
+        return ~cloud_mask  # type: ignore[no-any-return]
 
 
 def atmospheric_correction(arr: np.ndarray) -> np.ndarray:
@@ -423,10 +422,10 @@ def atmospheric_correction(arr: np.ndarray) -> np.ndarray:
     if arr.ndim == 4:
         # Per timestep, per band
         min_vals = arr.min(axis=(2, 3), keepdims=True)
-        return np.clip(arr - min_vals, 0, 1)
+        return np.clip(arr - min_vals, 0, 1)  # type: ignore[no-any-return]
     else:
         min_vals = arr.min(axis=(1, 2), keepdims=True)
-        return np.clip(arr - min_vals, 0, 1)
+        return np.clip(arr - min_vals, 0, 1)  # type: ignore[no-any-return]
 
 
 # ============================================

@@ -14,7 +14,7 @@ Usage:
 import os
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, ContextManager, Dict, Optional
+from typing import Any, ContextManager
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MLRUNS_DIR = REPO_ROOT / "mlruns"
@@ -32,11 +32,11 @@ def _try_import_mlflow():
         return None
 
 
-@contextmanager
-def start_run(
+@contextmanager  # type: ignore[arg-type]
+def start_run(  # type: ignore[misc]
     run_name: str,
     experiment_name: str = "satellite-paraguay",
-    tags: Optional[Dict[str, str]] = None,
+    tags: dict[str, str] | None = None,
 ) -> ContextManager[Any]:
     """Start an MLflow run.
 
@@ -59,7 +59,7 @@ def start_run(
         yield mlflow.active_run()
 
 
-def log_params(params: Dict[str, Any]) -> None:
+def log_params(params: dict[str, Any]) -> None:
     """Log parameters to current MLflow run."""
     mlflow = _try_import_mlflow()
     if mlflow is None:
@@ -74,7 +74,7 @@ def log_params(params: Dict[str, Any]) -> None:
     mlflow.log_params(clean)
 
 
-def log_metrics(metrics: Dict[str, float], step: Optional[int] = None) -> None:
+def log_metrics(metrics: dict[str, float], step: int | None = None) -> None:
     """Log metrics to current MLflow run."""
     mlflow = _try_import_mlflow()
     if mlflow is None:
@@ -93,7 +93,7 @@ def log_artifact(local_path: str) -> None:
         mlflow.log_artifact(str(full))
 
 
-def log_dict_as_json(data: Dict[str, Any], filename: str) -> None:
+def log_dict_as_json(data: dict[str, Any], filename: str) -> None:
     """Log a dict as a JSON artifact."""
     import json
     import tempfile

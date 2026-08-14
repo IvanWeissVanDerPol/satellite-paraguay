@@ -10,7 +10,6 @@ import logging
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -26,10 +25,10 @@ FIRMS_BASE = "https://firms.modaps.eosdis.nasa.gov/api"
 
 
 def fetch_firms_fires(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     days: int = 7,
     source: str = "VIIRS_SNPP_NRT",
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
     use_cache: bool = True,
 ) -> pd.DataFrame:
     """Fetch fire detections from NASA FIRMS.
@@ -74,7 +73,7 @@ def fetch_firms_fires(
 
 def fetch_firms_paraguay(
     days: int = 7,
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
 ) -> pd.DataFrame:
     """Fetch all fire detections in Paraguay."""
     if api_key is None:
@@ -104,7 +103,7 @@ def fetch_firms_paraguay(
 def compute_fire_clusters(
     fires: pd.DataFrame,
     distance_km: float = 5.0,
-) -> List[Dict]:
+) -> list[dict]:
     """Cluster nearby fire detections.
 
     Args:
@@ -151,7 +150,7 @@ def compute_fire_clusters(
     return clusters
 
 
-def generate_synthetic_firms(bbox: Dict[str, float], days: int) -> pd.DataFrame:
+def generate_synthetic_firms(bbox: dict[str, float], days: int) -> pd.DataFrame:
     """Generate synthetic FIRMS-like data for testing."""
     rng = np.random.default_rng(42)
     n_fires = rng.integers(5, 50)

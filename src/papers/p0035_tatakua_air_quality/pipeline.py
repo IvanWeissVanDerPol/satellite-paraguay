@@ -16,7 +16,6 @@ run with a larger station set and rural coverage.
 """
 
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 import requests
@@ -29,7 +28,7 @@ OPENAQ_API = "https://api.openaq.org/v2/measurements"
 class TatakuaPipeline:
     """Air quality forecasting pipeline for Asunción."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "asuncion_bbox": {
                 "min_lon": -57.7,
@@ -60,12 +59,12 @@ class TatakuaPipeline:
         }
         try:
             response = requests.get(OPENAQ_API, params=params)
-            return response.json().get("results", [])
+            return response.json().get("results", [])  # type: ignore[no-any-return]
         except Exception as e:
             print(f"[openaq] Error: {e}")
             return []
 
-    def fetch_sentinel5p(self, days: int = 365, data_path: Optional[Path] = None) -> dict:
+    def fetch_sentinel5p(self, days: int = 365, data_path: Path | None = None) -> dict:
         """Fetch Sentinel-5P atmospheric data.
 
         NO2, SO2, CO, O3, CH4, AER_AI from Copernicus.
@@ -98,9 +97,9 @@ class TatakuaPipeline:
     def forecast_pm25(
         self,
         historical_data: np.ndarray,
-        atmospheric_data: Optional[dict] = None,
+        atmospheric_data: dict | None = None,
         noise_std: float = 1.0,
-        seed: Optional[int] = 42,
+        seed: int | None = 42,
     ) -> np.ndarray:
         """Forecast PM2.5 for next N days.
 
@@ -127,12 +126,12 @@ class TatakuaPipeline:
             forecast += rng.normal(0, noise_std, size=forecast.shape)
         return forecast
 
-    def validate(self, predictions: np.ndarray, ground_truth: np.ndarray) -> Dict:
+    def validate(self, predictions: np.ndarray, ground_truth: np.ndarray) -> dict:
         """Validate PM2.5 predictions."""
         return regression_metrics(ground_truth, predictions)
 
 
-def run_tatakua_demo(historical: Optional[np.ndarray] = None):
+def run_tatakua_demo(historical: np.ndarray | None = None):
     """Demo: fetch OpenAQ + forecast PM2.5.
 
     Args:

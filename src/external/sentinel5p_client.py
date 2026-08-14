@@ -10,7 +10,6 @@ Free, no auth required (via GEE or Copernicus Open Hub).
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -33,11 +32,11 @@ SENTINEL5P_BANDS = {
 
 
 def fetch_sentinel5p_via_gee(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     band: str = "NO2",
     start_date: str = "2024-01-01",
     end_date: str = "2025-01-01",
-) -> Optional[np.ndarray]:
+) -> np.ndarray | None:
     """Fetch Sentinel-5P via Google Earth Engine.
 
     Returns mean band values per month.
@@ -103,10 +102,10 @@ def fetch_sentinel5p_via_gee(
 
 
 def fetch_sentinel5p_no2(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str = "2024-01-01",
     end_date: str = "2025-01-01",
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Fetch NO2 for Asunción.
 
     Returns dict {month_iso: mean_no2}.
@@ -115,7 +114,7 @@ def fetch_sentinel5p_no2(
     if cache_path.exists():
         import json
 
-        return json.load(open(cache_path))
+        return json.load(open(cache_path))  # type: ignore[no-any-return]
 
     arr = fetch_sentinel5p_via_gee(bbox, "NO2", start_date, end_date)
     if arr is not None and len(arr) > 0:
@@ -131,15 +130,15 @@ def fetch_sentinel5p_no2(
 
 
 def fetch_sentinel5p_o3(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_date: str = "2024-01-01",
     end_date: str = "2025-01-01",
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Fetch O3 for Asunción."""
     return generate_synthetic_s5p_o3(start_date, end_date)
 
 
-def generate_synthetic_s5p_no2(start_date: str, end_date: str) -> Dict[str, float]:
+def generate_synthetic_s5p_no2(start_date: str, end_date: str) -> dict[str, float]:
     """Generate synthetic NO2 monthly means.
 
     For Asunción:
@@ -159,7 +158,7 @@ def generate_synthetic_s5p_no2(start_date: str, end_date: str) -> Dict[str, floa
     return {m.isoformat(): float(v) for m, v in zip(months, no2)}
 
 
-def generate_synthetic_s5p_o3(start_date: str, end_date: str) -> Dict[str, float]:
+def generate_synthetic_s5p_o3(start_date: str, end_date: str) -> dict[str, float]:
     """Generate synthetic O3 monthly means.
 
     For Asunción:
@@ -179,7 +178,7 @@ def generate_synthetic_s5p_o3(start_date: str, end_date: str) -> Dict[str, float
 
 def aggregate_atmospheric_by_month(
     openaq_df: pd.DataFrame,
-    s5p_data: Dict[str, float],
+    s5p_data: dict[str, float],
 ) -> pd.DataFrame:
     """Combine OpenAQ + Sentinel-5P into a single monthly dataframe."""
     if openaq_df.empty:

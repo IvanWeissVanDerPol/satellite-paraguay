@@ -9,7 +9,6 @@ detects poaching camps in Defensores del Chaco with mAP@0.5 > 0.70.
 """
 
 from pathlib import Path
-from typing import Dict, Optional
 
 from ...paraguay_admin import list_tiles_in_region
 
@@ -17,7 +16,7 @@ from ...paraguay_admin import list_tiles_in_region
 class KaiPipeline:
     """Wildlife poaching detection pipeline."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "defensores_bbox": {
                 "min_lon": -61.0,
@@ -46,7 +45,7 @@ class KaiPipeline:
         self,
         tile_id: str,
         image_path: Path,
-    ) -> Dict:
+    ) -> dict:
         """Detect poaching camps in a tile.
 
         Returns detection results.

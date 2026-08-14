@@ -3,8 +3,6 @@
 Pure math functions for above-ground biomass (AGB), carbon stock, and CO2e.
 """
 
-from typing import Tuple
-
 import numpy as np
 
 CHAVE_COEFFICIENT = 240.0
@@ -23,7 +21,7 @@ def chave_agb(treecover_pct) -> np.ndarray:
     Returns AGB in Mg/ha for each input pixel.
     """
     tc = np.clip(treecover_pct, 0, 100)
-    return CHAVE_COEFFICIENT * (tc / 100.0) ** 2.5
+    return CHAVE_COEFFICIENT * (tc / 100.0) ** 2.5  # type: ignore[no-any-return]
 
 
 def carbon_stock(treecover_pct) -> np.ndarray:
@@ -88,7 +86,7 @@ def carbon_summary(treecover_pct) -> dict:
     }
 
 
-def calibrate_check(treecover_pct: float) -> Tuple[float, float]:
+def calibrate_check(treecover_pct: float) -> tuple[float, float]:
     """Compute AGB and return both raw and validation-adjusted value.
 
     Used for testing calibration against documented values.

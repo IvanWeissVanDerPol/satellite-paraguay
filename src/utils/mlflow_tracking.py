@@ -5,13 +5,13 @@ Provides a unified interface for logging experiments across all 6 papers.
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 def setup_mlflow(
-    tracking_uri: Optional[str] = None,
+    tracking_uri: str | None = None,
     experiment_name: str = "satellite-paraguay",
-) -> "mlflow.tracking.MlflowClient":  # noqa: F821
+) -> Any:  # MLflow optional, mlflow.tracking.MlflowClient at runtime
     """Set up MLflow tracking.
 
     Args:
@@ -46,11 +46,11 @@ def setup_mlflow(
 
 def log_experiment(
     run_name: str,
-    params: Dict[str, Any],
-    metrics: Dict[str, float],
-    artifacts: Optional[Dict[str, str]] = None,
-    tags: Optional[Dict[str, str]] = None,
-    tracking_uri: Optional[str] = None,
+    params: dict[str, Any],
+    metrics: dict[str, float],
+    artifacts: dict[str, str] | None = None,
+    tags: dict[str, str] | None = None,
+    tracking_uri: str | None = None,
 ) -> str:
     """Log an experiment to MLflow.
 
@@ -91,14 +91,14 @@ def log_experiment(
         if tags:
             mlflow.set_tags(tags)
 
-        return run.info.run_id
+        return run.info.run_id  # type: ignore[no-any-return]
 
 
 def get_best_run(
     metric_name: str,
     experiment_name: str = "satellite-paraguay",
     ascending: bool = False,
-) -> Optional[Dict]:
+) -> dict | None:
     """Get best run by metric.
 
     Args:
@@ -125,7 +125,7 @@ def get_best_run(
     if not runs_with_metric:
         return None
 
-    return sorted(runs_with_metric, key=lambda r: r.data.metrics[metric_name], reverse=not ascending)[0]
+    return sorted(runs_with_metric, key=lambda r: r.data.metrics[metric_name], reverse=not ascending)[0]  # type: ignore[no-any-return]  # noqa: E501
 
 
 # ============================================
@@ -238,11 +238,11 @@ if __name__ == "__main__":
         run_id = log_experiment(
             run_name=f"demo_placeholder_run_{i}",
             params=params,
-            metrics=metrics,
+            metrics=metrics,  # type: ignore[arg-type]
         )
         print(f"  Logged placeholder run {run_id} (F1=NaN; use measured scripts)")
 
     # Get best
     best = get_best_run("f1_macro")
     if best:
-        print(f"\nBest run: F1={best.data.metrics['f1_macro']:.3f}")
+        print(f"\nBest run: F1={best.data.metrics['f1_macro']:.3f}")  # type: ignore[attr-defined]

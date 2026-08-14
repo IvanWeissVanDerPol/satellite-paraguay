@@ -9,7 +9,6 @@ territory conflicts with F1 > 0.80, CARE-compliant.
 """
 
 from pathlib import Path
-from typing import Dict, Optional
 
 from ...paraguay_admin import load_catastro_parcels, load_indigenous_territories
 
@@ -17,7 +16,7 @@ from ...paraguay_admin import load_catastro_parcels, load_indigenous_territories
 class YvyPipeline:
     """Indigenous territory mapping pipeline (CARE-compliant)."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "vlm_model": "llava-v1.6-34b",  # Open-source alternative to GPT-4V
             "use_paid_api": False,
@@ -50,7 +49,7 @@ class YvyPipeline:
         satellite_path: Path,
         parcel_geometry,
         parcel_id: str,
-    ) -> Dict:
+    ) -> dict:
         """Validate indigenous territory with open-source VLM (LLaVA-1.6).
 
         NOTE: Uses LLaVA-1.6 (open-source) instead of GPT-4V to keep costs low.

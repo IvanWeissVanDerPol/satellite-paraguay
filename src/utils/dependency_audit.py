@@ -14,7 +14,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 # Common import name -> package name mapping
 IMPORT_TO_PKG = {
@@ -65,7 +65,7 @@ TEST_FRAMEWORK_EXCLUDES = {
 }
 
 
-def get_declared_deps(pyproject_path: Path) -> List[str]:
+def get_declared_deps(pyproject_path: Path) -> list[str]:
     """Read declared dependencies from pyproject.toml."""
     if not pyproject_path.exists():
         return []
@@ -82,7 +82,7 @@ def get_declared_deps(pyproject_path: Path) -> List[str]:
     return [d.split(">=")[0].split("==")[0].split("[")[0].strip() for d in deps]
 
 
-def _find_imports_in_file(py_file: Path) -> Set[str]:
+def _find_imports_in_file(py_file: Path) -> set[str]:
     """Find top-level module imports in a Python file."""
     try:
         content = py_file.read_text(encoding="utf-8")
@@ -97,13 +97,13 @@ def _find_imports_in_file(py_file: Path) -> Set[str]:
 
 def find_used_imports(
     repo_root: Path,
-    directories: List[str] = None,
-) -> Set[str]:
+    directories: list[str] | None = None,
+) -> set[str]:
     """Find all Python imports used in src/, scripts/, tests/."""
     if directories is None:
         directories = ["src", "scripts", "tests"]
 
-    used: Set[str] = set()
+    used: set[str] = set()
     for dirname in directories:
         directory = repo_root / dirname
         if not directory.exists():
@@ -116,16 +116,16 @@ def find_used_imports(
     return third_party
 
 
-def map_imports_to_packages(used_imports: Set[str]) -> Set[str]:
+def map_imports_to_packages(used_imports: set[str]) -> set[str]:
     """Convert import names to package names using IMPORT_TO_PKG."""
     return {IMPORT_TO_PKG.get(name, name) for name in used_imports}
 
 
 def audit_dependencies(
     repo_root: Path,
-    declared: Optional[List[str]] = None,
-    used: Optional[Set[str]] = None,
-) -> Dict[str, Any]:
+    declared: list[str] | None = None,
+    used: set[str] | None = None,
+) -> dict[str, Any]:
     """Run dependency audit and return structured result.
 
     Args:
@@ -153,12 +153,12 @@ def audit_dependencies(
     }
 
 
-def compute_health_score(missing: List[str], unused: List[str]) -> int:
+def compute_health_score(missing: list[str], unused: list[str]) -> int:
     """Compute 0-100 dependency health score."""
     return max(0, 100 - 10 * len(missing) - 2 * len(unused))
 
 
-def get_installed_versions(declared: List[str]) -> List[Dict[str, str]]:
+def get_installed_versions(declared: list[str]) -> list[dict[str, str]]:
     """Get installed versions of declared packages via pip."""
     try:
         result = subprocess.run(

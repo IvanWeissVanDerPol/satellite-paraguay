@@ -1,0 +1,54 @@
+# Dependabot — automate dependency updates
+# Docs: https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "automated"
+    groups:
+      production:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      development:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+    ignore:
+      # Don't auto-bump major versions of critical libs
+      - dependency-name: "numpy"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "pandas"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tensorflow"
+      # torch is huge; require manual review
+      - dependency-name: "torch"
+      # rasterio/geopandas require GDAL system libs
+      - dependency-name: "rasterio"
+      - dependency-name: "geopandas"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "ci"
+      - "automated"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+# Auto-merge: enable at org level via
+# Settings -> General -> "Allow auto-merge"
+# OR add a workflow that comments `@dependabot merge` on patch/minor updates.
+# See .github/workflows/dependabot-auto-merge.yml

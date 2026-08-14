@@ -7,7 +7,7 @@ import importlib
 import sys
 import urllib.request
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 REQUIRED_DEPENDENCIES = [
     "numpy",
@@ -59,7 +59,7 @@ REQUIRED_DIRECTORIES = [
 ]
 
 
-def check_python_version(min_version: Tuple[int, int] = (3, 10)) -> Dict[str, Any]:
+def check_python_version(min_version: tuple[int, int] = (3, 10)) -> dict[str, Any]:
     """Check Python version meets minimum."""
     ok = sys.version_info >= min_version
     return {
@@ -70,7 +70,7 @@ def check_python_version(min_version: Tuple[int, int] = (3, 10)) -> Dict[str, An
     }
 
 
-def check_dependencies(packages: Optional[List[str]] = None) -> Dict[str, Any]:
+def check_dependencies(packages: list[str] | None = None) -> dict[str, Any]:
     """Check required packages are importable."""
     if packages is None:
         packages = REQUIRED_DEPENDENCIES
@@ -90,7 +90,7 @@ def check_dependencies(packages: Optional[List[str]] = None) -> Dict[str, Any]:
     }
 
 
-def check_data_directory(data_dir: Path = PARAGUAY_DATA_DIR) -> Dict[str, Any]:
+def check_data_directory(data_dir: Path = PARAGUAY_DATA_DIR) -> dict[str, Any]:
     """Check Paraguay geodata directory exists."""
     exists = data_dir.exists()
     return {
@@ -102,8 +102,8 @@ def check_data_directory(data_dir: Path = PARAGUAY_DATA_DIR) -> Dict[str, Any]:
 
 def check_key_data_files(
     data_dir: Path = PARAGUAY_DATA_DIR,
-    files: Optional[List[str]] = None,
-) -> Dict[str, Any]:
+    files: list[str] | None = None,
+) -> dict[str, Any]:
     """Check that key Paraguay data files exist."""
     if files is None:
         files = KEY_PARAGUAY_FILES
@@ -123,7 +123,7 @@ def check_key_data_files(
     }
 
 
-def check_gpu() -> Dict[str, Any]:
+def check_gpu() -> dict[str, Any]:
     """Check GPU availability (best-effort)."""
     try:
         import torch
@@ -140,7 +140,7 @@ def check_gpu() -> Dict[str, Any]:
         return {"name": "gpu", "ok": False, "available": False, "error": "torch not installed"}
 
 
-def check_network(url: str = "https://github.com", timeout: int = 5) -> Dict[str, Any]:
+def check_network(url: str = "https://github.com", timeout: int = 5) -> dict[str, Any]:
     """Check network connectivity."""
     try:
         urllib.request.urlopen(url, timeout=timeout)
@@ -149,7 +149,7 @@ def check_network(url: str = "https://github.com", timeout: int = 5) -> Dict[str
         return {"name": "network", "ok": False, "url": url, "error": str(e)}
 
 
-def check_dvc_initialized(repo_root: Path) -> Dict[str, Any]:
+def check_dvc_initialized(repo_root: Path) -> dict[str, Any]:
     """Check if DVC is initialized."""
     dvc_dir = repo_root / ".dvc"
     return {
@@ -159,7 +159,7 @@ def check_dvc_initialized(repo_root: Path) -> Dict[str, Any]:
     }
 
 
-def setup_directories(base_dir: Path, dirs: Optional[List[str]] = None) -> Dict[str, Any]:
+def setup_directories(base_dir: Path, dirs: list[str] | None = None) -> dict[str, Any]:
     """Create all required directories."""
     if dirs is None:
         dirs = REQUIRED_DIRECTORIES
@@ -175,7 +175,7 @@ def setup_directories(base_dir: Path, dirs: Optional[List[str]] = None) -> Dict[
     }
 
 
-def run_all_checks(repo_root: Path, base_dir: Optional[Path] = None) -> Dict[str, Any]:
+def run_all_checks(repo_root: Path, base_dir: Path | None = None) -> dict[str, Any]:
     """Run all bootstrap checks and return combined result."""
     if base_dir is None:
         base_dir = repo_root
@@ -189,9 +189,75 @@ def run_all_checks(repo_root: Path, base_dir: Optional[Path] = None) -> Dict[str
         "network": check_network(),
         "dvc": check_dvc_initialized(repo_root),
         "directories": setup_directories(base_dir),
+        "pre_commit_hooks": check_pre_commit_installed(repo_root),
     }
 
 
-def is_ready(checks: Dict[str, Any]) -> bool:
-    """Check if all critical checks passed."""
-    return checks["python"]["ok"] and checks["deps"]["ok"] and checks["data_dir"]["ok"]
+def check_pre_commit_installed(repo_root: Path) -> dict[str, Any]:
+    """Check if pre-commit hooks are installed (.git/hooks/pre-commit exists).
+
+    Hooks run black/flake8/isort/mypy/pycln on every commit to prevent
+    pushing lint-broken code.
+    """
+    hook_path = repo_root / ".git" / "hooks" / "pre-commit"
+    ok = hook_path.exists()
+    return {
+        "name": "pre_commit_hooks",
+        "ok": ok,
+        "path": str(hook_path),
+        "fix": "Run: pre-commit install",
+    }
+
+
+def install_pre_commit_hooks(repo_root: Path) -> dict[str, Any]:
+    """Install pre-commit hooks if .pre-commit-config.yaml is present.
+
+    Runs `pre-commit install` and returns whether installation succeeded.
+    """
+    config_path = repo_root / ".pre-commit-config.yaml"
+    if not config_path.exists():
+        return {
+            "name": "pre_commit_install",
+            "ok": False,
+            "reason": ".pre-commit-config.yaml not found",
+        }
+    try:
+        import subprocess
+
+        result = subprocess.run(
+            ["pre-commit", "install"],
+            cwd=str(repo_root),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        return {
+            "name": "pre_commit_install",
+            "ok": result.returncode == 0,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+        }
+    except FileNotFoundError:
+        return {
+            "name": "pre_commit_install",
+            "ok": False,
+            "reason": "pre-commit not installed. Run: pip install pre-commit",
+        }
+    except Exception as exc:
+        return {
+            "name": "pre_commit_install",
+            "ok": False,
+            "reason": str(exc),
+        }
+
+
+def is_ready(checks: dict[str, Any]) -> bool:
+    """Check if all critical checks passed.
+
+    pre_commit_hooks is informational only (developer-experience),
+    not blocking. Missing hooks generate a warning but don't fail readiness.
+    """
+    py_ok = checks["python"]["ok"]
+    deps_ok = checks["deps"]["ok"]
+    data_ok = checks["data_dir"]["ok"]
+    return bool(py_ok and deps_ok and data_ok)

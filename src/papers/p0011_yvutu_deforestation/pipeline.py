@@ -10,7 +10,6 @@ outperforms Hansen GFC on Chaco deforestation (F1 > 0.85).
 
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -29,7 +28,7 @@ from ...timeseries import (
 class YvytuPipeline:
     """End-to-end pipeline for Chaco deforestation detection."""
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: dict | None = None):
         self.config = config or {
             "tile_size_km": 10,
             "start_date": "2018-01-01",
@@ -43,14 +42,14 @@ class YvytuPipeline:
             },
         }
         self.model = None
-        self.embeddings = {}
+        self.embeddings = {}  # type: ignore[var-annotated]
 
     def load_model(self):
         """Load Prithvi foundation model."""
         self.model = load_prithvi("300m")
         return self.model
 
-    def select_tiles(self) -> List[str]:
+    def select_tiles(self) -> list[str]:
         """Select Chaco tiles for analysis."""
         from ...paraguay_admin import list_tiles_in_region
 
@@ -61,7 +60,7 @@ class YvytuPipeline:
         bbox = get_tile_bbox(tile_id)
         return download_via_gee(
             tile_id=tile_id,
-            bbox=bbox,
+            bbox=bbox,  # type: ignore[arg-type]
             satellite="sentinel2",
             start_date=self.config["start_date"],
             end_date=self.config["end_date"],
@@ -70,13 +69,13 @@ class YvytuPipeline:
     def compute_tile_embeddings(self, tile_id: str) -> np.ndarray:
         """Compute Prithvi embeddings for tile."""
         bbox = get_tile_bbox(tile_id)
-        return compute_tile_embeddings(tile_id, bbox, model_name="prithvi")
+        return compute_tile_embeddings(tile_id, bbox, model_name="prithvi")  # type: ignore[arg-type]
 
     def detect_deforestation(
         self,
         tile_id: str,
         ndvi_timeseries: np.ndarray,
-        dates: List[str],
+        dates: list[str],
     ) -> np.ndarray:
         """Detect deforestation in a tile using BFAST-like change detection.
 
@@ -102,14 +101,14 @@ class YvytuPipeline:
             (change_result["magnitudes"] > threshold) & (change_result["before_mean"] > change_result["after_mean"])
         ).astype(np.uint8)
 
-        return mask
+        return mask  # type: ignore[no-any-return]
 
     def validate(
         self,
         predictions: np.ndarray,
-        mapbiomas_path: Optional[Path] = None,
-        hansen_path: Optional[Path] = None,
-    ) -> Dict:
+        mapbiomas_path: Path | None = None,
+        hansen_path: Path | None = None,
+    ) -> dict:
         """Validate predictions against MapBiomas + Hansen."""
         results = {}
         if mapbiomas_path:
@@ -119,14 +118,14 @@ class YvytuPipeline:
         return results
 
 
-def run_yvytu_demo(data: np.ndarray = None):
+def run_yvytu_demo(data: np.ndarray | None = None):
     """Run a demo of the Yvytu pipeline on 1 Chaco tile.
 
     Args:
         data: Optional NDVI time-series of shape (T, H, W). If None, raises
             FileNotFoundError (fail-loud, no random fill).
     """
-    pipeline = YvutuPipeline()  # noqa: F821
+    pipeline = YvytuPipeline()
     pipeline.load_model()
 
     # Select Chaco tiles

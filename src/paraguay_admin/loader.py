@@ -18,7 +18,6 @@ import json
 # PARAGUAY_GEODATA_DIR to point at a fixture directory.
 import os
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import geopandas as gpd
 import pandas as pd
@@ -102,7 +101,7 @@ def get_country_boundary() -> gpd.GeoDataFrame:
     )
 
 
-def get_tile_bbox(tile_id: str) -> Optional[Dict[str, float]]:
+def get_tile_bbox(tile_id: str) -> dict[str, float] | None:
     """Get bounding box for a tile by ID.
 
     Args:
@@ -113,25 +112,25 @@ def get_tile_bbox(tile_id: str) -> Optional[Dict[str, float]]:
     """
     try:
         lon, lat = tile_id.split("_")
-        lon, lat = float(lon), float(lat)
+        lon, lat = float(lon), float(lat)  # type: ignore[assignment]
         # 10x10 km tile, so ~0.1 degrees
         delta = 0.05
         return {
-            "min_lon": lon - delta,
-            "max_lon": lon + delta,
-            "min_lat": lat - delta,
-            "max_lat": lat + delta,
-            "center_lon": lon,
-            "center_lat": lat,
+            "min_lon": lon - delta,  # type: ignore[operator]
+            "max_lon": lon + delta,  # type: ignore[operator]
+            "min_lat": lat - delta,  # type: ignore[operator]
+            "max_lat": lat + delta,  # type: ignore[operator]
+            "center_lon": lon,  # type: ignore[dict-item]
+            "center_lat": lat,  # type: ignore[dict-item]
         }
     except Exception:
         return None
 
 
 def list_tiles_in_region(
-    bbox: Dict[str, float],
-    tile_index: Optional[pd.DataFrame] = None,
-) -> List[str]:
+    bbox: dict[str, float],
+    tile_index: pd.DataFrame | None = None,
+) -> list[str]:
     """List tile IDs that intersect a bounding box.
 
     Args:
@@ -157,7 +156,7 @@ def list_tiles_in_region(
         & (tile_index["center_lat"] >= bbox["min_lat"])
         & (tile_index["center_lat"] <= bbox["max_lat"])
     )
-    return tile_index.loc[mask, "tile_id"].tolist()
+    return tile_index.loc[mask, "tile_id"].tolist()  # type: ignore[no-any-return]
 
 
 if __name__ == "__main__":

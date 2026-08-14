@@ -1,0 +1,53 @@
+name: Vulture nightly scan
+
+# Daily scan for dead code with vulture. Runs on a schedule (not on PRs)
+# so that PR noise doesn't block merges. vulture results are posted as
+# a job summary; no PR is opened automatically.
+
+'on':
+  schedule:
+    # 03:00 UTC = 23:00 PYT (UTC-4) — late evening, before Monday Dependabot
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vulture:
+    name: Dead code scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.12"
+
+      - name: Install vulture
+        run: pip install vulture
+
+      - name: Run vulture (confidence >= 60%)
+        run: |
+          mkdir -p reports
+          vulture src/ scripts/ \
+            --min-confidence 60 \
+            --sort-by-size \
+            > reports/vulture-60.txt 2>&1 || true
+          vulture src/ scripts/ \
+            --min-confidence 80 \
+            --sort-by-size \
+            > reports/vulture-80.txt 2>&1 || true
+          echo "=== vulture @ 60% confidence ==="
+          cat reports/vulture-60.txt
+          echo ""
+          echo "=== vulture @ 80% confidence ==="
+          cat reports/vulture-80.txt
+
+      - name: Upload vulture reports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
+        with:
+          name: vulture-reports
+          path: reports/vulture-*.txt
+          retention-days: 90
+          if-no-files-found: warn

@@ -6,7 +6,7 @@ data sources.
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 LOCAL_DATA_FILES = [
     ("tile_index.json", "Tile index for Paraguay (10x10 km grid)", "JSON"),
@@ -47,9 +47,9 @@ REMOTE_SOURCES = [
 ]
 
 
-def build_catalog(local_dir: Path) -> List[Dict[str, Any]]:
+def build_catalog(local_dir: Path) -> list[dict[str, Any]]:
     """Build list of catalog entries from local + remote sources."""
-    catalog: List[Dict[str, Any]] = []
+    catalog: list[dict[str, Any]] = []
 
     for fname, desc, fmt in LOCAL_DATA_FILES:
         f = local_dir / fname
@@ -82,13 +82,13 @@ def build_catalog(local_dir: Path) -> List[Dict[str, Any]]:
     return catalog
 
 
-def count_local_remote(catalog: List[Dict[str, Any]]) -> Dict[str, int]:
+def count_local_remote(catalog: list[dict[str, Any]]) -> dict[str, int]:
     """Count local and remote entries in catalog."""
     local = sum(1 for c in catalog if c["source"].startswith("local"))
     return {"local": local, "remote": len(catalog) - local}
 
 
-def render_markdown(catalog: List[Dict[str, Any]]) -> str:
+def render_markdown(catalog: list[dict[str, Any]]) -> str:
     """Render catalog as markdown document."""
     counts = count_local_remote(catalog)
     lines = [
@@ -139,7 +139,7 @@ def render_markdown(catalog: List[Dict[str, Any]]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def generate_data_catalog(local_dir: Path, output_path: Path) -> Dict[str, int]:
+def generate_data_catalog(local_dir: Path, output_path: Path) -> dict[str, int]:
     """Generate data catalog markdown. Returns counts."""
     catalog = build_catalog(local_dir)
     output_path.parent.mkdir(parents=True, exist_ok=True)

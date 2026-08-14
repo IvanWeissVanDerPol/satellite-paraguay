@@ -213,7 +213,7 @@ def main() -> int:
 
     print(f"FAIL -- {len(violations)} unsanctioned claim(s) found:\n")
     for path, line_no, label, snippet, line in violations:
-        rel = path.relative_to(root)
+        rel = path.relative_to(root)  # type: ignore[assignment]
         print(f"  {rel}:{line_no}  [{label}]  matched: {snippet!r}")
         print(f"      line: {line!r}")
     print(

@@ -3,7 +3,7 @@
 Verifies imports, paper pipelines, and data loaders.
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 REQUIRED_MODULES = [
     "src",
@@ -34,15 +34,15 @@ REQUIRED_DATA_LOADERS = [
 ]
 
 
-def verify_imports(modules: Optional[List[str]] = None) -> Dict[str, Any]:
+def verify_imports(modules: list[str] | None = None) -> dict[str, Any]:
     """Verify all required modules import cleanly.
 
     Returns dict with: ok (bool), imported (list), failed (list).
     """
     if modules is None:
         modules = REQUIRED_MODULES
-    imported: List[str] = []
-    failed: List[Dict[str, str]] = []
+    imported: list[str] = []
+    failed: list[dict[str, str]] = []
     for mod in modules:
         try:
             __import__(mod)
@@ -53,8 +53,8 @@ def verify_imports(modules: Optional[List[str]] = None) -> Dict[str, Any]:
 
 
 def verify_pipelines(
-    pipeline_specs: Optional[List[Tuple[str, str]]] = None,
-) -> Dict[str, Any]:
+    pipeline_specs: list[tuple[str, str]] | None = None,
+) -> dict[str, Any]:
     """Verify all paper pipelines can be instantiated.
 
     pipeline_specs: list of (module_path, class_name) tuples.
@@ -64,8 +64,8 @@ def verify_pipelines(
         pipeline_specs = REQUIRED_PAPER_CLASSES
     import importlib
 
-    instantiated: List[str] = []
-    failed: List[Dict[str, str]] = []
+    instantiated: list[str] = []
+    failed: list[dict[str, str]] = []
     for mod_path, cls_name in pipeline_specs:
         try:
             module = importlib.import_module(mod_path)
@@ -81,7 +81,7 @@ def verify_pipelines(
     }
 
 
-def verify_data_loaders(data_dir=None) -> Dict[str, Any]:
+def verify_data_loaders(data_dir=None) -> dict[str, Any]:
     """Verify Paraguay data loaders work.
 
     Returns dict with: ok, loaders (name -> count or None), failed.
@@ -98,8 +98,8 @@ def verify_data_loaders(data_dir=None) -> Dict[str, Any]:
         load_tile_index,
     )
 
-    results: Dict[str, Any] = {}
-    failed: List[Dict[str, str]] = []
+    results: dict[str, Any] = {}
+    failed: list[dict[str, str]] = []
     loaders = [
         ("departamentos", load_departamentos),
         ("distritos", load_distritos),
@@ -117,12 +117,12 @@ def verify_data_loaders(data_dir=None) -> Dict[str, Any]:
     return {"ok": len(failed) == 0, "loaders": results, "failed": failed}
 
 
-def all_checks_passed(*check_results: Dict[str, Any]) -> bool:
+def all_checks_passed(*check_results: dict[str, Any]) -> bool:
     """Return True only if all check dicts have ok=True."""
     return all(r.get("ok", False) for r in check_results)
 
 
-def overall_summary(*check_results: Dict[str, Any]) -> Dict[str, Any]:
+def overall_summary(*check_results: dict[str, Any]) -> dict[str, Any]:
     """Combine multiple check results into a single summary."""
     return {
         "ok": all_checks_passed(*check_results),

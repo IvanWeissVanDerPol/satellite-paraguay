@@ -20,7 +20,6 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_ROOT / "logs"
@@ -79,7 +78,7 @@ class JSONFormatter(logging.Formatter):
 def get_logger(
     name: str,
     level: int = logging.INFO,
-    log_file: Optional[str] = None,
+    log_file: str | None = None,
     json_format: bool = False,
 ) -> logging.Logger:
     """Get a configured logger.
@@ -101,7 +100,7 @@ def get_logger(
     if json_format:
         fmt = JSONFormatter()
     else:
-        fmt = logging.Formatter(
+        fmt = logging.Formatter(  # type: ignore[assignment]
             "%(asctime)s [%(levelname)8s] %(name)s: %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
@@ -175,4 +174,4 @@ def configure_root(level: int = logging.INFO, json_format: bool = False) -> None
 
 # Auto-configure on import
 if os.environ.get("SATELLITE_PARAGUAY_TEST") != "1":
-    configure_root(level=os.environ.get("SATELLITE_PARAGUAY_LOG_LEVEL", "INFO"))
+    configure_root(level=os.environ.get("SATELLITE_PARAGUAY_LOG_LEVEL", "INFO"))  # type: ignore[arg-type]

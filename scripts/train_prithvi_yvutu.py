@@ -172,7 +172,7 @@ def main():
                 }
             )
             deforestation_mask = (hansen["loss"] > 0).astype(np.int64)
-            val_iou = float((deforestation_mask.sum() / deforestation_mask.size))
+            val_iou = float(deforestation_mask.sum() / deforestation_mask.size)
         except Exception:
             pass
 

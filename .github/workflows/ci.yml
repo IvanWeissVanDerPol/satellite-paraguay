@@ -1,6 +1,6 @@
 name: CI
 
-on:
+'on':
   push:
     branches: [main, develop]
   pull_request:
@@ -11,8 +11,8 @@ jobs:
     name: Lint (black + flake8 + isort)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.10"
       - name: Install linting tools
@@ -23,20 +23,20 @@ jobs:
       - name: isort check
         run: isort --check-only --diff src/ tests/ scripts/
       - name: flake8
-        run: flake8 --max-line-length=120 --extend-ignore=E203,W503 src/ tests/ scripts/ --max-line-length=120 --extend-ignore=E203,W503
+        run: flake8 src/ tests/ scripts/
 
   type-check:
     name: Type check (mypy)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.10"
       - name: Install mypy
         run: pip install mypy types-PyYAML types-requests
       - name: mypy
-        run: mypy --no-implicit-optional --ignore-missing-imports --no-strict-optional src/ || true
+        run: mypy --explicit-package-bases --no-warn-unused-ignores scripts/ src/
 
   test:
     name: Tests (pytest)
@@ -45,8 +45,8 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -56,7 +56,7 @@ jobs:
           # 2026-08-13: Use requirements-ci.txt to avoid GDAL-bound deps
           # (rasterio, geopandas) that fail to build on Python 3.11 CI runners
           # without system libs. Then install the package itself with --no-deps.
-          pip install -r requirements-ci.txt
+          pip install -e ".[ci]"
           pip install -e . --no-deps
 
       - name: Run tests
@@ -64,7 +64,7 @@ jobs:
           pytest tests/ -v --tb=short --cov=src --cov-report=xml --cov-report=term-missing
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3  # SHA pinning deferred
         with:
           file: coverage.xml
           fail_ci_if_error: false
@@ -73,13 +73,13 @@ jobs:
     name: Verify repo state
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.10"
       - name: Install
         run: |
-          pip install -r requirements-ci.txt
+          pip install -e ".[ci]"
           pip install -e . --no-deps
           pip install pytest
       - name: Run verify script

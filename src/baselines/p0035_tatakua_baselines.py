@@ -24,7 +24,7 @@ def linear_forecast_baseline(historical: np.ndarray, horizon: int) -> np.ndarray
     x = np.arange(len(historical))
     slope, intercept = np.polyfit(x, historical, 1)
     future_x = np.arange(len(historical), len(historical) + horizon)
-    return slope * future_x + intercept
+    return slope * future_x + intercept  # type: ignore[no-any-return]
 
 
 def run_all_baselines(historical: np.ndarray, horizon: int = 7) -> dict:

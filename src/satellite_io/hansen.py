@@ -11,7 +11,6 @@ Data: 30m forest loss/gain, 2000-2023
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -35,11 +34,11 @@ HANSEN_BANDS = {
 
 
 def download_hansen_real(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_year: int = 2018,
     end_year: int = 2023,
     use_gee: bool = True,
-) -> Optional[Dict[str, np.ndarray]]:
+) -> dict[str, np.ndarray] | None:
     """Download Hansen GFC for Paraguay.
 
     Returns dict with bands: treecover2000, loss, gain, lossyear
@@ -93,17 +92,17 @@ def download_hansen_real(
     # Fallback: synthetic
     logger.warning("Using synthetic Hansen data")
     arrs = generate_synthetic_hansen(bbox, start_year, end_year)
-    np.savez_compressed(cache_path, **arrs)
+    np.savez_compressed(cache_path, **arrs)  # type: ignore[arg-type]
     return arrs
 
 
 def generate_synthetic_hansen(
-    bbox: Dict[str, float],
+    bbox: dict[str, float],
     start_year: int = 2018,
     end_year: int = 2023,
     shape: tuple = (256, 256),
     seed: int = 42,
-) -> Dict[str, np.ndarray]:
+) -> dict[str, np.ndarray]:
     """Generate synthetic Hansen-like data.
 
     For Paraguay:
@@ -154,7 +153,7 @@ def compute_deforestation_year(
     Returns binary mask where True = loss in that year.
     """
     year_code = year - 2000
-    return (lossyear == year_code).astype(np.uint8)
+    return (lossyear == year_code).astype(np.uint8)  # type: ignore[no-any-return]
 
 
 def compute_cumulative_deforestation(

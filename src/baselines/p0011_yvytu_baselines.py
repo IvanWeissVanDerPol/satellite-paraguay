@@ -68,7 +68,7 @@ def random_forest_baseline(
 
     # Predict
     preds = clf.predict(X).reshape(H, W)
-    return preds
+    return preds  # type: ignore[no-any-return]
 
 
 def unet_baseline(
@@ -146,7 +146,7 @@ def unet_baseline(
         out = model(X_tensor)
         preds = out.argmax(dim=1).squeeze(0).numpy()
 
-    return preds[:H, :W]
+    return preds[:H, :W]  # type: ignore[no-any-return]
 
 
 def persistence_baseline(
@@ -197,7 +197,7 @@ def linear_trend_baseline(
 
     # Predict deforestation
     preds = (slope < threshold).astype(np.int64)
-    return preds
+    return preds  # type: ignore[no-any-return]
 
 
 def run_all_baselines(
@@ -235,7 +235,7 @@ def run_all_baselines(
         }
     except Exception as e:
         print(f"  RF failed: {e}")
-        results["random_forest"] = {"error": str(e)}
+        results["random_forest"] = {"error": str(e)}  # type: ignore[dict-item]
 
     return results
 

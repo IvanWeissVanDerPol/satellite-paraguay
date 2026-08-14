@@ -13,13 +13,13 @@ import re
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
-def find_recent_logs(log_dir: Path, since_hours: int = 24) -> List[Path]:
+def find_recent_logs(log_dir: Path, since_hours: int = 24) -> list[Path]:
     """Find log files modified in the last N hours."""
     cutoff = datetime.now() - timedelta(hours=since_hours)
-    logs = []
+    logs = []  # type: ignore[var-annotated]
     if not log_dir.exists():
         return logs
     for log_file in log_dir.rglob("*.log"):
@@ -32,7 +32,7 @@ def find_recent_logs(log_dir: Path, since_hours: int = 24) -> List[Path]:
     return sorted(logs, key=lambda p: p.stat().st_mtime, reverse=True)
 
 
-def detect_traceback(content: str) -> Optional[str]:
+def detect_traceback(content: str) -> str | None:
     """Detect Python traceback in log content."""
     if "Traceback (most recent call last):" in content:
         idx = content.find("Traceback")
@@ -43,7 +43,7 @@ def detect_traceback(content: str) -> Optional[str]:
     return None
 
 
-def detect_errors(content: str) -> List[str]:
+def detect_errors(content: str) -> list[str]:
     """Detect ERROR/FATAL/CRITICAL/EXCEPTION patterns."""
     errors = []
     for line in content.split("\n"):
@@ -52,7 +52,7 @@ def detect_errors(content: str) -> List[str]:
     return errors
 
 
-def detect_performance_regression(content: str, expected_seconds: float = 60.0) -> Optional[str]:
+def detect_performance_regression(content: str, expected_seconds: float = 60.0) -> str | None:
     """Detect if elapsed time exceeds expected by 2x."""
     m = re.search(
         r"(?:Total time|elapsed|Duration):\s*(\d+\.?\d*)\s*(?:s|sec|seconds)",
@@ -65,7 +65,7 @@ def detect_performance_regression(content: str, expected_seconds: float = 60.0) 
     return None
 
 
-def check_output_files(repo_root: Path, expected_outputs: List[str]) -> List[str]:
+def check_output_files(repo_root: Path, expected_outputs: list[str]) -> list[str]:
     """Check that expected output files exist relative to repo_root."""
     missing = []
     for path in expected_outputs:
@@ -75,7 +75,7 @@ def check_output_files(repo_root: Path, expected_outputs: List[str]) -> List[str
     return missing
 
 
-def analyze_log_file(log_file: Path, repo_root: Path) -> List[Dict[str, Any]]:
+def analyze_log_file(log_file: Path, repo_root: Path) -> list[dict[str, Any]]:
     """Analyze a single log file and return list of alerts."""
     content = log_file.read_text(errors="replace")
     alerts = []
@@ -126,11 +126,11 @@ def analyze_logs(
     repo_root: Path,
     log_dir: Path,
     since_hours: int = 24,
-    expected_outputs: Optional[List[str]] = None,
-) -> Dict[str, Any]:
+    expected_outputs: list[str] | None = None,
+) -> dict[str, Any]:
     """Analyze all recent log files in log_dir and return alert report."""
     logs = find_recent_logs(log_dir, since_hours)
-    all_alerts: List[Dict[str, Any]] = []
+    all_alerts: list[dict[str, Any]] = []
 
     for log_file in logs:
         all_alerts.extend(analyze_log_file(log_file, repo_root))
@@ -157,7 +157,7 @@ def analyze_logs(
     }
 
 
-def send_webhook(url: str, payload: Dict[str, Any]) -> bool:
+def send_webhook(url: str, payload: dict[str, Any]) -> bool:
     """Send JSON payload to webhook URL. Returns True on success."""
     try:
         import requests
@@ -168,14 +168,14 @@ def send_webhook(url: str, payload: Dict[str, Any]) -> bool:
         return False
 
 
-def build_email_body(alerts: List[Dict[str, Any]]) -> str:
+def build_email_body(alerts: list[dict[str, Any]]) -> str:
     """Build plaintext email body from alerts."""
     return "\n".join(f"[{a['severity']}] {a['type']}: {a['message']}" for a in alerts)
 
 
 def build_email_message(
     from_addr: str,
-    to_addrs: List[str],
+    to_addrs: list[str],
     subject: str,
     body: str,
 ) -> MIMEText:
@@ -191,11 +191,11 @@ def send_email_smtp(
     smtp_host: str,
     smtp_port: int,
     from_addr: str,
-    to_addrs: List[str],
+    to_addrs: list[str],
     subject: str,
     body: str,
-    username: Optional[str] = None,
-    password: Optional[str] = None,
+    username: str | None = None,
+    password: str | None = None,
 ) -> bool:
     """Send email via SMTP. Returns True on success."""
     try:
@@ -212,7 +212,7 @@ def send_email_smtp(
         return False
 
 
-def format_alerts_summary(alerts: List[Dict[str, Any]]) -> str:
+def format_alerts_summary(alerts: list[dict[str, Any]]) -> str:
     """Format alert list as a readable summary string."""
     if not alerts:
         return "All systems healthy"

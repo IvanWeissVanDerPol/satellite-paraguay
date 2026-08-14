@@ -15,7 +15,6 @@ Endpoints:
 import json
 import sys
 from pathlib import Path
-from typing import List, Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -92,9 +91,9 @@ app.add_middleware(
 )
 
 
-def load_json(path: Path) -> Optional[dict]:
+def load_json(path: Path) -> dict | None:
     try:
-        return json.loads(path.read_text())
+        return json.loads(path.read_text())  # type: ignore[no-any-return]
     except FileNotFoundError:
         return None
 
@@ -118,7 +117,7 @@ def health():
     }
 
 
-@app.get("/departments", response_model=List[Department])
+@app.get("/departments", response_model=list[Department])
 def list_departments():
     """List Paraguayan departments with deforestation statistics."""
     path = REPO_ROOT / "outputs/p0011/departments/department_stats.json"
@@ -135,7 +134,7 @@ def list_departments():
     return [Department(**d) for d in data.get("departments", [])]
 
 
-@app.get("/territories", response_model=List[IndigenousTerritory])
+@app.get("/territories", response_model=list[IndigenousTerritory])
 def list_territories():
     """List indigenous territories with deforestation statistics."""
     return [
@@ -196,7 +195,7 @@ def list_territories():
     ]
 
 
-@app.get("/verra", response_model=List[VerraProject])
+@app.get("/verra", response_model=list[VerraProject])
 def list_verra_projects():
     """List Verra carbon credit projects with discrepancy analysis."""
     return [
@@ -218,7 +217,7 @@ def list_verra_projects():
     ]
 
 
-@app.get("/carbon", response_model=List[AnnualCarbonLoss])
+@app.get("/carbon", response_model=list[AnnualCarbonLoss])
 def annual_carbon_loss():
     """Per-year carbon loss from Hansen + Chave 2014 allometric model."""
     path = REPO_ROOT / "outputs/p0011/carbon/per_year_loss.json"
@@ -231,7 +230,7 @@ def annual_carbon_loss():
     ]
 
 
-@app.get("/uncertainty", response_model=List[BootstrapCI])
+@app.get("/uncertainty", response_model=list[BootstrapCI])
 def uncertainty():
     """Bootstrap confidence intervals for loss estimates."""
     path = REPO_ROOT / "outputs/p0011/uncertainty/uncertainty_results.json"
@@ -264,7 +263,7 @@ def uncertainty():
     return results
 
 
-@app.get("/models", response_model=List[ModelMetric])
+@app.get("/models", response_model=list[ModelMetric])
 def model_metrics():
     """Performance metrics for all trained models."""
     return [
