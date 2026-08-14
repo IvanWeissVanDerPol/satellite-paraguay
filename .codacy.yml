@@ -1,0 +1,25 @@
+# Codacy configuration
+# Docs: https://docs.codacy.com/repositories-configure/
+
+---
+engines:
+  pylint:
+    enabled: false  # We use flake8 instead
+  flake8:
+    enabled: true
+    # All options come from .flake8 config
+  pylint-python3:
+    enabled: false
+
+exclude-paths:
+  - ".venv/**"
+  - "build/**"
+  - "dist/**"
+  - ".eggs/**"
+  - "*.egg-info/**"
+  - "papers/drafts/*/output/**"
+  - "src/papers/*/output/**"
+
+# Severity thresholds
+lifecycle:
+  enabled: true

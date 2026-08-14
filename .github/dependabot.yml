@@ -17,8 +17,10 @@ updates:
     groups:
       production:
         dependency-type: "production"
+        update-types: ["minor", "patch"]
       development:
         dependency-type: "development"
+        update-types: ["minor", "patch"]
     ignore:
       # Don't auto-bump major versions of critical libs
       - dependency-name: "numpy"
@@ -28,6 +30,9 @@ updates:
       - dependency-name: "tensorflow"
       # torch is huge; require manual review
       - dependency-name: "torch"
+      # rasterio/geopandas require GDAL system libs
+      - dependency-name: "rasterio"
+      - dependency-name: "geopandas"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -42,3 +47,8 @@ updates:
       actions:
         patterns:
           - "*"
+
+# Auto-merge: enable at org level via
+# Settings -> General -> "Allow auto-merge"
+# OR add a workflow that comments `@dependabot merge` on patch/minor updates.
+# See .github/workflows/dependabot-auto-merge.yml
