@@ -42,7 +42,7 @@ class YvytuPipeline:
             },
         }
         self.model = None
-        self.embeddings = {}  # type: ignore
+        self.embeddings = {}  # type: ignore[var-annotated]
 
     def load_model(self):
         """Load Prithvi foundation model."""
@@ -60,7 +60,7 @@ class YvytuPipeline:
         bbox = get_tile_bbox(tile_id)
         return download_via_gee(
             tile_id=tile_id,
-            bbox=bbox,  # type: ignore
+            bbox=bbox,  # type: ignore[arg-type]
             satellite="sentinel2",
             start_date=self.config["start_date"],
             end_date=self.config["end_date"],
@@ -69,7 +69,7 @@ class YvytuPipeline:
     def compute_tile_embeddings(self, tile_id: str) -> np.ndarray:
         """Compute Prithvi embeddings for tile."""
         bbox = get_tile_bbox(tile_id)
-        return compute_tile_embeddings(tile_id, bbox, model_name="prithvi")  # type: ignore
+        return compute_tile_embeddings(tile_id, bbox, model_name="prithvi")  # type: ignore[arg-type]
 
     def detect_deforestation(
         self,
@@ -101,7 +101,7 @@ class YvytuPipeline:
             (change_result["magnitudes"] > threshold) & (change_result["before_mean"] > change_result["after_mean"])
         ).astype(np.uint8)
 
-        return mask  # type: ignore
+        return mask  # type: ignore[no-any-return]
 
     def validate(
         self,
