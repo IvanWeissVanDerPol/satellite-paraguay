@@ -109,7 +109,9 @@ def get_system_info() -> dict:
             info["cuda_version"] = torch.version.cuda  # type: ignore[assignment]
             info["gpu_name"] = torch.cuda.get_device_name(0)
             info["gpu_count"] = torch.cuda.device_count()  # type: ignore[assignment]
-            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (1024**3)  # type: ignore[assignment]  # noqa: E501
+            info["gpu_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / (  # type: ignore[assignment]
+                1024**3
+            )  # noqa: E501  # type: ignore[assignment]
         else:
             info["cuda_available"] = False  # type: ignore[assignment]
     except ImportError:

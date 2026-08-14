@@ -14,24 +14,43 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: "3.12"
+
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
+          pip install cyclonedx-bom
           pip install -e ".[ci]" --no-deps
+
       - name: Generate CycloneDX SBOM
-        uses: cyclonedx/cyclonedx-python-action@5d7c9e8d9c10a3c5e3a02e464a16b8c25f9c70a0  # v1.0.0
-        with:
-          # Generate SBOM in JSON and XML
-          format: json
-          output-file: sbom/satellite-paraguay-sbom.json
+        run: |
+          mkdir -p sbom
+          cyclonedx-py requirements \
+            --input requirements.txt \
+            --output sbom/satellite-paraguay-sbom.json \
+            --spec-format cyclonedx \
+            --output-format json \
+            --meta application/satellite-paraguay \
+            --name satellite-paraguay \
+            --version 0.1.0 || \
+          cyclonedx-py env \
+            --output sbom/satellite-paraguay-sbom.json \
+            --spec-format cyclonedx \
+            --output-format json \
+            --meta application/satellite-paraguay \
+            --name satellite-paraguay \
+            --version 0.1.0
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: 1
+
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@c7d193f32edcb7bfad888921612eaeda4e2295e9  # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: sbom
           path: sbom/satellite-paraguay-sbom.json
