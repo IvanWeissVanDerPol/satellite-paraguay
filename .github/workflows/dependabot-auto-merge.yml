@@ -14,7 +14,7 @@ name: Dependabot auto-merge
 # 2. Repo-level: Actions -> Allow GH Actions to create/approve PRs
 #    (Settings -> Actions -> General -> Workflow permissions)
 
-on:
+'on':
   pull_request:
     types: [opened, synchronize, reopened]
 

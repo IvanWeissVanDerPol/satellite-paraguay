@@ -4,7 +4,7 @@ name: Vulture nightly scan
 # so that PR noise doesn't block merges. vulture results are posted as
 # a job summary; no PR is opened automatically.
 
-on:
+'on':
   schedule:
     # 03:00 UTC = 23:00 PYT (UTC-4) — late evening, before Monday Dependabot
     - cron: "0 3 * * *"

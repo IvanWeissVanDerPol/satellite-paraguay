@@ -1,6 +1,6 @@
 name: LaTeX compile (per paper)
 
-on:
+'on':
   push:
     branches: [main]
   pull_request:

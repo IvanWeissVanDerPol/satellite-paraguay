@@ -1,6 +1,6 @@
 name: Release Drafter
 
-on:
+'on':
   push:
     branches: [main]
   workflow_dispatch:
