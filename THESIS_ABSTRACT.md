@@ -1,5 +1,7 @@
 # Thesis Abstract — Hocht-VonDerPol (2026)
 
+> **🌍 Cross-repo architecture:** This thesis spans two repos. The paper-side is here in [`satellite-paraguay`](https://github.com/IvanWeissVanDerPol/satellite-paraguay). The data substrate + autonomous runner is in [`paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm). **Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map.
+
 **Title:** *Multi-Temporal Satellite Computer Vision for Paraguay: A Foundation-Model Approach to Land-Use, Climate, and Environmental Justice*
 
 **Author:** Iván Hocht-VonDerPol
