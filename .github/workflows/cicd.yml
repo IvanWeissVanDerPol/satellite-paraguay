@@ -53,6 +53,9 @@ jobs:
       - name: Honest-Reporting Guard (check_claims.py)
         run: python3 scripts/check_claims.py
 
+      - name: Ethics Gate (check_ethics.py)
+        run: python3 scripts/check_ethics.py
+
   # ====== Multi-Python test matrix ======
   test:
     name: Tests (Python ${{ matrix.python-version }})
