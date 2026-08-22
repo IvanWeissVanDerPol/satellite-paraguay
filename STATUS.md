@@ -1,5 +1,7 @@
 # Submission Readiness Status — 2026-08-13 (CI green-build pass)
 
+> **🌍 Cross-repo architecture:** This repo is **one half** of Iván's FADA thesis (6 papers, models, manuscript). The **other half** — data substrate, autonomous cron runner, web app demo — is [`IvanWeissVanDerPol/paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm) (local `/opt/data/thesis-active`). **Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map. Substrate → thesis data flow only.
+
 ---
 
 ## 2026-08-13 CI Green-Build Pass (Phase 2-5)

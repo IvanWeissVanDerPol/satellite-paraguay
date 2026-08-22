@@ -294,3 +294,14 @@ github.com/IvanWeissVanDerPol
 
 **Status as of 2026-08-04:** 30 commits, 53 tests, 6 papers, 12 stakeholders, full production stack, all data real.
 See `FINAL_REPORT.md` for complete state inventory.
+
+## 🌍 Cross-repo architecture
+
+This repo is **one half of Iván's FADA thesis**. The other half — data substrate, autonomous cron runner, web app demo — is [`IvanWeissVanDerPol/paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm) (local at `/opt/data/thesis-active`).
+
+**Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map (data flow, state files, sync docs, anti-patterns). The substrate repo:
+- Downloads + annotates the Paraguayan cartographic corpus (OSM, IGN, Sentinel-2, INDI)
+- Runs 87 autonomous tasks via cron (thesis-daily-tick at 06:00 UTC)
+- Builds the public web app *"Pregúntale al mapa del Paraguay"*
+
+Both repos share infrastructure via `~/.hermes/scripts/` (cron) and the `thesis-active-autonomy` skill. **If you only have time to read one file, read `THESIS_ARCHITECTURE.md`.**

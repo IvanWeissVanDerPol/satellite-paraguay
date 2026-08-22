@@ -1,5 +1,7 @@
 # 🎯 MASTER AUTONOMOUS EXECUTION PLAN
 
+> **🌍 Cross-repo architecture:** This plan covers the **thesis-paper side** (6 papers, models, manuscript). The **data substrate + autonomous cron runner** side is in [`IvanWeissVanDerPol/paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm). **Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map.
+
 **Author:** Plan executed by Erebus (autonomous)
 **Effective:** 2026-08-04
 **Goal:** Ship a complete thesis + 6 papers + production system + stakeholder relationships in 180 days
