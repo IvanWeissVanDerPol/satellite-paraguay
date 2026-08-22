@@ -1,0 +1,19 @@
+department,indigenous_pct,deforestation_pct,disparity_index,verdict
+Asuncion,0.3,0.5,0.41,OK
+Concepcion,4.1,7.8,6.57,OK
+San Pedro,1.8,6.1,5.56,OK
+Cordillera,1.2,3.2,2.84,OK
+Guaira,0.5,2.1,1.95,OK
+Caaguazu,0.7,4.5,4.29,OK
+Caazapa,1.5,4.8,4.35,OK
+Itapua,0.4,2.9,2.78,OK
+Misiones,0.1,1.0,0.97,OK
+Paraguari,0.4,2.0,1.88,OK
+Alto Parana,2.0,8.5,7.9,OK
+Central,0.6,3.5,3.32,OK
+Neembucu,0.1,0.8,0.77,OK
+Amambay,8.5,15.0,12.45,DISPARITY
+Canindeyu,4.2,18.0,16.74,DISPARITY
+Presidente Hayes,16.8,32.0,26.96,DISPARITY
+Alto Paraguay,26.4,40.0,32.08,DISPARITY
+Boqueron,38.5,45.0,33.45,DISPARITY
