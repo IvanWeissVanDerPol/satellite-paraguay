@@ -1,0 +1,47 @@
+{
+  "snapshot_at": "2026-08-22T02:54:42.577167Z",
+  "scores": {
+    "P0011": {
+      "data": 5,
+      "model": 0,
+      "paper": 100,
+      "ethics": 0,
+      "overall": 35
+    },
+    "P0010": {
+      "data": 80,
+      "model": 0,
+      "paper": 100,
+      "ethics": 50,
+      "overall": 57
+    },
+    "P0012": {
+      "data": 70,
+      "model": 0,
+      "paper": 100,
+      "ethics": 0,
+      "overall": 42
+    },
+    "P0025": {
+      "data": 0,
+      "model": 0,
+      "paper": 100,
+      "ethics": 60,
+      "overall": 40
+    },
+    "P0026": {
+      "data": 40,
+      "model": 30,
+      "paper": 100,
+      "ethics": 40,
+      "overall": 52
+    },
+    "P0035": {
+      "data": 50,
+      "model": 70,
+      "paper": 100,
+      "ethics": 80,
+      "overall": 75
+    }
+  }
+}
