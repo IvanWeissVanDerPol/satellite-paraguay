@@ -154,9 +154,60 @@ def parse_tasks(md_text: str) -> list[dict]:
     return tasks
 
 
+def _is_gated_by_content(task: dict) -> bool:
+    """Heuristic content-based gate for tasks that don't carry an explicit 🤝 marker.
+
+    The AGENT_TODO.md format uses two patterns:
+    - Explicit: section header is `### 🤝 ...` — caught by the parser
+    - Implicit: section header is `### 🔴 ...` (or 🟡/🟢) but the context
+      sub-bullets mention "Pre-req: 🤝", "Vast.ai account", "Blocked by user",
+      "FPIC", "IRB", "partnership", "AWS", "GCP", etc. — these need a
+      content scan to be safely skipped.
+
+    This is the LAST line of defense: if the picker would otherwise select
+    a task whose context contains money / partnership / external-action
+    keywords, treat it as gated and skip it.
+    """
+    if task["gated"]:
+        return True
+    content = (task.get("context") or "") + " " + (task.get("raw") or "")
+    keywords = (
+        "vast.ai",
+        "gcp",
+        " aws ",
+        "credit card",
+        "pay",
+        "money",
+        "budget",
+        "irb",
+        "fpic",
+        "partnership",
+        "inperson",
+        "in-person",
+        "cedula",
+        "submit to journal",
+        "submit to conference",
+        "send email",
+        "email to",
+        "🤝 user ok",
+        "blocked by user",
+        "blocked unless",
+    )
+    cl = content.lower()
+    return any(k in cl for k in keywords)
+
+
 def pick_top(tasks: list[dict]) -> dict | None:
-    """Pick the highest-priority agent-actionable (non-gated) task."""
-    candidates = [t for t in tasks if not t["gated"]]
+    """Pick the highest-priority agent-actionable (non-gated) task.
+
+    A task is considered gated if EITHER:
+    - The parser detected an explicit [EXT]/[🤝]/[⚠️] marker (via task['gated']), OR
+    - The content scan matched money/partnership/IRB/FPIC keywords.
+
+    This dual-gate prevents the worker from picking a task that the LLM
+    cannot complete without Ivan's input or authorization.
+    """
+    candidates = [t for t in tasks if not _is_gated_by_content(t)]
     if not candidates:
         return None
     # Sort: priority ascending (🔴 first), tier ascending (Tier 2 first),
@@ -276,7 +327,7 @@ def main() -> int:
     tasks = parse_tasks(md)
 
     if args.list_actionable:
-        candidates = [t for t in tasks if not t["gated"]]
+        candidates = [t for t in tasks if not _is_gated_by_content(t)]
         if not candidates:
             print("No agent-actionable tasks remaining.")
             return 0

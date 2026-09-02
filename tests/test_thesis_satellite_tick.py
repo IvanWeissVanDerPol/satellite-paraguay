@@ -114,6 +114,54 @@ class TestTickPicker:
         tasks2 = parse_tasks(md2)
         assert pick_top(tasks2) is None, "Picker should return None when only gated tasks remain"
 
+    def test_pick_top_skips_vast_ai_task_by_content(self):
+        """A 🔴 task whose context mentions 'Vast.ai' / 'Pre-req: 🤝 user OK' /
+        'budget' must be skipped even without an explicit 🤝 marker.
+
+        This is the second-line-of-defense content gate that catches tasks
+        whose only 'gated' signal is in the prose, not in the emoji.
+        """
+        from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
+        md = """# AGENT_TODO.md
+## Tier 3
+
+### 🔴 K. Run Vast.ai training for P0011 Prithvi (real model)
+- ⏱ Setup 4 h + queue 12-24 h on A100 80GB
+- Pre-req: 🤝 user OK + Vast.ai account + ~$20 budget
+- Tasks: download 150 tiles, spin up A100, run training
+
+### 🟢 S. Add unit tests for paper pipelines
+- ⏱ 4 h
+- Add 3-5 pytest tests per paper pipeline
+"""
+        tasks = parse_tasks(md)
+        top = pick_top(tasks)
+        assert isinstance(top, dict)
+        assert "S." in top["raw"] or "Add unit tests" in top["title"], (
+            f"Picker should have skipped the Vast.ai task and picked S. instead. " f"Got: {top['title']}"
+        )
+
+    def test_pick_top_skips_partnership_and_irb_by_content(self):
+        """Tasks with 'partnership' / 'IRB' / 'FPIC' in context must be skipped."""
+        from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
+        md = """# AGENT_TODO.md
+## Tier 3
+
+### 🔴 X. Sign FPIC engagement with 10 indigenous communities
+- ⏱ 6-12 months
+- FPIC engagement required
+
+### 🟢 Y. Refactor code style
+- ⏱ 1 h
+- Reformat src/ files with black
+"""
+        tasks = parse_tasks(md)
+        top = pick_top(tasks)
+        assert isinstance(top, dict)
+        assert "Refactor" in top["title"], f"Got: {top['title']}"
+
 
 class TestTickPromptEmission:
     """The emitted prompt must be self-contained and correct."""
