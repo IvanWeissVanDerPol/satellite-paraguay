@@ -132,17 +132,22 @@ def main():
 
     baseline_results = {}
 
+    # SYNTHETIC TEST FIXTURES (not real data — these are random arrays used
+    # ONLY to exercise the baseline functions in the integration test path.
+    # Production pipelines fail-loud on missing real data — see commit
+    # 5347383 + tests/test_fail_loud_guard.py. Do NOT read these numbers as
+    # thesis results.)
     # P0011 baselines
     ndvi = np.random.rand(12, 64, 64).astype(np.float32) * 0.5 + 0.3
     gt = np.random.randint(0, 5, (64, 64), dtype=np.int64)
     baseline_results["p0011_baselines"] = p0011_yvytu_baselines.run_all_baselines(ndvi, gt)
 
-    # P0100 baselines
+    # P0100 baselines (synthetic)
     features = np.random.randn(100, 50).astype(np.float32)
     target = features[:, 0] * 1000 + np.random.randn(100) * 100
     baseline_results["p0100_baselines"] = p0100_yvyra_baselines.run_all_baselines(features, target)
 
-    # P0035 baselines
+    # P0035 baselines (synthetic)
     historical = np.random.rand(30) * 25 + 5
     baseline_results["p0035_baselines"] = p0035_tatakua_baselines.run_all_baselines(historical)
 

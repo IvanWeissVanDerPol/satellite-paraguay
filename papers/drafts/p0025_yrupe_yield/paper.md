@@ -71,6 +71,9 @@ companion files. Read in order:
 - **`methods.md`** — synthetic dataset, multi-task CNN architecture,
   cross-domain transfer protocol, evaluation metrics, the three
   failure causes enumerated.
+- **`experiments.md`** — full experimental protocol: hardware,
+  hyperparameter table, evaluation metrics, what would have
+  changed with GPU + real data, reproducibility checklist.
 - **`results.md`** — measured vs claimed table, per-model
   performance breakdown, transfer ratio analysis, summary of
   measured vs aspirational numbers.
