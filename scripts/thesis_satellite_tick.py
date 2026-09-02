@@ -65,26 +65,26 @@ def parse_tasks(md_text: str) -> list[dict]:
     section_context_lines: list[str] = []
 
     # Pattern for the new section-header format
-    section_re = re.compile(
-        r"^###\s+(🔴|🟡|🟢|🤝|⚠️)?\s*([A-Z0-9]+)\.\s+(.+)$"
-    )
+    section_re = re.compile(r"^###\s+(🔴|🟡|🟢|🤝|⚠️)?\s*([A-Z0-9]+)\.\s+(.+)$")
     # Sub-bullet context line (in new format)
     sub_bullet_re = re.compile(r"^\s+-\s+(.+)$")
 
     def flush_section() -> None:
         nonlocal in_section, section_title, section_priority
-        nonlocal section_id, section_gated, section_context_lines, line_no, tasks
+        nonlocal section_id, section_gated, section_context_lines
         if in_section:
             context = " ".join(section_context_lines).strip()
-            tasks.append({
-                "line_no": line_no,
-                "tier": current_tier,
-                "priority": section_priority or "🟢",
-                "gated": section_gated,
-                "title": section_title,
-                "context": context,
-                "raw": f"### {section_id}. {section_title}",
-            })
+            tasks.append(
+                {
+                    "line_no": line_no,
+                    "tier": current_tier,
+                    "priority": section_priority or "🟢",
+                    "gated": section_gated,
+                    "title": section_title,
+                    "context": context,
+                    "raw": f"### {section_id}. {section_title}",
+                }
+            )
             in_section = False
             section_title = ""
             section_priority = None
@@ -139,15 +139,17 @@ def parse_tasks(md_text: str) -> list[dict]:
             title = rest.strip()
             context = ""
         gated = any(tok in line for tok in ("[EXT]", "[🤝]", "[⚠️]"))
-        tasks.append({
-            "line_no": line_no,
-            "tier": current_tier,
-            "priority": priority,
-            "gated": gated,
-            "title": title,
-            "context": context,
-            "raw": line.strip(),
-        })
+        tasks.append(
+            {
+                "line_no": line_no,
+                "tier": current_tier,
+                "priority": priority,
+                "gated": gated,
+                "title": title,
+                "context": context,
+                "raw": line.strip(),
+            }
+        )
     flush_section()
     return tasks
 
@@ -176,7 +178,7 @@ def build_prompt(task: dict, audit_summary: str, audit_path: str) -> str:
         f"# Thesis tick prompt — {now}",
         "",
         "## Working directory",
-        f"`/opt/data/work/satellite-paraguay`",
+        "`/opt/data/work/satellite-paraguay`",
         "",
         "## Picked task",
         "",
@@ -203,14 +205,13 @@ def build_prompt(task: dict, audit_summary: str, audit_path: str) -> str:
         "tests/test_reproducibility.py -q --no-cov",
         "   ```",
         "4. Atomic commit with conventional commit message. **Do not push.**",
-        "5. Append a one-paragraph tick summary under "
-        "`AGENT_TODO.md → ## Recent autonomous ticks (2026-09+)`.",
+        "5. Append a one-paragraph tick summary under " "`AGENT_TODO.md → ## Recent autonomous ticks (2026-09+)`.",
         "",
         "## Data audit context",
         "",
-        f"```",
+        "```",
         audit_summary,
-        f"```",
+        "```",
         f"(full audit at `{audit_path}`)",
         "",
         "## Verification commands (must all return 0)",
@@ -224,8 +225,7 @@ def build_prompt(task: dict, audit_summary: str, audit_path: str) -> str:
         "",
         "## When done",
         "",
-        "Append to `AGENT_TODO.md` under a new "
-        "`## Recent autonomous ticks (2026-09+)` section:",
+        "Append to `AGENT_TODO.md` under a new " "`## Recent autonomous ticks (2026-09+)` section:",
         "",
         "```",
         f"### {now} — {task['title']}",
@@ -238,9 +238,7 @@ def build_prompt(task: dict, audit_summary: str, audit_path: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Pick the next agent-actionable task from AGENT_TODO.md."
-    )
+    parser = argparse.ArgumentParser(description="Pick the next agent-actionable task from AGENT_TODO.md.")
     parser.add_argument(
         "--emit-prompt",
         action="store_true",
@@ -283,10 +281,7 @@ def main() -> int:
             print("No agent-actionable tasks remaining.")
             return 0
         for i, t in enumerate(candidates[:20], 1):
-            line = (
-                f"{i:2}. [{t['priority']}] {t['tier'] or '-':8} "
-                f"L{t['line_no']:4} {t['title'][:80]}"
-            )
+            line = f"{i:2}. [{t['priority']}] {t['tier'] or '-':8} " f"L{t['line_no']:4} {t['title'][:80]}"
             try:
                 print(line)
             except BrokenPipeError:
@@ -314,9 +309,7 @@ def main() -> int:
         return 0
 
     audit_path = Path(args.audit_file)
-    audit_summary = (
-        audit_path.read_text().strip() if audit_path.exists() else "(no audit file)"
-    )
+    audit_summary = audit_path.read_text().strip() if audit_path.exists() else "(no audit file)"
 
     prompt = build_prompt(top, audit_summary, str(audit_path))
 

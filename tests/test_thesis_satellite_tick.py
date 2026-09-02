@@ -17,8 +17,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = REPO_ROOT / "scripts" / "thesis_satellite_tick.py"
 TODO_FILE = REPO_ROOT / "AGENT_TODO.md"
@@ -43,22 +41,24 @@ class TestTickParser:
 
     def test_parse_returns_some_tasks(self):
         from scripts.thesis_satellite_tick import parse_tasks
+
         tasks = parse_tasks(TODO_FILE.read_text())
         assert len(tasks) > 0, "Parser found zero tasks — file format may have drifted"
 
     def test_gated_tasks_have_gated_flag(self):
         """Tasks marked [EXT]/[🤝]/[⚠️] must have gated=True."""
         from scripts.thesis_satellite_tick import parse_tasks
+
         tasks = parse_tasks(TODO_FILE.read_text())
         gated = [t for t in tasks if t["gated"]]
         assert len(gated) > 0, (
-            "Expected at least one gated task in AGENT_TODO.md (the Vast.ai "
-            "training tasks should be [EXT])."
+            "Expected at least one gated task in AGENT_TODO.md (the Vast.ai " "training tasks should be [EXT])."
         )
 
     def test_completed_tasks_excluded(self):
         """Tasks marked [x] must NOT appear in the parse output."""
         from scripts.thesis_satellite_tick import parse_tasks
+
         tasks = parse_tasks(TODO_FILE.read_text())
         for t in tasks:
             assert "[x]" not in t["raw"], f"Completed task leaked into parse: {t['title']}"
@@ -71,6 +71,7 @@ class TestTickPicker:
 
     def test_pick_top_skips_gated(self):
         from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
         tasks = parse_tasks(TODO_FILE.read_text())
         top = pick_top(tasks)
         assert top is not None, "No agent-actionable task found (but AGENT_TODO.md is not empty)"
@@ -83,6 +84,7 @@ class TestTickPicker:
     def test_pick_top_prefers_higher_priority(self):
         """If a 🔴 task exists, pick_top should pick it over 🟢."""
         from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
         tasks = parse_tasks(TODO_FILE.read_text())
         top = pick_top(tasks)
         candidates = [t for t in tasks if not t["gated"]]
@@ -98,6 +100,7 @@ class TestTickPicker:
     def test_pick_top_returns_none_for_empty(self, tmp_path):
         """If AGENT_TODO.md has only [x] / gated tasks, pick_top returns None."""
         from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
         # All completed or all gated
         md = """# AGENT_TODO.md
 ## Tier 2
@@ -105,7 +108,6 @@ class TestTickPicker:
 - [!] Blocked task
 ## Tier 3
 """
-        tasks = parse_tasks(md)
         # Note: parse_tasks already excludes [x] and [!], so this is empty
         # But let me also add a gated item
         md2 = md + "- [ ] [EXT] gated\n"
@@ -161,6 +163,7 @@ class TestTickPromptEmission:
     def test_no_actionable_tasks_emits_noop_prompt(self, tmp_path):
         """If AGENT_TODO.md is empty, the emitted prompt must say 'no work'."""
         import scripts.thesis_satellite_tick as tick_mod
+
         original = tick_mod.TODO_FILE
         try:
             # Temporarily swap TODO_FILE to an empty file
@@ -168,6 +171,7 @@ class TestTickPromptEmission:
             empty.write_text("# empty\n")
             tick_mod.TODO_FILE = empty
             from scripts.thesis_satellite_tick import parse_tasks, pick_top
+
             tasks = parse_tasks(empty.read_text())
             assert pick_top(tasks) is None
         finally:

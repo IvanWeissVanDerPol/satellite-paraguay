@@ -63,8 +63,13 @@ fi
 TODAY=$(date -u +%Y-%m-%d)
 THIS_MONTH=$(date -u +%Y-%m)
 
-today_spend=$(awk -F, -v d="$TODAY" 'NR>1 && $1 ~ d {sum += $5} END {printf "%.2f", sum+0}' "$COST_LOG_FILE" 2>/dev/null || echo "0.00")
-month_spend=$(awk -F, -v d="$THIS_MONTH" 'NR>1 && $1 ~ d {sum += $5} END {printf "%.2f", sum+0}' "$COST_LOG_FILE" 2>/dev/null || echo "0.00")
+# Column 6 is `cost_usd` per the canonical header:
+#   date,paper_id,provider,gpu_type,duration_hr,cost_usd,status
+# Earlier versions summed $5 (duration_hr) which silently under-reported spend
+# by ~2-4x and prevented the OVER_DAILY / ALERT_DAILY thresholds from ever
+# firing. See docs/security/audit-round-1.md.
+today_spend=$(awk -F, -v d="$TODAY" 'NR>1 && $1 ~ d {sum += $6} END {printf "%.2f", sum+0}' "$COST_LOG_FILE" 2>/dev/null || echo "0.00")
+month_spend=$(awk -F, -v d="$THIS_MONTH" 'NR>1 && $1 ~ d {sum += $6} END {printf "%.2f", sum+0}' "$COST_LOG_FILE" 2>/dev/null || echo "0.00")
 
 # Compute percentages (bc is preferred but may not be installed)
 today_pct=$(python3 -c "print(round(float('$today_spend') / float('$DAILY_CAP') * 100, 1))")

@@ -33,7 +33,7 @@ import argparse
 import hashlib
 import json
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
@@ -252,15 +252,9 @@ def _audit_one(claim: DataClaim) -> DataClaim:
             claim.actual_path = str(parent_abs)
             claim.actual_size_mb = round(total / (1024 * 1024), 2)
             claim.status = "present"
-            if (
-                claim.claimed_size_mb
-                and claim.actual_size_mb < 0.5 * claim.claimed_size_mb
-            ):
+            if claim.claimed_size_mb and claim.actual_size_mb < 0.5 * claim.claimed_size_mb:
                 claim.status = "partial"
-                claim.notes = (
-                    f"Got {claim.actual_size_mb:.1f} MB, "
-                    f"claimed {claim.claimed_size_mb:.1f} MB"
-                )
+                claim.notes = f"Got {claim.actual_size_mb:.1f} MB, " f"claimed {claim.claimed_size_mb:.1f} MB"
             return claim
         # Glob had no matches — fall through to off-repo check below
         claim.notes = f"No files match glob {p.name} in {parent}"
@@ -293,8 +287,7 @@ def _audit_one(claim: DataClaim) -> DataClaim:
             try:
                 if off.is_dir():
                     claim.actual_size_mb = round(
-                        sum(f.stat().st_size for f in off.rglob("*") if f.is_file())
-                        / (1024 * 1024),
+                        sum(f.stat().st_size for f in off.rglob("*") if f.is_file()) / (1024 * 1024),
                         2,
                     )
                 else:
@@ -328,9 +321,7 @@ def audit(strict: bool = False) -> tuple[dict, dict[str, list[DataClaim]]]:
         "by_status_count": {k: len(v) for k, v in by_status.items()},
         "claims": [asdict(c) for c in CLAIMS],
     }
-    summary["any_missing_or_partial"] = bool(
-        by_status["missing"] or by_status["partial"]
-    )
+    summary["any_missing_or_partial"] = bool(by_status["missing"] or by_status["partial"])
     return summary, by_status
 
 
@@ -354,11 +345,7 @@ def print_summary(by_status: dict[str, list[DataClaim]], quiet: bool) -> None:
         print(f"--- {status.upper()} ({len(claims)}) ---")
         for c in claims:
             tag = f"[{','.join(c.paper_ids)}]"
-            size = (
-                f"{c.actual_size_mb:.1f}MB"
-                if c.actual_size_mb
-                else "?"
-            )
+            size = f"{c.actual_size_mb:.1f}MB" if c.actual_size_mb else "?"
             print(f"  {tag:18} {c.name}")
             print(f"    claimed: {c.claimed_path} ({c.claimed_size_mb} MB)")
             if c.actual_path:
@@ -371,9 +358,7 @@ def print_summary(by_status: dict[str, list[DataClaim]], quiet: bool) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Audit the datasets this thesis repo claims to have."
-    )
+    parser = argparse.ArgumentParser(description="Audit the datasets this thesis repo claims to have.")
     parser.add_argument(
         "--strict",
         action="store_true",

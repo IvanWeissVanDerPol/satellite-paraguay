@@ -137,7 +137,7 @@
 
 | Round | Date | What to check |
 |---|---|---|
-| 1 | 2026-08-29 | Adversarial review of new Phase 1 features (RUNBOOK.md, reproducibility tests, drift detector) |
+| 1 | 2026-08-28 | Scenario 1 — cost-cap.sh summed wrong column (`$5` instead of `$6`); HIGH severity, **fixed**. See `audit-round-1.md`. |
 | 2 | 2026-09-12 | Runbook reproducibility on real data — verify scripts still pass |
 | 3 | 2026-09-26 | Drift detector accuracy — false positive rate, false negative rate |
 | 4 | 2026-10-10 | Phase 2 features: P0025 INBIO downloader security |

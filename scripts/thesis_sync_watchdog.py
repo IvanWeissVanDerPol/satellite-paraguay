@@ -26,6 +26,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import cast
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SUBSTRATE_ROOT = Path("/opt/data/thesis-active")
@@ -63,11 +64,8 @@ def run_audit() -> dict:
         timeout=60,
     )
     if result.returncode not in (0, 1):
-        # 0 = clean, 1 = --strict exit on missing; both fine
-        raise RuntimeError(
-            f"validate_data.py exited {result.returncode}: {result.stderr[:300]}"
-        )
-    return json.loads(AUDIT_JSON.read_text())
+        raise RuntimeError(f"validate_data.py exited {result.returncode}: {result.stderr[:300]}")
+    return cast(dict, json.loads(AUDIT_JSON.read_text()))
 
 
 def detect_drift(audit: dict, substrate_progress_mtime: float | None) -> list[str]:
@@ -82,9 +80,7 @@ def detect_drift(audit: dict, substrate_progress_mtime: float | None) -> list[st
             f"Review outputs/data_audit.json for details."
         )
     if by_status.get("partial", 0) > 0:
-        signals.append(
-            f"⚠️ {by_status['partial']} dataset(s) marked PARTIAL — got < 50% of claimed size."
-        )
+        signals.append(f"⚠️ {by_status['partial']} dataset(s) marked PARTIAL — got < 50% of claimed size.")
 
     # Signal 2: synthetic files count drifted (a new PLACEHOLDER file appeared?)
     if by_status.get("synthetic", 0) > 3:
@@ -142,16 +138,13 @@ def write_drift_note(signals: list[str], audit_summary: dict) -> None:
     if not signals:
         lines.append("None. STATUS.md does not need updating.")
     else:
-        lines.append(
-            "1. Open outputs/data_audit.json and review the missing/partial claims."
-        )
+        lines.append("1. Open outputs/data_audit.json and review the missing/partial claims.")
         lines.append(
             "2. Update STATUS.md scorecard if the on-disk state has actually "
             "drifted (e.g., new data downloaded, files moved)."
         )
         lines.append(
-            "3. If a paper now claims a dataset it does not have, edit the "
-            "paper text to reflect the actual state."
+            "3. If a paper now claims a dataset it does not have, edit the " "paper text to reflect the actual state."
         )
     lines.append("")
     DRIFT_NOTE.write_text("\n".join(lines))
@@ -196,15 +189,9 @@ def emit_prompt() -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Refresh cross-repo state for the satellite-paraguay thesis."
-    )
-    parser.add_argument(
-        "--check", action="store_true", help="Only check if state changed since last run."
-    )
-    parser.add_argument(
-        "--emit-prompt", action="store_true", help="Emit a cron-ready prompt."
-    )
+    parser = argparse.ArgumentParser(description="Refresh cross-repo state for the satellite-paraguay thesis.")
+    parser.add_argument("--check", action="store_true", help="Only check if state changed since last run.")
+    parser.add_argument("--emit-prompt", action="store_true", help="Emit a cron-ready prompt.")
     args = parser.parse_args()
 
     if args.emit_prompt:
@@ -238,8 +225,10 @@ def main() -> int:
     print(f"  audit_sha: {new_sha}")
     print(f"  changed:    {changed} (prev: {prev_sha or 'none'})")
     print(f"  signals:    {len(signals)}")
-    print(f"  present={counts.get('present', 0)} synthetic={counts.get('synthetic', 0)} "
-          f"off-repo={counts.get('off-repo', 0)} missing={counts.get('missing', 0)}")
+    print(
+        f"  present={counts.get('present', 0)} synthetic={counts.get('synthetic', 0)} "
+        f"off-repo={counts.get('off-repo', 0)} missing={counts.get('missing', 0)}"
+    )
     if signals:
         print("\nDrift signals:")
         for s in signals:

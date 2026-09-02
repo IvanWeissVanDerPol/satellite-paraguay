@@ -39,9 +39,7 @@ class TestWatchdogRuns:
 
     def test_run_succeeds(self):
         result = _run()
-        assert result.returncode == 0, (
-            f"Watchdog exited {result.returncode}. STDERR:\n{result.stderr[:500]}"
-        )
+        assert result.returncode == 0, f"Watchdog exited {result.returncode}. STDERR:\n{result.stderr[:500]}"
 
     def test_run_writes_audit_json(self):
         # First ensure the audit exists
@@ -78,9 +76,7 @@ class TestWatchdogSafety:
         mtime_before = status_path.stat().st_mtime
         _run()
         mtime_after = status_path.stat().st_mtime
-        assert mtime_before == mtime_after, (
-            "STATUS.md mtime changed — watchdog must not auto-edit STATUS.md"
-        )
+        assert mtime_before == mtime_after, "STATUS.md mtime changed — watchdog must not auto-edit STATUS.md"
 
     def test_papers_not_modified(self):
         """No paper.md or paper.tex file may be touched by a watchdog run."""
@@ -91,9 +87,7 @@ class TestWatchdogSafety:
         _run()
         after = {p.name: p.stat().st_mtime for p in papers_dir.rglob("paper.*")}
         for name, mtime in before.items():
-            assert after.get(name) == mtime, (
-                f"Paper file {name} was modified by watchdog — forbidden."
-            )
+            assert after.get(name) == mtime, f"Paper file {name} was modified by watchdog — forbidden."
 
 
 class TestWatchdogDriftDetection:
@@ -111,9 +105,9 @@ class TestWatchdogDriftDetection:
         missing_count = audit["by_status_count"].get("missing", 0)
         if missing_count > 0:
             text = DRIFT_NOTE.read_text()
-            assert "MISSING" in text or "missing" in text, (
-                f"Drift note should warn about {missing_count} missing datasets"
-            )
+            assert (
+                "MISSING" in text or "missing" in text
+            ), f"Drift note should warn about {missing_count} missing datasets"
 
 
 class TestWatchdogIdempotency:
