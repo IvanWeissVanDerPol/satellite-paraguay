@@ -87,6 +87,14 @@ data/boundaries/*.geojson
 outputs/p0011/figures/deforestation_timeline.gif
 mlruns/
 
+# Sensitive partner data — Scenario 2 mitigation
+# (Real wildlife labels via Guyra partnership; INBIO yield data;
+#  secrets directory for partner keys). These MUST NEVER reach the
+#  repo. See docs/security/audit-round-2.md.
+data/raw/inbio/
+data/labels/
+secrets/
+
 # Local venv (created 2026-08-11 for tests)
 .venv/
 

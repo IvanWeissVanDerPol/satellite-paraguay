@@ -189,6 +189,7 @@ jobs:
         with:
           name: dist
           path: dist/
+          if-no-files-found: error  # Scenario 2 mitigation
 
   # ====== Dependency audit ======
   dependencies:
@@ -223,6 +224,7 @@ jobs:
         with:
           name: weekly-results
           path: outputs/weekly/
+          if-no-files-found: error  # Scenario 2 mitigation
       - name: Check alerts
         run: python3 scripts/alert_cron_failures.py
         if: always()

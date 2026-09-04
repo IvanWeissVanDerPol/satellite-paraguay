@@ -47,7 +47,7 @@
 - `.gitignore` excludes `data/raw/inbio/` and `data/labels/` and `secrets/`
 - LFS is configured for `models/*.pt` only (not data)
 
-**Residual risk:** MEDIUM — need to add a workflow-level check that no `data/labels/` path is referenced.
+**Residual risk:** LOW (post round-2 audit 2026-09-04) — every upload-artifact step now has `if-no-files-found: error`, and `.gitignore` excludes `data/raw/inbio/`, `data/labels/`, and `secrets/`. Regression tests in `tests/test_ci_artifact_security.py` (23 passed, 0 failed).
 
 ---
 
@@ -138,7 +138,7 @@
 | Round | Date | What to check |
 |---|---|---|
 | 1 | 2026-08-28 | Scenario 1 — cost-cap.sh summed wrong column (`$5` instead of `$6`); HIGH severity, **fixed**. See `audit-round-1.md`. |
-| 2 | 2026-09-12 | Runbook reproducibility on real data — verify scripts still pass |
+| 2 | 2026-09-04 | Scenario 2 — `.gitignore` had no exclusion for `data/raw/inbio/`, `data/labels/`, `secrets/` (HIGH); 3 upload-artifact steps missing `if-no-files-found: error` (MEDIUM). **Fixed.** See `audit-round-2.md`. |
 | 3 | 2026-09-26 | Drift detector accuracy — false positive rate, false negative rate |
 | 4 | 2026-10-10 | Phase 2 features: P0025 INBIO downloader security |
 | 5 | 2026-10-24 | P0026 YOLOv8 retrain script — verify checkpoint integrity |
