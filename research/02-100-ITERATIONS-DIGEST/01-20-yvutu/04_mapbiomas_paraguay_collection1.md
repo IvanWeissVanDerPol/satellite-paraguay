@@ -1,0 +1,19 @@
+![](https://paraguay.mapbiomas.org/wp-content/themes/mapbiomas/assets/images/default-thumbnail.png)
+
+## Collection 1.0
+
+|     |     |     |     |
+| --- | --- | --- | --- |
+| Name of the map | Source/Author | Description | Link |
+| Copernicus Global Land Service: Land Cover 100m: collection 3 | Buchhorn, M. ; Smets, B. ; Bertels, L. ; De Roo, B. ; Lesiv, M. ; Tsendbazar, N. - E. ; Herold, M. ; Fritz, S. Copernicus Global Land Service: Land Cover 100m: collection 3: epoch 2019: Globe 2020. | Land cover maps present spatial information on different types of land cover, such as forests, grasslands, croplands, lakes or wetlands. | [Access](https://land.copernicus.eu/global/products/lc) |
+| Global Forest Change 2000–2015 | University of Maryland | Results of time series analysis of Landsat imagery to characterise global forest extent and change between 2000 and 2015. | [Access](https://www.science.org/doi/10.1126/science.1244693) |
+| ESRI 10m Annual Land Use Land Cover (2017-2022) | Karra, Kontgis, et al. “Global land use/land cover with Sentinel-2 and deep learning.” IGARSS 2021-2021 IEEE International Geoscience and Remote Sensing Symposium. IEEE, 2021. | Time series of annual global land use and land cover (LULC) maps. It currently has data from 2017-2022. The maps are derived from ESA Sentinel-2 imagery at 10 m resolution. | [Access](https://www.arcgis.com/home/item.html?id=cfcb7609de5f478eb7666240902d4d3d) |
+| ETH Global Canopy Height 2020 | Lang, N., Jetz, W., Schindler, K. et al. A high-resolution canopy height model of the Earth. Nat Ecol Evol (2023). https://doi.org/10.1038/s41559-023-02206-6 | Global canopy map for the year 2020. The product is based on Sentinel-2 imagery. | [Access](https://langnico.github.io/globalcanopyheight/) |
+| Coverage map of the Republic of Paraguay | FCA/CIF/FFPRI, 2013 | The elaboration of the map was carried out from the analysis and interpretation of Landsat 5 satellite images (TM) (E 1:250.000) | [Access](https://docplayer.es/95817977-Mapa-de-cobertura-de-la-tierra-paraguay-2011.html) |
+| Land use change in Paraguay | INFONA 2018, 2023 | Land use change map between 2016 and 2017, obtained by classifying Landsat 8 images | [Access](https://nube.infona.gov.py/index.php/s/BPdE3ijGWRnQ2aA) |
+| Annual Agriculture in the Paraguayan Chaco 2000/2001 | Agrosatélite Geotecnología Aplicada | Map of soy crop areas in 2000/2001 in the Paraguayan Chaco, elaborated based on the interpretation of Landsat images of 30 m spatial resolution. |  |
+| Annual Agriculture in the Paraguayan Chaco 2006/2007 | Agrosatélite Geotecnología Aplicada | Map of soy crop areas in 2006/2007 in the Paraguayan Chaco, elaborated based on the interpretation of Landsat images of 30 m spatial resolution. |  |
+| Annual Agriculture in the Paraguayan Chaco 2016/2017 | Agrosatélite Geotecnología Aplicada | Map of soy crop areas in 2016/2017 in the Paraguayan Chaco, elaborated based on the interpretation of Landsat images of 30 m spatial resolution. | [Acceder](https://pecuaria.agroideal.org/py/) |
+| Soy Crops in the Eastern Region of Paraguay 2014 | INFONA/SIRT 2014 |  |  |
+| Land Use and Land Cover Map of the Paraguayan Chaco 2018 | DLR/INFONA/WWF 2019 | Land Use and Land Cover Map of the Paraguayan Chaco obtained through classification of Landsat 8 OLI images for 2017 and 2018 |  |
+| MapBiomas Chaco-<br>Land Use and Land cover from 1985 to 2022 of the Gran Chaco Americano.<br>Collection 4.0 | MapBiomas Chaco Project – Collection 4 of the Annual Series of Land Use and Land Cover Maps of Chaco | Collection 4 of MapBiomas Chaco includes annual data of land use and land cover for the period 1985 to 2022 | [Acceder](http://plataforma.chaco.mapbiomas.org/map) |

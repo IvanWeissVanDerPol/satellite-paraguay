@@ -110,7 +110,7 @@ Yvutu implements two model variants:
 - **From-scratch U-Net:** A 30-channel U-Net trained on Hansen+MapBiomas features.
 - **Prithvi-Lite:** A 4-layer Vision Transformer fine-tuned on the same data.
 
-Yvutu achieves F1=0.017 with from-scratch (honest negative result) and F1>0.85 with Prithvi fine-tuning on a GPU.
+**Measured result (see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`):** the CPU pilot (15 synthetic tiles, 5 epochs) achieved a best F1 = 0.559 with the from-scratch U-Net (precision 0.099, recall 0.987 — the model over-predicts deforestation). The intended Prithvi backbone fell back to a mock (F1 = 0.497) due to a transformers/numpy compatibility issue. The F1>0.85 headline quoted in earlier drafts was a literature benchmark (Jakubik et al. 2023 on HLS land-cover), **not a Yvutu measurement**, and has been removed. The thesis therefore frames foundation-model fine-tuning as the *promising direction* for data-scarce regions, supported by literature benchmarks, rather than as an established operational claim.
 
 ### 2.2.3 Yvyra (Carbon, Chapter 4)
 

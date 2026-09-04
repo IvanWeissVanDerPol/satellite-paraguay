@@ -43,7 +43,7 @@ Across the three deforestation-related papers (Chapters 3, 4, 5), a coherent pic
 
 ### 9.2.2 The Yield Story
 
-Yrupe (Chapter 6) demonstrates cross-domain transfer: a deforestation-pretrained model fine-tuned for soybean yield prediction achieves 0.74× the accuracy of a yield-trained model. This is consistent with the hypothesis (H3) that deforestation features (NDVI, land cover, terrain) transfer to yield prediction, because both depend on vegetation health.
+Yrupe (Chapter 6) is **a synthetic-only transfer-learning study** (see `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`). A deforestation-pretrained encoder fine-tuned on synthetic soybean-yield features achieved a transfer ratio of 0.74× relative to a from-scratch yield model — consistent with hypothesis H3 that vegetation-health features (NDVI, land cover, terrain) transfer between tasks that share the same underlying signal. The result is suggestive, not conclusive: the pilot did not converge to a stable accuracy on real Paraguayan yield data, and the 0.74× ratio should be read as a feasibility signal that motivates a GPU re-run on real Paraguayan Department-of-Agriculture records rather than as an established transfer result.
 
 ### 9.2.3 The Wildlife Story
 
@@ -68,10 +68,12 @@ To address RQ4, we conducted a structured transfer learning experiment:
 
 | Source task | Target task | Transfer ratio | Hypothesis H3 |
 |---|---|---|---|
-| Deforestation | Yield | 0.74 | ✓ Confirmed |
-| Deforestation | Wildlife | 0.42 | ✗ Rejected |
+| Deforestation | Yield | 0.74 (synthetic) | ✓ Confirmed (synthetic-only) |
+| Deforestation | Wildlife | 0.42 (synthetic→real drop) | ✗ Rejected (real-data gap dominant) |
 | Deforestation | Land cover | 0.91 | ✓ Strong transfer |
 | Yield | Deforestation | 0.68 | ✓ Moderate transfer |
+
+The Yrupe (Yield) and Kai (Wildlife) ratios come from the measured pilots documented in `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md` and `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md` respectively. The Yield ratio (0.74) is on synthetic features; the Wildlife ratio (0.42) is the synthetic-to-real drop from the Guyra Paraguay camera-trap evaluation. The Land-cover and Yield→Deforestation rows are placeholder estimates that motivate the planned GPU re-run (Section 11.4.1) and should be read as feasibility-signal only, not as established operational accuracy.
 
 The results show that **transfer is strong when tasks share underlying features** (vegetation health) but weak when tasks differ fundamentally (vegetation vs. individual animals).
 

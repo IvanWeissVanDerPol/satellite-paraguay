@@ -48,10 +48,10 @@ The thesis has limitations:
 
 ### 11.4.1 Short-term (3-6 months)
 
-1. **GPU training run:** Fine-tune Prithvi on Paraguayan data (F1>0.85 confirmed)
-2. **FPIC engagement:** Establish FPIC with 5+ indigenous communities
-3. **INFONA collaboration:** Independent verification of Verra projects
-4. **Paper submissions:** Submit P0011, P0010, P0012 to target journals
+1. **GPU training run:** Fine-tune Prithvi on real Paraguayan Sentinel-2 + Hansen labels (target: confirm F1>0.85 direction; the current CPU pilot reached F1=0.497 with the Prithvi-mock fallback). Requires ~$20-50 cloud GPU spend and is the explicit operational-claim experiment the rest of the thesis depends on.
+2. **FPIC engagement:** Establish FPIC with 5+ indigenous communities (gate for Yvy / P0012 ethics compliance).
+3. **INFONA collaboration:** Independent verification of Verra projects (extends Yvyra to a larger project sample).
+4. **Paper submissions:** Submit P0011, P0010, P0012 to target journals.
 
 ### 11.4.2 Medium-term (6-18 months)
 
@@ -78,6 +78,23 @@ I hope this thesis contributes, in some small way, to a Paraguay where indigenou
 — Iván Hocht-VonDerPol
 — Asunción, Paraguay
 — August 2026
+
+---
+
+## 11.6 Honest Reporting Notes
+
+This thesis adopts the convention that any claim appearing in earlier drafts has been replaced with the measured pilot number in the final manuscript, with the source-of-truth file cited in-line. The Honest Reporting Note convention is documented in `docs/CONVENTIONS.md`. The substantive substitutions made during the 2026-08-10 / 2026-08-11 honest-reporting passes are:
+
+| Topic | Earlier (aspirational) | Final (measured) |
+|---|---|---|
+| Yvutu F1, Prithvi | F1 > 0.85 | F1 = 0.497 (mock fallback) |
+| Yvutu F1, from-scratch | F1 < 0.30 | F1 = 0.559 (over-predicts) |
+| Kai mAP, real | 0.3-0.5 | 0.18 |
+| Tatakua RMSE | MAE < 5 µg/m³ | 14.7 µg/m³ |
+| Verra under-claim | "30-50%" | +35.9% (5 projects) |
+| Citation verification | "47 verified" | "213 verified, 13 LIKELY, 0 NOT_FOUND" (round-3, 2026-09-04) |
+
+The citation-verification row reflects the round-3 result: of 226 candidate citations from the round-2 reconstruction, 213 are now VERIFIED via OpenAlex + CrossRef title-first search with a best-of-3 scoring protocol (94% verification rate). The remaining 13 are LIKELY (score 0.4-0.6) and require manual DOI lookup or replacement. The full per-citation evidence is in `research/04-VERIFICATION/verification_report_v4.md`.
 
 ---
 

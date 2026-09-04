@@ -48,7 +48,7 @@ To address these challenges, this thesis poses five research questions:
 
 We propose three hypotheses derived from these research questions:
 
-**H1 (Foundation Models Superiority):** A Prithvi-fine-tuned model achieves F1 > 0.85 on Paraguayan deforestation detection, compared to F1 < 0.30 for a from-scratch U-Net baseline.
+**H1 (Foundation Models Superiority, *aspirational*):** A Prithvi-fine-tuned model would achieve F1 > 0.85 on Paraguayan deforestation detection (literature benchmark from Jakubik et al. 2023 on HLS land-cover), compared to F1 < 0.30 for a from-scratch U-Net baseline. *Status: direction supported by literature; magnitudes unverified by this thesis.* The measured CPU pilot achieved F1=0.559 with the from-scratch U-Net (over-predicting deforestation) and F1=0.497 with the Prithvi-mock fallback — both above the F1<0.30 baseline threshold, so the second inequality of H1 is refuted by measurement; the first inequality remains the open question that the planned GPU re-run is designed to answer.
 
 **H2 (Indigenous Deforestation Disparity):** Indigenous territories in Paraguay have deforestation rates greater than 1.5 times the national average.
 

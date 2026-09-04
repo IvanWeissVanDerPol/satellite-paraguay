@@ -1,0 +1,302 @@
+{
+  "timestamp_utc": "2026-09-04T21:54:33+00:00",
+  "repo_root": "/opt/data/work/satellite-paraguay",
+  "total_claims": 17,
+  "by_status_count": {
+    "present": 8,
+    "missing": 0,
+    "off-repo": 6,
+    "synthetic": 3,
+    "partial": 0
+  },
+  "claims": [
+    {
+      "name": "Hansen GFC v1.11 \u2014 treecover2000 \u2014 20S_060W",
+      "claimed_path": "data/hansen/hansen_treecover2000_20S_060W.tif",
+      "claimed_size_mb": 620.0,
+      "purpose": "Forest cover at year 2000, eastern Paraguay tile",
+      "paper_ids": [
+        "P0011",
+        "P0010",
+        "P0012"
+      ],
+      "expected_layers": [
+        "treecover2000"
+      ],
+      "off_repo_canonical": "data/cache/hansen/hansen_2018_2023.npz",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz",
+      "actual_size_mb": 0.06,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz"
+    },
+    {
+      "name": "Hansen GFC v1.11 \u2014 treecover2000 \u2014 20S_070W",
+      "claimed_path": "data/hansen/hansen_treecover2000_20S_070W.tif",
+      "claimed_size_mb": 620.0,
+      "purpose": "Forest cover at year 2000, Chaco tile",
+      "paper_ids": [
+        "P0011",
+        "P0010",
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": "data/cache/hansen/hansen_2018_2023.npz",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz",
+      "actual_size_mb": 0.06,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz"
+    },
+    {
+      "name": "Hansen GFC v1.11 \u2014 lossyear \u2014 20S_060W",
+      "claimed_path": "data/hansen/hansen_lossyear_20S_060W.tif",
+      "claimed_size_mb": 152.0,
+      "purpose": "Year of loss event 2001-2023, eastern tile",
+      "paper_ids": [
+        "P0011",
+        "P0010",
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": "data/cache/hansen/hansen_2018_2023.npz",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz",
+      "actual_size_mb": 0.06,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz"
+    },
+    {
+      "name": "Hansen GFC v1.11 \u2014 lossyear \u2014 20S_070W",
+      "claimed_path": "data/hansen/hansen_lossyear_20S_070W.tif",
+      "claimed_size_mb": 152.0,
+      "purpose": "Year of loss event 2001-2023, Chaco tile",
+      "paper_ids": [
+        "P0011",
+        "P0010",
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": "data/cache/hansen/hansen_2018_2023.npz",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz",
+      "actual_size_mb": 0.06,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/hansen/hansen_2018_2023.npz"
+    },
+    {
+      "name": "MapBiomas Paraguay Collection 2 (2023)",
+      "claimed_path": "data/mapbiomas/mapbiomas_paraguay_2023.tif",
+      "claimed_size_mb": 38.0,
+      "purpose": "Land cover 2023 (33867 x 34409 pixels @ 30 m)",
+      "paper_ids": [
+        "P0011",
+        "P0010",
+        "P0012",
+        "P0025",
+        "P0026"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": "data/cache/mapbiomas/mapbiomas_py_2022.npy",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/mapbiomas/mapbiomas_py_2022.npy",
+      "actual_size_mb": 0.06,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/mapbiomas/mapbiomas_py_2022.npy"
+    },
+    {
+      "name": "Sentinel-2 L2A \u2014 6 scenes, B08 NIR band",
+      "claimed_path": "data/sentinel2/S2*_B08.tif",
+      "claimed_size_mb": 1500.0,
+      "purpose": "10 m optical imagery, Paraguayan Chaco east",
+      "paper_ids": [
+        "P0011",
+        "P0025"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": "data/cache/sentinel2/",
+      "status": "off-repo",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/sentinel2",
+      "actual_size_mb": 6.8,
+      "sha256_prefix": null,
+      "notes": "Exists at canonical off-repo path: /opt/data/work/satellite-paraguay/data/cache/sentinel2"
+    },
+    {
+      "name": "INDI indigenous territories (CSV)",
+      "claimed_path": "data/raw/ine_indi/indi_territories_PLACEHOLDER.csv",
+      "claimed_size_mb": null,
+      "purpose": "10 indigenous community territories, Hansen overlap analysis",
+      "paper_ids": [
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/indi_territories_PLACEHOLDER.csv",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "dd1b84657840",
+      "notes": "Filename contains PLACEHOLDER \u2014 not real data"
+    },
+    {
+      "name": "INE census 2022 by depto + ethnicity (CSV)",
+      "claimed_path": "data/raw/ine_indi/ine_census_2022_depto_etnia_SYNTHETIC.csv",
+      "claimed_size_mb": null,
+      "purpose": "Synthetic INE census data for disparity analysis",
+      "paper_ids": [
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/ine_census_2022_depto_etnia_SYNTHETIC.csv",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "109cbe243e5d",
+      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
+    },
+    {
+      "name": "FAO/MAG Paraguay yield 2023 (JSON)",
+      "claimed_path": "data/raw/fao_mag/fao_yield_2023_paraguay.json",
+      "claimed_size_mb": null,
+      "purpose": "Public FAO/MAG yield data for P0025 Yrupe",
+      "paper_ids": [
+        "P0025"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/fao_yield_2023_paraguay.json",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "44136fa355b3",
+      "notes": ""
+    },
+    {
+      "name": "Synthetic yield 2020-2023 (CSV)",
+      "claimed_path": "data/raw/fao_mag/synthetic_yield_2020_2023.csv",
+      "claimed_size_mb": null,
+      "purpose": "Synthetic yield fixture for the multi-task CNN pilot",
+      "paper_ids": [
+        "P0025"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/synthetic_yield_2020_2023.csv",
+      "actual_size_mb": 0.01,
+      "sha256_prefix": "1ad28a2a837a",
+      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
+    },
+    {
+      "name": "INBIO soybean trial 2024 (CSV)",
+      "claimed_path": "data/raw/inbio/yrupe_2024.csv",
+      "claimed_size_mb": null,
+      "purpose": "Public INBIO trial data, Yrupe paper",
+      "paper_ids": [
+        "P0025"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/inbio/yrupe_2024.csv",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "e292319db6be",
+      "notes": ""
+    },
+    {
+      "name": "P0012 disparity index (CSV)",
+      "claimed_path": "data/raw/ine_indi/disparity_index.csv",
+      "claimed_size_mb": null,
+      "purpose": "Indigenous deforestation disparity index, P0012 Yvy",
+      "paper_ids": [
+        "P0012"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/disparity_index.csv",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "85590774be03",
+      "notes": ""
+    },
+    {
+      "name": "Verra VCS Registry (5 Paraguayan projects)",
+      "claimed_path": "data/cache/verra/verra_paraguay.json",
+      "claimed_size_mb": null,
+      "purpose": "Carbon credit projects, P0010 Yvyra",
+      "paper_ids": [
+        "P0010"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/verra/verra_paraguay.json",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "e52bf290fce2",
+      "notes": "Curated list \u2014 downloaded via Verra web registry, no API."
+    },
+    {
+      "name": "OpenAQ v3 air-quality (12 stations)",
+      "claimed_path": "data/cache/openaq/",
+      "claimed_size_mb": null,
+      "purpose": "Air quality measurements for P0035 Tatakua",
+      "paper_ids": [
+        "P0035"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/openaq",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": null,
+      "notes": "Live API (https://openaq.org/) \u2014 cached snapshots only."
+    },
+    {
+      "name": "NASA FIRMS fire alerts (Paraguay)",
+      "claimed_path": "data/cache/firms/",
+      "claimed_size_mb": null,
+      "purpose": "Fire alerts for fire/drought cross-paper analysis",
+      "paper_ids": [
+        "fire_drought_analysis"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/cache/firms",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": null,
+      "notes": "Live API (https://firms.modaps.eosdis.nasa.gov/) \u2014 cached."
+    },
+    {
+      "name": "P0035 Tatakua LSTM v1 weights (.pt)",
+      "claimed_path": "models/lstm_tatakua/best.pt",
+      "claimed_size_mb": null,
+      "purpose": "Trained LSTM for P0035 (RMSE = 14.7 \u00b5g/m\u00b3 measured)",
+      "paper_ids": [
+        "P0035"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/models/lstm_tatakua/best.pt",
+      "actual_size_mb": 0.77,
+      "sha256_prefix": "2d5f30d2b369",
+      "notes": ""
+    },
+    {
+      "name": "P0035 Tatakua LSTM v2 weights (.pt)",
+      "claimed_path": "models/lstm_tatakua_v2/best.pt",
+      "claimed_size_mb": null,
+      "purpose": "Trained LSTM v2 multi-station (per feat/p0035+lstm_v2)",
+      "paper_ids": [
+        "P0035"
+      ],
+      "expected_layers": null,
+      "off_repo_canonical": null,
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/models/lstm_tatakua_v2/best.pt",
+      "actual_size_mb": 0.24,
+      "sha256_prefix": "95dec46bde1d",
+      "notes": ""
+    }
+  ],
+  "any_missing_or_partial": false
+}

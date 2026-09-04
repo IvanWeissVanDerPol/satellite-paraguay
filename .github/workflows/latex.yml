@@ -76,3 +76,4 @@ jobs:
         with:
           name: paper-${{ matrix.paper }}
           path: papers/drafts/${{ matrix.paper }}/paper.pdf
+          if-no-files-found: error  # Scenario 2 mitigation
