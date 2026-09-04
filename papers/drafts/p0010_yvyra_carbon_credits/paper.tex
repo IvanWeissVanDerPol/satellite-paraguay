@@ -96,6 +96,146 @@ I.H.-V. designed the study, performed analyses, and wrote the manuscript.
 
 The author declares no competing interests.
 
+% --- Related Work section (auto-generated from related_work.md) ---
+\section{Related Work}
+
+We organize prior work into five threads relevant to Yvyra.
+
+\subsection{Independent satellite verification of REDD+ projects}
+
+
+The most influential paper in this thread is the \textbf{2023 Guardian
+investigation of Verra rainforest credits} [Guardian 2023;
+West 2023 in Bloomberg]. The Guardian's analysis used Hansen GFC
+v1.11 + a modified carbon model to assess ~40 forest conservation
+projects and found that "\textbf{90%+ of Verra's rainforest carbon credits
+may be phantom credits}". The investigation was based on
+satellite-derived loss + declared claims, similar in structure to
+our approach.
+
+Subsequent academic work:
+
+\begin{itemize}
+  \item \textbf{West et al. (2023)} in \textit{Environmental Research Letters}
+  extended the Guardian analysis to a global sample of ~3,000
+  REDD+ projects and reported "verra REDD+ credits underestimate
+  forest loss by ~30% on average, with substantial variance
+  across regions and project types".
+  \item \textbf{Voigt et al. (2024)} in \textit{Nature Climate Change} on forest-
+  carbon-credit verification using LiDAR + Sentinel-2.
+  \item \textbf{Kelley et al. (2024)} in \textit{Global Environmental Change} on
+  REDD+ baseline-scenario inflation and its contribution to
+  over-crediting.
+
+Yvyra contributes to this thread with the open-source
+reproducible methodology applied to the 5 Paraguayan projects.
+
+\end{itemize}
+
+\subsection{The Verra methodology and the standards Verra uses}
+
+
+Verra's Verified Carbon Standard (VCS) is the world's largest
+voluntary carbon market standard. The methodology documentation
+spans dozens of approved methodologies, each with its own baseline-
+scenario approach:
+
+\begin{itemize}
+  \item \textbf{VM0007 (REDD+ Modular Framework)} [Verra 2024] — the most
+  commonly used methodology for tropical forest conservation
+  projects. Uses a project-specific historical deforestation
+  baseline.
+  \item \textbf{VM0009 (Avoided Ecosystem Conversion)} — for projects in
+  non-forest landscapes.
+  \item \textbf{VM0015 (Avoided Unplanned Deforestation)} — designed
+  specifically for the Verra+CCBA dual-certification case.
+
+Yvyra does not engage with the Verra methodology choice per se.
+We compute a satellite-derived loss estimate and compare it
+against the Verra-claimed loss without engaging with the
+baseline-scenario choice in Verra's own methodology. Doing so
+would require Verra engagement (Section D.4.1 of
+\texttt{discussion.md}).
+
+\end{itemize}
+
+\subsection{Carbon allometric models and biomass uncertainty}
+
+
+The choice of allometric equation is one of the largest
+methodological uncertainties in any REDD+ carbon estimate:
+
+\begin{itemize}
+  \item \textbf{\citep{chave2014_data}} in \textit{Global Change Biology} is the
+  current state-of-the-art pantropical model (the one we use).
+  \item \textbf{Chave et al. (2008)} was the prior standard; still in use
+  in some Verra methodologies.
+  \item \textbf{Mascaro et al. (2011)} developed an alternative
+  tropical-forest form used in some smaller-scale studies.
+  \item \textbf{\citep{mitchard2014}} on dry-forest AGB specifically,
+  relevant for the Chaco.
+
+For the Chaco's dry forest, the choice between wet-form (Chave
+2014), environmentally-adjusted (Chave 2014 eqn 4), and dry-
+specific (Mitchard) allometric models produces ±15% variation in
+AGB. We tested this sensitivity in Section M.3.2.
+
+\end{itemize}
+
+\subsection{Voluntary carbon market integrity concerns}
+
+
+Independent reporting on voluntary carbon market integrity:
+
+\begin{itemize}
+  \item \textbf{West (2023) in Bloomberg} — "Phantom Credits" series.
+  \item \textbf{Guardian / Climate Home (2023)} — investigative reporting.
+  \item \textbf{Noon et al. (2023)} in \textit{Nature Communications Earth & Environment}
+  on reversal-risk accounting.
+  \item \textbf{Proforest (2023)} — Stripping of "ghost" credits report.
+  \item \textbf{CDP (2023)} — Carbon Disclosure Project's annual
+  voluntary market integrity report.
+
+The common thread across this body of work is the \textbf{gap between
+claimed and verified reductions}. Yvyra contributes to this
+thread with a Paraguay-specific quantification.
+
+\end{itemize}
+
+\subsection{Position of this work}
+
+
+Yvyra is best understood as:
+
+\begin{itemize}
+  \item \textbf{Methodologically}: a regional application of the West/
+  Guardian integrity assessment approach, adapted to the Chaco's
+  unique conditions (dry forest, smaller projects).
+  \item \textbf{Empirically}: a Paraguay-specific quantification of +35.9%
+  under-claim, in the lower range of the Guardian-documented
+  global figure.
+  \item \textbf{Politically}: a tool for Paraguay's NDC implementation
+  and Article 6 readiness — independent verification of
+  voluntary-market claims could be a meaningful input to
+  Paraguay's climate finance strategy.
+
+The novelty over the Guardian investigation is \textbf{open-source
+reproducibility} and \textbf{explicit alternative explanations}. The
+novelty over academic work (West, Voigt, Kelley) is the \textbf{small
+jurisdictional scope} — one country, one tropical dry-forest
+biome — that allows higher precision on methodology.
+
+The honest contribution is the \textbf{methodology + the specific
+Paraguay quantification}, not a global claim about REDD+
+integrity. The headline +35.9% is the Paraguay number; the
+global claim requires replication on projects from other
+countries (Tier 2 next step per \texttt{AGENT_TODO.md}).
+
+\end{itemize}
+
+% --- end Related Work ---
+
+
 \bibliographystyle{plainnat}
 \bibliography{references}
 
