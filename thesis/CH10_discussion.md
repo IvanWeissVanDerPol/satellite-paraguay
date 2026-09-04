@@ -45,7 +45,7 @@ If indigenous territories are deforested at 3.3× the national rate, then **carb
 
 ## 10.2 Foundation Models for Data-Scarce Regions
 
-The thesis shows that **Prithvi-Lite, fine-tuned on Paraguayan data, achieves F1>0.85**, compared to F1=0.017 for from-scratch U-Net. This is a 50× improvement, demonstrating the value of foundation models for data-scarce regions.
+The thesis tests the foundation-model paradigm against a measured baseline. From the CPU pilot (15 synthetic tiles, 5 epochs; see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`): the from-scratch U-Net achieved F1 = 0.559 (precision 0.099, recall 0.987 — over-predicting deforestation), and the intended Prithvi backbone fell back to a mock that reached F1 = 0.497 due to a transformers/numpy compatibility issue. The 50× improvement that the literature would predict (Prithvi F1 ≈ 0.85 vs. from-scratch F1 ≈ 0.017 on dry-forest pilots) **is the open question this thesis flags but does not yet answer**: the measured gap is essentially zero (0.062), dominated by the Prithvi-mock fallback rather than by the intended foundation model. A GPU re-run of the same pipeline on real Paraguayan Sentinel-2 + Hansen labels is the explicit follow-up experiment (Section 11.4.1) that would close this gap.
 
 ### 10.2.1 Implications for Global ML Research
 

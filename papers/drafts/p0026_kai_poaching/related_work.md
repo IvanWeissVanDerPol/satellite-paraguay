@@ -134,3 +134,17 @@ system is operationally ready.
 This pattern — measured gap, not aspirational deployment — is
 the contribution that distinguishes this thesis substrate from
 the standard wildlife-CV publication pattern.
+
+## R.6 Citation verification status
+
+The citation set underlying Kai's related-work section has been
+verified in round-3 (2026-09-04) using OpenAlex + CrossRef
+title-first search with best-of-3 scoring. Of the 226 candidate
+citations from the round-2 reconstruction, 213 are now VERIFIED
+(94%) and 13 remain LIKELY (require manual DOI lookup). The
+full per-citation evidence is in
+`research/04-VERIFICATION/verification_report_v4.md`. The
+substantive findings (synthetic-to-real gap = 0.32 absolute,
+mAP real = 0.18, MegaDetector baseline mAP = 0.42) are
+robust to the round-3 verification pass — none of the related-
+work citations were demoted to LIKELY or NOT_FOUND.
