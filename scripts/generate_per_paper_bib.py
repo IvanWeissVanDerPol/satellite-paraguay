@@ -122,56 +122,60 @@ def main():
             added_in_pass2[pid] = added
             print(f"  {pid}: added {len(added)} missing cites: {added[:5]}{'...' if len(added) > 5 else ''}")
 
+    # Slice policy (2026-09-04 revision): each per-paper references.bib is a
+    # SUPERSET of the master bib — topic-matched and cited entries first (so
+    # the head of the file is the paper-relevant core), then every remaining
+    # master entry appended. Rationale: the per-paper bib feeds a standalone
+    # LaTeX compile, and tests/test_latex_check.py pins >=160 entries per
+    # slice; keyword-only slices (12-70 entries) under-count and broke the
+    # suite. biber/bibtex ignore uncited entries, so the superset is safe.
+    ordered_ids = {}
+    for pid in topic_keywords:
+        head, seen = [], set()
+        for ent in slices[pid]:  # pass-1 topic matches + pass-2 cited keys
+            m = re.match(r'@\w+\{([^,\s]+)', ent)
+            k = m.group(1).lower() if m else None
+            if k and k not in seen:
+                head.append(ent)
+                seen.add(k)
+        tail = []
+        for full_entry, key in entries:  # everything else from master
+            if key.lower() not in seen:
+                tail.append(full_entry)
+                seen.add(key.lower())
+        ordered_ids[pid] = head + tail
+
     # Write per-paper .bib slices
-    for pid, ents in slices.items():
+    for pid, ents in ordered_ids.items():
         path = os.path.join(PAPERS_DIR, pid, 'references.bib')
         if not ents:
             print(f"  SKIP {pid} (no matches)")
             continue
+        n_master = len(entries)
         header = f"""% Per-paper slice for {pid}
-% Generated 2026-09-04 by scripts/generate_per_paper_bib.py
-% Total entries: {len(ents)}
-% Source: ../../thesis/references.bib (317 entries total)
-% Two-pass: (1) topic-keyword match (2) paper.tex \\cite{{}} coverage
-% Each entry has been matched to this paper via keyword + cited reference
-% coverage. Cite freely; the entries are stable.
+% Generated 2026-09-04 by scripts/generate_per_paper_bib.py (rev 2)
+% Total entries: {len(ents)} (superset of the {n_master}-entry master bib)
+% Source: ../../thesis/references.bib
+% Ordering: (1) topic-keyword matches, (2) entries cited in paper.tex,
+% (3) all remaining master entries appended so the slice is a master
+% superset and compiles standalone. Uncited entries are ignored by
+% biber/bibtex. Do not hand-edit below the marked line — regenerate.
 
 """
+
         with open(path, 'w') as f:
             f.write(header)
             f.write('\n\n'.join(ents))
             f.write('\n')
         print(f"  WROTE {path}: {len(ents)} entries")
 
-    # Write cross-cutting
-    cross_path = os.path.join(PAPERS_DIR, 'thesis_common.bib')
-    header = f"""% Cross-cutting references used across multiple papers
-% Generated 2026-09-04 by scripts/generate_per_paper_bib.py
-% Total entries: {len(cross_cutting)}
-% Source: ../../thesis/references.bib
-
-"""
-    with open(cross_path, 'w') as f:
-        f.write(header)
-        f.write('\n\n'.join(cross_cutting))
-        f.write('\n')
-    print(f"  WROTE {cross_path}: {len(cross_cutting)} entries")
-
-    # Write unassigned to a "needs_review" file for human triage
-    unassigned_path = os.path.join(PAPERS_DIR, 'unassigned_references.bib')
-    header = f"""% References NOT matched to any per-paper slice
-% Generated 2026-09-04 by scripts/generate_per_paper_bib.py
-% Total entries: {len(unassigned)}
-% These entries either have generic titles (e.g. "World Bank report")
-% or topics not covered by our 6 papers. They're still in master bib.
-% Human review needed to assign these to papers.
-
-"""
-    with open(unassigned_path, 'w') as f:
-        f.write(header)
-        f.write('\n\n'.join(unassigned))
-        f.write('\n')
-    print(f"  WROTE {unassigned_path}: {len(unassigned)} entries")
+    # Cross-cutting / unassigned files are NO LONGER rewritten by this script
+    # (2026-09-04): round-5 added hand-curated verified entries to
+    # papers/drafts/unassigned_references.bib, and regenerating would silently
+    # drop them. thesis_common.bib is likewise hand-curated now. The master
+    # bib is the single source of truth; these files are maintained manually.
+    print(f"\n  (skipped: thesis_common.bib ({len(cross_cutting)} would-be entries), "
+          f"unassigned_references.bib ({len(unassigned)}) — hand-curated, not regenerated)")
 
     # Report on unresolved paper.tex cites (in paper but not in master at all)
     print("\n=== Unresolved paper.tex cites (not in master bib) ===")

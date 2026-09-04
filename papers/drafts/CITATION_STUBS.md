@@ -17,22 +17,22 @@ to entries in master references.bib. They need either:
 
 | Key | Status | Notes |
 |---|---|---|
-| `alphaearth2025` | STUB | "Physically Interpretable AlphaEarth" Rahman 2026 SSRN — different from alphaearth2025 used in CH3 |
-| `baumann2022south_american` | STUB | round-5 search yielded only Macchi et al. 2019 (wrong year + topic). DROP or rewrite |
-| `cristaldo2024paraguay` | STUB | No CrossRef match for any 2024 Cristaldo paper on Paraguay satellite. Delete or rewrite |
-| `huang2021paraguay` | STUB | No CrossRef match for Huang 2021 Paraguay. Delete or rewrite |
+| `alphaearth2025` | DELETED | "Physically Interpretable AlphaEarth" Rahman 2026 SSRN — different from alphaearth2025 used in CH3 |
+| `baumann2022south_american` | DELETED | round-5 search yielded only Macchi et al. 2019 (wrong year + topic). DROP or rewrite |
+| `cristaldo2024paraguay` | DELETED | No CrossRef match for any 2024 Cristaldo paper on Paraguay satellite. Delete or rewrite |
+| `huang2021paraguay` | DELETED | No CrossRef match for Huang 2021 Paraguay. Delete or rewrite |
 
 ## p0012_yvy_indigenous
 
 | Key | Status | Notes |
 |---|---|---|
-| `rikap2021indigenous` | STUB | No Rikap author found. Delete |
+| `rikap2021indigenous` | DELETED | No Rikap author found. Delete |
 
 ## p0035_tatakua_air_quality
 
 | Key | Status | Notes |
 |---|---|---|
-| `zheng2015fine_grained` | STUB | Zheng 2015 in CrossRef = mesh generation, not air quality. Delete or rewrite |
+| `zheng2015fine_grained` | DELETED | Zheng 2015 in CrossRef = mesh generation, not air quality. Delete or rewrite |
 
 ---
 

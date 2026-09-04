@@ -63,10 +63,9 @@ The Gran Chaco is the largest dry forest in South America and the second
 largest forest biome in the Americas after the Amazon
 \citep{bucher2019}. The Paraguayan Chaco---occupying roughly 60\%
 of Paraguay's territory---has experienced one of the highest deforestation
-rates globally over the past two decades \citep{vallejos2020,
-baumann2022south_american}. Between 2000 and 2023, Paraguay lost approximately
+rates globally over the past two decades \citep{vallejos2020}. Between 2000 and 2023, Paraguay lost approximately
 5.2 million hectares of forest cover, driven primarily by agricultural
-expansion \citep{hansen2013, huang2021paraguay}.
+expansion \citep{hansen2013}.
 
 Operational monitoring of Chaco deforestation remains challenging for three
 reasons. First, the area is vast ($\sim$250{,}000 km$^2$) and
@@ -77,8 +76,7 @@ existing deforestation products (\textit{e.g.}, Hansen GFC, Global Forest
 Watch) provide annual retrospective summaries, not operational alerts.
 
 Recent advances in self-supervised learning have produced foundation models
-for satellite imagery \citep{jakubik2023, cong2022,
-alphaearth2025} that capture rich spectral, temporal, and spatial priors.
+for satellite imagery \citep{jakubik2023, cong2022} that capture rich spectral, temporal, and spatial priors.
 Prithvi \citep{jakubik2023}---a Vision Transformer pretrained on
 HLS data by IBM and NASA---has demonstrated state-of-the-art performance
 on land cover classification, flood mapping, and crop type identification.
@@ -315,7 +313,7 @@ Agriculture-Forest) as positive (forest) and all others as negative
 held-out validation only.
 
 \textbf{Paraguay Admin Boundaries:} 18 departamentos and 268 distritos
-\citep{cristaldo2024paraguay}.
+(from the official IGN geodata package used in our pipeline).
 
 \subsection{Model Architecture}
 Yvutu is built on Prithvi-300M \citep{jakubik2023} with a 10-class
