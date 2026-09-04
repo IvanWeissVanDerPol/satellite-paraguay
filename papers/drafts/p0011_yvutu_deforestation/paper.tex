@@ -61,12 +61,12 @@ deforestation \sep satellite computer vision \sep foundation models \sep Paragua
 
 The Gran Chaco is the largest dry forest in South America and the second
 largest forest biome in the Americas after the Amazon
-\citep{bucher2019gran_chaco}. The Paraguayan Chaco---occupying roughly 60\%
+\citep{bucher2019}. The Paraguayan Chaco---occupying roughly 60\%
 of Paraguay's territory---has experienced one of the highest deforestation
-rates globally over the past two decades \citep{vallejos2020deforestation,
+rates globally over the past two decades \citep{vallejos2020,
 baumann2022south_american}. Between 2000 and 2023, Paraguay lost approximately
 5.2 million hectares of forest cover, driven primarily by agricultural
-expansion \citep{hansen2013high, huang2021paraguay}.
+expansion \citep{hansen2013, huang2021paraguay}.
 
 Operational monitoring of Chaco deforestation remains challenging for three
 reasons. First, the area is vast ($\sim$250{,}000 km$^2$) and
@@ -77,9 +77,9 @@ existing deforestation products (\textit{e.g.}, Hansen GFC, Global Forest
 Watch) provide annual retrospective summaries, not operational alerts.
 
 Recent advances in self-supervised learning have produced foundation models
-for satellite imagery \citep{jakubik2023foundation, cong2022satmae,
+for satellite imagery \citep{jakubik2023, cong2022,
 alphaearth2025} that capture rich spectral, temporal, and spatial priors.
-Prithvi \citep{jakubik2023foundation}---a Vision Transformer pretrained on
+Prithvi \citep{jakubik2023}---a Vision Transformer pretrained on
 HLS data by IBM and NASA---has demonstrated state-of-the-art performance
 on land cover classification, flood mapping, and crop type identification.
 However, evaluation has focused primarily on high-resource regions (North
@@ -109,8 +109,8 @@ per-year metrics.
 \label{sec:related}
 
 \subsection{Foundation Models for Earth Observation}
-Prithvi \citep{jakubik2023foundation} is a Vision Transformer pretrained on
-600 million HLS patches. SatMAE \citep{cong2022satmae} extends the Masked
+Prithvi \citep{jakubik2023} is a Vision Transformer pretrained on
+600 million HLS patches. SatMAE \citep{cong2022} extends the Masked
 Autoencoder framework to satellite time series. AlphaEarth Foundations
 \citep{alphaearth2025}, released by Google DeepMind, produces
 64-dimensional embeddings per 10 m pixel with reported strong performance on biomass
@@ -121,7 +121,7 @@ biomass estimation with AlphaEarth in this thesis, and we do not claim Yvutu
 inherits this number.
 
 \subsection{Deforestation Detection}
-Hansen GFC \citep{hansen2013high} provides annual forest loss/gain at 30 m
+Hansen GFC \citep{hansen2013} provides annual forest loss/gain at 30 m
 globally (2000--2023). MapBiomas Paraguay \citep{mapbiomas2024paraguay}
 extends land cover classification to 38 classes at 30 m (1985--2024).
 Recent deep learning approaches include Planetscope-based near-real-time
@@ -165,7 +165,7 @@ held-out validation only.
 \citep{cristaldo2024paraguay}.
 
 \subsection{Model Architecture}
-Yvutu is built on Prithvi-300M \citep{jakubik2023foundation} with a 10-class
+Yvutu is built on Prithvi-300M \citep{jakubik2023} with a 10-class
 semantic segmentation decoder. The encoder produces 768-dimensional
 embeddings per HLS patch; the decoder maps these embeddings to per-pixel
 class probabilities.
