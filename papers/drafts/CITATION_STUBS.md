@@ -1,44 +1,50 @@
-# Citation Stubs (Round-4)
+# Citation Stubs — Round-5 update
 
 The following citations are referenced in paper.tex but do not resolve
 to entries in master references.bib. They need either:
-  (a) Manual DOI lookup and addition to the per-paper slice, OR
-  (b) Replacement with a verifiable citation, OR
-  (c) Removal if no longer needed
+  (a) Manual DOI lookup and addition to the per-paper references.bib
+  (b) Rewrite as prose if no DOI exists
+  (c) Delete if citation is fabricated
 
-## p0011_yvutu_deforestation (Yvutu) — 10 unresolved
+## Status legend
+- **STUB** = used in paper.tex but missing from per-paper references.bib
+- **STUB-FIX** = added in round-5 (resolved with DOI)
+- **STUB-RESERVED** = kept on stub list, awaiting manual decision
 
-| Cite key | What was tried | Recommendation |
+---
+
+## p0011_yvutu_deforestation
+
+| Key | Status | Notes |
 |---|---|---|
-| `alphaearth2025` | Found "Physically Interpretable AlphaEarth Foundation Model Embeddings" (2026, Rahman, ssrn.6234147) — exact topic but 2026 not 2025. | Cite as `alphaearth2025` referring to the AlphaEarth embedding papers; OR use `rahman2026alphaearth`. The intended citation is probably the original Google DeepMind 2025 release, which is hard to cite as a paper. |
-| `baumann2022south_american` | Found "Thresholds in forest bird communities along woody vegetation gradients" (2019, Macchi, Baumann). Wrong year + wrong topic. | Drop or replace with macchi2019bird_communities. |
-| `bullock2021satellite` | Found "Satellite Monitoring for Forest Management" (2020, World Bank). No Bullock author. | Drop — the original citation may be a generic reference to World Bank 2020. |
-| `coconier2018defensores` | Found "Siffredi, Alejandra: Memorias Chorote" (2014, Coconier review). Wrong year. | Drop or replace with Coconier's Chorote review. |
-| `cristaldo2024paraguay` | Nothing matches Cristaldo + Paraguay + satellite + 2024. | Likely a coauthor reference (J.C. Cristaldo is a paper coauthor). If it's a separate paper, drop. |
-| `huang2021paraguay` | Found "Figure 4.15. Forest area and annual deforestation rates in Paraguay" (no Huang author). | Likely an OECD report. Drop or replace with oecd2021paraguay_forest_area. |
-| `mapbiomas2024paraguay` | No MapBiomas Paraguay collection paper found. | The MapBiomas Paraguay collection is a dataset, not a paper. Replace with `mapbiomas_paraguay2024` URL or drop. |
-| `palau2020agricultural` | Found Palau (country) USLE K factor paper, not an agricultural Paraguay paper. | Drop — likely a fabricated citation. |
-| `riquelme2022land_use` | Found Riquelme + Carlos Pastore + land tenure Paraguay (2023). | Replace with `riquelme2023pastore` if the original intent was that. |
-| `xie2023cloud_gap` | Found "Mitigating cloud effects in Sentinel-2" (2026, Teo, Lin). Wrong year. | Drop or replace with Teo+Lin 2026 paper. |
+| `alphaearth2025` | STUB | "Physically Interpretable AlphaEarth" Rahman 2026 SSRN — different from alphaearth2025 used in CH3 |
+| `baumann2022south_american` | STUB | round-5 search yielded only Macchi et al. 2019 (wrong year + topic). DROP or rewrite |
+| `cristaldo2024paraguay` | STUB | No CrossRef match for any 2024 Cristaldo paper on Paraguay satellite. Delete or rewrite |
+| `huang2021paraguay` | STUB | No CrossRef match for Huang 2021 Paraguay. Delete or rewrite |
 
-## p0012_yvy_indigenous (Yvy) — 1 unresolved
+## p0012_yvy_indigenous
 
-| Cite key | What was tried | Recommendation |
+| Key | Status | Notes |
 |---|---|---|
-| `rikap2021indigenous` | Found "The Elusive Promise of Indigenous Land Rights in Paraguay" (2025, Correia, Villagra-Carron, Glauser). Wrong year. | Replace with `correia2025indigenous_land_paraguay`. |
+| `rikap2021indigenous` | STUB | No Rikap author found. Delete |
 
-## p0035_tatakua_air_quality (Tatakua) — 1 unresolved
+## p0035_tatakua_air_quality
 
-| Cite key | What was tried | Recommendation |
+| Key | Status | Notes |
 |---|---|---|
-| `zheng2015fine_grained` | Found "Fine-grained parallel algorithm for unstructured surface mesh generation" (2015, Zhao, Chen, Zheng). Wrong topic. | The intended Zheng 2015 is likely "Estimating Ground-Level PM2.5 Concentrations Using..." in Remote Sensing of Environment. Replace with that. |
+| `zheng2015fine_grained` | STUB | Zheng 2015 in CrossRef = mesh generation, not air quality. Delete or rewrite |
 
-## Summary
+---
 
-**12 unresolved citations** across 3 papers. Of these:
-- 5 have plausible replacement candidates (alphaearth, macchi, correia, teo+lin, Zheng 2015 PM2.5)
-- 5 are likely fabricated (baumann, bullock, coconier, palau, riquelme, huang, mapbiomas)
-- 1 is a coauthor self-citation (cristaldo)
-- 1 is a dataset not a paper (mapbiomas)
+## Round-5 Summary
 
-Round-5 task: human review of each, then either replacement or removal.
+Added (high-confidence via CrossRef):
+- `carroll2022` (10.3389/fgene.2022.823309)
+- `dinerstein2020` (10.1126/sciadv.abb2824)
+- `russwurm2020` (10.1016/j.isprsjprs.2020.06.006)
+- `donkelaar2010` (10.1289/ehp.0901623)
+- `norouzzadeh2018` (10.1073/pnas.1719367115)
+- `kamilaris2018` (10.1016/j.compag.2018.02.016) — keyed by first author; prose cited Prenafeta (2nd author)
+
+Dropped (no match found or wrong paper):
+- masc...[truncated]
