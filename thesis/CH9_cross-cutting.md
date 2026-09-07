@@ -38,7 +38,7 @@ Across the three deforestation-related papers (Chapters 3, 4, 5), a coherent pic
 - **Magnitude:** 16,628 km² lost 2001-2023 (2,755 MtCO₂e)
 - **Spatial pattern:** Concentrated in Chaco frontier (Alto Paraguay 28.49%, Boquerón 24.05%)
 - **Temporal pattern:** Peak in 2012, partial recovery 2018-2020, resurgence 2021-2023
-- **Justice pattern:** Indigenous territories at 3.0× national rate
+- **Justice pattern:** Indigenous territories at 2.90× national rate
 - **Carbon pattern:** Verra projects under-claim carbon loss by 30-50% (preliminary)
 
 ### 9.2.2 The Yield Story
@@ -79,7 +79,7 @@ The results show that **transfer is strong when tasks share underlying features*
 
 ## 9.4 The Indigenous Territory Pattern
 
-Chapter 5 documents the 3.0× deforestation disparity in indigenous territories. Cross-cutting analysis reveals that this disparity is **not uniform**:
+Chapter 5 documents the 2.90× deforestation disparity in indigenous territories. Cross-cutting analysis reveals that this disparity is **not uniform**:
 
 | Territory | People | Loss % | Region |
 |---|---|---|---|
@@ -139,7 +139,7 @@ The thesis has three implications for Paraguay's climate policy:
 
 **Implication 2: Carbon markets.** Paraguay's potential eligibility for Article 6 markets depends on robust MRV (Measurement, Reporting, and Verification). Our analysis suggests that independent verification (e.g., using Hansen) may reveal discrepancies with Verra claims.
 
-**Implication 3: Indigenous rights.** Paraguay's climate strategy must integrate FPIC for indigenous communities. The 3.0× deforestation disparity suggests that without FPIC-based monitoring, indigenous territories will continue to face disproportionate deforestation.
+**Implication 3: Indigenous rights.** Paraguay's climate strategy must integrate FPIC for indigenous communities. The 2.90× deforestation disparity suggests that without FPIC-based monitoring, indigenous territories will continue to face disproportionate deforestation.
 
 ## 9.9 Implications for AI Research
 
@@ -155,7 +155,7 @@ The thesis has three implications for AI research:
 
 The thesis raises several open questions:
 
-1. **Generalization to other Chaco countries.** Will the 3.0× deforestation disparity hold in Argentina and Bolivia?
+1. **Generalization to other Chaco countries.** Will the 2.90× deforestation disparity hold in Argentina and Bolivia?
 2. **Long-term impact of FPIC.** Will FPIC-based monitoring reduce deforestation in indigenous territories?
 3. **Carbon credit integrity at scale.** Will the Verra discrepancy hold across 100+ projects?
 4. **Foundation model scaling laws.** Will 10× more pretraining data improve F1 from 0.85 to 0.95?
@@ -165,4 +165,4 @@ These questions are addressed in future work (Chapter 11).
 
 ## 9.11 Chapter Summary
 
-This chapter synthesized findings across the six application papers. We found coherent patterns in deforestation (3.0× indigenous disparity), yield (cross-domain transfer confirmed), wildlife (limited by data), and air quality (LSTM feasible). The thesis identifies capacity gaps and proposes a sovereign Paraguayan geospatial AI infrastructure. The following chapter discusses broader implications.
+This chapter synthesized findings across the six application papers. We found coherent patterns in deforestation (2.90× indigenous disparity), yield (cross-domain transfer confirmed), wildlife (limited by data), and air quality (LSTM feasible). The thesis identifies capacity gaps and proposes a sovereign Paraguayan geospatial AI infrastructure. The following chapter discusses broader implications.

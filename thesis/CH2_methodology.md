@@ -130,7 +130,7 @@ Yvy cross-references Hansen deforestation with indigenous territory boundaries (
 - **Per-territory area lost** (km²)
 - **Per-territory CO₂e emitted** (Mt)
 
-Yvy produces the headline finding of the thesis: indigenous territories are deforested at 3.0× the national average.
+Yvy produces the headline finding of the thesis: indigenous territories are deforested at 2.90× the national average.
 
 ### 2.2.5 Yrupe (Yield, Chapter 6)
 

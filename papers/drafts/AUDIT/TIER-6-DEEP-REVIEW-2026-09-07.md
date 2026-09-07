@@ -125,9 +125,13 @@ Tier-6 audit ran 5 parallel audits covering every dimension of thesis quality:
 | F-3 | p0026 per-species real mAP (jaguar 0.25, etc.) in paper.md but not ACTUAL_RESULTS.md | LOW | p0026 | Documentation gap; not blocking submission. |
 | F-4 | p0012 paper.tex only shows 6 of 10 territories in table | MEDIUM | p0012 | User can add the 4 missing (Angaité, Yalve Sanga, Ayoreo-Totobiegosode, Yby Yaú). |
 | F-5 | p0012 Acknowledgements "thank community members" before FPIC obtained | MEDIUM | p0012 | Should mirror the honest blank "to be added after FPIC" version in paper.md. |
-| F-6 | thesis/MAIN/thesis.tex uses wrong Tatakua values (RMSE 4.8 vs 14.7) | MEDIUM | thesis/MAIN | Audit #3 found this. Needs cross-chapter sweep. |
-| F-7 | thesis/CH1_introduction.md:19, CH10_discussion.md:13 use "3.3×" | MEDIUM | thesis chapters | Same as 3.3× → 3.0× issue from Round-7, may have new instances. |
-| F-8 | p0026 paper.tex line 154 unclosed `{` | LOW | p0026 | Audit's heuristic flagged but actual text looks fine (likely false positive). User to verify visually. |
+| ~~F-6~~ | ~~thesis/MAIN/thesis.tex wrong Tatakua values~~ | ~~MEDIUM~~ | ~~thesis/MAIN~~ | ✅ **FIXED 2026-09-07 (Tier-6 follow-up #3): replaced `RMSE 4.8/6.1, LSTM-2layer-vs-1layer` with `RMSE 14.7, Tatakua (LSTM 3-layer × 64-hidden), ARIMA baseline`. Honest-reporting note also added.** |
+| ~~F-7~~ | ~~thesis chapters use "3.3×" / "3.0×" stale~~ | ~~MEDIUM~~ | ~~CH1, CH10, etc.~~ | ✅ **FIXED 2026-09-07 (Tier-6 follow-up #3): 14 replacements across CH1/CH2/CH3/CH9/CH10/CH11 — all "3.0×" / "3.3 times" / "28.4%" replaced with "2.90×" / "24.67%" / "95% CI [1.72, 4.20]".** |
+| ~~F-8~~ | ~~p0026 paper.tex line 154 unclosed `{`~~ | ~~LOW~~ | ~~p0026~~ | ✅ **FIXED 2026-09-07 (Tier-6 follow-up #1): same `%`-in-braces class, replaced `\textbf{15% to 40% ...}` with `\textbf{15\,\%--40\,\% ...}`.** |
+| F-9 | p0010 line 138 `\textbf{90%+...}` missed in first pass | CRITICAL → ✓ | p0010 | ✅ FIXED 2026-09-07: replaced `\textbf{90%+ of Verra's ...}` with `\textbf{90\,\%+ of Verra's ...}`. |
+| F-10 | `thesis/main.tex` 9 dangling `\input{}` (Makefile runs it) | CRITICAL → ✓ | thesis/main | ✅ FIXED 2026-09-07: added Tier-6 note pointing to canonical `MAIN/thesis.tex` per `thesis/INDEX.md`; commented out 9 dangling `\input{}` lines + fixed `p0100 → p0010` typo. |
+| F-11 | p0035 paper.tex line 65 TODO claim had no replacement | HIGH → ✓ | p0035/paper.tex | ✅ FIXED 2026-09-07: softened ">70%" → "the majority"; did NOT auto-add citations per project rule. |
+| F-12 | `00_acknowledgments.tex` missing | HIGH → ✓ | thesis/main | ✅ FIXED 2026-09-07: `\input{}` line commented out. |
 
 ---
 
@@ -141,6 +145,8 @@ Tier-6 audit ran 5 parallel audits covering every dimension of thesis quality:
 | 43,466 km² indigenous land (P0012) | ✓ Consistent | Was 43 kha in paper.tex, now fixed |
 | 2.90× ≈ 3.0× disparity (P0012) | ✓ Consistent | Acceptable rounding |
 | 2,755 MtCO₂e vs 4.49 MtCO₂e | ✓ Not contradictory | P0011 country-scale vs P0010 5 projects |
+| Tatakua RMSE 14.7 µg/m³ | ✓ Consistent | Was 4.8 / 6.1 in 3 stale docs; fixed 2026-09-07 Tier-6 follow-up #3 |
+| 2.90× indigenous disparity | ✓ Consistent | Was 3.0× / 3.3× in 6 chapters; fixed 2026-09-07 Tier-6 follow-up #3 |
 
 ---
 

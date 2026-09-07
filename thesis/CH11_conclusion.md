@@ -16,7 +16,7 @@ Six reproducible pipelines (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) integrated i
 
 ### 11.1.2 An Empirical Finding
 
-The first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a **3.0× multiplier** compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
+The first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a **2.90× multiplier** compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
 
 ### 11.1.3 A Methodology
 
@@ -28,7 +28,7 @@ A rights-aware deployment methodology that integrates Free, Prior, and Informed 
 
 **RQ2:** 16,628 km² of forest lost 2001-2023, concentrated in the Chaco frontier (Alto Paraguay 28.49%). Peak in 2012, partial recovery 2018-2020.
 
-**RQ3:** Indigenous territories at 3.0× the national deforestation rate. FPIC-based monitoring is necessary but not sufficient.
+**RQ3:** Indigenous territories at 2.90× the national deforestation rate. FPIC-based monitoring is necessary but not sufficient.
 
 **RQ4:** Cross-domain transfer works when tasks share underlying features (vegetation) but fails when they differ fundamentally (vegetation vs. individual animals).
 
@@ -71,7 +71,7 @@ The thesis has limitations:
 
 This thesis is dedicated to the indigenous communities of the Gran Chaco whose land tenure and traditional knowledge are central to Paraguay's environmental future. The thesis demonstrates that **geospatial AI can be both technically rigorous and ethically grounded**, providing Paraguay with a sovereign, open-source alternative to imported commercial monitoring systems.
 
-The most important finding of this thesis is not technical: it is that **indigenous territories in Paraguay are deforested at 3.0× the national average**. This finding demands immediate policy attention and FPIC-based monitoring. The technical infrastructure (Prithvi, MapBiomas, Hansen) is necessary but not sufficient. What is needed is **political will** to recognize indigenous land rights, enforce environmental law, and build sovereign AI capacity.
+The most important finding of this thesis is not technical: it is that **indigenous territories in Paraguay are deforested at 2.90× the national average**. This finding demands immediate policy attention and FPIC-based monitoring. The technical infrastructure (Prithvi, MapBiomas, Hansen) is necessary but not sufficient. What is needed is **political will** to recognize indigenous land rights, enforce environmental law, and build sovereign AI capacity.
 
 I hope this thesis contributes, in some small way, to a Paraguay where indigenous rights are respected, forests are protected, and geospatial AI serves the public good.
 

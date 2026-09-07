@@ -285,13 +285,20 @@ LSTM + OpenAQ + Sentinel-5P. Two architectures compared: LSTM-1layer (baseline) 
 
 \textbf{Measured (see \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}):}
 \begin{itemize}
-\item LSTM-1layer RMSE: 4.8 µg/m$^3$ (24\% better than persistence baseline)
-\item LSTM-2layer RMSE: 6.1 µg/m$^3$ (worse than 1layer — overfitting)
-\item Peak biomass burning episode: -32\% error reduction
-\item 12 OpenAQ stations, 13-month retrospective
+\item Tatakua (LSTM 3-layer x 64-hidden) RMSE: 14.7 \micro g/m$^3$ (24\% better than persistence baseline of 19.2)
+\item Persistence RMSE: 19.2 \micro g/m$^3$
+\item ARIMA RMSE: 15.1 \micro g/m$^3$
+\item Peak biomass burning episode: -32\% error reduction vs satellite-only linear baseline
+\item 12 OpenAQ stations, retrospective period April 2025 -- March 2026
 \end{itemize}
 
-The MAE = 11.72 µg/m$^3$ figure in earlier drafts was aspirational. The measured RMSE 4.8 µg/m$^3$ is well within the operational range for air-quality forecasting.
+The MAE = 11.72 \micro g/m$^3$ headline in earlier drafts was aspirational
+and is not a measurement. The Tatakua RMSE 14.7 \micro g/m$^3$ is well above
+the 8.6 target -- a 70\% gap that is honestly acknowledged in the paper
+but that the LSTM-2layer-vs-LSTM-1layer comparison in earlier thesis
+drafts incorrectly minimised. The LSTM architecture is a single
+3-layer x 64-hidden configuration; the 2-layer comparison was an
+earlier experimental setup that was not used for the final run.
 
 \chapter{Integration}
 \label{ch:integration}
@@ -336,7 +343,7 @@ This thesis delivers 6 published-quality papers on Paraguay environmental monito
 \item 2.90$\times$ indigenous-territory deforestation disparity (95\% CI [1.72, 4.20])
 \item +35.9\% mean Verra under-claim across 5 projects
 \item 0.50$\to$0.18 synthetic-to-real mAP gap (gauge for camera-trap CV)
-\item 4.8 µg/m$^3$ RMSE air-quality LSTM (24\% over persistence)
+\item 14.7 \micro g/m$^3$ RMSE air-quality LSTM (24\% over persistence)
 \end{itemize}
 
 \section{Future Work}
