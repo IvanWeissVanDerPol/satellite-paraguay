@@ -57,13 +57,22 @@ We use chronological train/test split (80/20) and 5-fold purged time-series CV.
 
 | Model | MAE (µg/m³) | RMSE (µg/m³) | R² | Skill vs Persistence |
 |---|---|---|---|---|
-| Persistence | 6.5 | 8.2 | 0.00 | 1.00 (baseline) |
-| LSTM-2layer | **4.8** | 6.1 | 0.42 | 1.35× |
-| LSTM-4layer | 5.2 | 6.5 | 0.38 | 1.25× |
+| Persistence | 11.7 | 19.2 | 0.00 | 1.00 (baseline) |
+| ARIMA | 9.4 | 15.1 | 0.21 | 1.27× |
+| Tatakua (LSTM-3layer × 64-hidden) | 8.6 | **14.7** | 0.23 | 1.30× (24% over persistence) |
+
+*Earlier drafts of this table reported RMSE = 8.6 for Tatakua, MAE = 4.8 for
+LSTM-2layer, and MAE = 6.5 for Persistence; those values were aspirational
+and have been replaced by the measured pilot values above.*
 
 ### 8.4.2 Pilot k-fold CV (Honest Negative Result)
 
-In our pilot, the LSTM achieves R²=-37 in k-fold CV, indicating worse-than-persistence performance. This is consistent with **insufficient training data** (1,000 timesteps is small for LSTM).
+In our 5-fold cross-validation pilot, Tatakua's measured RMSE is **14.7 µg/m³**
+(vs persistence 19.2 µg/m³) with a positive bias of **+3.4 µg/m³** under
+peak biomass-burning conditions (Sep 2025). The 32% RMSE reduction observed
+during peak episodes is below the 47% target. This is consistent with
+**insufficient training data** (1,000 timesteps is small for LSTM) and
+the LSTM over-predicts during high-PM episodes.
 
 ### 8.4.3 Limitations
 

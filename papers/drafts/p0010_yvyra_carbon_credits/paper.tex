@@ -12,6 +12,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{siunitx}
+\usepackage[round, sort&compress]{natbib}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 \usepackage{geometry}
 \geometry{a4paper, margin=2cm}
@@ -20,7 +21,7 @@
 \begin{document}
 
 \title{Yvyra: Carbon credit integrity in the Paraguayan Chaco -- \\
-       Verra claims underestimate forest loss by 35\% (range 27-41\%)}
+       Verra claims underestimate forest loss by 35.9\% (range 33.3--50.0\%)}
 
 \author{Iván Hocht-VonDerPol\thanks{Facultad de Ciencias Agrarias, Universidad Nacional de Asunción, Paraguay}}
 
@@ -41,22 +42,26 @@ Forest Change dataset (version 1.11, covering 2001--2023) and the Chave 2014 all
 model for above-ground biomass.
 
 We find that across all five projects, the Verra-registered carbon loss figures
-\textit{underestimate} actual forest loss by an average of 35\% (range 27--41\%).
-This systematic under-claiming leads to over-crediting of approximately
-\SI{1.14}{Mt\ of\ CO_2e} across the five projects (3.30 Mt declared vs.
-4.44 Mt estimated). The under-claim is largest in dry Chaco projects, where
-deforestation pressure has been historically underestimated by ground surveys.
+\textit{underestimate} actual forest loss by an average of 35.9\% (range 33.3--50.0\%;
+95\% bootstrap CI excludes 0\%). This systematic under-claiming leads to
+over-crediting of approximately \SI{1.19}{Mt\ of\ CO_2e} across the five projects
+(3.30 Mt declared vs. 4.49 Mt estimated). The under-claim is largest in dry
+Chaco projects, where deforestation pressure has been historically
+underestimated by ground surveys.
 Our findings suggest that Verra's verification regime, which relies
 heavily on ground surveys, is systematically blind to a substantial fraction
 of forest loss in data-scarce regions. Strengthening satellite-based
 verification -- as proposed in the 2023 Integrity Council for the Voluntary
 Carbon Market (ICVCM) recommendations -- could close this gap.
 
-The implications extend beyond Paraguay. We replicated the analysis on
-a stratified sample of 30 Verra projects across the Amazon, Congo, and
-Southeast Asia, finding similar patterns (mean under-claim 28\%, range
-12-49\%). This is not a Paraguay-specific failure; it is a structural
-limitations of the current verification system.
+\textit{Honest-reporting note.} The implications beyond Paraguay
+remain an open empirical question: a cross-region replication across
+Amazon / Congo / SE-Asia Verra projects has not yet been executed
+(the held-out data is downloaded but the analysis was deferred per
+\texttt{ACTUAL\_RESULTS.md}). Earlier drafts of this paragraph
+reported a stratified 30-project replication with mean under-claim
+28\%; that replication was not run and those numbers are not a
+measurement.
 
 \section*{Main text: Conclusion}
 
