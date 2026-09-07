@@ -62,7 +62,7 @@ This thesis makes three contributions:
 
 **Contribution 1: A unified framework.** We develop six reproducible pipelines (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) integrated into a single open-source repository (`satellite-paraguay`). These pipelines cover deforestation, carbon credits, indigenous conflict, crop yield, wildlife poaching, and air quality.
 
-**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a 3.3× multiplier compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
+**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a 3.0× multiplier compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
 
 **Contribution 3: A methodology.** We propose a rights-aware deployment methodology that integrates Free, Prior, and Informed Consent (FPIC) for indigenous communities, IRB approval for human-subjects data, and federated states for cross-border comparison. This methodology can be replicated in other contexts.
 
@@ -76,7 +76,7 @@ The thesis is organized as follows:
 
 **Chapter 4 (Yvyra Carbon):** Integrates Verra registry data with Hansen deforestation to assess carbon credit integrity.
 
-**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 3.3× disparity.
+**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 3.0× disparity.
 
 **Chapter 6 (Yrupe Yield):** Tests H3 by transferring a deforestation-pretrained model to soybean yield prediction.
 

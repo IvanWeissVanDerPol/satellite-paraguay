@@ -121,6 +121,7 @@ SANCTIONED_PREFIXES: list[tuple[str, str]] = [
     ("scripts/check_claims.py", "self-reference"),
     ("tests/", "test fixtures use synthetic values"),
     ("CRITIC_200_ANGLES.md", "critique doc; quotes values to critique them"),
+    ("papers/drafts/AUDIT/", "audit reports document aspirational values that were replaced or fixed"),
 ]
 
 

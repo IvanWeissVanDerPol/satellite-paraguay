@@ -135,7 +135,7 @@ Estimado/a Director/a del INDI,
 
 Soy Iván Hocht-VonDerPol, investigador de la UNA. Estoy investigando el impacto de la deforestación en territorios indígenas del Chaco paraguayo usando datos satelitales (Hansen GFC).
 
-Hallazgo preliminar: Los 10 territorios indígenas del Chaco han perdido **28.4% de su cobertura forestal en promedio entre 2001-2023**, comparado con 8.5% nacional — una disparidad de 3.3×.
+Hallazgo preliminar: Los 10 territorios indígenas del Chaco han perdido **28.4% de su cobertura forestal en promedio entre 2001-2023**, comparado con 8.5% nacional — una disparidad de 3.0×.
 
 Esta investigación requiere **Consentimiento Libre, Previo e Informado (CLPI)** de las comunidades afectadas, siguiendo el Convenio ILO 169 y la Declaración de las Naciones Unidas sobre Derechos Indígenas.
 
