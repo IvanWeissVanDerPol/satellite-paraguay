@@ -21,7 +21,7 @@ jobs:
           - p0026_kai_poaching
           - p0035_tatakua_air_quality
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       # Cache apt packages to avoid 30s+ install on every run
       - name: Cache apt
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
