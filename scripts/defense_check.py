@@ -91,6 +91,39 @@ CHECKS = [
         "weight": "critical",
         "description": "All (Author, Year) inline citations must resolve to master bib",
     },
+    # ===== Tier-6 regression-protection layer =====
+    # These tests encode the lessons from the 2026-09-07 Tier-6 deep review
+    # (commits cb6363d, 27592fb, e8bd893). Each catches a class of bug that
+    # the 7 critical checks above missed.
+    {
+        "name": "Numerical consistency regression",
+        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_numerical_consistency.py", "--no-cov", "-q"],
+        "expect_zero_exit": True,
+        "weight": "critical",
+        "description": "Tier-6 fix: stale numerical values from earlier drafts must not "
+        "reappear in papers or thesis chapters",
+    },
+    {
+        "name": "Input reference resolution",
+        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_input_references.py", "--no-cov", "-q"],
+        "expect_zero_exit": True,
+        "weight": "critical",
+        "description": "Tier-6 fix: every include directive in master tex must point to an existing file",
+    },
+    {
+        "name": "LaTeX safety (compile-breakers)",
+        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_latex_safety.py", "--no-cov", "-q"],
+        "expect_zero_exit": True,
+        "weight": "critical",
+        "description": "Tier-6 fix: no unescaped percent inside command arguments, cite commands require natbib",
+    },
+    {
+        "name": "Citation completeness",
+        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_citation_completeness.py", "--no-cov", "-q"],
+        "expect_zero_exit": True,
+        "weight": "critical",
+        "description": "Tier-6 fix: every \\cite{key} in paper.tex must have a bib entry (no [?] renders)",
+    },
 ]
 
 # Full pytest suite (only run with --full). Runs ~6 minutes.
@@ -265,7 +298,7 @@ def main():
     args = parser.parse_args()
 
     if not args.json:
-        print("Running 7 critical defense checks...")
+        print("Running 11 critical defense checks (7 base + 4 Tier-6 regression tests)...")
         if args.full:
             print("Plus full pytest suite (740+ tests, ~6 min)...")
         print("(For verbose output, run with --verbose)")

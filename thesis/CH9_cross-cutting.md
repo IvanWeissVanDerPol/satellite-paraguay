@@ -88,13 +88,20 @@ Chapter 5 documents the 2.90× deforestation disparity in indigenous territories
 | Santa Teresita | Nivaclé | 46.46% | Chaco (Boquerón) |
 | Xakmaraq Kelygmaky | Nivaclé | 26.98% | Chaco (Boquerón) |
 | La Patria | Chulupi/Nivaclé | 25.90% | Chaco (Boquerón) |
-| Itakyry | Mbyá Guaraní | 2.91% | Eastern (Alto Paraná) |
+| Itakyry | Mbyá Guaraní | 19.50% | Eastern (Alto Paraná) |
 
-The pattern is striking: **Chaco indigenous territories have 5-10× higher deforestation than the Eastern Mbyá Guaraní Itakyry territory**. This suggests that:
+The pattern is striking: **Chaco indigenous territories have 2-3× higher deforestation than the Eastern Mbyá Guaraní Itakyry territory** (worst-case 49.45% vs. 19.50%, ratio 2.54×). This suggests that:
 
 1. **Geographic proximity to the Chaco frontier** is the dominant predictor of indigenous deforestation
 2. **Indigenous communities in the Eastern Region** (Mbyá Guaraní) face different pressures (urban encroachment, not agricultural frontier)
 3. **Policy interventions must be geographically targeted**
+
+> **Note (2026-09-07, Tier-6):** An earlier draft of this chapter used `2.91%` for Mbyá
+> Guaraní Itakyry and framed the disparity as "5–10×". The 2.91% figure was a
+> mis-attribution (it appeared in a 2026-07 draft before re-running the analysis with
+> real Hansen GFC v1.11 data on the correct INDI polygon). The 5–10× framing was
+> derived from the wrong 2.91% baseline and has been replaced with the measured
+> 2.54× ratio. See `papers/drafts/AUDIT/TIER-6-DEEP-REVIEW-2026-09-07.md` F-3.
 
 ## 9.5 The Carbon Credit Discrepancy
 

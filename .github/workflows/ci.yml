@@ -73,7 +73,7 @@ jobs:
     name: Verify repo state
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5ac5ba805825da76410c181273ba90b1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.10"
@@ -84,3 +84,33 @@ jobs:
           pip install pytest
       - name: Run verify script
         run: python scripts/verify.py || echo "verify had warnings"
+
+  # Defense check: 12 critical checks (7 base + 4 Tier-6 regression tests
+  # + data audit freshness). Catches: broken citations, numerical drift,
+  # dangling \input{} refs, unescaped %-in-braces, missing bib entries.
+  # Refuses merge if any critical check fails.
+  defense-check:
+    name: Defense check (Tier-6 regression layer)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5ac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          pip install -e ".[ci]"
+          pip install -e . --no-deps
+          pip install pytest
+      - name: Run 12 defense checks
+        run: |
+          python scripts/defense_check.py
+      - name: Run Tier-6 regression tests directly
+        # Run the 4 new test files explicitly so failures show file/line info
+        # (defense_check aggregates but pytest output is more verbose).
+        run: |
+          pytest tests/test_numerical_consistency.py \
+                 tests/test_input_references.py \
+                 tests/test_latex_safety.py \
+                 tests/test_citation_completeness.py \
+                 --no-cov -v --tb=short
