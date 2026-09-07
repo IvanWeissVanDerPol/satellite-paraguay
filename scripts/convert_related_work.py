@@ -25,15 +25,15 @@ import os
 import re
 import sys
 
-REPO_ROOT = '/opt/data/work/satellite-paraguay'
+REPO_ROOT = "/opt/data/work/satellite-paraguay"
 
 
 def get_paper_keys(paper_id):
     """Read all BibTeX keys from the per-paper references.bib."""
-    bib_path = os.path.join(REPO_ROOT, 'papers', 'drafts', paper_id, 'references.bib')
+    bib_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "references.bib")
     with open(bib_path) as f:
         content = f.read()
-    return set(re.findall(r'@\w+\{([^,\s]+)\s*,', content))
+    return set(re.findall(r"@\w+\{([^,\s]+)\s*,", content))
 
 
 def build_author_year_to_key(content):
@@ -42,19 +42,19 @@ def build_author_year_to_key(content):
     Surname is the first author's family name (lowercase, first 6 chars).
     """
     mapping = {}
-    for m in re.finditer(r'@\w+\{([^,\s]+)\s*,\s*\n(.*?)(?=\n@|\n%|\Z)', content, re.DOTALL):
+    for m in re.finditer(r"@\w+\{([^,\s]+)\s*,\s*\n(.*?)(?=\n@|\n%|\Z)", content, re.DOTALL):
         key = m.group(1)
         entry = m.group(2)
         # Get author field
-        author_match = re.search(r'author\s*=\s*\{([^}]+)\}', entry)
+        author_match = re.search(r"author\s*=\s*\{([^}]+)\}", entry)
         if not author_match:
             continue
         author_text = author_match.group(1)
         # First surname
-        first_author = author_text.split(',')[0].strip()
-        surname = first_author.lower().replace('{', '').replace('}', '')[:6]
+        first_author = author_text.split(",")[0].strip()
+        surname = first_author.lower().replace("{", "").replace("}", "")[:6]
         # Get year
-        year_match = re.search(r'year\s*=\s*\{?(\d{4})', entry)
+        year_match = re.search(r"year\s*=\s*\{?(\d{4})", entry)
         if not year_match:
             continue
         year = year_match.group(1)
@@ -65,11 +65,11 @@ def build_author_year_to_key(content):
 def convert_prose_to_latex(text, key_map):
     """Convert markdown prose to LaTeX, substituting \\citep{} where applicable."""
     # Bold: **text** → \textbf{text}
-    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text, flags=re.DOTALL)
+    text = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", text, flags=re.DOTALL)
     # Italics: *text* → \textit{text}
-    text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'\\textit{\1}', text, flags=re.DOTALL)
+    text = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"\\textit{\1}", text, flags=re.DOTALL)
     # Code: `text` → \texttt{text}
-    text = re.sub(r'`([^`]+)`', r'\\texttt{\1}', text)
+    text = re.sub(r"`([^`]+)`", r"\\texttt{\1}", text)
 
     # (Author, year) → \citep{key} when key exists
     def replace_cite(match):
@@ -77,17 +77,28 @@ def convert_prose_to_latex(text, key_map):
         year = match.group(2)
         # First surname = first word (it's the lead author; "et al." comes after)
         surname = author.split()[0]
-        surname_clean = surname.lower().replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('ñ','n').replace('ß','ss')[:6]
+        surname_clean = (
+            surname.lower()
+            .replace("á", "a")
+            .replace("é", "e")
+            .replace("í", "i")
+            .replace("ó", "o")
+            .replace("ú", "u")
+            .replace("ñ", "n")
+            .replace("ß", "ss")[:6]
+        )
         key = key_map.get((surname_clean, year))
         if key:
-            return f'\\citep{{{key}}}'
+            return f"\\citep{{{key}}}"
         return match.group(0)  # leave as-is
 
     # Author and Author (year), Author et al. (year), Author (year)
     # Use DOTALL to allow line breaks within "et al." (e.g. "Hansen et\nal. (2013)")
     text = re.sub(
-        r'([A-Z][\w\-\']+(?:\s+et\s+al\.)?(?:\s+and\s+[A-Z][\w\-\']+)?)\s*\((\d{4}[a-z]?)\)',
-        replace_cite, text, flags=re.DOTALL
+        r"([A-Z][\w\-\']+(?:\s+et\s+al\.)?(?:\s+and\s+[A-Z][\w\-\']+)?)\s*\((\d{4}[a-z]?)\)",
+        replace_cite,
+        text,
+        flags=re.DOTALL,
     )
 
     return text
@@ -106,43 +117,43 @@ def md_section_to_latex(section_lines):
     def close_itemize():
         nonlocal in_itemize
         if in_itemize:
-            out.append('\\end{itemize}')
-            out.append('')
+            out.append("\\end{itemize}")
+            out.append("")
             in_itemize = False
 
     for line in section_lines:
-        if line.startswith('### '):
+        if line.startswith("### "):
             close_itemize()
             title = line[4:].strip()
-            out.append(f'\\subsubsection{{{title}}}')
-            out.append('')
-        elif line.startswith('## '):
+            out.append(f"\\subsubsection{{{title}}}")
+            out.append("")
+        elif line.startswith("## "):
             close_itemize()
             title = line[3:].strip()
             # Strip R.X prefix
-            title = re.sub(r'^R\.\d+\s+', '', title)
-            out.append(f'\\subsection{{{title}}}')
-            out.append('')
-        elif line.startswith('# '):
+            title = re.sub(r"^R\.\d+\s+", "", title)
+            out.append(f"\\subsection{{{title}}}")
+            out.append("")
+        elif line.startswith("# "):
             # Skip — caller wraps with \section{}
             continue
-        elif line.startswith('- ') or line.startswith('* '):
+        elif line.startswith("- ") or line.startswith("* "):
             if not in_itemize:
-                out.append('\\begin{itemize}')
+                out.append("\\begin{itemize}")
                 in_itemize = True
-            out.append('  \\item ' + line[2:].rstrip())
-        elif line.strip() == '':
+            out.append("  \\item " + line[2:].rstrip())
+        elif line.strip() == "":
             if in_itemize:
-                out.append('')
+                out.append("")
             else:
-                out.append('')
+                out.append("")
         else:
             # Regular text line: if inside itemize, this is item body;
             # if not, this is a paragraph. Either way, just emit it.
             out.append(line.rstrip())
 
     close_itemize()
-    return '\n'.join(out)
+    return "\n".join(out)
 
 
 def insert_related_work_section(paper_tex_path, latex_section):
@@ -161,45 +172,44 @@ def insert_related_work_section(paper_tex_path, latex_section):
     #    Use a function-style replacement so the LaTeX string is inserted as-is
     #    (re.sub treats backslashes specially in string replacement mode).
     pattern_replace = re.compile(
-        r'\\section\{Related Work\}.*?(?=\\section\{|\\bibliography|\\end\{document\})',
-        re.DOTALL
+        r"\\section\{Related Work\}.*?(?=\\section\{|\\bibliography|\\end\{document\})", re.DOTALL
     )
     match = pattern_replace.search(content)
     if match:
-        new_content = content[:match.start()] + latex_section + content[match.end():]
-        with open(paper_tex_path, 'w') as f:
+        new_content = content[: match.start()] + latex_section + content[match.end() :]
+        with open(paper_tex_path, "w") as f:
             f.write(new_content)
-        return 'REPLACED existing Related Work block'
+        return "REPLACED existing Related Work block"
 
     # 2. Insert before \section{Methodology/Methods/Data}
     patterns = [
-        r'\\section\{Methodology\}',
-        r'\\section\{Methods?\}',
-        r'\\section\{Data\}',
-        r'\\section\{Materials\s+and\s+Methods\}',
+        r"\\section\{Methodology\}",
+        r"\\section\{Methods?\}",
+        r"\\section\{Data\}",
+        r"\\section\{Materials\s+and\s+Methods\}",
     ]
     for pat in patterns:
         m = re.search(pat, content)
         if m:
             insert_pos = m.start()
-            content = content[:insert_pos] + latex_section + '\n\n' + content[insert_pos:]
-            with open(paper_tex_path, 'w') as f:
+            content = content[:insert_pos] + latex_section + "\n\n" + content[insert_pos:]
+            with open(paper_tex_path, "w") as f:
                 f.write(content)
-            return f'INSERTED before {pat}'
+            return f"INSERTED before {pat}"
 
     # 3. Insert before \bibliography{}
-    bib_match = re.search(r'\\bibliography', content)
+    bib_match = re.search(r"\\bibliography", content)
     if bib_match:
-        content = content[:bib_match.start()] + latex_section + '\n\n' + content[bib_match.start():]
-        with open(paper_tex_path, 'w') as f:
+        content = content[: bib_match.start()] + latex_section + "\n\n" + content[bib_match.start() :]
+        with open(paper_tex_path, "w") as f:
             f.write(content)
-        return 'INSERTED before bibliography'
+        return "INSERTED before bibliography"
 
     # 4. Append at end
-    content = content.rstrip() + '\n\n' + latex_section
-    with open(paper_tex_path, 'w') as f:
+    content = content.rstrip() + "\n\n" + latex_section
+    with open(paper_tex_path, "w") as f:
         f.write(content)
-    return 'APPENDED at end'
+    return "APPENDED at end"
 
 
 def main():
@@ -208,9 +218,9 @@ def main():
         sys.exit(1)
     paper_id = sys.argv[1]
 
-    md_path = os.path.join(REPO_ROOT, 'papers', 'drafts', paper_id, 'related_work.md')
-    tex_path = os.path.join(REPO_ROOT, 'papers', 'drafts', paper_id, 'paper.tex')
-    bib_path = os.path.join(REPO_ROOT, 'papers', 'drafts', paper_id, 'references.bib')
+    md_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "related_work.md")
+    tex_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "paper.tex")
+    bib_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "references.bib")
 
     with open(md_path) as f:
         md = f.read()
@@ -230,12 +240,11 @@ def main():
     converted_md = convert_prose_to_latex(md, key_map)
 
     # Track which citations got converted
-    citations_resolved = re.findall(r'\\citep\{([^}]+)\}', converted_md)
+    citations_resolved = re.findall(r"\\citep\{([^}]+)\}", converted_md)
     citations_unresolved = []
     # Find all (Author, year) that did NOT become \citep{}
     for m in re.finditer(
-        r'([A-Z][\w\-\']+(?:\s+et\s+al\.)?(?:\s+and\s+[A-Z][\w\-\']+)?)\s*\((\d{4}[a-z]?)\)',
-        converted_md
+        r"([A-Z][\w\-\']+(?:\s+et\s+al\.)?(?:\s+and\s+[A-Z][\w\-\']+)?)\s*\((\d{4}[a-z]?)\)", converted_md
     ):
         author = m.group(1).strip()
         year = m.group(2)
@@ -244,7 +253,7 @@ def main():
             citations_unresolved.append((author, year))
 
     # Convert markdown structure to LaTeX
-    latex_section = md_section_to_latex(converted_md.split('\n'))
+    latex_section = md_section_to_latex(converted_md.split("\n"))
 
     # Wrap in \section{Related Work}
     full_section = f"""% --- Related Work section (auto-generated from related_work.md) ---
@@ -269,5 +278,5 @@ def main():
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

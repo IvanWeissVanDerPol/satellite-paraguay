@@ -55,6 +55,7 @@ def parse_scorecard(status_path: Path) -> list[dict]:
         cells = [c.strip() for c in rest.split("|")]
         if len(cells) < 5:
             continue
+
         # cells: [data_real, model_trained, paper_text, ethics, overall, ...]
         # Extract first integer from each cell's leading number/100
         def parse_score(cell: str) -> int:
@@ -78,15 +79,17 @@ def parse_scorecard(status_path: Path) -> list[dict]:
             overall = parse_score(cells[4])
             if overall == -1 and len(cells) > 5:
                 overall = parse_score(cells[4])
-            papers.append({
-                "paper_id": pid,
-                "name": name,
-                "data_real": data_real,
-                "model_trained": model_trained,
-                "paper_text": paper_text_score,
-                "ethics": ethics,
-                "overall": overall,
-            })
+            papers.append(
+                {
+                    "paper_id": pid,
+                    "name": name,
+                    "data_real": data_real,
+                    "model_trained": model_trained,
+                    "paper_text": paper_text_score,
+                    "ethics": ethics,
+                    "overall": overall,
+                }
+            )
         except (IndexError, ValueError):
             continue
 
@@ -226,12 +229,17 @@ def main():
     failed = [r for r in results if r["status"] == "FAIL"]
 
     if args.json:
-        print(json.dumps({
-            "checked_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
-            "papers_total": len(papers),
-            "papers_failed": len(failed),
-            "results": results,
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "checked_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+                    "papers_total": len(papers),
+                    "papers_failed": len(failed),
+                    "results": results,
+                },
+                indent=2,
+            )
+        )
     else:
         print("=" * 70)
         print("ETHICS GATE — satellite-paraguay")

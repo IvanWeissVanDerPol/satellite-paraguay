@@ -25,13 +25,12 @@ import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.resolve()
 SCRIPT = REPO_ROOT / "infra" / "cost-cap.sh"
-TODAY = subprocess.run(
-    ["date", "-u", "+%Y-%m-%d"], capture_output=True, text=True, check=True
-).stdout.strip()
+TODAY = subprocess.run(["date", "-u", "+%Y-%m-%d"], capture_output=True, text=True, check=True).stdout.strip()
 
 
-def _run_cost_cap(csv_path: Path, mode: str = "--dry-run", daily_cap: str = "5.00",
-                  monthly_cap: str = "50.00", alert_pct: str = "80") -> subprocess.CompletedProcess:
+def _run_cost_cap(
+    csv_path: Path, mode: str = "--dry-run", daily_cap: str = "5.00", monthly_cap: str = "50.00", alert_pct: str = "80"
+) -> subprocess.CompletedProcess:
     """Run cost-cap.sh against a synthetic CSV log and capture JSON output."""
     env = {
         "PATH": "/usr/bin:/bin:/usr/local/bin",
@@ -42,7 +41,10 @@ def _run_cost_cap(csv_path: Path, mode: str = "--dry-run", daily_cap: str = "5.0
     }
     return subprocess.run(
         ["bash", str(SCRIPT), mode],
-        capture_output=True, text=True, timeout=10, env=env,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        env=env,
     )
 
 
@@ -69,10 +71,19 @@ class TestCostCapUsesCostUsdNotDurationHr:
 
     def test_over_daily_cap_is_detected(self, tmp_path):
         """$7.50 spend > $5 daily cap must report OVER_DAILY and exit 1."""
-        csv = _make_csv(tmp_path, [
-            {"paper_id": "P0001", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 2.0, "cost_usd": 7.50, "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 2.0,
+                    "cost_usd": 7.50,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv)
         assert "OVER_DAILY" in result.stdout, (
             f"cost-cap.sh failed to detect $7.50 over $5 daily cap.\n"
@@ -80,62 +91,102 @@ class TestCostCapUsesCostUsdNotDurationHr:
             f"This means Scenario 1's mitigation is UNMITIGATED."
         )
         assert result.returncode == 1, (
-            f"cost-cap.sh must exit 1 on OVER_DAILY, got {result.returncode}.\n"
-            f"Output:\n{result.stdout}"
+            f"cost-cap.sh must exit 1 on OVER_DAILY, got {result.returncode}.\n" f"Output:\n{result.stdout}"
         )
 
     def test_at_daily_cap_triggers_alert(self, tmp_path):
         """$5.00 spend == $5 daily cap must report OVER_DAILY (>= boundary)."""
-        csv = _make_csv(tmp_path, [
-            {"paper_id": "P0001", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 1.0, "cost_usd": 5.00, "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 1.0,
+                    "cost_usd": 5.00,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv)
         assert "OVER_DAILY" in result.stdout, (
-            f"At-cap spend ($5.00 == $5.00) must trigger OVER_DAILY.\n"
-            f"Output:\n{result.stdout}"
+            f"At-cap spend ($5.00 == $5.00) must trigger OVER_DAILY.\n" f"Output:\n{result.stdout}"
         )
 
     def test_eighty_percent_triggers_alert(self, tmp_path):
         """$4.00 spend (80% of $5 daily cap) must report ALERT_DAILY and exit 1."""
-        csv = _make_csv(tmp_path, [
-            {"paper_id": "P0001", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 0.8, "cost_usd": 4.00, "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 0.8,
+                    "cost_usd": 4.00,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv)
         assert "ALERT_DAILY" in result.stdout, (
-            f"80% of daily cap ($4.00 / $5.00) must trigger ALERT_DAILY.\n"
-            f"Output:\n{result.stdout}"
+            f"80% of daily cap ($4.00 / $5.00) must trigger ALERT_DAILY.\n" f"Output:\n{result.stdout}"
         )
-        assert result.returncode == 1, (
-            f"Alert threshold must exit 1, got {result.returncode}."
-        )
+        assert result.returncode == 1, f"Alert threshold must exit 1, got {result.returncode}."
 
     def test_under_cap_does_not_alert(self, tmp_path):
         """$3.00 spend (60% of $5 daily cap) must report OK and exit 0."""
-        csv = _make_csv(tmp_path, [
-            {"paper_id": "P0001", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 0.5, "cost_usd": 3.00, "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 0.5,
+                    "cost_usd": 3.00,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv)
         assert result.returncode == 0, (
-            f"Under-cap spend must exit 0, got {result.returncode}.\n"
-            f"Output:\n{result.stdout}"
+            f"Under-cap spend must exit 0, got {result.returncode}.\n" f"Output:\n{result.stdout}"
         )
-        assert "Status: OK" in result.stdout, (
-            f"Under-cap spend must show OK status.\nOutput:\n{result.stdout}"
-        )
+        assert "Status: OK" in result.stdout, f"Under-cap spend must show OK status.\nOutput:\n{result.stdout}"
 
     def test_sums_correct_column_in_report_mode(self, tmp_path):
         """--report mode must emit numeric JSON with cost_usd (not duration_hr) summed."""
-        csv = _make_csv(tmp_path, [
-            {"paper_id": "P0001", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 2.0, "cost_usd": 4.00, "status": "active"},
-            {"paper_id": "P0002", "provider": "vastai", "gpu_type": "A100",
-             "duration_hr": 0.5, "cost_usd": 2.00, "status": "active"},
-            {"paper_id": "P0003", "provider": "runpod", "gpu_type": "A100",
-             "duration_hr": 0.2, "cost_usd": 0.80, "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 2.0,
+                    "cost_usd": 4.00,
+                    "status": "active",
+                },
+                {
+                    "paper_id": "P0002",
+                    "provider": "vastai",
+                    "gpu_type": "A100",
+                    "duration_hr": 0.5,
+                    "cost_usd": 2.00,
+                    "status": "active",
+                },
+                {
+                    "paper_id": "P0003",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 0.2,
+                    "cost_usd": 0.80,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv, mode="--report")
         # Tolerate any single-line JSON variant the script emits.
         match = re.search(r"\{.*\}", result.stdout, re.DOTALL)
@@ -147,12 +198,11 @@ class TestCostCapUsesCostUsdNotDurationHr:
             f"got {report['today_spend_usd']}. "
             f"Wrong column being summed? See cost-cap.sh line ~66."
         )
-        assert abs(report["month_spend_usd"] - 6.80) < 0.01, (
-            f"month_spend_usd must be 6.80, got {report['month_spend_usd']}."
-        )
+        assert (
+            abs(report["month_spend_usd"] - 6.80) < 0.01
+        ), f"month_spend_usd must be 6.80, got {report['month_spend_usd']}."
         assert report["status"] == "OVER_DAILY", (
-            f"$6.80 > $5 daily cap must set status=OVER_DAILY, "
-            f"got status={report['status']!r}."
+            f"$6.80 > $5 daily cap must set status=OVER_DAILY, " f"got status={report['status']!r}."
         )
 
 
@@ -160,31 +210,47 @@ class TestCostCapDateFiltering:
     """Sanity: date filtering works correctly (it does; keep it pinned)."""
 
     def test_old_dates_excluded_from_today(self, tmp_path):
-        csv = _make_csv(tmp_path, [
-            {"date": "2020-01-01", "paper_id": "P0001", "provider": "runpod",
-             "gpu_type": "A100", "duration_hr": 100.0, "cost_usd": 999.00,
-             "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "date": "2020-01-01",
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 100.0,
+                    "cost_usd": 999.00,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv, mode="--report")
         match = re.search(r"\{.*\}", result.stdout, re.DOTALL)
         report = json.loads(match.group(0))
         assert report["today_spend_usd"] == 0.0, (
-            f"Old dates must not count toward today_spend_usd, got "
-            f"{report['today_spend_usd']}."
+            f"Old dates must not count toward today_spend_usd, got " f"{report['today_spend_usd']}."
         )
 
     def test_past_month_excluded_from_this_month(self, tmp_path):
-        csv = _make_csv(tmp_path, [
-            {"date": "2026-07-15", "paper_id": "P0001", "provider": "runpod",
-             "gpu_type": "A100", "duration_hr": 1.0, "cost_usd": 60.00,
-             "status": "active"},
-        ])
+        csv = _make_csv(
+            tmp_path,
+            [
+                {
+                    "date": "2026-07-15",
+                    "paper_id": "P0001",
+                    "provider": "runpod",
+                    "gpu_type": "A100",
+                    "duration_hr": 1.0,
+                    "cost_usd": 60.00,
+                    "status": "active",
+                },
+            ],
+        )
         result = _run_cost_cap(csv, mode="--report")
         match = re.search(r"\{.*\}", result.stdout, re.DOTALL)
         report = json.loads(match.group(0))
         assert report["month_spend_usd"] == 0.0, (
-            f"Past-month spend must not count toward month_spend_usd, got "
-            f"{report['month_spend_usd']}."
+            f"Past-month spend must not count toward month_spend_usd, got " f"{report['month_spend_usd']}."
         )
 
     def test_empty_log_is_ok(self, tmp_path):

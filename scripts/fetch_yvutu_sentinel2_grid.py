@@ -65,24 +65,29 @@ def download_one(tile, max_cloud, months, output_dir, retry=3):
     cmd = [
         ".venv/bin/python",
         str(REPO_ROOT / "scripts" / "download_sentinel2_real.py"),
-        "--bbox", str(lon_min), str(lat_min), str(lon_max), str(lat_max),
-        "--max-cloud", str(max_cloud),
-        "--n-scenes", "1",
-        "--output-dir", str(output_dir / tile_id),
+        "--bbox",
+        str(lon_min),
+        str(lat_min),
+        str(lon_max),
+        str(lat_max),
+        "--max-cloud",
+        str(max_cloud),
+        "--n-scenes",
+        "1",
+        "--output-dir",
+        str(output_dir / tile_id),
     ]
     if months:
         cmd.extend(["--months"] + months)
 
-    print("  [{}] Downloading bbox=[{:.2f},{:.2f},{:.2f},{:.2f}]".format(
-        tile_id, lon_min, lat_min, lon_max, lat_max))
+    print("  [{}] Downloading bbox=[{:.2f},{:.2f},{:.2f},{:.2f}]".format(tile_id, lon_min, lat_min, lon_max, lat_max))
     for attempt in range(retry):
         try:
             r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
             if r.returncode == 0:
                 return {"tile_id": tile_id, "status": "success", "attempt": attempt + 1}
             else:
-                print("    Attempt {} failed (rc={}): {}".format(
-                    attempt + 1, r.returncode, r.stderr[:100]))
+                print("    Attempt {} failed (rc={}): {}".format(attempt + 1, r.returncode, r.stderr[:100]))
         except subprocess.TimeoutExpired:
             print("    Attempt {} timed out".format(attempt + 1))
     return {"tile_id": tile_id, "status": "failed", "attempt": retry}
@@ -92,15 +97,16 @@ def main():
     parser = argparse.ArgumentParser(
         description="Fetch Sentinel-2 grid for P0011 Yvutu (default 30 tiles covering Paraguay)"
     )
-    parser.add_argument("--n-tiles", type=int, default=30,
-                        help="Number of tiles (default 30)")
-    parser.add_argument("--max-cloud", type=float, default=10,
-                        help="Max cloud cover (default 10)")
-    parser.add_argument("--months", type=str, nargs="+",
-                        default=["2024-06", "2024-07", "2024-08"],
-                        help="Months to search (default 2024 dry season)")
-    parser.add_argument("--output-dir", type=Path,
-                        default=REPO_ROOT / "data" / "sentinel2")
+    parser.add_argument("--n-tiles", type=int, default=30, help="Number of tiles (default 30)")
+    parser.add_argument("--max-cloud", type=float, default=10, help="Max cloud cover (default 10)")
+    parser.add_argument(
+        "--months",
+        type=str,
+        nargs="+",
+        default=["2024-06", "2024-07", "2024-08"],
+        help="Months to search (default 2024 dry season)",
+    )
+    parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "data" / "sentinel2")
     args = parser.parse_args()
 
     output_dir = args.output_dir
@@ -119,26 +125,26 @@ def main():
 
     results = []
     for tile in tiles:
-        result = download_one(
-            tile, args.max_cloud, args.months, output_dir
-        )
+        result = download_one(tile, args.max_cloud, args.months, output_dir)
         results.append(result)
         print("    Status: {} (attempt {})".format(result["status"], result["attempt"]))
 
     manifest = output_dir / "MANIFEST.json"
     with manifest.open("w") as f:
-        json.dump({
-            "downloaded_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
-            "n_tiles_target": len(tiles),
-            "results": results,
-            "successful": sum(1 for r in results if r["status"] == "success"),
-            "failed": sum(1 for r in results if r["status"] == "failed"),
-        }, f, indent=2)
+        json.dump(
+            {
+                "downloaded_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+                "n_tiles_target": len(tiles),
+                "results": results,
+                "successful": sum(1 for r in results if r["status"] == "success"),
+                "failed": sum(1 for r in results if r["status"] == "failed"),
+            },
+            f,
+            indent=2,
+        )
     print()
     print("Manifest: {}".format(manifest))
-    print("Successful: {}/{}".format(
-        sum(1 for r in results if r["status"] == "success"),
-        len(results)))
+    print("Successful: {}/{}".format(sum(1 for r in results if r["status"] == "success"), len(results)))
 
     if any(r["status"] == "failed" for r in results):
         sys.exit(1)

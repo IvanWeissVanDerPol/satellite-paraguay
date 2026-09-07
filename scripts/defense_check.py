@@ -29,6 +29,7 @@ Exit codes:
     1  — at least one check failed
     2  — at least one check errored (could not run)
 """
+
 import argparse
 import json
 import os
@@ -72,8 +73,7 @@ CHECKS = [
     },
     {
         "name": "Cite-pattern regression",
-        "cmd": [".venv/bin/python", "-m", "pytest",
-                "tests/test_citation_patterns.py", "--no-cov", "-q"],
+        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_citation_patterns.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "guard",
         "description": "No bare \\cite{}, every paper has \\section{Conclusion}",
@@ -98,19 +98,25 @@ CHECKS = [
 # Excludes tests that require GEE/network/rasters — these are skipped by
 # importorskip at the module level, but full mode still surfaces their
 # state. The previous 3 rasterio failures are now properly skipped.
-FULL_PYTEST_CMD = [".venv/bin/python", "-m", "pytest", "tests/",
-                   "--no-cov", "-q", "--tb=no",
-                   # Skip slow integration + property-based + perf
-                   "--ignore=tests/test_performance.py",
-                   "--ignore=tests/test_integration.py",
-                   "--ignore=tests/test_properties.py",
-                   "--ignore=tests/test_property_based.py",
-                   "--ignore=tests/test_real_download.py",
-                   "--ignore=tests/test_real_download_gee.py",
-                   "--ignore=tests/test_thesis_satellite_tick.py",
-                   "--ignore=tests/test_thesis_sync_watchdog.py",
-                   "--ignore=tests/test_reproducibility.py",
-                   ]
+FULL_PYTEST_CMD = [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/",
+    "--no-cov",
+    "-q",
+    "--tb=no",
+    # Skip slow integration + property-based + perf
+    "--ignore=tests/test_performance.py",
+    "--ignore=tests/test_integration.py",
+    "--ignore=tests/test_properties.py",
+    "--ignore=tests/test_property_based.py",
+    "--ignore=tests/test_real_download.py",
+    "--ignore=tests/test_real_download_gee.py",
+    "--ignore=tests/test_thesis_satellite_tick.py",
+    "--ignore=tests/test_thesis_sync_watchdog.py",
+    "--ignore=tests/test_reproducibility.py",
+]
 
 
 def run_check(check, verbose=False):
@@ -133,9 +139,7 @@ def run_check(check, verbose=False):
             timeout=600,
         )
         elapsed = time.time() - started
-        status = "PASS" if r.returncode == 0 else (
-            "FAIL" if check["expect_zero_exit"] else "PASS"
-        )
+        status = "PASS" if r.returncode == 0 else ("FAIL" if check["expect_zero_exit"] else "PASS")
         result = {
             "name": check["name"],
             "status": status,
@@ -192,9 +196,12 @@ def check_data_audit_freshness():
             data = json.load(f)
         ts_str = data.get("timestamp_utc", "")
         if not ts_str:
-            return {"name": "Data audit freshness", "status": "WARN",
-                    "weight": "informational",
-                    "stderr_tail": "no timestamp_utc field"}
+            return {
+                "name": "Data audit freshness",
+                "status": "WARN",
+                "weight": "informational",
+                "stderr_tail": "no timestamp_utc field",
+            }
         ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
         age_days = (datetime.now(timezone.utc) - ts).days
         status = "PASS" if age_days < 30 else "WARN"
@@ -208,9 +215,12 @@ def check_data_audit_freshness():
             "exit_code": 0,
         }
     except (json.JSONDecodeError, ValueError) as e:
-        return {"name": "Data audit freshness", "status": "ERROR",
-                "weight": "informational",
-                "stderr_tail": f"could not parse data_audit: {e}"}
+        return {
+            "name": "Data audit freshness",
+            "status": "ERROR",
+            "weight": "informational",
+            "stderr_tail": f"could not parse data_audit: {e}",
+        }
 
 
 def print_summary_table(results):
@@ -221,11 +231,10 @@ def print_summary_table(results):
     print(f"{'Status':<8} {'Time':<8} {'Weight':<14} {'Check':<40}")
     print("-" * 70)
     for r in results:
-        elapsed = f"{r['elapsed_seconds']:.1f}s" if r.get('elapsed_seconds') else "-"
-        status_icon = {
-            "PASS": "✓ PASS", "FAIL": "✗ FAIL",
-            "WARN": "⚠ WARN", "ERROR": "✗ ERROR"
-        }.get(r["status"], r["status"])
+        elapsed = f"{r['elapsed_seconds']:.1f}s" if r.get("elapsed_seconds") else "-"
+        status_icon = {"PASS": "✓ PASS", "FAIL": "✗ FAIL", "WARN": "⚠ WARN", "ERROR": "✗ ERROR"}.get(
+            r["status"], r["status"]
+        )
         print(f"{status_icon:<8} {elapsed:<8} {r.get('weight', '-'):<14} {r['name']:<40}")
     print(f"{'=' * 70}")
 
@@ -251,12 +260,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
-    parser.add_argument("--verbose", action="store_true",
-                        help="Print full output of each check")
-    parser.add_argument("--json", action="store_true",
-                        help="Emit JSON summary instead of human-readable output")
-    parser.add_argument("--full", action="store_true",
-                        help="Also run full pytest suite (~6 min, 740+ tests)")
+    parser.add_argument("--verbose", action="store_true", help="Print full output of each check")
+    parser.add_argument("--json", action="store_true", help="Emit JSON summary instead of human-readable output")
+    parser.add_argument("--full", action="store_true", help="Also run full pytest suite (~6 min, 740+ tests)")
     args = parser.parse_args()
 
     if not args.json:
@@ -268,13 +274,15 @@ def main():
     results = []
     checks_to_run = list(CHECKS)
     if args.full:
-        checks_to_run.append({
-            "name": "Full pytest suite",
-            "cmd": FULL_PYTEST_CMD,
-            "expect_zero_exit": True,
-            "weight": "guard",
-            "description": "All 740+ tests across 80 files (skips slow/integration)",
-        })
+        checks_to_run.append(
+            {
+                "name": "Full pytest suite",
+                "cmd": FULL_PYTEST_CMD,
+                "expect_zero_exit": True,
+                "weight": "guard",
+                "description": "All 740+ tests across 80 files (skips slow/integration)",
+            }
+        )
     for check in checks_to_run:
         results.append(run_check(check, verbose=args.verbose))
     # Add data audit freshness (cheap, no subprocess)
@@ -284,8 +292,7 @@ def main():
         # Pure JSON output (no banner) so scripts/CI can pipe to jq
         print(json.dumps(results, indent=2))
         any_critical_fail = any(
-            r["status"] in ("FAIL", "ERROR") and r.get("weight") in ("critical", "guard")
-            for r in results
+            r["status"] in ("FAIL", "ERROR") and r.get("weight") in ("critical", "guard") for r in results
         )
         return 1 if any_critical_fail else 0
 

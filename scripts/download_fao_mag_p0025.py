@@ -38,8 +38,8 @@ PARAGUAY_YIELD_SOURCES = [
     # FAOSTAT Paraguay crop yield (soy, maize, wheat)
     # (FAO API requires item codes; we use a curated set)
     "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=236&element=5412&year=2023",  # Soy
-    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=56&element=5412&year=2023",   # Maize
-    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=15&element=5412&year=2023",   # Wheat
+    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=56&element=5412&year=2023",  # Maize
+    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=15&element=5412&year=2023",  # Wheat
 ]
 
 
@@ -55,7 +55,10 @@ def fetch_fao_yield_data(year: int, output_dir: Path):
     # Item codes: 236=Soy, 56=Maize, 15=Wheat, 27=Sunflower
     # Element 5412 = Yield (kg/ha)
     items = [
-        ("Soy", 236), ("Maize", 56), ("Wheat", 15), ("Sunflower", 27),
+        ("Soy", 236),
+        ("Maize", 56),
+        ("Wheat", 15),
+        ("Sunflower", 27),
     ]
     crops_data = {}
 
@@ -93,22 +96,40 @@ def generate_synthetic_yield_data(years: list, output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     rng_seed = sum(years)  # deterministic
     import random
+
     random.seed(rng_seed)
 
     out_path = output_dir / f"synthetic_yield_{years[0]}_{years[-1]}.csv"
     with out_path.open("w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "year", "crop", "yield_kg_ha", "department", "source",
-        ])
+        writer.writerow(
+            [
+                "year",
+                "crop",
+                "yield_kg_ha",
+                "department",
+                "source",
+            ]
+        )
         # Paraguay dept-level yield
         departments = [
-            "Alto Parana", "Itapua", "Canindeyu", "Caaguazu", "San Pedro",
-            "Misiones", "Amambay", "Caazapa", "Concepcion", "Boqueron",
+            "Alto Parana",
+            "Itapua",
+            "Canindeyu",
+            "Caaguazu",
+            "San Pedro",
+            "Misiones",
+            "Amambay",
+            "Caazapa",
+            "Concepcion",
+            "Boqueron",
         ]
         for year in years:
             for crop, base_yield in [
-                ("Soy", 3000), ("Maize", 4500), ("Wheat", 2500), ("Sunflower", 1800),
+                ("Soy", 3000),
+                ("Maize", 4500),
+                ("Wheat", 2500),
+                ("Sunflower", 1800),
             ]:
                 for dept in departments:
                     # Climate-driven variability
@@ -121,10 +142,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="P0025 Yrupe - public FAO/MAG agricultural yield data (no INBIO partnership needed)"
     )
-    parser.add_argument("--years", type=int, nargs="+", default=[2020, 2021, 2022, 2023],
-                        help="Years to fetch (default 2020-2023)")
-    parser.add_argument("--output", type=Path,
-                        default=REPO_ROOT / "data" / "raw" / "fao_mag")
+    parser.add_argument(
+        "--years", type=int, nargs="+", default=[2020, 2021, 2022, 2023], help="Years to fetch (default 2020-2023)"
+    )
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "raw" / "fao_mag")
     args = parser.parse_args()
 
     print("=" * 70)

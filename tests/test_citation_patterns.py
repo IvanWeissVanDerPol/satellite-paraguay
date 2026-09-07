@@ -1,4 +1,4 @@
-"""tests/test_citation_patterns.py — Regression guard for Round-1/2/3/4/5/6 citation bugs.
+r"""tests/test_citation_patterns.py — Regression guard for Round-1/2/3/4/5/6 citation bugs.
 
 Catches two classes of regression:
 1. Bare `\cite{}` patterns (we use `\citep{}` or `\citet{}`)
@@ -8,6 +8,7 @@ Why: Round 1-3 had 226 citations reconstructed from prose; Round 4-6 cleaned
 up via `check_citations.py`. Without a guard, a future PR could re-introduce
 the bug.
 """
+
 import re
 from pathlib import Path
 
@@ -45,9 +46,8 @@ def test_no_bare_cite_in_paper_tex():
             line = text.split("\n")[line_no - 1].strip()
             bad.append((paper_name, line_no, line[:80]))
 
-    assert not bad, (
-        "Found bare \\cite{} patterns (must use \\citep{} or \\citet{}):\n"
-        + "\n".join(f"  {p}:{ln}: {l}" for p, ln, l in bad[:20])
+    assert not bad, "Found bare \\cite{} patterns (must use \\citep{} or \\citet{}):\n" + "\n".join(
+        f"  {p}:{ln}: {l}" for p, ln, l in bad[:20]
     )
 
 
@@ -61,10 +61,7 @@ def test_no_empty_citation_brackets():
             line_no = text.count("\n", 0, m.start()) + 1
             bad.append((paper_name, line_no))
 
-    assert not bad, (
-        "Found empty citation brackets:\n"
-        + "\n".join(f"  {p}:{ln}" for p, ln in bad[:20])
-    )
+    assert not bad, "Found empty citation brackets:\n" + "\n".join(f"  {p}:{ln}" for p, ln in bad[:20])
 
 
 def test_every_paper_has_a_conclusion():
@@ -81,10 +78,7 @@ def test_every_paper_has_a_conclusion():
         if not re.search(r"\\section\*?\{[^}]*[Cc]onclusion", text):
             missing.append(paper_name)
 
-    assert not missing, (
-        "Papers missing Conclusion section:\n"
-        + "\n".join(f"  {p}" for p in missing)
-    )
+    assert not missing, "Papers missing Conclusion section:\n" + "\n".join(f"  {p}" for p in missing)
 
 
 def test_no_double_brackets_in_citations():
@@ -98,9 +92,8 @@ def test_no_double_brackets_in_citations():
             line = text.split("\n")[line_no - 1].strip()
             bad.append((paper_name, line_no, line[:80]))
 
-    assert not bad, (
-        "Found citations with stray opening brace:\n"
-        + "\n".join(f"  {p}:{ln}: {l}" for p, ln, l in bad[:20])
+    assert not bad, "Found citations with stray opening brace:\n" + "\n".join(
+        f"  {p}:{ln}: {l}" for p, ln, l in bad[:20]
     )
 
 
@@ -118,9 +111,9 @@ def test_paper_tex_compiles_latex_balance(paper_name, tex_path):
     opens = body.count("{")
     closes = body.count("}")
     # LaTeX bracing should balance in the body
-    assert opens == closes, (
-        f"{paper_name}: brace imbalance: {opens} open vs {closes} close"
-    )
+    assert opens == closes, f"{paper_name}: brace imbalance: {opens} open vs {closes} close"
+
+
 def test_no_unresolved_inline_citations():
     """Round-7 lesson: 5 of 6 papers use (Author, Year) parenthetical
     citations extensively; check_citations.py only caught \\cite{} commands.
@@ -136,13 +129,11 @@ def test_no_unresolved_inline_citations():
     surnames here is encouraged as new ones are discovered.
     """
     import subprocess
+
     result = subprocess.run(
         [".venv/bin/python", "scripts/check_inline_citations.py"],
         cwd=Path(__file__).parent.parent,
         capture_output=True,
         text=True,
     )
-    assert result.returncode == 0, (
-        "Inline citations missing from master bib:\n"
-        + result.stdout[-2000:]
-    )
+    assert result.returncode == 0, "Inline citations missing from master bib:\n" + result.stdout[-2000:]

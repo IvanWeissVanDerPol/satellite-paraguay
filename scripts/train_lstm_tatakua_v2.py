@@ -34,35 +34,35 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # 24 PM2.5 stations across Paraguay: capital, secondary cities, Chaco
 PARAGUAY_PM25_STATIONS = [
     # Asuncion metropolitan area (5)
-    {"id": "PY-001", "name": "Asuncion Centro",         "lat": -25.2637, "lon": -57.5759, "type": "urban"},
-    {"id": "PY-002", "name": "Asuncion Catedral",       "lat": -25.2805, "lon": -57.6342, "type": "urban"},
-    {"id": "PY-003", "name": "San Lorenzo",            "lat": -25.3333, "lon": -57.5200, "type": "suburban"},
-    {"id": "PY-004", "name": "Luque",                  "lat": -25.2700, "lon": -57.4900, "type": "suburban"},
-    {"id": "PY-005", "name": "Fernando de la Mora",    "lat": -25.3190, "lon": -57.5911, "type": "urban"},
+    {"id": "PY-001", "name": "Asuncion Centro", "lat": -25.2637, "lon": -57.5759, "type": "urban"},
+    {"id": "PY-002", "name": "Asuncion Catedral", "lat": -25.2805, "lon": -57.6342, "type": "urban"},
+    {"id": "PY-003", "name": "San Lorenzo", "lat": -25.3333, "lon": -57.5200, "type": "suburban"},
+    {"id": "PY-004", "name": "Luque", "lat": -25.2700, "lon": -57.4900, "type": "suburban"},
+    {"id": "PY-005", "name": "Fernando de la Mora", "lat": -25.3190, "lon": -57.5911, "type": "urban"},
     # Secondary cities (5)
-    {"id": "PY-006", "name": "Ciudad del Este",        "lat": -25.5097, "lon": -54.6111, "type": "urban"},
-    {"id": "PY-007", "name": "Encarnacion",            "lat": -27.3306, "lon": -55.8667, "type": "urban"},
-    {"id": "PY-008", "name": "Pedro Juan Caballero",   "lat": -22.5667, "lon": -55.7333, "type": "urban"},
-    {"id": "PY-009", "name": "Coronel Oviedo",         "lat": -25.4167, "lon": -56.4500, "type": "urban"},
-    {"id": "PY-010", "name": "Villarrica",             "lat": -25.7800, "lon": -56.4500, "type": "urban"},
+    {"id": "PY-006", "name": "Ciudad del Este", "lat": -25.5097, "lon": -54.6111, "type": "urban"},
+    {"id": "PY-007", "name": "Encarnacion", "lat": -27.3306, "lon": -55.8667, "type": "urban"},
+    {"id": "PY-008", "name": "Pedro Juan Caballero", "lat": -22.5667, "lon": -55.7333, "type": "urban"},
+    {"id": "PY-009", "name": "Coronel Oviedo", "lat": -25.4167, "lon": -56.4500, "type": "urban"},
+    {"id": "PY-010", "name": "Villarrica", "lat": -25.7800, "lon": -56.4500, "type": "urban"},
     # Chaco (4) - high biomass burning
-    {"id": "PY-011", "name": "Filadelfia",             "lat": -22.3500, "lon": -60.0333, "type": "chaco"},
-    {"id": "PY-012", "name": "Loma Plata",             "lat": -22.3833, "lon": -59.8333, "type": "chaco"},
-    {"id": "PY-013", "name": "Mariscal Estigarribia",  "lat": -22.0167, "lon": -60.6333, "type": "chaco"},
-    {"id": "PY-014", "name": "Pozo Colorado",          "lat": -23.4833, "lon": -60.3500, "type": "chaco"},
+    {"id": "PY-011", "name": "Filadelfia", "lat": -22.3500, "lon": -60.0333, "type": "chaco"},
+    {"id": "PY-012", "name": "Loma Plata", "lat": -22.3833, "lon": -59.8333, "type": "chaco"},
+    {"id": "PY-013", "name": "Mariscal Estigarribia", "lat": -22.0167, "lon": -60.6333, "type": "chaco"},
+    {"id": "PY-014", "name": "Pozo Colorado", "lat": -23.4833, "lon": -60.3500, "type": "chaco"},
     # Rural agricultural (5)
-    {"id": "PY-015", "name": "Caaguazu",               "lat": -25.4631, "lon": -55.7703, "type": "rural"},
-    {"id": "PY-016", "name": "Itapua Poty",            "lat": -26.8500, "lon": -55.5000, "type": "rural"},
-    {"id": "PY-017", "name": "San Pedro",              "lat": -24.0833, "lon": -57.0833, "type": "rural"},
-    {"id": "PY-018", "name": "Caazapa",                "lat": -26.1500, "lon": -56.3833, "type": "rural"},
-    {"id": "PY-019", "name": "Concepcion",             "lat": -23.4025, "lon": -57.4417, "type": "rural"},
+    {"id": "PY-015", "name": "Caaguazu", "lat": -25.4631, "lon": -55.7703, "type": "rural"},
+    {"id": "PY-016", "name": "Itapua Poty", "lat": -26.8500, "lon": -55.5000, "type": "rural"},
+    {"id": "PY-017", "name": "San Pedro", "lat": -24.0833, "lon": -57.0833, "type": "rural"},
+    {"id": "PY-018", "name": "Caazapa", "lat": -26.1500, "lon": -56.3833, "type": "rural"},
+    {"id": "PY-019", "name": "Concepcion", "lat": -23.4025, "lon": -57.4417, "type": "rural"},
     # Industrial border (3)
     {"id": "PY-020", "name": "Ciudad del Este Industrial", "lat": -25.4800, "lon": -54.6500, "type": "industrial"},
-    {"id": "PY-021", "name": "Saltos del Guaira",      "lat": -24.0833, "lon": -54.3500, "type": "urban"},
+    {"id": "PY-021", "name": "Saltos del Guaira", "lat": -24.0833, "lon": -54.3500, "type": "urban"},
     {"id": "PY-022", "name": "Pedro Juan Caballero Norte", "lat": -22.5000, "lon": -55.7000, "type": "urban"},
     # Alta cordillera + biologic reserve (2)
-    {"id": "PY-023", "name": "Mbaracayu",              "lat": -24.0000, "lon": -55.5000, "type": "reserve"},
-    {"id": "PY-024", "name": "Ybycui",                 "lat": -26.0167, "lon": -57.0500, "type": "rural"},
+    {"id": "PY-023", "name": "Mbaracayu", "lat": -24.0000, "lon": -55.5000, "type": "reserve"},
+    {"id": "PY-024", "name": "Ybycui", "lat": -26.0167, "lon": -57.0500, "type": "rural"},
 ]
 
 
@@ -126,13 +126,15 @@ def generate_weather_features(
     """Generate synthetic weather features: temperature, humidity, wind."""
     rng = np.random.default_rng(seed + abs(int(station["lon"] * 1000)) % 10000)
     dates = pd.date_range(end=datetime.now(), periods=days, freq="D")
-    return pd.DataFrame({
-        "station_id": station["id"],
-        "date_utc": dates,
-        "temp_c": 22 + 6 * np.sin(np.arange(days) / 365 * 2 * np.pi) + rng.normal(0, 2, days),
-        "humidity_pct": 70 + 10 * np.cos(np.arange(days) / 365 * 2 * np.pi) + rng.normal(0, 5, days),
-        "wind_ms": np.maximum(0, 3 + 2 * np.sin(np.arange(days) / 30 * 2 * np.pi) + rng.normal(0, 1, days)),
-    })
+    return pd.DataFrame(
+        {
+            "station_id": station["id"],
+            "date_utc": dates,
+            "temp_c": 22 + 6 * np.sin(np.arange(days) / 365 * 2 * np.pi) + rng.normal(0, 2, days),
+            "humidity_pct": 70 + 10 * np.cos(np.arange(days) / 365 * 2 * np.pi) + rng.normal(0, 5, days),
+            "wind_ms": np.maximum(0, 3 + 2 * np.sin(np.arange(days) / 30 * 2 * np.pi) + rng.normal(0, 1, days)),
+        }
+    )
 
 
 def fetch_all_stations(days: int = 730, use_synthetic: bool = True):
@@ -174,11 +176,17 @@ def build_lstm_dataset(
 
     # Add weather (aggregate to per-day if multi-station)
     if weather is not None:
-        weather_daily = weather.groupby("date_utc").agg({
-            "temp_c": "mean",
-            "humidity_pct": "mean",
-            "wind_ms": "mean",
-        }).reindex(pivot.index)
+        weather_daily = (
+            weather.groupby("date_utc")
+            .agg(
+                {
+                    "temp_c": "mean",
+                    "humidity_pct": "mean",
+                    "wind_ms": "mean",
+                }
+            )
+            .reindex(pivot.index)
+        )
         # Fill missing weather with forward fill
         weather_daily = weather_daily.ffill().bfill()
         # Concatenate features
@@ -189,7 +197,7 @@ def build_lstm_dataset(
     pivot = pivot.ffill().bfill().fillna(0)
 
     # Multi-horizon targets: predict avg PM2.5 (across all stations) at horizon t+1, t+3, t+7
-    avg_pm25 = pivot.values[:, :len(PARAGUAY_PM25_STATIONS)].mean(axis=1)
+    avg_pm25 = pivot.values[:, : len(PARAGUAY_PM25_STATIONS)].mean(axis=1)
 
     # Normalize INPUT features per-column (zero mean, unit std)
     X_mean = pivot.mean().values
@@ -200,11 +208,13 @@ def build_lstm_dataset(
     # Compute mean/std of avg_pm25 from TRAINING slice only (avoid leak)
     n_total = len(values) - sequence_length - max(horizons) - 1
     n_train = int(n_total * train_frac)
-    train_y = np.array([
-        avg_pm25[i + sequence_length + h - 1]
-        for i in range(n_train)
-        for h in horizons
-    ]).reshape(n_train, len(horizons)) if len(horizons) > 0 else np.array([])
+    train_y = (
+        np.array([avg_pm25[i + sequence_length + h - 1] for i in range(n_train) for h in horizons]).reshape(
+            n_train, len(horizons)
+        )
+        if len(horizons) > 0
+        else np.array([])
+    )
     Y_mean = train_y.mean(axis=0)  # shape (n_horizons,)
     Y_std = train_y.std(axis=0) + 1e-8
     # Normalize avg_pm25 PER HORIZON using the appropriate Y_mean/Y_std index
@@ -217,8 +227,7 @@ def build_lstm_dataset(
         X.append(values.iloc[i : i + sequence_length].values)
         # For each horizon h, take avg_pm25_norm at offset sequence_length + h - 1
         # avg_pm25_norm is shape (T, n_horizons), so row at time t+30+h gives all horizons
-        y = [float(avg_pm25_norm[i + sequence_length + h - 1, h_idx])
-             for h_idx, h in enumerate(horizons)]
+        y = [float(avg_pm25_norm[i + sequence_length + h - 1, h_idx]) for h_idx, h in enumerate(horizons)]
         Y.append(y)
     X = np.array(X, dtype=np.float32)
     Y = np.array(Y, dtype=np.float32)
@@ -232,9 +241,12 @@ def build_lstm_dataset(
     X_test, Y_test = X[n_train + n_val :], Y[n_train + n_val :]
 
     return (
-        X_train, Y_train,
-        X_val, Y_val,
-        X_test, Y_test,
+        X_train,
+        Y_train,
+        X_val,
+        Y_val,
+        X_test,
+        Y_test,
         {
             "Y_mean": Y_mean.tolist(),
             "Y_std": Y_std.tolist(),
@@ -242,8 +254,8 @@ def build_lstm_dataset(
             "X_std": X_std.tolist(),
             "feature_names": list(pivot.columns),
             "horizons": list(horizons),
-            "raw_Y_test_mean": float(avg_pm25[n_train + n_val:].mean()),
-            "raw_Y_test_std": float(avg_pm25[n_train + n_val:].std()),
+            "raw_Y_test_mean": float(avg_pm25[n_train + n_val :].mean()),
+            "raw_Y_test_std": float(avg_pm25[n_train + n_val :].std()),
         },
     )
 
@@ -276,9 +288,19 @@ class MultiHorizonLSTM(nn.Module):
 
 
 def train_model(
-    X_train, Y_train, X_val, Y_val, X_test, Y_test, scaler_state: dict,
-    epochs: int = 50, batch_size: int = 32, lr: float = 5e-4,
-    hidden_dim: int = 128, n_layers: int = 2, device: str = "cpu",
+    X_train,
+    Y_train,
+    X_val,
+    Y_val,
+    X_test,
+    Y_test,
+    scaler_state: dict,
+    epochs: int = 50,
+    batch_size: int = 32,
+    lr: float = 5e-4,
+    hidden_dim: int = 128,
+    n_layers: int = 2,
+    device: str = "cpu",
     output_dir: Path = None,
     weight_decay: float = 1e-3,
     patience: int = 10,
@@ -293,7 +315,10 @@ def train_model(
     n_outputs = Y_train.shape[1]
 
     model = MultiHorizonLSTM(
-        n_features=n_features, hidden_dim=hidden_dim, n_layers=n_layers, n_outputs=n_outputs,
+        n_features=n_features,
+        hidden_dim=hidden_dim,
+        n_layers=n_layers,
+        n_outputs=n_outputs,
     ).to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -302,7 +327,8 @@ def train_model(
 
     train_loader = DataLoader(
         TensorDataset(torch.from_numpy(X_train), torch.from_numpy(Y_train)),
-        batch_size=batch_size, shuffle=True,
+        batch_size=batch_size,
+        shuffle=True,
     )
 
     best_val_loss = float("inf")
@@ -343,13 +369,16 @@ def train_model(
             best_val_loss = val_loss
             best_epoch = epoch + 1
             epochs_without_improvement = 0
-            torch.save({
-                "model_state_dict": model.state_dict(),
-                "epoch": epoch,
-                "best_val_loss": best_val_loss,
-                "hidden_dim": hidden_dim,
-                "n_layers": n_layers,
-            }, output_dir / "best.pt")
+            torch.save(
+                {
+                    "model_state_dict": model.state_dict(),
+                    "epoch": epoch,
+                    "best_val_loss": best_val_loss,
+                    "hidden_dim": hidden_dim,
+                    "n_layers": n_layers,
+                },
+                output_dir / "best.pt",
+            )
         else:
             epochs_without_improvement += 1
             if epochs_without_improvement >= patience:
@@ -377,12 +406,14 @@ def train_model(
         mae = float(np.mean(np.abs(y_pred - y_true)))
         rmse = float(np.sqrt(np.mean((y_pred - y_true) ** 2)))
         bias = float(np.mean(y_pred - y_true))
-        per_horizon_metrics.append({
-            "horizon_days": [1, 3, 7][h_idx],
-            "mae": round(mae, 3),
-            "rmse": round(rmse, 3),
-            "bias": round(bias, 3),
-        })
+        per_horizon_metrics.append(
+            {
+                "horizon_days": [1, 3, 7][h_idx],
+                "mae": round(mae, 3),
+                "rmse": round(rmse, 3),
+                "bias": round(bias, 3),
+            }
+        )
 
     # Persistence baseline: y_true(t+h) ~ y_true(t+0) = test_y_real[t]
     # So predict y[t+h] = y[t]
@@ -408,14 +439,21 @@ def train_model(
     results = {
         "trained_at": datetime.now().isoformat(),
         "config": {
-            "epochs": epochs, "batch_size": batch_size, "lr": lr,
-            "hidden_dim": hidden_dim, "n_layers": n_layers, "device": device,
-            "weight_decay": weight_decay, "patience": patience,
+            "epochs": epochs,
+            "batch_size": batch_size,
+            "lr": lr,
+            "hidden_dim": hidden_dim,
+            "n_layers": n_layers,
+            "device": device,
+            "weight_decay": weight_decay,
+            "patience": patience,
         },
         "data": {
             "n_stations": len(PARAGUAY_PM25_STATIONS),
             "days": 730,
-            "n_train": len(X_train), "n_val": len(X_val), "n_test": len(X_test),
+            "n_train": len(X_train),
+            "n_val": len(X_val),
+            "n_test": len(X_test),
             "y_mean": scaler["Y_mean"],
             "y_std": scaler["Y_std"],
             "raw_y_test_mean": scaler["raw_Y_test_mean"],
@@ -471,7 +509,10 @@ def main():
     # 3. Build dataset
     print("\n[3/4] Building sequences...")
     X_train, Y_train, X_val, Y_val, X_test, Y_test, scaler = build_lstm_dataset(
-        df, weather=weather, sequence_length=30, horizons=(1, 3, 7),
+        df,
+        weather=weather,
+        sequence_length=30,
+        horizons=(1, 3, 7),
     )
     print(f"  X_train: {X_train.shape}")
     print(f"  X_val:   {X_val.shape}")
@@ -482,9 +523,19 @@ def main():
     print(f"\n[4/4] Training LSTM (epochs={args.epochs}, hidden={args.hidden_dim}, layers={args.n_layers})...")
     t0 = time.time()
     results = train_model(
-        X_train, Y_train, X_val, Y_val, X_test, Y_test, scaler,
-        epochs=args.epochs, batch_size=args.batch_size, lr=args.lr,
-        hidden_dim=args.hidden_dim, n_layers=args.n_layers, device=args.device,
+        X_train,
+        Y_train,
+        X_val,
+        Y_val,
+        X_test,
+        Y_test,
+        scaler,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        lr=args.lr,
+        hidden_dim=args.hidden_dim,
+        n_layers=args.n_layers,
+        device=args.device,
         output_dir=args.output_dir,
     )
     print(f"\n  Training time: {time.time() - t0:.1f}s")
@@ -495,10 +546,13 @@ def main():
     print(f"  {'-'*70}")
     for model_m, persist_m in zip(results["per_horizon_metrics"], results["persistence_metrics"]):
         improvement = (persist_m["rmse"] - model_m["rmse"]) / persist_m["rmse"] * 100
-        print(f"  {model_m['horizon_days']}d        {model_m['rmse']:<12.2f} {model_m['mae']:<12.2f} {persist_m['rmse']:<14.2f} {improvement:+.1f}%")
+        print(
+            f"  {model_m['horizon_days']}d        {model_m['rmse']:<12.2f} {model_m['mae']:<12.2f} {persist_m['rmse']:<14.2f} {improvement:+.1f}%"
+        )
 
     print(f"\n  Results: {args.output_dir}/results.json")
     print(f"  Best model: {args.output_dir}/best.pt")
+
 
 if __name__ == "__main__":
     main()

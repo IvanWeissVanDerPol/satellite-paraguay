@@ -30,8 +30,8 @@ GITIGNORE = REPO_ROOT / ".gitignore"
 # These MUST never appear inside an upload-artifact `path:` value
 # (directly or via glob), because CI artifacts are public by default.
 SENSITIVE_PATHS = [
-    "data/labels",       # Real wildlife labels (Guyra partnership trust)
-    "data/raw/inbio",    # INBIO yield data (partner trust)
+    "data/labels",  # Real wildlife labels (Guyra partnership trust)
+    "data/raw/inbio",  # INBIO yield data (partner trust)
 ]
 
 # Patterns that must be present in .gitignore (defense-in-depth: even if a
@@ -44,6 +44,7 @@ GITIGNORE_REQUIRED_PATTERNS = [
 
 
 # ===== Helpers =====
+
 
 def _load_workflow(path: Path) -> dict:
     """Load a workflow YAML file. Skip if file is empty."""
@@ -58,7 +59,7 @@ def _iter_upload_steps(workflow: dict) -> list[dict]:
     for job in (workflow.get("jobs") or {}).values():
         if not isinstance(job, dict):
             continue
-        for step in (job.get("steps") or []):
+        for step in job.get("steps") or []:
             if not isinstance(step, dict):
                 continue
             uses = step.get("uses", "")
@@ -87,6 +88,7 @@ def _path_matches_sensitive(path_value: str) -> list[str]:
 
 # ===== Claim #1: every upload-artifact has if-no-files-found: error =====
 
+
 class TestAllUploadArtifactStepsHaveIfNoFilesFound:
     """RED test: every `actions/upload-artifact` step in any workflow MUST set
     `if-no-files-found: error`. Otherwise an accidental upload of a
@@ -105,13 +107,11 @@ class TestAllUploadArtifactStepsHaveIfNoFilesFound:
         for wf in workflows:
             _load_workflow(wf)  # raises if YAML is broken
 
-    @pytest.mark.parametrize("wf_path", [
-        p for p in (
-            list(WORKFLOWS_DIR.glob("*.yml"))
-            + list(WORKFLOWS_DIR.glob("*.yaml"))
-        )
-        if p.stat().st_size > 0
-    ], ids=lambda p: p.name)
+    @pytest.mark.parametrize(
+        "wf_path",
+        [p for p in (list(WORKFLOWS_DIR.glob("*.yml")) + list(WORKFLOWS_DIR.glob("*.yaml"))) if p.stat().st_size > 0],
+        ids=lambda p: p.name,
+    )
     def test_every_upload_step_has_if_no_files_found(self, wf_path):
         wf = _load_workflow(wf_path)
         uploads = _iter_upload_steps(wf)
@@ -134,6 +134,7 @@ class TestAllUploadArtifactStepsHaveIfNoFilesFound:
 
 # ===== Claim #2: no workflow uploads data/ =====
 
+
 class TestNoWorkflowUploadsDataPaths:
     """RED test: no `actions/upload-artifact` step may reference sensitive
     data directories under `path:`.
@@ -142,13 +143,11 @@ class TestNoWorkflowUploadsDataPaths:
         "Workflows do not upload `data/` directories"
     """
 
-    @pytest.mark.parametrize("wf_path", [
-        p for p in (
-            list(WORKFLOWS_DIR.glob("*.yml"))
-            + list(WORKFLOWS_DIR.glob("*.yaml"))
-        )
-        if p.stat().st_size > 0
-    ], ids=lambda p: p.name)
+    @pytest.mark.parametrize(
+        "wf_path",
+        [p for p in (list(WORKFLOWS_DIR.glob("*.yml")) + list(WORKFLOWS_DIR.glob("*.yaml"))) if p.stat().st_size > 0],
+        ids=lambda p: p.name,
+    )
     def test_no_upload_references_sensitive_data_path(self, wf_path):
         wf = _load_workflow(wf_path)
         uploads = _iter_upload_steps(wf)
@@ -161,18 +160,16 @@ class TestNoWorkflowUploadsDataPaths:
                 violations.append((i, step.get("name"), path_value, hits))
         assert not violations, (
             f"{wf_path.name} has {len(violations)} upload-artifact step(s) "
-            f"that reference sensitive data paths:\n" +
-            "\n".join(
-                f"  step #{i} ({name!r}): path={p!r} matches {hits}"
-                for i, name, p, hits in violations
-            ) +
-            "\nThreat-model invariant violated:\n"
+            f"that reference sensitive data paths:\n"
+            + "\n".join(f"  step #{i} ({name!r}): path={p!r} matches {hits}" for i, name, p, hits in violations)
+            + "\nThreat-model invariant violated:\n"
             "  'Workflows do not upload `data/` directories'\n"
             "  (docs/security/threat-model.md § Scenario 2)"
         )
 
 
 # ===== Claim #3: .gitignore excludes data/raw/inbio/, data/labels/, secrets/ =====
+
 
 class TestGitignoreExcludesSensitiveDataPaths:
     """RED test: `.gitignore` must contain explicit patterns that prevent
@@ -206,8 +203,7 @@ class TestGitignoreExcludesSensitiveDataPaths:
         (with or without trailing slash) is present as a literal line.
         """
         lines = [
-            line.strip() for line in gitignore_text.splitlines()
-            if line.strip() and not line.strip().startswith("#")
+            line.strip() for line in gitignore_text.splitlines() if line.strip() and not line.strip().startswith("#")
         ]
         # Each required pattern must appear as a literal line, optionally
         # with a trailing slash (both are valid gitignore directory patterns).
@@ -235,24 +231,29 @@ class TestGitignoreExcludesSensitiveDataPaths:
           "`.gitignore` excludes `data/raw/inbio/` and `data/labels/`"
         """
         import subprocess
+
         # Enumerate tracked files under the sensitive paths. A clean run
         # returns empty stdout.
         tracked = subprocess.run(
-            ["git", "ls-files", "-z", "--", "data/labels",
-             "data/raw/inbio", "secrets"],
-            cwd=repo_root, capture_output=True, text=True, timeout=10,
+            ["git", "ls-files", "-z", "--", "data/labels", "data/raw/inbio", "secrets"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=10,
         ).stdout.split("\x00")
         tracked = [p for p in tracked if p]  # drop empties
         assert not tracked, (
             f"Sensitive paths are tracked in git (must be purged from history).\n"
-            f"Tracked files:\n  " + "\n  ".join(tracked[:20]) +
-            (f"\n  ... and {len(tracked) - 20} more" if len(tracked) > 20 else "") +
-            "\n\nAudit-round-2 CRITICAL FINDING (D) requires `git filter-repo` "
+            f"Tracked files:\n  "
+            + "\n  ".join(tracked[:20])
+            + (f"\n  ... and {len(tracked) - 20} more" if len(tracked) > 20 else "")
+            + "\n\nAudit-round-2 CRITICAL FINDING (D) requires `git filter-repo` "
             "to purge these from history. See docs/security/audit-round-2.md."
         )
 
 
 # ===== Claim #4: actions/upload-artifact is SHA-pinned (Scenario 8 cross-check) =====
+
 
 class TestUploadArtifactVersionsArePinned:
     """Sanity check: every upload-artifact step should be SHA-pinned (consistent
@@ -261,13 +262,11 @@ class TestUploadArtifactVersionsArePinned:
     for a data leak, so we want its supply chain locked down too.
     """
 
-    @pytest.mark.parametrize("wf_path", [
-        p for p in (
-            list(WORKFLOWS_DIR.glob("*.yml"))
-            + list(WORKFLOWS_DIR.glob("*.yaml"))
-        )
-        if p.stat().st_size > 0
-    ], ids=lambda p: p.name)
+    @pytest.mark.parametrize(
+        "wf_path",
+        [p for p in (list(WORKFLOWS_DIR.glob("*.yml")) + list(WORKFLOWS_DIR.glob("*.yaml"))) if p.stat().st_size > 0],
+        ids=lambda p: p.name,
+    )
     def test_upload_artifact_is_sha_pinned(self, wf_path):
         wf = _load_workflow(wf_path)
         uploads = _iter_upload_steps(wf)

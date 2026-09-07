@@ -40,28 +40,28 @@ DGEEC_SHAPEFILE_URL = "https://www.dgeec.gov.py/mapas/shapefiles"
 
 # 17 indigenous peoples in Paraguay (INE classification)
 PARAGUAY_INDIGENOUS_PEOPLES = [
-    "Ache",        # 1,500-2,000
-    "Avá Guaraní", # 18,000
-    "Ayoreo",      # 2,000
-    "Chulupí",     # 700
-    "Guaraní Ñandeva", # 14,000
-    "Guaraní Occidental", # 35,000
-    "Guaraní Mbya", # 18,000
-    "Enlhet Norte", # 12,000
-    "Enlhet Sur",   # 1,500
-    "Enxet Sur",    # 1,500
-    "Guaicurú",     # 800
-    "Mbyá Guaraní", # 18,000
-    "Nivaclé",     # 13,000
-    "Pai Tavytera", # 17,000
-    "Qom",         # 1,800
-    "Sanapaná",    # 3,000
-    "Toba Qom",    # 1,800
-    "Totobiegosode", # 200
-    "Ybytoso",     # 1,200
-    "Maká",        # 1,500
-    "Nandeva",     # 14,000 (alias of Guarani Nandeva)
-    "Manjuy",      # 200
+    "Ache",  # 1,500-2,000
+    "Avá Guaraní",  # 18,000
+    "Ayoreo",  # 2,000
+    "Chulupí",  # 700
+    "Guaraní Ñandeva",  # 14,000
+    "Guaraní Occidental",  # 35,000
+    "Guaraní Mbya",  # 18,000
+    "Enlhet Norte",  # 12,000
+    "Enlhet Sur",  # 1,500
+    "Enxet Sur",  # 1,500
+    "Guaicurú",  # 800
+    "Mbyá Guaraní",  # 18,000
+    "Nivaclé",  # 13,000
+    "Pai Tavytera",  # 17,000
+    "Qom",  # 1,800
+    "Sanapaná",  # 3,000
+    "Toba Qom",  # 1,800
+    "Totobiegosode",  # 200
+    "Ybytoso",  # 1,200
+    "Maká",  # 1,500
+    "Nandeva",  # 14,000 (alias of Guarani Nandeva)
+    "Manjuy",  # 200
 ]
 
 
@@ -94,7 +94,7 @@ def fetch_ine_census_data(census_year: int = 2022, output_dir: Path = None):
             with urlopen(req, timeout=15) as resp:
                 data = resp.read()
                 # Check if it's actually data (CSV) vs HTML error page
-                if data[:4] in (b'PK\x03\x04',) or data[:1] == b'{' or (len(data) > 100 and b',' in data[:500]):
+                if data[:4] in (b"PK\x03\x04",) or data[:1] == b"{" or (len(data) > 100 and b"," in data[:500]):
                     out_path = output_dir / f"ine_census_{census_year}_depto_etnia.csv"
                     out_path.write_bytes(data)
                     print(f"  OK: {out_path} ({len(data)} bytes)")
@@ -117,35 +117,79 @@ def generate_synthetic_census_placeholder(output_dir: Path, year: int):
     """
     out_path = output_dir / f"ine_census_{year}_depto_etnia_SYNTHETIC.csv"
     departments = [
-        "Asuncion", "Concepcion", "San Pedro", "Cordillera", "Guaira",
-        "Caaguazu", "Caazapa", "Itapua", "Misiones", "Paraguari",
-        "Alto Parana", "Central", "Neembucu", "Amambay", "Canindeyu",
-        "Presidente Hayes", "Alto Paraguay", "Boqueron",
+        "Asuncion",
+        "Concepcion",
+        "San Pedro",
+        "Cordillera",
+        "Guaira",
+        "Caaguazu",
+        "Caazapa",
+        "Itapua",
+        "Misiones",
+        "Paraguari",
+        "Alto Parana",
+        "Central",
+        "Neembucu",
+        "Amambay",
+        "Canindeyu",
+        "Presidente Hayes",
+        "Alto Paraguay",
+        "Boqueron",
     ]
     # Indigenous % by department (rough estimates from published data)
     indigenous_pct = {
-        "Asuncion": 0.3, "Concepcion": 4.1, "San Pedro": 1.8,
-        "Cordillera": 1.2, "Guaira": 0.5, "Caaguazu": 0.7,
-        "Caazapa": 1.5, "Itapua": 0.4, "Misiones": 0.1,
-        "Paraguari": 0.4, "Alto Parana": 2.0, "Central": 0.6,
-        "Neembucu": 0.1, "Amambay": 8.5, "Canindeyu": 4.2,
-        "Presidente Hayes": 16.8, "Alto Paraguay": 26.4, "Boqueron": 38.5,
+        "Asuncion": 0.3,
+        "Concepcion": 4.1,
+        "San Pedro": 1.8,
+        "Cordillera": 1.2,
+        "Guaira": 0.5,
+        "Caaguazu": 0.7,
+        "Caazapa": 1.5,
+        "Itapua": 0.4,
+        "Misiones": 0.1,
+        "Paraguari": 0.4,
+        "Alto Parana": 2.0,
+        "Central": 0.6,
+        "Neembucu": 0.1,
+        "Amambay": 8.5,
+        "Canindeyu": 4.2,
+        "Presidente Hayes": 16.8,
+        "Alto Paraguay": 26.4,
+        "Boqueron": 38.5,
     }
     # Approximate department populations
     depto_pop = {
-        "Asuncion": 521000, "Concepcion": 250000, "San Pedro": 435000,
-        "Cordillera": 320000, "Guaira": 230000, "Caaguazu": 540000,
-        "Caazapa": 195000, "Itapua": 615000, "Misiones": 125000,
-        "Paraguari": 250000, "Alto Parana": 825000, "Central": 2180000,
-        "Neembucu": 85000, "Amambay": 175000, "Canindeyu": 235000,
-        "Presidente Hayes": 130000, "Alto Paraguay": 18000, "Boqueron": 65000,
+        "Asuncion": 521000,
+        "Concepcion": 250000,
+        "San Pedro": 435000,
+        "Cordillera": 320000,
+        "Guaira": 230000,
+        "Caaguazu": 540000,
+        "Caazapa": 195000,
+        "Itapua": 615000,
+        "Misiones": 125000,
+        "Paraguari": 250000,
+        "Alto Parana": 825000,
+        "Central": 2180000,
+        "Neembucu": 85000,
+        "Amambay": 175000,
+        "Canindeyu": 235000,
+        "Presidente Hayes": 130000,
+        "Alto Paraguay": 18000,
+        "Boqueron": 65000,
     }
     with out_path.open("w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "department", "total_population", "indigenous_population",
-            "indigenous_pct", "top_ethnicity", "source",
-        ])
+        writer.writerow(
+            [
+                "department",
+                "total_population",
+                "indigenous_population",
+                "indigenous_pct",
+                "top_ethnicity",
+                "source",
+            ]
+        )
         for d in departments:
             pop = depto_pop[d]
             pct = indigenous_pct[d]
@@ -193,7 +237,7 @@ def fetch_indi_territories(output_dir: Path = None):
             with urlopen(req, timeout=15) as resp:
                 data = resp.read()
                 # Check it's actually GPKG (zip format) or some binary data
-                if data[:4] == b'PK\x03\x04' or (len(data) > 100 and not data[:1] in (b'<', b'{')):
+                if data[:4] == b"PK\x03\x04" or (len(data) > 100 and not data[:1] in (b"<", b"{")):
                     out_path = output_dir / "indi_territories.gpkg"
                     out_path.write_bytes(data)
                     print(f"  OK: {out_path} ({len(data)} bytes)")
@@ -245,12 +289,24 @@ def compute_disparity_index(ine_path: Path, territories_path: Path, output_path:
     """
     # Approximate deforestation rates 2001-2023 (from Hansen analysis)
     dept_deforestation = {
-        "Asuncion": 0.5, "Concepcion": 7.8, "San Pedro": 6.1,
-        "Cordillera": 3.2, "Guaira": 2.1, "Caaguazu": 4.5,
-        "Caazapa": 4.8, "Itapua": 2.9, "Misiones": 1.0,
-        "Paraguari": 2.0, "Alto Parana": 8.5, "Central": 3.5,
-        "Neembucu": 0.8, "Amambay": 15.0, "Canindeyu": 18.0,
-        "Presidente Hayes": 32.0, "Alto Paraguay": 40.0, "Boqueron": 45.0,
+        "Asuncion": 0.5,
+        "Concepcion": 7.8,
+        "San Pedro": 6.1,
+        "Cordillera": 3.2,
+        "Guaira": 2.1,
+        "Caaguazu": 4.5,
+        "Caazapa": 4.8,
+        "Itapua": 2.9,
+        "Misiones": 1.0,
+        "Paraguari": 2.0,
+        "Alto Parana": 8.5,
+        "Central": 3.5,
+        "Neembucu": 0.8,
+        "Amambay": 15.0,
+        "Canindeyu": 18.0,
+        "Presidente Hayes": 32.0,
+        "Alto Paraguay": 40.0,
+        "Boqueron": 45.0,
     }
     rows = []
     with ine_path.open() as f:
@@ -261,13 +317,15 @@ def compute_disparity_index(ine_path: Path, territories_path: Path, output_path:
             defor = dept_deforestation.get(d, 0.0)
             # Disparity: high deforestation in high-indigenous-population areas
             disparity = defor - ind_pct * 0.3  # baseline expectation
-            rows.append({
-                "department": d,
-                "indigenous_pct": ind_pct,
-                "deforestation_pct": defor,
-                "disparity_index": round(disparity, 2),
-                "verdict": "DISPARITY" if disparity > 10 else "OK",
-            })
+            rows.append(
+                {
+                    "department": d,
+                    "indigenous_pct": ind_pct,
+                    "deforestation_pct": defor,
+                    "disparity_index": round(disparity, 2),
+                    "verdict": "DISPARITY" if disparity > 10 else "OK",
+                }
+            )
     with output_path.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
@@ -280,8 +338,7 @@ def main():
         description="P0012 Yvy - public INE/INDI demographic + territory data (no FPIC needed)"
     )
     parser.add_argument("--census-year", type=int, default=2022)
-    parser.add_argument("--output", type=Path,
-                        default=REPO_ROOT / "data" / "raw" / "ine_indi")
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "raw" / "ine_indi")
     args = parser.parse_args()
 
     print("=" * 70)
@@ -303,7 +360,9 @@ def main():
     high_disparity = [r for r in rows if r["verdict"] == "DISPARITY"]
     print(f"Departments with disparity > 10%: {len(high_disparity)}")
     for r in high_disparity[:5]:
-        print(f"  {r['department']}: {r['indigenous_pct']}% indigenous, {r['deforestation_pct']}% defor, disparity {r['disparity_index']}")
+        print(
+            f"  {r['department']}: {r['indigenous_pct']}% indigenous, {r['deforestation_pct']}% defor, disparity {r['disparity_index']}"
+        )
 
     print(f"\nDone. Output: {args.output}/")
 

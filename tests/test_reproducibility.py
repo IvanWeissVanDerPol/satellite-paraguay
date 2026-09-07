@@ -22,7 +22,6 @@ from pathlib import Path
 
 import pytest
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -34,40 +33,64 @@ def file_exists_and_nonempty(path: Path) -> bool:
 class TestPaperScriptsExist:
     """All paper training scripts must exist (Phase 2 deliverables)."""
 
-    @pytest.mark.parametrize("script,phase", [
-        ("scripts/train_prithvi_yvutu.py", "phase_2"),  # P0011
-        ("scripts/train_alphaearth.py", "phase_2"),      # P0010
-        ("scripts/train_yrupe_gru.py", "phase_2"),       # P0025
-        ("scripts/train_kai_yolo.py", "phase_2"),        # P0026
-        ("scripts/train_tatakua_lstm_v2.py", "phase_2"), # P0035
-    ])
+    @pytest.mark.parametrize(
+        "script,phase",
+        [
+            ("scripts/train_prithvi_yvutu.py", "phase_2"),  # P0011
+            ("scripts/train_alphaearth.py", "phase_2"),  # P0010
+            ("scripts/train_yrupe_gru.py", "phase_2"),  # P0025
+            ("scripts/train_kai_yolo.py", "phase_2"),  # P0026
+            ("scripts/train_tatakua_lstm_v2.py", "phase_2"),  # P0035
+        ],
+    )
     def test_script_exists(self, script: str, phase: str):
         path = REPO_ROOT / script
         if not path.exists():
             pytest.skip(f"{script} missing — Phase 2 deliverable")
         assert path.exists(), f"Missing script: {script}"
 
-    @pytest.mark.parametrize("paper,expected_outputs", [
-        ("P0011", [
-            "models/p0011_yvutu/prithvi_yvutu.pt",
-            "papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md",
-        ]),
-        ("P0010", [
-            "papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md",
-        ]),
-        ("P0012", [
-            "papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md",
-        ]),
-        ("P0025", [
-            "papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md",
-        ]),
-        ("P0026", [
-            "papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md",
-        ]),
-        ("P0035", [
-            "papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md",
-        ]),
-    ])
+    @pytest.mark.parametrize(
+        "paper,expected_outputs",
+        [
+            (
+                "P0011",
+                [
+                    "models/p0011_yvutu/prithvi_yvutu.pt",
+                    "papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md",
+                ],
+            ),
+            (
+                "P0010",
+                [
+                    "papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md",
+                ],
+            ),
+            (
+                "P0012",
+                [
+                    "papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md",
+                ],
+            ),
+            (
+                "P0025",
+                [
+                    "papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md",
+                ],
+            ),
+            (
+                "P0026",
+                [
+                    "papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md",
+                ],
+            ),
+            (
+                "P0035",
+                [
+                    "papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md",
+                ],
+            ),
+        ],
+    )
     def test_paper_artifacts_exist(self, paper: str, expected_outputs: list):
         # P0035 has models/lstm_tatakua/best.pt (the only trained model so far)
         if paper == "P0035":
@@ -79,9 +102,7 @@ class TestPaperScriptsExist:
                 if not file_exists_and_nonempty(path):
                     pytest.skip(f"{paper} weights not yet trained (Phase 2 deliverable)")
                 continue
-            assert file_exists_and_nonempty(path), (
-                f"{paper} missing artifact: {f}"
-            )
+            assert file_exists_and_nonempty(path), f"{paper} missing artifact: {f}"
 
 
 class TestCostCapScript:
@@ -92,13 +113,16 @@ class TestCostCapScript:
         assert path.exists()
         import os
         import stat
+
         mode = path.stat().st_mode
         assert mode & stat.S_IXUSR, "cost-cap.sh not user-executable"
 
     def test_script_runs_check_mode(self):
         result = subprocess.run(
             ["bash", str(REPO_ROOT / "infra" / "cost-cap.sh")],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         # Should exit 0 (under cap, no action needed) or 1 (over cap, alert)
         assert result.returncode in (0, 1)
@@ -108,7 +132,9 @@ class TestCostCapScript:
     def test_script_runs_report_mode(self):
         result = subprocess.run(
             ["bash", str(REPO_ROOT / "infra" / "cost-cap.sh"), "--report"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         assert result.returncode in (0, 1)
         # Output should be JSON with today_spend, month_spend, status
@@ -119,11 +145,11 @@ class TestCostCapScript:
     def test_bash_syntax(self):
         result = subprocess.run(
             ["bash", "-n", str(REPO_ROOT / "infra" / "cost-cap.sh")],
-            capture_output=True, text=True, timeout=5,
+            capture_output=True,
+            text=True,
+            timeout=5,
         )
-        assert result.returncode == 0, (
-            f"bash syntax error: {result.stderr}"
-        )
+        assert result.returncode == 0, f"bash syntax error: {result.stderr}"
 
 
 class TestEthicsGateScript:
@@ -136,7 +162,9 @@ class TestEthicsGateScript:
     def test_script_passes(self):
         result = subprocess.run(
             ["python3", str(REPO_ROOT / "scripts" / "check_ethics.py")],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         # Either pass (rc=0) or fail (rc=1 with FAIL papers)
         assert result.returncode in (0, 1)
@@ -146,9 +174,12 @@ class TestEthicsGateScript:
     def test_script_json_output(self):
         result = subprocess.run(
             ["python3", str(REPO_ROOT / "scripts" / "check_ethics.py"), "--json"],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         import json
+
         data = json.loads(result.stdout)
         assert "papers_total" in data
         assert "papers_failed" in data
@@ -189,14 +220,17 @@ class TestDataAcquisition:
 class TestConfigFiles:
     """All 6 papers should have configs/p00XX.yaml."""
 
-    @pytest.mark.parametrize("config", [
-        "configs/p0010_yvyra.yaml",
-        "configs/p0011_yvutu.yaml",
-        "configs/p0012_yvy.yaml",
-        "configs/p0025_yrupe.yaml",
-        "configs/p0026_kai.yaml",
-        "configs/p0035_tatakua.yaml",
-    ])
+    @pytest.mark.parametrize(
+        "config",
+        [
+            "configs/p0010_yvyra.yaml",
+            "configs/p0011_yvutu.yaml",
+            "configs/p0012_yvy.yaml",
+            "configs/p0025_yrupe.yaml",
+            "configs/p0026_kai.yaml",
+            "configs/p0035_tatakua.yaml",
+        ],
+    )
     def test_config_exists(self, config: str):
         path = REPO_ROOT / config
         # Configs for P0010, P0011, P0025, P0026, P0035 are Phase 2 deliverables
@@ -204,10 +238,13 @@ class TestConfigFiles:
             pytest.skip(f"{config} not present (Phase 2 deliverable)")
         assert path.exists(), f"Missing config: {config}"
 
-    @pytest.mark.parametrize("config", [
-        "configs/p0011_yvutu.yaml",
-        "configs/p0035_tatakua.yaml",
-    ])
+    @pytest.mark.parametrize(
+        "config",
+        [
+            "configs/p0011_yvutu.yaml",
+            "configs/p0035_tatakua.yaml",
+        ],
+    )
     def test_config_has_required_keys(self, config: str):
         """Configs should have key fields."""
         path = REPO_ROOT / config
@@ -221,14 +258,17 @@ class TestConfigFiles:
 class TestPaperLaTeX:
     """All 6 papers should have valid LaTeX (skipped if .tex not generated)."""
 
-    @pytest.mark.parametrize("paper_id,paper_dir", [
-        ("P0010", "papers/drafts/p0010_yvyra_carbon_credits"),
-        ("P0011", "papers/drafts/p0011_yvutu_deforestation"),
-        ("P0012", "papers/drafts/p0012_yvy_indigenous"),
-        ("P0025", "papers/drafts/p0025_yrupe_yield"),
-        ("P0026", "papers/drafts/p0026_kai_poaching"),
-        ("P0035", "papers/drafts/p0035_tatakua_air_quality"),
-    ])
+    @pytest.mark.parametrize(
+        "paper_id,paper_dir",
+        [
+            ("P0010", "papers/drafts/p0010_yvyra_carbon_credits"),
+            ("P0011", "papers/drafts/p0011_yvutu_deforestation"),
+            ("P0012", "papers/drafts/p0012_yvy_indigenous"),
+            ("P0025", "papers/drafts/p0025_yrupe_yield"),
+            ("P0026", "papers/drafts/p0026_kai_poaching"),
+            ("P0035", "papers/drafts/p0035_tatakua_air_quality"),
+        ],
+    )
     def test_paper_tex_or_md_exists(self, paper_id: str, paper_dir: str):
         path = REPO_ROOT / paper_dir
         assert path.exists()
@@ -264,6 +304,7 @@ class TestReferencesBib:
         content = path.read_text()
         # Count @ entries
         import re
+
         count = len(re.findall(r"@\w+\{", content))
         assert count >= 100, f"Only {count} references in references.bib"
 
@@ -307,18 +348,22 @@ class TestCIConfig:
 
     import yaml
 
-    @pytest.mark.parametrize("workflow", [
-        ".github/workflows/cicd.yml",
-        ".github/workflows/ci.yml",
-        ".github/workflows/latex.yml",
-        ".github/workflows/sbom.yml",
-        ".github/workflows/secret-scan.yml",
-    ])
+    @pytest.mark.parametrize(
+        "workflow",
+        [
+            ".github/workflows/cicd.yml",
+            ".github/workflows/ci.yml",
+            ".github/workflows/latex.yml",
+            ".github/workflows/sbom.yml",
+            ".github/workflows/secret-scan.yml",
+        ],
+    )
     def test_workflow_valid_yaml(self, workflow: str):
         path = REPO_ROOT / workflow
         if not path.exists():
             pytest.skip(f"{workflow} not present")
         import yaml
+
         data = yaml.safe_load(path.read_text())
         assert data is not None
         assert "jobs" in data or "name" in data
@@ -334,11 +379,15 @@ class TestDeterministicOutput:
 
         result1 = subprocess.run(
             ["python3", str(REPO_ROOT / "scripts" / "check_ethics.py"), "--json"],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         result2 = subprocess.run(
             ["python3", str(REPO_ROOT / "scripts" / "check_ethics.py"), "--json"],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         d1 = json.loads(result1.stdout)
         d2 = json.loads(result2.stdout)

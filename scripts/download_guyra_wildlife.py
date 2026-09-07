@@ -53,16 +53,18 @@ def write_stub_manifest(output_dir: Path):
         species_pool = ["jaguar", "puma", "tapir", "brocket_deer", "anteater", "capybara"]
         for i in range(5000):
             species = random.choice(species_pool)
-            writer.writerow([
-                f"GUYRA-SYN-{i:06d}",
-                species,
-                f"CAM-{random.randint(1, 50):03d}",
-                f"2024-{random.randint(1,12):02d}-{random.randint(1,28):02d}",
-                random.randint(0, 1920),
-                random.randint(0, 1080),
-                random.randint(100, 500),
-                random.randint(100, 500),
-            ])
+            writer.writerow(
+                [
+                    f"GUYRA-SYN-{i:06d}",
+                    species,
+                    f"CAM-{random.randint(1, 50):03d}",
+                    f"2024-{random.randint(1,12):02d}-{random.randint(1,28):02d}",
+                    random.randint(0, 1920),
+                    random.randint(0, 1080),
+                    random.randint(100, 500),
+                    random.randint(100, 500),
+                ]
+            )
     print(f"  Wrote {manifest} (5000 synthetic images)")
     print()
     print("WARNING: Synthetic manifest written. Real Guyra data requires:")
@@ -75,22 +77,17 @@ def write_stub_manifest(output_dir: Path):
 
 def fetch_real_data(output_dir: Path, api_key: str, species: list[str]):
     """Fetch real Guyra data via API (stub implementation)."""
-    raise NotImplementedError(
-        "Guyra API client not yet implemented. "
-        "Will be implemented after partnership signed."
-    )
+    raise NotImplementedError("Guyra API client not yet implemented. " "Will be implemented after partnership signed.")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Download Guyra Paraguay wildlife data for P0026 Kai")
-    parser.add_argument("--real", action="store_true",
-                        help="Fetch real data (requires partnership + GUYRA_API_KEY)")
-    parser.add_argument("--species", default="jaguar,puma,tapir,brocket_deer,anteater",
-                        help="Comma-separated species list")
-    parser.add_argument("--output", type=Path,
-                        default=REPO_ROOT / "data" / "labels" / "guyra" / "wildlife")
-    parser.add_argument("--count", type=int, default=200,
-                        help="Images per species (default: 200)")
+    parser.add_argument("--real", action="store_true", help="Fetch real data (requires partnership + GUYRA_API_KEY)")
+    parser.add_argument(
+        "--species", default="jaguar,puma,tapir,brocket_deer,anteater", help="Comma-separated species list"
+    )
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "labels" / "guyra" / "wildlife")
+    parser.add_argument("--count", type=int, default=200, help="Images per species (default: 200)")
     args = parser.parse_args()
 
     if args.real:

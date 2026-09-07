@@ -33,26 +33,26 @@ INAT_BASE = "https://api.inaturalist.org/v1"
 # Target species for Kai (poaching detection paper)
 # Selected: large mammals that overlap with camera-trap targets
 KAI_SPECIES = [
-    "Panthera onca",         # Jaguar - primary target
-    "Puma concolor",          # Puma
-    "Tapirus terrestris",     # Tapir
-    "Mazama americana",       # Brocket deer (red)
-    "Mazama gouazoubira",     # Brocket deer (gray)
-    "Myrmecophaga tridactyla", # Giant anteater
-    "Hydrochoerus hydrochaeris", # Capybara
-    "Priodontes maximus",     # Giant armadillo
-    "Tapirus terrestris",     # (dup) Tapir
-    "Leopardus pardalis",     # Ocelot
-    "Leopardus wiedii",       # Margay
-    "Herpailurus yagouaroundi", # Jaguarundi
-    "Chrysocyon brachyurus",   # Maned wolf
-    "Cerdocyon thous",        # Crab-eating fox
-    "Cuniculus paca",         # Paca
-    "Dasyprocta azarae",       # Agouti
-    "Procyon cancrivorus",     # Crab-eating raccoon
-    "Nasua nasua",            # South American coati
-    "Eira barbara",            # Tayra
-    "Galictis cuja",           # Lesser grison
+    "Panthera onca",  # Jaguar - primary target
+    "Puma concolor",  # Puma
+    "Tapirus terrestris",  # Tapir
+    "Mazama americana",  # Brocket deer (red)
+    "Mazama gouazoubira",  # Brocket deer (gray)
+    "Myrmecophaga tridactyla",  # Giant anteater
+    "Hydrochoerus hydrochaeris",  # Capybara
+    "Priodontes maximus",  # Giant armadillo
+    "Tapirus terrestris",  # (dup) Tapir
+    "Leopardus pardalis",  # Ocelot
+    "Leopardus wiedii",  # Margay
+    "Herpailurus yagouaroundi",  # Jaguarundi
+    "Chrysocyon brachyurus",  # Maned wolf
+    "Cerdocyon thous",  # Crab-eating fox
+    "Cuniculus paca",  # Paca
+    "Dasyprocta azarae",  # Agouti
+    "Procyon cancrivorus",  # Crab-eating raccoon
+    "Nasua nasua",  # South American coati
+    "Eira barbara",  # Tayra
+    "Galictis cuja",  # Lesser grison
 ]
 
 
@@ -88,15 +88,16 @@ def fetch_inat_observations(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="P0026 Kai - download iNaturalist wildlife data for Paraguay"
+    parser = argparse.ArgumentParser(description="P0026 Kai - download iNaturalist wildlife data for Paraguay")
+    parser.add_argument("--per-species", type=int, default=200, help="Observations per species (default 200)")
+    parser.add_argument(
+        "--bbox",
+        type=float,
+        nargs=4,
+        default=[-62.5, -27.5, -54.5, -19.5],
+        help="Paraguay bbox: min_lon min_lat max_lon max_lat",
     )
-    parser.add_argument("--per-species", type=int, default=200,
-                        help="Observations per species (default 200)")
-    parser.add_argument("--bbox", type=float, nargs=4, default=[-62.5, -27.5, -54.5, -19.5],
-                        help="Paraguay bbox: min_lon min_lat max_lon max_lat")
-    parser.add_argument("--output", type=Path,
-                        default=REPO_ROOT / "data" / "labels" / "inaturalist" / "wildlife")
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "labels" / "inaturalist" / "wildlife")
     args = parser.parse_args()
 
     args.output.mkdir(parents=True, exist_ok=True)
@@ -155,17 +156,19 @@ def main():
         synthetic = []
         for species in KAI_SPECIES:
             for j in range(50):
-                synthetic.append({
-                    "id": f"SYN-{len(synthetic):06d}",
-                    "species": species,
-                    "common_name": species.split()[0] if species else "",
-                    "observed_on": "2024-09-15",
-                    "lat": -25.0 + (j % 10) * 0.1,
-                    "lon": -57.0 + (j // 10) * 0.2,
-                    "quality_grade": "needs_id",
-                    "url": "https://synthetic.local",
-                    "photo_url": "",
-                })
+                synthetic.append(
+                    {
+                        "id": f"SYN-{len(synthetic):06d}",
+                        "species": species,
+                        "common_name": species.split()[0] if species else "",
+                        "observed_on": "2024-09-15",
+                        "lat": -25.0 + (j % 10) * 0.1,
+                        "lon": -57.0 + (j // 10) * 0.2,
+                        "quality_grade": "needs_id",
+                        "url": "https://synthetic.local",
+                        "photo_url": "",
+                    }
+                )
         with manifest.open("w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=synthetic[0].keys())
             writer.writeheader()

@@ -47,26 +47,30 @@ def write_stub_data(output_path: Path):
 
     with output_path.open("w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "trial_id",
-            "year",
-            "region",
-            "variety",
-            "yield_t_ha",
-            "rainfall_mm",
-            "soil_ph",
-        ])
+        writer.writerow(
+            [
+                "trial_id",
+                "year",
+                "region",
+                "variety",
+                "yield_t_ha",
+                "rainfall_mm",
+                "soil_ph",
+            ]
+        )
         # 10 synthetic trials
         for i in range(10):
-            writer.writerow([
-                f"INBIO-SYN-{i:03d}",
-                2024,
-                random.choice(["Alto Paraná", "Itapúa", "Caaguazú", "Alto Paraguay"]),
-                random.choice(["BMX Potência", "CD 2710", "DM 53i54", "NS 6700"]),
-                round(random.gauss(3.0, 0.5), 2),
-                random.randint(800, 1500),
-                round(random.uniform(4.5, 7.5), 1),
-            ])
+            writer.writerow(
+                [
+                    f"INBIO-SYN-{i:03d}",
+                    2024,
+                    random.choice(["Alto Paraná", "Itapúa", "Caaguazú", "Alto Paraguay"]),
+                    random.choice(["BMX Potência", "CD 2710", "DM 53i54", "NS 6700"]),
+                    round(random.gauss(3.0, 0.5), 2),
+                    random.randint(800, 1500),
+                    round(random.uniform(4.5, 7.5), 1),
+                ]
+            )
 
     print(f"  Wrote {output_path} (10 synthetic trials)")
     print()
@@ -81,18 +85,13 @@ def write_stub_data(output_path: Path):
 def fetch_real_data(output_path: Path, api_key: str):
     """Fetch real INBIO data via API (stub implementation)."""
     # TODO: implement actual API call when partnership signed
-    raise NotImplementedError(
-        "INBIO API client not yet implemented. "
-        "Will be implemented after partnership signed."
-    )
+    raise NotImplementedError("INBIO API client not yet implemented. " "Will be implemented after partnership signed.")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Download INBIO data for P0025 Yrupe")
-    parser.add_argument("--real", action="store_true",
-                        help="Fetch real data (requires partnership + INBIO_API_KEY)")
-    parser.add_argument("--output", type=Path,
-                        default=REPO_ROOT / "data" / "raw" / "inbio" / "yrupe_2024.csv")
+    parser.add_argument("--real", action="store_true", help="Fetch real data (requires partnership + INBIO_API_KEY)")
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "raw" / "inbio" / "yrupe_2024.csv")
     args = parser.parse_args()
 
     if args.real:
