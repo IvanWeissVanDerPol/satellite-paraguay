@@ -90,7 +90,7 @@ This thesis adopts the convention that any claim appearing in earlier drafts has
 | Yvutu F1, Prithvi | F1 > 0.85 | F1 = 0.497 (mock fallback) |
 | Yvutu F1, from-scratch | F1 < 0.30 | F1 = 0.559 (over-predicts) |
 | Kai mAP, real | 0.3-0.5 | 0.18 |
-| Tatakua RMSE | MAE < 5 µg/m³ | 14.7 µg/m³ |
+| Tatakua RMSE | MAE < 5 µg/m³ (aspirational) | 14.7 µg/m³ (measured) |
 | Verra under-claim | "30-50%" | +35.9% (5 projects) |
 | Citation verification | "47 verified" | "213 verified, 13 LIKELY, 0 NOT_FOUND" (round-3, 2026-09-04) |
 

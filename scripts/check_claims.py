@@ -110,6 +110,7 @@ SANCTIONED_PREFIXES: list[tuple[str, str]] = [
     ("BRUTAL_ROAST.md", "self-audit; quotes values as documented failures"),
     ("STATUS.md", "status report; cites measured pilots + aspirational targets"),
     ("thesis/MAIN/thesis.tex", "thesis master; cites aspirational targets explicitly as replaced"),
+    ("thesis/CH11_conclusion.md", "conclusion chapter meta-table comparing aspirational vs. measured (Honest Reporting Note)"),
     ("papers/drafts/ACTUAL_RESULTS.md", "the source of truth for measurements"),
     ("papers/drafts/paper.md", "paper body; Honest Reporting Note names aspirational values"),
     ("papers/drafts/paper.tex", "LaTeX paper body; same"),
