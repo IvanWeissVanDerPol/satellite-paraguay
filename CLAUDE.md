@@ -97,6 +97,21 @@ every public surface.
 - **Run paper.tex checks:** `python3 scripts/check_citations.py <paper>`
 - **DO NOT use** the system `/opt/hermes/.venv` — it's for the agent, not the project
 
+#### Known: background-mode `scripts/run_tests.sh`
+
+When run via Hermes's `terminal(background=true)`, the script may emit
+`error: no virtualenv with pytest found in /opt/hermes/.venv` — that warning
+comes from a Hermes-side hook inspecting pytest invocations, not from the
+script itself. **The script still works correctly in foreground.** If a
+background run emits that warning, check the actual exit code (0 = success)
+and stdout for the pytest summary line — don't treat the warning as a failure.
+
+To verify in foreground:
+```bash
+bash scripts/run_tests.sh bibliography    # Filter by `-k bibliography`
+echo $?                                  # Should be 0
+```
+
 ### 4. Branching
 
 - Default branch: **not yet decided** (currently on `feat/tier2-consistency-thesis-integration`)
