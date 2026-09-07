@@ -104,6 +104,7 @@
 | **Fix MAE<5 defense finding: sanction CH11 + qualify row** | `eeeca93` | 2026-09-07 |
 | **Tier-3: 3 test failures fixed + defense_check --full mode** | `44e66cc` | 2026-09-07 |
 | **Tier-4: 2 critical Conclusion fixes + FPIC decision aid** | `d4899c1` | 2026-09-07 |
+| **Tier-5: 22× 3.3×→3.0× fix + cross-doc consistency audit** | `a70c9c6` | 2026-09-07 |
 | Round-6: 7 DOI fixes applied, 76 false-positive confirmed | `c8c0c10` | 2026-09-07 |
 | Repo infrastructure: CLAUDE.md + AUDIT + verify_bib_dois.py | (this commit) | 2026-09-07 |
 
