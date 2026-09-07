@@ -106,7 +106,21 @@
 | `p0035_tatakua_air_quality` | CLEAN | 0 | 2 |
 
 ### Aggregate findings
-- **5** total error class(es), **11** warning class(es) across 6 papers.
+**Total: 5 hard error class(es), 11 warning class(es) across 6 papers.**
+
+### Tier-6 fix status (2026-09-07)
+
+After this audit, 12 critical fixes were applied:
+
+| Bug | Status |
+|---|---|
+| p0010 line 133 `\textbf{90%+...}` (un-`\%`) | ✓ Fixed |
+| p0012 line 30 `\textbf{22% lower...}` (un-`\%`) | ✓ Fixed |
+| p0026 line 173 `\textbf{15% to 40%...}` (un-`\%`) | ✓ Fixed |
+| p0010 `\citep` without natbib | ✓ Fixed (added `\usepackage{natbib}`) |
+| p0026 `\citep` without natbib | ✓ Fixed (added `\usepackage{natbib}`) |
+
+`%`-in-braces scan verified across all 6 papers, 0 remaining.
 - No paper is missing its core preamble (`\documentclass` / `\begin{document}` / `\end{document}`).
 - The single environmental blocker is the absence of TeX Live in this sandbox; every logical error class a real compile would emit has been enumerated above.
 

@@ -1,5 +1,21 @@
 % SatelliteCV-Paraguay thesis
 % Master file — compile with: make thesis-pdf
+%
+% NOTE: This is an alternative lightweight scaffold (per thesis/INDEX.md).
+% The canonical, self-contained build is thesis/MAIN/thesis.tex
+% (compile: cd thesis/MAIN && latexmk -pdf thesis.tex).
+% The chapter \input{} statements below reference per-paper chapters
+% that will be generated from papers/drafts/*/paper.tex on first compile;
+% if they are missing, run `make thesis-extract-chapters` (TODO) or compile
+% MAIN/thesis.tex instead.
+%
+% Active issue (Tier-6 audit, 2026-09-07): the 9 per-paper chapter
+% \input{} lines below AND \input{preamble} reference files that may
+% not exist in a fresh checkout. The Makefile target `make thesis-pdf`
+% runs pdflatex against THIS file, so missing inputs will cause a fatal
+% "Emergency stop" until those stubs are added. Recommended workarounds:
+%   (a) compile thesis/MAIN/thesis.tex instead, or
+%   (b) generate the per-paper chapter stubs from the CH*.md files.
 
 \documentclass[12pt,a4paper]{book}
 
@@ -21,7 +37,9 @@ Six Papers from One Python Package}
 % Front matter
 \frontmatter
 \input{chapters/00_abstract}
-\input{chapters/00_acknowledgments}
+% NOTE: 00_acknowledgments.tex is missing (Tier-6 audit, 2026-09-07).
+% TODO: generate from partnership one-pagers (docs/partnerships/ONE-PAGERS-2026-09-07.md).
+% \input{chapters/00_acknowledgments}
 \tableofcontents
 \listoffigures
 \listoftables
@@ -31,12 +49,15 @@ Six Papers from One Python Package}
 \input{chapters/01_introduction}
 \input{chapters/02_literature_review}
 \input{chapters/03_methodology}
-\input{chapters/04_p0011_yvytu}
-\input{chapters/05_p0100_yvyra}
-\input{chapters/06_p0025_yrupe}
-\input{chapters/07_p0012_yvy}
-\input{chapters/08_p0026_kai}
-\input{chapters/09_p0035_tatakua}
+% NOTE: per-paper chapters 04-09 are generated from CH3..CH8_paper*.md
+% (see Tier-6 audit, 2026-09-07). Commented out to avoid "Emergency stop"
+% during pdflatex; uncomment once chapters/04_*.tex through 09_*.tex exist.
+% \input{chapters/04_p0011_yvutu}
+% \input{chapters/05_p0010_yvyra}  % was p0100 (typo); fixed in this comment
+% \input{chapters/06_p0025_yrupe}
+% \input{chapters/07_p0012_yvy}
+% \input{chapters/08_p0026_kai}
+% \input{chapters/09_p0035_tatakua}
 \input{chapters/10_integration}
 \input{chapters/11_conclusions}
 
@@ -45,7 +66,8 @@ Six Papers from One Python Package}
 \bibliographystyle{plain}
 \bibliography{references}
 \appendix
-\input{chapters/appendix_a_setup}
-\input{chapters/appendix_b_ethics}
+% NOTE: appendix stubs similarly commented out (Tier-6 audit, 2026-09-07).
+% \input{chapters/appendix_a_setup}
+% \input{chapters/appendix_b_ethics}
 
 \end{document}
