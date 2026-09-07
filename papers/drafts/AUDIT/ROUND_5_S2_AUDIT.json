@@ -1,0 +1,849 @@
+{
+  "date": "2026-09-04",
+  "method": "S2 lookup-by-DOI validation of all master bib DOIs",
+  "total_dois": 183,
+  "validated_ok": 16,
+  "mismatches": 107,
+  "errors": 60,
+  "year_mismatches": 78,
+  "author_mismatches": 105,
+  "sample_mismatches": [
+    {
+      "doi": "10.1016/j.gloenvcha.2022.102520",
+      "key": "sze2022",
+      "bib_year": 2022,
+      "s2_year": 2022,
+      "bib_surname": "sze",
+      "s2_first_author": "naime",
+      "s2_all_authors": [
+        "naime",
+        "angelsen",
+        "molina-garz\u00f3n",
+        "carrilho",
+        "selviana"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=sze s2=['naime', 'angelsen', 'molina-garz\u00f3n']"
+      ]
+    },
+    {
+      "doi": "10.1088/1748-9326/4/3/034005",
+      "key": "redd2009",
+      "bib_year": 2009,
+      "s2_year": 2009,
+      "bib_surname": "redo",
+      "s2_first_author": "finer",
+      "s2_all_authors": [
+        "finer",
+        "vijay",
+        "ponce",
+        "jenkins",
+        "kahn"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=redo s2=['finer', 'vijay', 'ponce']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.envdev.2017.04.002",
+      "key": "fearnside2017",
+      "bib_year": 2017,
+      "s2_year": 2017,
+      "bib_surname": "fearnside",
+      "s2_first_author": "troya",
+      "s2_all_authors": [
+        "troya"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=fearnside s2=['troya']"
+      ]
+    },
+    {
+      "doi": "10.1098/rstb.2010.0017",
+      "key": "phillips2008",
+      "bib_year": 2010,
+      "s2_year": 2010,
+      "bib_surname": "phillips",
+      "s2_first_author": "fortunato",
+      "s2_all_authors": [
+        "fortunato",
+        "jordan"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=phillips s2=['fortunato', 'jordan']"
+      ]
+    },
+    {
+      "doi": "10.1111/nph.12760",
+      "key": "malhi2014",
+      "bib_year": 2014,
+      "s2_year": 2014,
+      "bib_surname": "malhi",
+      "s2_first_author": "bao",
+      "s2_all_authors": [
+        "bao",
+        "huang",
+        "zhu",
+        "zhang",
+        "li"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=malhi s2=['bao', 'huang', 'zhu']"
+      ]
+    },
+    {
+      "doi": "10.1038/nature12018",
+      "key": "mitchard2014",
+      "bib_year": 2014,
+      "s2_year": 2013,
+      "bib_surname": "mitchard",
+      "s2_first_author": "kim",
+      "s2_all_authors": [
+        "kim",
+        "adhikari",
+        "lee",
+        "marshel",
+        "kim"
+      ],
+      "title_match": false,
+      "issues": [
+        "year mismatch: bib=2014 s2=2013",
+        "author mismatch: bib=mitchard s2=['kim', 'adhikari', 'lee']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.ecolmodel.2014.09.002",
+      "key": "overmars2014",
+      "bib_year": 2014,
+      "s2_year": 2015,
+      "bib_surname": "overmars",
+      "s2_first_author": "li",
+      "s2_all_authors": [
+        "li",
+        "ye",
+        "song",
+        "wang"
+      ],
+      "title_match": false,
+      "issues": [
+        "year mismatch: bib=2014 s2=2015",
+        "author mismatch: bib=overmars s2=['li', 'ye', 'song']"
+      ]
+    },
+    {
+      "doi": "10.1371/journal.pbio.0040277",
+      "key": "diaz2006",
+      "bib_year": 2006,
+      "s2_year": 2006,
+      "bib_surname": "d{\\'i",
+      "s2_first_author": "d\u00edaz",
+      "s2_all_authors": [
+        "d\u00edaz",
+        "fargione",
+        "stuart",
+        "iii",
+        "tilman"
+      ],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=d{\\'i s2=['d\u00edaz', 'fargione', 'stuart']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.biocon.2019.05.016",
+      "key": "rex2019",
+      "bib_year": 2019,
+      "s2_year": 2019,
+      "bib_surname": "rex",
+      "s2_first_author": "haddock",
+      "s2_all_authors": [
+        "haddock",
+        "threlfall",
+        "law",
+        "hochuli"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=rex s2=['haddock', 'threlfall', 'law']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.jag.2019.04.008",
+      "key": "kogan2019",
+      "bib_year": 2019,
+      "s2_year": 2019,
+      "bib_surname": "kogan",
+      "s2_first_author": "piermattei",
+      "s2_all_authors": [
+        "piermattei",
+        "marty",
+        "ginzler",
+        "p\u00f6chtrager",
+        "karel"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=kogan s2=['piermattei', 'marty', 'ginzler']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.rse.2022.112988",
+      "key": "bregenz2022",
+      "bib_year": 2022,
+      "s2_year": 2022,
+      "bib_surname": "bregenzer",
+      "s2_first_author": "mortimer",
+      "s2_all_authors": [
+        "mortimer",
+        "mudryk",
+        "derksen",
+        "brady",
+        "luojus"
+      ],
+      "title_match": false,
+      "issues": [
+        "author mismatch: bib=bregenzer s2=['mortimer', 'mudryk', 'derksen']"
+      ]
+    },
+    {
+      "doi": "10.1007/s10531-024-02894-x",
+      "key": "huang2024",
+      "bib_year": 2024,
+      "s2_year": 2024,
+      "bib_surname": "huang",
+      "s2_first_author": "rivas",
+      "s2_all_authors": [
+        "rivas",
+        "navarro-cerrillo"
+      ],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=huang s2=['rivas', 'navarro-cerrillo']"
+      ]
+    },
+    {
+      "doi": "10.1080/13549839.2023.2221431",
+      "key": "almeyda2024",
+      "bib_year": 2024,
+      "s2_year": 2023,
+      "bib_surname": "almeyda",
+      "s2_first_author": "kato-huerta",
+      "s2_all_authors": [
+        "kato-huerta",
+        "geneletti"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2023",
+        "author mismatch: bib=almeyda s2=['kato-huerta', 'geneletti']"
+      ]
+    },
+    {
+      "doi": "10.14195/978-989-26-0884-6_86",
+      "key": "andela2013",
+      "bib_year": 2013,
+      "s2_year": 2014,
+      "bib_surname": "andela",
+      "s2_first_author": "alonso-canas",
+      "s2_all_authors": [
+        "alonso-canas",
+        "chuvieco"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2013 s2=2014",
+        "author mismatch: bib=andela s2=['alonso-canas', 'chuvieco']"
+      ]
+    },
+    {
+      "doi": "10.1016/b978-0-12-822138-9.00002-9",
+      "key": "anile2020",
+      "bib_year": 2020,
+      "s2_year": 2020,
+      "bib_surname": "anile",
+      "s2_first_author": "donahue",
+      "s2_all_authors": [
+        "donahue"
+      ],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=anile s2=['donahue']"
+      ]
+    },
+    {
+      "doi": "10.3390/rs15143675",
+      "key": "ao2024",
+      "bib_year": 2024,
+      "s2_year": 2023,
+      "bib_surname": "ao",
+      "s2_first_author": "vel\u00e1stegui-montoya",
+      "s2_all_authors": [
+        "vel\u00e1stegui-montoya",
+        "montalvan-burbano",
+        "carri\u00f3n-mero",
+        "rivera-torres",
+        "sadeck"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2023",
+        "author mismatch: bib=ao s2=['vel\u00e1stegui-montoya', 'montalvan-burbano', 'carri\u00f3n-mero']"
+      ]
+    },
+    {
+      "doi": "10.1111/nana.13045",
+      "key": "aydin2025",
+      "bib_year": 2025,
+      "s2_year": 2024,
+      "bib_surname": "aydin",
+      "s2_first_author": "padoan",
+      "s2_all_authors": [
+        "padoan"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2025 s2=2024",
+        "author mismatch: bib=aydin s2=['padoan']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.foreco.2023.121443",
+      "key": "bailey2024",
+      "bib_year": 2024,
+      "s2_year": 2023,
+      "bib_surname": "bailey",
+      "s2_first_author": "kuile",
+      "s2_all_authors": [
+        "kuile",
+        "ogle",
+        "cavanaugh",
+        "dudley",
+        "markus"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2023",
+        "author mismatch: bib=bailey s2=['kuile', 'ogle', 'cavanaugh']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.biocon.2019.05.039",
+      "key": "barlow2018",
+      "bib_year": 2018,
+      "s2_year": 2019,
+      "bib_surname": "barlow",
+      "s2_first_author": "hawkes",
+      "s2_all_authors": [
+        "hawkes",
+        "smart",
+        "brown",
+        "jones",
+        "lane"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2018 s2=2019",
+        "author mismatch: bib=barlow s2=['hawkes', 'smart', 'brown']"
+      ]
+    },
+    {
+      "doi": "10.1007/s11192-016-2115-y",
+      "key": "baumann2017a",
+      "bib_year": 2017,
+      "s2_year": 2015,
+      "bib_surname": "baumann",
+      "s2_first_author": "marx",
+      "s2_all_authors": [
+        "marx",
+        "haunschild",
+        "thor",
+        "bornmann"
+      ],
+      "title_match": false,
+      "issues": [
+        "year mismatch: bib=2017 s2=2015",
+        "author mismatch: bib=baumann s2=['marx', 'haunschild', 'thor']"
+      ]
+    },
+    {
+      "doi": "10.4324/9781003214380",
+      "key": "bebbington2024",
+      "bib_year": 2024,
+      "s2_year": 2023,
+      "bib_surname": "bebbington",
+      "s2_first_author": "rosier",
+      "s2_all_authors": [
+        "rosier"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2023",
+        "author mismatch: bib=bebbington s2=['rosier']"
+      ]
+    },
+    {
+      "doi": "10.1002/fee.2798",
+      "key": "becker2025",
+      "bib_year": 2025,
+      "s2_year": 2024,
+      "bib_surname": "becker",
+      "s2_first_author": "schaaf",
+      "s2_all_authors": [
+        "schaaf",
+        "reppucci"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2025 s2=2024",
+        "author mismatch: bib=becker s2=['schaaf', 'reppucci']"
+      ]
+    },
+    {
+      "doi": "10.5376/lgg.2024.15.0027",
+      "key": "bertoni2024",
+      "bib_year": 2024,
+      "s2_year": 2024,
+      "bib_surname": "bertoni",
+      "s2_first_author": "wang",
+      "s2_all_authors": [
+        "wang",
+        "lin",
+        "li"
+      ],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=bertoni s2=['wang', 'lin', 'li']"
+      ]
+    },
+    {
+      "doi": "10.18356/15649563-96",
+      "key": "bey2024",
+      "bib_year": 2024,
+      "s2_year": 2024,
+      "bib_surname": "bey",
+      "s2_first_author": null,
+      "s2_all_authors": [],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=bey s2=[]"
+      ]
+    },
+    {
+      "doi": "10.7591/9780801459382-022",
+      "key": "bierregaard2020",
+      "bib_year": 2020,
+      "s2_year": 2019,
+      "bib_surname": "bierregaard",
+      "s2_first_author": "touchton",
+      "s2_all_authors": [
+        "touchton"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2020 s2=2019",
+        "author mismatch: bib=bierregaard s2=['touchton']"
+      ]
+    },
+    {
+      "doi": "10.1007/s11756-025-02001-7",
+      "key": "bonilla2024",
+      "bib_year": 2024,
+      "s2_year": 2025,
+      "bib_surname": "bonilla",
+      "s2_first_author": "lamas",
+      "s2_all_authors": [
+        "lamas",
+        "garcete-barrett"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2025",
+        "author mismatch: bib=bonilla s2=['lamas', 'garcete-barrett']"
+      ]
+    },
+    {
+      "doi": "10.1126/sciadv.adf0938",
+      "key": "brancalion2022",
+      "bib_year": 2022,
+      "s2_year": 2023,
+      "bib_surname": "brancalion",
+      "s2_first_author": "veryard",
+      "s2_all_authors": [
+        "veryard",
+        "wu",
+        "o\u2019brien",
+        "anthony",
+        "both"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2022 s2=2023",
+        "author mismatch: bib=brancalion s2=['veryard', 'wu', 'o\u2019brien']"
+      ]
+    },
+    {
+      "doi": "10.1101/2024.07.05.602209",
+      "key": "brennan2024",
+      "bib_year": 2024,
+      "s2_year": 2024,
+      "bib_surname": "brennan",
+      "s2_first_author": "sydenham",
+      "s2_all_authors": [
+        "sydenham",
+        "nielsen",
+        "dupont",
+        "rasmussen",
+        "madsen"
+      ],
+      "title_match": true,
+      "issues": [
+        "author mismatch: bib=brennan s2=['sydenham', 'nielsen', 'dupont']"
+      ]
+    },
+    {
+      "doi": "10.1016/j.landusepol.2023.106650",
+      "key": "briggs2024",
+      "bib_year": 2024,
+      "s2_year": 2023,
+      "bib_surname": "briggs",
+      "s2_first_author": "mosciaro",
+      "s2_all_authors": [
+        "mosciaro",
+        "seghezzo",
+        "texeira",
+        "paruelo",
+        "volante"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2023",
+        "author mismatch: bib=briggs s2=['mosciaro', 'seghezzo', 'texeira']"
+      ]
+    },
+    {
+      "doi": "10.18235/0013508",
+      "key": "bull2024",
+      "bib_year": 2024,
+      "s2_year": 2025,
+      "bib_surname": "bull",
+      "s2_first_author": "rodr\u00edguez",
+      "s2_all_authors": [
+        "rodr\u00edguez"
+      ],
+      "title_match": true,
+      "issues": [
+        "year mismatch: bib=2024 s2=2025",
+        "author mismatch: bib=bull s2=['rodr\u00edguez']"
+      ]
+    }
+  ],
+  "all_errors": [
+    {
+      "doi": "10.1126/science.1172107",
+      "key": "nepstad2009",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1017/S0266467412000614",
+      "key": "fauset2012",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.4324/9781315098004-1",
+      "key": "shlisky2007",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1073/pnas.1809915115",
+      "key": "wood2018",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.48550/arXiv.2310.01760",
+      "key": "jakubik2023",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1046/j.1523-1739.2002.01018.x",
+      "key": "redford2002",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1088/1748-9326/aaff68",
+      "key": "schmidt2019",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1016/j.worlddev.2012.09.013",
+      "key": "nolte2013",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1080/24694452.2016.1185720",
+      "key": "coomes2016",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1016/j.compag.2018.02.031",
+      "key": "zhu2018",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2139/ssrn.5185867",
+      "key": "agostini2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1093/oed/8273546606",
+      "key": "arends2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2307/jj.9192219.24",
+      "key": "banco2023",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1201/9781032620701-10",
+      "key": "carpenter2025",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1093/law:epil/9780199231690/e826",
+      "key": "chambers2007",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1016/b978-0-443-13838-6.00033-1",
+      "key": "fader2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1111/2041-210x.14300/v1/review1",
+      "key": "falcucci2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.4337/9781800370258.00020",
+      "key": "frogner2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1093/oxfordhb/9780197762097.013.0018",
+      "key": "goldstein2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1201/9781032663432-7",
+      "key": "gonzlez2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.62891/8e51a710",
+      "key": "hethcoat2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1302/3114-240531",
+      "key": "hoyt2023",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2139/ssrn.5616278",
+      "key": "iglesias2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1016/c2014-0-00392-9",
+      "key": "jacob2016",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1201/9781003404286-4",
+      "key": "janzen2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1098/rspb.2024.2423/v1/review1",
+      "key": "lindenmayer2023",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-031-76742-5_10",
+      "key": "major2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.5194/ecss2023-8",
+      "key": "montini2022",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-031-66060-3_12",
+      "key": "morbey2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1017/dry.2026.10039.pr2",
+      "key": "nguyen2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.22541/au.173139194.41765983/v1",
+      "key": "nuno2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-031-23023-3_25",
+      "key": "nbrega2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.5194/egusphere-egu25-11802",
+      "key": "parker2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.66709/news-270226",
+      "key": "pastore2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.21203/rs.3.rs-3556769/v1",
+      "key": "pavetti2023",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.5194/egusphere-2024-758",
+      "key": "pavetti2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.21203/rs.3.rs-7680245/v1",
+      "key": "pawson2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1016/b0-12-226865-2/00275-3",
+      "key": "pennington2000",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.64628/aa.tme4fp9yq",
+      "key": "ponce2020",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.7551/mitpress/14636.003.0011",
+      "key": "quesada2022",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-032-05828-7_7",
+      "key": "romero2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1093/oso/9780198747048.003.0008",
+      "key": "sayer2017",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.4324/9780203356586-10",
+      "key": "schrire2005",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.20944/preprints202312.0866.v1",
+      "key": "sherwin2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-031-18146-7_8",
+      "key": "smith2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.4135/9781412994156.n366",
+      "key": "sollmann2011",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1002/0471667196.ess2503",
+      "key": "souza2005",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2139/ssrn.4906071",
+      "key": "strandberg2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.21428/d28e8e57.a8ca23ad",
+      "key": "tallis2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1093/oso/9780198808978.003.0011",
+      "key": "taubert2018",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.66709/news-291154",
+      "key": "taylor2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.5860/choice.48-3360",
+      "key": "tidemann2010",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2139/ssrn.5170833",
+      "key": "toepfer2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.5194/egusphere-egu25-5192",
+      "key": "tucker2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.2139/ssrn.5159915",
+      "key": "ullah2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.37609/akya.2894.c8933",
+      "key": "vautrin2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1098/rspb.2024.1595/v1/review2",
+      "key": "walters2025",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1007/978-3-031-89372-8_2",
+      "key": "ward2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.4060/cd0900en",
+      "key": "wilkie2024",
+      "error": "HTTP 404"
+    },
+    {
+      "doi": "10.1111/ddi.70035/v1/review3",
+      "key": "zhou2024",
+      "error": "HTTP 404"
+    }
+  ],
+  "critical_finding": "The master bib has DOIs that do NOT correspond to the author/year cited in the prose. This is because Round-1/2/3 used CrossRef title-search and took the first DOI regardless of author/year match. The bib entries keep the prose author but the DOI points to a different paper entirely.",
+  "recommendation": "Re-verify every DOI against (a) the prose citation and (b) the actual paper title. Many entries need to be DELETED (wrong DOI) and re-searched with proper author+year. Estimated: 60-70% of master bib entries may have wrong DOIs."
+}
