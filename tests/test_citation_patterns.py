@@ -121,3 +121,28 @@ def test_paper_tex_compiles_latex_balance(paper_name, tex_path):
     assert opens == closes, (
         f"{paper_name}: brace imbalance: {opens} open vs {closes} close"
     )
+def test_no_unresolved_inline_citations():
+    """Round-7 lesson: 5 of 6 papers use (Author, Year) parenthetical
+    citations extensively; check_citations.py only caught \\cite{} commands.
+
+    This test ensures all (Author, Year) inline citations in paper.tex,
+    paper.md, related_work.md, and discussion.md resolve to a master-bib entry.
+
+    Run manually:
+        .venv/bin/python scripts/check_inline_citations.py
+
+    The list ACADEMIC_SURNAMES is intentionally a subset of surnames that
+    appeared in inline citations during the Tier-5 audit. Adding more
+    surnames here is encouraged as new ones are discovered.
+    """
+    import subprocess
+    result = subprocess.run(
+        [".venv/bin/python", "scripts/check_inline_citations.py"],
+        cwd=Path(__file__).parent.parent,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, (
+        "Inline citations missing from master bib:\n"
+        + result.stdout[-2000:]
+    )

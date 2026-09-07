@@ -27,7 +27,11 @@ Our contributions are:
    territories are deforested at **2.90× the national rate**
    (95% bootstrap CI [1.72, 4.20]×, χ² = 460,597, df = 9,
    p < 0.001); the worst single case (Carmelo Peralta / Enlhet
-   Norte) is **49.45% loss**.
+   Norte) is **49.45% loss**. *This analysis is documented in
+   full in our companion paper Yvy (P0012); the per-territory
+   numbers are reproduced here for thesis-integration continuity,
+   with primary methodology and FPIC discussion in
+   `papers/drafts/p0012_yvy_indigenous/`.*
 4. **End-to-end ML pipeline + measured pilot baseline** for
    per-tile deforestation detection: reproducible pipeline
    ingesting Sentinel-2 + MapBiomas + Hansen validation; four

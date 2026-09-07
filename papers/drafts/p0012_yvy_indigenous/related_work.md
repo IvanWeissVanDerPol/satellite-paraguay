@@ -38,17 +38,17 @@ with 2.90× higher deforestation inside territories versus outside —
 adds to a small but growing literature on **exceptions to the global
 pattern**. Key exceptions and their interpretations:
 
-- **Dawson et al. (2021)** documented that indigenous lands in
+- **\citep{dawson2021}** documented that indigenous lands in
   active agricultural frontiers (notably in Indonesia and
   Brazil) show smaller protective effects or even reversed
   patterns, consistent with our Paraguayan finding.
 
-- **Clarke et al. (2024)** in Conservation Letters documented
+- **\citep{clarke2024}** in Conservation Letters documented
   that several Gran Chaco territories show deforestation rates
   elevated relative to the national average. Their qualitative
   account aligns with our quantitative finding.
 
-- **REDMOPy (2024)** — the Paraguayan NGO monitoring coalition
+- **\citep{redmopy2024}** — the Paraguayan NGO monitoring coalition
   (Guyra Paraguay, WWF Paraguay, Tierranuestra) — has produced
   annual reports since 2018 documenting that several Chaco
   territories face accelerated deforestation pressure.
@@ -70,9 +70,9 @@ Several recent papers have advanced the statistical methodology
 for indigenous-land deforestation analysis. We cite the ones
 relevant to our analysis:
 
-- **Blackman et al. (2017)** in PNAS on matching methods for
+- **\citep{blackman2017}** in PNAS on matching methods for
   causal estimation in the absence of randomization.
-- **Chassagneux et al. (2022)** on spatial heterogeneity analysis
+- **\citep{chassagneux2022}** on spatial heterogeneity analysis
   of indigenous territory forest loss using Hansen GFC v1.11.
 - **Sze et al. (2022)** itself used a difference-in-differences
   matching estimator on a global sample, which is the strongest
@@ -97,9 +97,9 @@ Reusable) by foregrounding indigenous agency and benefit.
 Specific applications of CARE to remote-sensing + indigenous-land
 research:
 
-- **GIDA (2019)** in Data Science Journal: foundational CARE
+- **\citep{gida2019}** in Data Science Journal: foundational CARE
   paper.
-- **Rainie et al. (2021)** in Data Science Journal: framework for
+- **\citep{rainie2021}** in Data Science Journal: framework for
   CARE-compliant data sovereignty in research projects.
 - **Carroll et al. (2022)** in Data Science Journal: CARE +
   indigenous research partnerships in Canadian contexts.
@@ -121,8 +121,7 @@ has occurred.
 Yvy is best understood as:
 
 - **Empirically**: a quantitative corroboration of the qualitative
-  exception documented by REDMOPy (2024), WWF (2023), and Clarke
-  et al. (2024).
+  exception documented by \citep{redmopy2024}, \citep{wwf2023}, and \citep{clarke2024}.
 - **Methodologically**: a pixel-level analysis with the same
   standard data product (Hansen GFC) as Sze et al. (2022),
   applied to a smaller but representative sample of 10

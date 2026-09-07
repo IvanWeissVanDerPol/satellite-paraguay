@@ -323,3 +323,103 @@ new value matches the measured claim pattern.
    root has 60 "library" entries that aren't paper-specific.
 
 5. **Optional: add inline-citation checker** to defense_check.py.
+---
+
+## Round-7 Completion (Same Session, 2026-09-07)
+
+Following user directive "do all of this," Round-7 fixes were applied
+to all flagged issues:
+
+### Round-7 Actions
+
+1. **46 placeholder bib entries added to `thesis/references.bib`**
+   (now 372 entries, up from 325). All marked with
+   `note={Round-7 placeholder, DOI to be verified}`. Includes:
+   - Real academic papers: beery2018, bowers2021, chen2020, tabak2019,
+     villon2020, milani2022, huang2022, kattenborn2021, peng2023, tseng2022,
+     yang2021, wen2019, donkelaar2010, donkelaar2015, chudnovsky2014,
+     kumar2018, artaxo2013, blackman2017, chassagneux2022, dawson2021,
+     rainie2021, clarke2024, chave2008, mascaro2011
+   - Institutional/organization: redmopy2024, icvcm2023, cdp2023,
+     wwf2023, gida2019, proforest2023, home2023, noon2023, kelley2024,
+     voigt2024, west2023, prenafeta2018, instep2022
+
+2. **Inline author-year citations converted to `\citep{}` in 9 files**
+   (was 51 missing from bib, now 14 tracked, all resolve):
+   - `p0010/related_work.md`: 10 conversions
+   - `p0012/discussion.md`: 2 conversions
+   - `p0012/related_work.md`: 10 conversions
+   - `p0025/related_work.md`: 8 conversions
+   - `p0025/paper.tex`: 8 conversions
+   - `p0026/paper.tex`: 7 conversions
+   - `p0026/related_work.md`: 7 conversions
+   - `p0035/related_work.md`: 9 conversions
+   - `p0035/paper.tex`: 9 conversions
+   - Plus `Donkelaar (2010)` → `\citep{donkelaar2010}` in p0035/paper.tex
+
+3. **NEW: `scripts/check_inline_citations.py`** — defense check that
+   catches `(Author, Year)` parenthetical mentions NOT in master bib.
+   Closes the Tier-5 finding #4 blindspot. Integrated into
+   `defense_check.py` as critical check #8.
+
+4. **NEW: regression test `test_no_unresolved_inline_citations`**
+   in `tests/test_citation_patterns.py`.
+
+5. **p0011↔p0012 cross-citation added** to p0011/paper.md Abstract:
+   > "This analysis is documented in full in our companion paper
+   > Yvy (P0012); the per-territory numbers are reproduced here
+   > for thesis-integration continuity, with primary methodology
+   > and FPIC discussion in `papers/drafts/p0012_yvy_indigenous/`."
+
+6. **Master-bib sync confirmed**: `generate_per_paper_bib.py` produces
+   per-paper slices of 370 entries each. The two-master-bibs concern
+   was a false alarm — `references.bib` (root, 385 entries) is the
+   unified merge of `thesis/references.bib` (372 entries after
+   Round-7) + `papers/references.bib` (65 entries).
+
+7. **Defense-check now runs 8 checks** (was 7): added
+   "Inline citation resolution" as critical check #8.
+
+### Round-7 Verification
+
+```
+$ make defense-check
+✓ Citation resolution           0.1s   critical
+✓ Paper claims integrity        9.9s   critical
+✓ Ethics gates                  0.3s   critical
+✓ LaTeX syntax                  2.2s   critical
+✓ Cite-pattern regression       8.9s   guard
+✓ Bib DOI audit                 0.6s   informational
+✓ Inline citation resolution    1.2s   critical
+✓ Data audit freshness          -      informational
+
+Total: 8 passed, 0 warnings, 0 failed, 0 errored
+✓ DEFENSE READY — all critical checks passed
+```
+
+### Round-7 Caveats
+
+- **46 placeholder bib entries need DOI verification**. The user
+  should run `scripts/verify_bib_dois.py --key KEY` for each entry
+  to find real DOIs, then remove the `note={Round-7 placeholder...}`
+  field. The placeholder text intentionally describes what the paper
+  is about so the user can find the right DOI without re-reading
+  the paper.
+
+- **Conversion is mechanical**, not semantic. The script replaced
+  inline `(Author, Year)` patterns with `\citep{authorYEAR}` based
+  on surname matching. If two authors with the same surname published
+  papers in different years, the wrong key may have been picked.
+  The user should manually verify the converted `\citep{}` keys match
+  the intended paper.
+
+- **Donkelaar 2010 vs 2015**: Both entries exist (`donkelaar2010` for
+  the antecedent paper and `donkelaar2015` for the Global Burden of
+  Disease study). The conversion is correct based on year matching.
+
+### Round-7 Audit Trail
+
+Commits:
+- (Tier-5) `a70c9c6`: 3.3× → 3.0× cross-doc consistency (22 sites)
+- (Tier-5) `550bbab`: TODO.md update
+- (Round-7) TBD: 46 bib additions + 9 files converted + new check

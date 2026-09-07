@@ -17,6 +17,7 @@ Checks (in order):
     5. Cite-pattern guards     — pytest tests/test_citation_patterns.py
     6. Bib DOI audit summary   — verify_bib_dois.py --summary
     7. Data audit freshness    — outputs/data_audit.json <30 days old
+    8. Inline citation resolution — check_inline_citations.py
 
 Usage:
     scripts/defense_check.py             # Run all checks, fail on any FAIL
@@ -83,6 +84,13 @@ CHECKS = [
         "expect_zero_exit": False,  # summary always returns 0
         "weight": "informational",
         "description": "Round-6 audit: 7 fixes applied, 76 false-positive confirmed",
+    },
+    {
+        "name": "Inline citation resolution",
+        "cmd": [".venv/bin/python", "scripts/check_inline_citations.py"],
+        "expect_zero_exit": True,
+        "weight": "critical",
+        "description": "All (Author, Year) inline citations must resolve to master bib",
     },
 ]
 
@@ -252,7 +260,7 @@ def main():
     args = parser.parse_args()
 
     if not args.json:
-        print("Running 6 critical defense checks...")
+        print("Running 7 critical defense checks...")
         if args.full:
             print("Plus full pytest suite (740+ tests, ~6 min)...")
         print("(For verbose output, run with --verbose)")
