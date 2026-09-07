@@ -100,13 +100,18 @@ def main():
         print(f"\n[{status}] {r['paper']}: {r['cite_count']} \\cite{{}} vs {r['bib_count']} bib entries")
         if r["missing_in_bib"]:
             all_ok = False
-            print(f"  Missing in .bib (broken \\cite{{}}):")
+            print("  Missing in .bib (broken \\cite{{}}):")
             for k in r["missing_in_bib"]:
                 print(f"    - {k}")
         if r["unused_in_bib_count"] > 0:
             print(f"  Unused bib entries: {r['unused_in_bib_count']} (informational)")
         print(
-            f"  -- {r['paper']}: {r['cite_count']} cites, {r['bib_count']} bib entries, missing={len(r['missing_in_bib'])}, unused={r['unused_in_bib_count']}"
+            (
+                f"  -- {r['paper']}: {r['cite_count']} cites, "
+                f"{r['bib_count']} bib entries, "
+                f"missing={len(r['missing_in_bib'])}, "
+                f"unused={r['unused_in_bib_count']}"
+            )
         )
 
     print()

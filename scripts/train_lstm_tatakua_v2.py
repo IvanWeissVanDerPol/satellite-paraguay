@@ -16,10 +16,9 @@ Usage:
 
 import argparse
 import json
-import logging
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -541,13 +540,19 @@ def main():
     print(f"\n  Training time: {time.time() - t0:.1f}s")
     print(f"  Best epoch: {results['best_epoch']}/{args.epochs}")
     print(f"  Best val loss: {results['best_val_loss']:.4f}")
-    print(f"\n  Test metrics (µg/m³):")
+    print("\n  Test metrics (µg/m³):")
     print(f"  {'Horizon':<10} {'Model RMSE':<12} {'Model MAE':<12} {'Persist RMSE':<14} {'Improvement'}")
     print(f"  {'-'*70}")
     for model_m, persist_m in zip(results["per_horizon_metrics"], results["persistence_metrics"]):
         improvement = (persist_m["rmse"] - model_m["rmse"]) / persist_m["rmse"] * 100
         print(
-            f"  {model_m['horizon_days']}d        {model_m['rmse']:<12.2f} {model_m['mae']:<12.2f} {persist_m['rmse']:<14.2f} {improvement:+.1f}%"
+            (
+                f"  {model_m['horizon_days']}d        "
+                f"{model_m['rmse']:<12.2f} "
+                f"{model_m['mae']:<12.2f} "
+                f"{persist_m['rmse']:<14.2f} "
+                f"{improvement:+.1f}%"
+            )
         )
 
     print(f"\n  Results: {args.output_dir}/results.json")

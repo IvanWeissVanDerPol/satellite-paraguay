@@ -242,14 +242,16 @@ class TestGitignoreExcludesSensitiveDataPaths:
             timeout=10,
         ).stdout.split("\x00")
         tracked = [p for p in tracked if p]  # drop empties
-        assert not tracked, (
-            f"Sensitive paths are tracked in git (must be purged from history).\n"
-            f"Tracked files:\n  "
-            + "\n  ".join(tracked[:20])
-            + (f"\n  ... and {len(tracked) - 20} more" if len(tracked) > 20 else "")
-            + "\n\nAudit-round-2 CRITICAL FINDING (D) requires `git filter-repo` "
+        msg_lines = ["Sensitive paths are tracked in git (must be purged from history).\n"]
+        msg_lines.append("Tracked files:\n  ")
+        msg_lines.append("\n  ".join(tracked[:20]))
+        if len(tracked) > 20:
+            msg_lines.append(f"\n  ... and {len(tracked) - 20} more")
+        msg_lines.append(
+            "\n\nAudit-round-2 CRITICAL FINDING (D) requires `git filter-repo` "
             "to purge these from history. See docs/security/audit-round-2.md."
         )
+        assert not tracked, "".join(msg_lines)
 
 
 # ===== Claim #4: actions/upload-artifact is SHA-pinned (Scenario 8 cross-check) =====

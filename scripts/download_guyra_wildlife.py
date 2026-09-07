@@ -31,7 +31,6 @@ Output:
 
 import argparse
 import csv
-import json
 import os
 import random
 import sys
@@ -102,7 +101,7 @@ def main():
             print("ERROR: --real flag requires Guyra partnership doc at docs/partnerships/GUYRA-*.md", file=sys.stderr)
             sys.exit(2)
 
-        print(f"[Guyra] Real data mode")
+        print("[Guyra] Real data mode")
         print(f"  Partnership doc: {guyra_docs[0]}")
         print(f"  API key: {api_key[:8]}...")
         species_list = args.species.split(",")
@@ -110,7 +109,7 @@ def main():
         print(f"  Count per species: {args.count}")
         fetch_real_data(args.output, api_key, species_list)
     else:
-        print(f"[Guyra] Stub mode (no partnership yet)")
+        print("[Guyra] Stub mode (no partnership yet)")
         write_stub_manifest(args.output)
 
 

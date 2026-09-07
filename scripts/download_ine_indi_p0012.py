@@ -23,9 +23,6 @@ Output:
 
 import argparse
 import csv
-import json
-import logging
-import sys
 import time
 from pathlib import Path
 from urllib.request import urlopen, Request
@@ -100,7 +97,7 @@ def fetch_ine_census_data(census_year: int = 2022, output_dir: Path = None):
                     print(f"  OK: {out_path} ({len(data)} bytes)")
                     return out_path
                 else:
-                    print(f"  Got HTML, skipping")
+                    print("  Got HTML, skipping")
         except (HTTPError, URLError) as e:
             print(f"  Failed: {e}")
         time.sleep(1)
@@ -243,7 +240,7 @@ def fetch_indi_territories(output_dir: Path = None):
                     print(f"  OK: {out_path} ({len(data)} bytes)")
                     return out_path
                 else:
-                    print(f"  Got HTML/JSON, skipping")
+                    print("  Got HTML/JSON, skipping")
         except (HTTPError, URLError) as e:
             print(f"  Failed: {e}")
         time.sleep(1)
@@ -361,7 +358,11 @@ def main():
     print(f"Departments with disparity > 10%: {len(high_disparity)}")
     for r in high_disparity[:5]:
         print(
-            f"  {r['department']}: {r['indigenous_pct']}% indigenous, {r['deforestation_pct']}% defor, disparity {r['disparity_index']}"
+            (
+                f"  {r['department']}: {r['indigenous_pct']}% indigenous, "
+                f"{r['deforestation_pct']}% defor, "
+                f"disparity {r['disparity_index']}"
+            )
         )
 
     print(f"\nDone. Output: {args.output}/")

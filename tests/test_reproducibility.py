@@ -16,7 +16,6 @@ Run:
     pytest tests/test_reproducibility.py -v -k "P0011"
 """
 
-import hashlib
 import subprocess
 from pathlib import Path
 
@@ -111,7 +110,7 @@ class TestCostCapScript:
     def test_script_exists_and_executable(self):
         path = REPO_ROOT / "infra" / "cost-cap.sh"
         assert path.exists()
-        import os
+
         import stat
 
         mode = path.stat().st_mode

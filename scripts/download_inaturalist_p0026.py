@@ -20,7 +20,6 @@ import argparse
 import csv
 import json
 import logging
-import sys
 import time
 from pathlib import Path
 from urllib.request import urlopen, Request
@@ -104,7 +103,7 @@ def main():
     bbox = tuple(args.bbox)
 
     print("=" * 70)
-    print(f"P0026 Kai - iNaturalist wildlife data download")
+    print("P0026 Kai - iNaturalist wildlife data download")
     print(f"Bbox: {bbox}")
     print(f"Per species: {args.per_species}")
     print(f"Species: {len(KAI_SPECIES)}")
@@ -183,7 +182,7 @@ def main():
             for o in species_obs:
                 # YOLO format: class_id x_center y_center width height (normalized 0-1)
                 # We use 0 as default class ID since YOLO training handles class mapping
-                f.write(f"0 0.5 0.5 0.5 0.5\n")
+                f.write("0 0.5 0.5 0.5 0.5\n")
         print(f"  {species}: {count} obs -> {species_file.name}")
 
     print(f"\nDone. Output: {args.output}/")

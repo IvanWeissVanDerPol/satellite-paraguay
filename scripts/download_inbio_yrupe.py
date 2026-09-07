@@ -31,7 +31,6 @@ Output:
 
 import argparse
 import csv
-import json
 import os
 import random
 import sys
@@ -109,12 +108,12 @@ def main():
             print("  See docs/partnerships/TEMPLATE-FPIC.md for procedure", file=sys.stderr)
             sys.exit(2)
 
-        print(f"[INBIO] Real data mode")
+        print("[INBIO] Real data mode")
         print(f"  Partnership doc: {inbio_docs[0]}")
         print(f"  API key: {api_key[:8]}...")
         fetch_real_data(args.output, api_key)
     else:
-        print(f"[INBIO] Stub mode (no partnership yet)")
+        print("[INBIO] Stub mode (no partnership yet)")
         write_stub_data(args.output)
 
 

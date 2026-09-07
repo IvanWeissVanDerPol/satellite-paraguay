@@ -22,7 +22,6 @@ import argparse
 import csv
 import json
 import logging
-import sys
 import time
 from pathlib import Path
 from urllib.request import urlopen, Request
@@ -63,7 +62,10 @@ def fetch_fao_yield_data(year: int, output_dir: Path):
     crops_data = {}
 
     for crop_name, item_code in items:
-        url = f"https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item={item_code}&element=5412&year={year}"
+        url = (
+            f"https://fenixservices.fao.org/faostat/api/v1/en/data/QCL"
+            f"?area=138&item={item_code}&element=5412&year={year}"
+        )
         try:
             req = Request(url, headers=headers)
             with urlopen(req, timeout=5) as resp:  # short timeout - fall back fast
