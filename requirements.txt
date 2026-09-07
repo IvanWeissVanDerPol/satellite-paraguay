@@ -74,6 +74,6 @@ ipywidgets>=8.1
 nbconvert>=7.11
 
 # Optional but recommended
-dvc>=3.30
+dvc>=3.67.1
 wandb>=0.16
 tensorboard>=2.15
