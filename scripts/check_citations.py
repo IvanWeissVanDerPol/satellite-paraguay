@@ -7,10 +7,10 @@ Usage:
   python3 check_citations.py --all  # check all papers
 """
 
+import argparse
 import os
 import re
 import sys
-import argparse
 
 PAPERS_DIR = "/opt/data/work/satellite-paraguay/papers/drafts"
 

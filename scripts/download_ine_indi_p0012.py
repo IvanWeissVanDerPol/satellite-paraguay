@@ -25,8 +25,8 @@ import argparse
 import csv
 import time
 from pathlib import Path
-from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -62,7 +62,7 @@ PARAGUAY_INDIGENOUS_PEOPLES = [
 ]
 
 
-def fetch_ine_census_data(census_year: int = 2022, output_dir: Path = None):
+def fetch_ine_census_data(census_year: int = 2022, output_dir: Path | None = None):
     """Fetch INE census data — district-level population by ethnicity.
 
     INE publishes census tables as CSVs. We want district-level population
@@ -205,7 +205,7 @@ def generate_synthetic_census_placeholder(output_dir: Path, year: int):
     return out_path
 
 
-def fetch_indi_territories(output_dir: Path = None):
+def fetch_indi_territories(output_dir: Path | None = None):
     """Fetch INDI public territory polygons.
 
     INDI publishes territory boundaries at:

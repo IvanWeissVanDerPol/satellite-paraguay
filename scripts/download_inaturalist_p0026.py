@@ -22,8 +22,8 @@ import json
 import logging
 import time
 from pathlib import Path
-from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 

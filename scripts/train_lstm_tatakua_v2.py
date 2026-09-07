@@ -228,8 +228,10 @@ def build_lstm_dataset(
         # avg_pm25_norm is shape (T, n_horizons), so row at time t+30+h gives all horizons
         y = [float(avg_pm25_norm[i + sequence_length + h - 1, h_idx]) for h_idx, h in enumerate(horizons)]
         Y.append(y)
-    X = np.array(X, dtype=np.float32)
-    Y = np.array(Y, dtype=np.float32)
+    X_np: np.ndarray = np.array(X, dtype=np.float32)
+    Y_np: np.ndarray = np.array(Y, dtype=np.float32)
+    X = X_np  # type: ignore[assignment]
+    Y = Y_np  # type: ignore[assignment]
 
     # Train/val/test split (chronological, not random)
     n = len(X)
@@ -300,7 +302,7 @@ def train_model(
     hidden_dim: int = 128,
     n_layers: int = 2,
     device: str = "cpu",
-    output_dir: Path = None,
+    output_dir: Path | None = None,
     weight_decay: float = 1e-3,
     patience: int = 10,
 ):
