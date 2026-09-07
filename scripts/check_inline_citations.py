@@ -15,11 +15,12 @@ Usage:
 
 Exits 0 if all inline citations resolve, 1 otherwise.
 """
+
 from __future__ import annotations
+
+import json
 import re
 import sys
-import os
-import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -27,8 +28,16 @@ PAPERS_DIR = REPO_ROOT / "papers" / "drafts"
 MASTER_BIB = REPO_ROOT / "thesis" / "references.bib"
 
 # File types to scan
-PAPER_FILES = ["paper.tex", "paper.md", "related_work.md", "discussion.md",
-               "introduction.md", "methods.md", "results.md", "abstract.md"]
+PAPER_FILES = [
+    "paper.tex",
+    "paper.md",
+    "related_work.md",
+    "discussion.md",
+    "introduction.md",
+    "methods.md",
+    "results.md",
+    "abstract.md",
+]
 
 # Surnames to check (subset of inline-cited authors in the corpus).
 # Excludes non-author mentions like "REDMOPy" (software) by requiring the
@@ -38,11 +47,30 @@ PAPER_FILES = ["paper.tex", "paper.md", "related_work.md", "discussion.md",
 # Tier-5 audit. Adding more is fine.
 ACADEMIC_SURNAMES = {
     # Original Tier-5 list (verified in p0026, p0025, p0035, p0012, p0010)
-    'Beery', 'Bowers', 'Chen', 'Tabak', 'Villon', 'Milani',
-    'Huang', 'Kattenborn', 'Peng', 'Tseng', 'Yang',
-    'Wen', 'Donkelaar', 'Chudnovsky', 'Kumar', 'Artaxo',
-    'Blackman', 'Chassagneux', 'Dawson', 'Rainie', 'Clarke',
-    'Chave', 'Mascaro', 'Mitchard',
+    "Beery",
+    "Bowers",
+    "Chen",
+    "Tabak",
+    "Villon",
+    "Milani",
+    "Huang",
+    "Kattenborn",
+    "Peng",
+    "Tseng",
+    "Yang",
+    "Wen",
+    "Donkelaar",
+    "Chudnovsky",
+    "Kumar",
+    "Artaxo",
+    "Blackman",
+    "Chassagneux",
+    "Dawson",
+    "Rainie",
+    "Clarke",
+    "Chave",
+    "Mascaro",
+    "Mitchard",
     # Noise words that aren't papers (mention year but no formal citation)
     # Excluded: REDMOPy, CDP, Home, Noon, WWF, GIDA, ICVCM, Proforest,
     # Prenafeta, West, Voigt, Kelley (handled by placeholder entries)
@@ -132,13 +160,15 @@ def main() -> int:
                 if year in years:
                     total_resolved += 1
                 else:
-                    missing.append({
-                        "paper": paper_dir.name,
-                        "file": fname,
-                        "surname": surname,
-                        "year": year,
-                        "text": text[:100],
-                    })
+                    missing.append(
+                        {
+                            "paper": paper_dir.name,
+                            "file": fname,
+                            "surname": surname,
+                            "year": year,
+                            "text": text[:100],
+                        }
+                    )
 
     result = {
         "files_scanned": files_scanned,
