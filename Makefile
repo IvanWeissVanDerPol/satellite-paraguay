@@ -63,6 +63,7 @@ help:
 	@echo "  make guard                 — Run cite-pattern regression guards only (~2s)"
 	@echo "  make pre-defense           — Alias for defense-check"
 	@echo "  make defense-check-verbose — Run with --verbose to see full check output"
+	@echo "  make defense-check-full    — Full pytest suite too (~6 min, 740+ tests)"
 	@echo "Docker:"
 	@echo "  make docker-build          — Build Docker image"
 	@echo "  make docker-run            — Run in Docker container"
@@ -193,6 +194,12 @@ pre-defense:
 
 defense-check-verbose:
 	python3 scripts/defense_check.py --verbose
+
+# Full suite — ~6 min, runs all 740+ tests across 80 files
+# Use this weekly or before major commits; the default defense-check is
+# the 15s smoke version suitable for every-PR.
+defense-check-full:
+	python3 scripts/defense_check.py --full
 
 guard:
 	.venv/bin/python -m pytest tests/test_citation_patterns.py --no-cov -q

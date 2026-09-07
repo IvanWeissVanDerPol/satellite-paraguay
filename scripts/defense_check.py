@@ -86,6 +86,24 @@ CHECKS = [
     },
 ]
 
+# Full pytest suite (only run with --full). Runs ~6 minutes.
+# Excludes tests that require GEE/network/rasters — these are skipped by
+# importorskip at the module level, but full mode still surfaces their
+# state. The previous 3 rasterio failures are now properly skipped.
+FULL_PYTEST_CMD = [".venv/bin/python", "-m", "pytest", "tests/",
+                   "--no-cov", "-q", "--tb=no",
+                   # Skip slow integration + property-based + perf
+                   "--ignore=tests/test_performance.py",
+                   "--ignore=tests/test_integration.py",
+                   "--ignore=tests/test_properties.py",
+                   "--ignore=tests/test_property_based.py",
+                   "--ignore=tests/test_real_download.py",
+                   "--ignore=tests/test_real_download_gee.py",
+                   "--ignore=tests/test_thesis_satellite_tick.py",
+                   "--ignore=tests/test_thesis_sync_watchdog.py",
+                   "--ignore=tests/test_reproducibility.py",
+                   ]
+
 
 def run_check(check, verbose=False):
     """Run a single check, return dict with status + duration."""
@@ -229,14 +247,27 @@ def main():
                         help="Print full output of each check")
     parser.add_argument("--json", action="store_true",
                         help="Emit JSON summary instead of human-readable output")
+    parser.add_argument("--full", action="store_true",
+                        help="Also run full pytest suite (~6 min, 740+ tests)")
     args = parser.parse_args()
 
     if not args.json:
         print("Running 6 critical defense checks...")
+        if args.full:
+            print("Plus full pytest suite (740+ tests, ~6 min)...")
         print("(For verbose output, run with --verbose)")
 
     results = []
-    for check in CHECKS:
+    checks_to_run = list(CHECKS)
+    if args.full:
+        checks_to_run.append({
+            "name": "Full pytest suite",
+            "cmd": FULL_PYTEST_CMD,
+            "expect_zero_exit": True,
+            "weight": "guard",
+            "description": "All 740+ tests across 80 files (skips slow/integration)",
+        })
+    for check in checks_to_run:
         results.append(run_check(check, verbose=args.verbose))
     # Add data audit freshness (cheap, no subprocess)
     results.append(check_data_audit_freshness())
