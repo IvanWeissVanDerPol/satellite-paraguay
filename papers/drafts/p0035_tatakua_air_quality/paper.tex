@@ -264,6 +264,20 @@ is limited by ground-station spacing. \textbf{The ``Ministry of Health
 deployment'' mentioned in earlier drafts of this Discussion does not exist
 and has been removed.}
 
+\section{Conclusion}
+
+This paper (Tatakua) ships an open-source 12-station LSTM baseline for
+PM$_{2.5}$ forecasting in Paraguay, trained on 12 months of OpenAQ data
+and validated against out-of-station RMSE = 14.7\,$\mu$g/m$^3$. It is
+explicitly \textbf{not} an operational public-health deployment: the
+Chaco rural gap is large enough that any policy recommendation built
+on this baseline would be unsafe, and the LSTM does not generalize
+below station spacing. The intended role is reproducibility --- so that
+future work in Paraguay can compare against a documented
+performance floor rather than a closed-source vendor benchmark ---
+and an audit trail so the model's failure modes are as visible as
+its successes.
+
 \section*{Data availability}
 
 OpenAQ: \url{https://openaq.org/}. TROPOMI: \url{https://s5phub.copernicus.eu/}.

@@ -107,6 +107,23 @@ data is below operational threshold, but a cascaded system
 (binary-background classifier $\rightarrow$ species-level fine-tune)
 is likely to close the gap.
 
+\section*{Conclusion}
+
+This paper (Kai) reports a synthetic-to-real wildlife-detection system
+trained on Blender-rendered camera-trap imagery and evaluated against
+5{,}000 real Guyra-Paraguay frames. The headline result --- a 0.32
+absolute mAP drop from synthetic to real --- is presented as a
+\textbf{failure mode}, not as a deployable detector. The intended
+contributions are (i) the synthetic-rendering pipeline, which produces
+labeled training data for species that are too rare to field-label at
+scale; (ii) the empirical measurement of the synthetic-to-real gap
+that any future camera-trap work in Paraguay will have to plan
+around; and (iii) the public release of the rendering pipeline so that
+the next round of work can iterate on the failure mode rather than
+re-derive it. The system as shipped is \textbf{not} suitable for
+operational anti-poaching deployment; it is a reproducible entry point
+that future work in the same corpus can build on.
+
 \section*{Acknowledgments}
 
 Guyra Paraguay provided the camera-trap data.

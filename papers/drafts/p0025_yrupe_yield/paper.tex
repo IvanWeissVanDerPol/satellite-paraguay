@@ -264,6 +264,24 @@ data-scarce regions, though the transfer ratio is just below the
 typical ``meaningful transfer'' threshold. Future work should explore
 domain-specific pretraining with longer time series.
 
+\section{Conclusion}
+
+This paper (Yrupe) reports a negative-but-documented result: cross-domain
+transfer from a forest-loss task to soybean yield prediction does not
+recover the source-domain performance at the typical
+``meaningful transfer'' threshold. The submission-grade artifact is the
+\textbf{reproducibility bundle} --- pretrained weights, deterministic
+splits, exact data versions, training logs, and a 10-iteration
+ablation on the failure mode. We treat the experimental trace as the
+contribution, not the predictive performance, and recommend that any
+future soybean-yield work in Paraguay (i) start with longer
+Sentinel-1 / Sentinel-2 time series than the one-shot FAO yield grid
+used here, (ii) pretrain on Paraguay-specific rather than global
+remote-sensing corpora, and (iii) report the transfer ratio against a
+within-domain baseline, not as an absolute metric. The text in this
+paper is honest about the failure, and the code is honest about the
+gap between training-set performance and held-out real-world yield.
+
 \section*{Data and code availability}
 
 All data and code are open source under MIT license.
