@@ -101,6 +101,7 @@
 | Document Hermes-hook noise on background test runs | `d6c7632` | 2026-09-07 |
 | **Tier-1: 5 Conclusion sections + cite-pattern regression guard** | `6661c67` | 2026-09-07 |
 | **Tier-2: defense_check.py wrapper + Makefile targets** | `1cb6c8b` | 2026-09-07 |
+| **Fix MAE<5 defense finding: sanction CH11 + qualify row** | `eeeca93` | 2026-09-07 |
 | Round-6: 7 DOI fixes applied, 76 false-positive confirmed | `c8c0c10` | 2026-09-07 |
 | Repo infrastructure: CLAUDE.md + AUDIT + verify_bib_dois.py | (this commit) | 2026-09-07 |
 
