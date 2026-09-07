@@ -171,6 +171,9 @@ def main():
     # Profile 9: Baselines (P0011)
     from src.baselines import p0011_yvytu_baselines
 
+    # SYNTHETIC TEST FIXTURES (not real data — see commit 5347383 fail-loud
+    # for production paths. These random arrays ONLY exercise the baseline
+    # functions in the profiling path; do NOT read as thesis results.)
     ndvi = np.random.rand(12, 64, 64).astype(np.float32) * 0.5 + 0.3
     gt = np.random.randint(0, 5, (64, 64), dtype=np.int64)
     results.append(

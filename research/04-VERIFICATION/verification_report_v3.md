@@ -1,0 +1,298 @@
+# Round-2 Citation Verification Report (v3)
+
+**Date:** 2026-09-03
+**Method:** CrossRef API via curl, ±1 year filter, two-tier scoring (Jaccard ×2 + min-overlap), +0.2 year bonus
+**Source:** `citations_to_verify.txt` (226 candidates extracted from round-2 files)
+
+## Statistics
+
+- Total candidates: 226
+- ✅ **VERIFIED** (>0.6): 47 (21%)
+- ⚠️ **LIKELY** (0.4-0.6): 51 (23%)
+- 📝 **PARTIAL** (0.2-0.4): 34 (15%)
+- ❌ **NOT_FOUND** (<0.2): 94 (42%)
+
+## ✅ VERIFIED — Add to thesis bibliography
+
+- **Ahmad, A., et al. (2024).** → DOI: `10.5772/intechopen.1008237` (score 0.644)
+  - Matched: Soil Erosion Potential Model in Tropical Catchment
+- **Andela, N., et al. (2019).** → DOI: `10.5194/essd-11-529-2019` (score 0.927)
+  - Matched: The Global Fire Atlas of individual fire size, duration, speed and direction
+- **Ao, Y., et al. (2024).** → DOI: `10.1117/12.2667435` (score 0.771)
+  - Matched: Spatial and temporal characteristics of vegetation information in Zhejiang Province using the Google Earth Engine
+- **Baldocchi, D., et al. (2001).** → DOI: `10.1175/1520-0477(2001)082<2415:fantts>2.3.co;2` (score 1.0)
+  - Matched: FLUXNET: A New Tool to Study the Temporal and Spatial Variability of Ecosystem–Scale Carbon Dioxide, Water Vapor, and En
+- **Balvanera, P., et al. (2024).** → DOI: `10.1016/b978-0-12-822562-2.00139-0` (score 0.7)
+  - Matched: Sustainability and Biodiversity
+- **Berthrong, S.T., et al. (2009).** → DOI: `10.1890/08-1730.1` (score 1.0)
+  - Matched: A global meta‐analysis of soil exchangeable cations, pH, carbon, and nitrogen with afforestation
+- **Chu, H., et al. (2024).** → DOI: `10.1038/s41597-023-02531-2` (score 0.95)
+  - Matched: AmeriFlux BASE data pipeline to support network growth and data sharing
+- **Cohn, A.S., et al. (2014).** → DOI: `10.1073/pnas.1307163111` (score 1.0)
+  - Matched: Cattle ranching intensification in Brazil can reduce global greenhouse gas emissions by sparing land from deforestation
+- **Da Ponte, E., et al. (2024).** → DOI: `10.29327/9786527220794.1443154` (score 0.8)
+  - Matched: Integrating Digital Twin Technology and Remote Sensing for Environmental Monitoring in the Cerrado Biome
+- **Goldstein, A., et al. (2024).** → DOI: `10.1177/20503032241240773` (score 0.7)
+  - Matched: On climate apocalypse
+- **Govers, G., et al. (2014).** → DOI: `10.1016/j.catena.2012.12.011` (score 0.7)
+  - Matched: Effects of interrill erosion, soil crusting and soil aggregate breakdown on in situ CO2 effluxes
+- **Harris, N.L., et al. (2021).** → DOI: `10.1038/s41558-020-00976-6` (score 1.0)
+  - Matched: Global maps of twenty-first century forest carbon fluxes
+- **Herrero, M., et al. (2013).** → DOI: `10.1073/pnas.1308149110` (score 1.0)
+  - Matched: Biomass use, production, feed efficiencies, and greenhouse gas emissions from global livestock systems
+- **Holl, K.D. (2017).** → DOI: `10.3417/2016036` (score 0.867)
+  - Matched: Research Directions in Tropical Forest Restoration
+- **Klein, A.M., et al. (2007).** → DOI: `10.1098/rspb.2006.3721` (score 1.0)
+  - Matched: Importance of pollinators in changing landscapes for world crops
+- **Kuemmerle, T., et al. (2017).** → DOI: `10.1080/24694452.2017.1360761` (score 0.867)
+  - Matched: Rents, Actors, and the Expansion of Commodity Frontiers in the Gran Chaco
+- **Kumar, S., et al. (2024).** → DOI: `10.1007/978-3-031-94062-0_3` (score 0.867)
+  - Matched: A Climate-Resilient Agriculture Technique for Semi-Arid Regions
+- **Lal, R. (2020).** → DOI: `10.2489/jswc.2020.0408a` (score 1.0)
+  - Matched: Soil science beyond COVID-19
+- **Lima, M., et al. (2024).** → DOI: `10.5772/intechopen.1010606` (score 0.7)
+  - Matched: Perspective Chapter: Local Construction Strategies for Climate Adaptation in the Trinational Region of Iguaçu – Brazil, 
+- **Marengo, J.A., et al. (2025).** → DOI: `10.1016/j.wace.2024.100710` (score 0.629)
+  - Matched: The 2022-23 drought in the South American Altiplano: ENSO effects on moisture flux in the western Amazon during the pre-
+- **Martins, M.M., et al. (2010).** → DOI: `10.1017/s0959270910000110` (score 0.7)
+  - Matched: Blood parasites in Brazilian Atlantic Forest birds: effects of fragment size and habitat dependency
+- **Morrison, J.C., et al. (2007).** → DOI: `10.1051/parasite/2008153191` (score 0.7)
+  - Matched: Prospects for elucidating the phylogeny of the Apicomplexa
+- **Nguyen, H., et al. (2024).** → DOI: `10.2139/ssrn.5955336` (score 0.7)
+  - Matched: Biomass-derived Washing Reagent for Enhancing Reusability of Contaminated Agriculture Soil
+- **Parker, R., et al. (2024).** → DOI: `10.5194/acp-25-797-2025` (score 0.7)
+  - Matched: Satellite quantification of methane emissions from South American countries: a high-resolution inversion of TROPOMI and 
+- **Pastorello, G., et al. (2020).** → DOI: `10.1038/s41597-020-0534-3` (score 1.0)
+  - Matched: The FLUXNET2015 dataset and the ONEFlux processing pipeline for eddy covariance data
+- **Paviolo, A., et al. (2019).** → DOI: `10.31687/saremnms.19.0.11` (score 0.867)
+  - Matched: New locality for the rare sigmodontine Abrawayaomys ruschii (Rodentia, Cricetidae) in Argentina, with comments about its
+- **Pereira, H.M., et al. (2010).** → DOI: `10.1890/100084` (score 0.95)
+  - Matched: Mediterranean cork oak savannas require human use to sustain biodiversity and ecosystem services
+- **Pfaff, A., et al. (2024).** → DOI: `10.1002/mar.21874` (score 0.7)
+  - Matched: When reality backfires: Product evaluation context and the effectiveness of augmented reality in e‐commerce
+- **Prado, D. (1993).** → DOI: `10.1038/356704a0` (score 0.644)
+  - Matched: First discovery of monotremes in South America
+- **Ramirez, R., et al. (2024).** → DOI: `10.2139/ssrn.5573718` (score 0.7)
+  - Matched: Sustainable Urban Behaviour: An Interdisciplinary Framework for Transforming Cities into Resilient Ecosystems
+- **Rao, I., et al. (2015).** → DOI: `10.1007/s13280-015-0676-2` (score 0.8)
+  - Matched: LivestockPlus: Forages, sustainable intensification, and food security in the tropics
+- **Reid, J., et al. (2024).** → DOI: `10.3389/fmars.2024.1297975` (score 0.7)
+  - Matched: Indigenous self-determination in fisheries governance: implications from New Zealand and Atlantic Canada
+- **Sayer, J., et al. (2017).** → DOI: `10.1007/s11625-016-0415-z` (score 1.0)
+  - Matched: Measuring the effectiveness of landscape approaches to conservation and development
+- **Schleicher, J., et al. (2024).** → DOI: `10.1111/aos.70018` (score 0.7)
+  - Matched: Incidence, risk factors, and outcomes of numerical hypotony and choroidal effusion following
+                    <scp>PR
+- **Schuster, R., et al. (2019).** → DOI: `10.1016/j.biocon.2020.108826` (score 0.7)
+  - Matched: Integrating season-specific needs of migratory and resident birds in conservation planning
+- **Silva-Mendoza, H., et al. (2019).** → DOI: `10.35572/rlr.v9i4.1930` (score 0.7)
+  - Matched: Problemas e desafios na tradução das línguas indígenas: os casos das línguas Toba e Maká da região de Gran Chaco (Argent
+- **Silva-Mendoza, H., et al. (2021).** → DOI: `10.1007/s42991-020-00051-9` (score 0.7)
+  - Matched: Decreasing dietary diversity following habitat loss: the case of the thin-spined porcupine in the Atlantic forest
+- **Smith, W., et al. (2024).** → DOI: `10.13102/scb9149` (score 0.7)
+  - Matched: Natural history notes on Pampas Fox Lycalopex gymnocercus (Mammalia: Carnivora: Canidae) in the Paraguayan Chaco
+- **Sollmann, R., et al. (2011).** → DOI: `10.1007/s11284-012-0938-4` (score 0.7)
+  - Matched: One or two cameras per station? Monitoring jaguars and other mammals in the Amazon
+- **Tscharntke, T., et al. (2011).** → DOI: `10.1111/j.1365-2664.2010.01939.x` (score 1.0)
+  - Matched: Multifunctional shade-tree management in tropical agroforestry landscapes - a review
+- **Ullah, A., et al. (2024).** → DOI: `10.1332/policypress/9781529231311.003.0005` (score 0.771)
+  - Matched: Final Destinations and Policy Implications
+- **Vass, K.K., et al. (2010).** → DOI: `10.1080/14634988.2010.529788` (score 0.7)
+  - Matched: Ecology, changes in fisheries, and energy estimates in the middle stretch of the River Ganges
+- **Vera, C. et al. (2006).** → DOI: `10.1175/jcli3896.1` (score 1.0)
+  - Matched: Toward a Unified View of the American Monsoon Systems
+- **Weisse, M., et al. (2024).** → DOI: `10.1111/gcb.17392` (score 0.8)
+  - Matched: Extreme wildfires in Canada and their contribution to global loss in tree cover and carbon emissions in 2023
+- **West, T.A.P., et al. (2020).** → DOI: `10.1073/pnas.2004334117` (score 1.0)
+  - Matched: Overstated carbon emission reductions from voluntary REDD+ projects in the Brazilian Amazon
+- **Zhang, Z., et al. (2024).** → DOI: `10.1016/j.ecoleng.2023.107170` (score 0.95)
+  - Matched: Recovery of soil organic carbon storage driven by microbial communities during long-term natural restoration in wetland 
+- **Zhao, J., et al. (2023).** → DOI: `10.1007/s00484-022-02363-6` (score 0.867)
+  - Matched: Negative effects of heat stress on maize yield were compensated by increasing thermal time and declining cold stress in 
+
+## ⚠️ LIKELY — Verify manually before citing
+
+- **Agostini, N., et al. (2024).** (score 0.6) → possible DOI: `10.12741/ebrasilis.v17.e1083`
+- **Almeyda, E., et al. (2024).** (score 0.486) → possible DOI: `10.18235/0013772`
+- **Anile, S., et al. (2020).** (score 0.45) → possible DOI: `10.1201/9781003208976-8`
+- **Bebbington, A., et al. (2024).** (score 0.45) → possible DOI: `10.4324/9781003416289`
+- **Bey, A., et al. (2024).** (score 0.45) → possible DOI: `10.1088/1361-6560/add106`
+- **Bryant, R., et al. (2024).** (score 0.486) → possible DOI: `10.1109/jstars.2025.3528834`
+- **Cabrera, H., et al. (2024).** (score 0.45) → possible DOI: `10.1016/j.foreco.2024.121914`
+- **Cao, X., et al. (2024).** (score 0.533) → possible DOI: `10.62517/jes.202402413`
+- **Carpenter B., et al. (2025)** (score 0.6) → possible DOI: `10.1093/jeclap/lpag016`
+- **Cochran, J., et al. (2025).** (score 0.533) → possible DOI: `10.1016/b978-0-323-90798-9.00053-6`
+- **Cooper, S., et al. (2024).** (score 0.6) → possible DOI: `10.4324/9781003406853-31`
+- **Cornelius, C., et al. (2024).** (score 0.6) → possible DOI: `10.1111/ddi.13905/v2/response1`
+- **Degen, R., et al. (2024).** (score 0.45) → possible DOI: `10.32480/rscp.2024.29.2.6778`
+- **Ervin, J., et al. (2024).** (score 0.533) → possible DOI: `10.1121/10.0018355`
+- **Frogner-Kemper, F., et al. (2024).** (score 0.422) → possible DOI: `10.1007/978-3-031-62846-7_46`
+- **García, A., et al. (2025).** (score 0.533) → possible DOI: `10.35305/rp.v17i43.923`
+- **González, R.L., et al. (2024).** (score 0.6) → possible DOI: `10.3390/horticulturae10111141`
+- **Hahn, A., et al. (2024).** (score 0.533) → possible DOI: `10.1002/ecs2.70272`
+- **Havlík, P., et al. (2018).** (score 0.6) → possible DOI: `10.1029/2019ef001316`
+- **Henderson M., et al. (2021)** (score 0.533) → possible DOI: `10.1007/s10113-021-01804-z`
+- **Hethcoat, M., et al. (2024).** (score 0.45) → possible DOI: `10.1016/j.rse.2024.114380`
+- **Hoyt, A.M., et al. (2023).** (score 0.564) → possible DOI: `10.2175/193864718825159239`
+- **Huang, Q., et al. (2024).** (score 0.564) → possible DOI: `10.22541/au.176313083.32535434/v1`
+- **Iglesias, L., et al. (2024).** (score 0.533) → possible DOI: `10.3390/app13105909`
+- **Jacob, D.J., et al. (2016).** (score 0.486) → possible DOI: `10.1111/joie.12146`
+- **Janzen, D.H., et al. (2024).** (score 0.533) → possible DOI: `10.2307/jj.26435419.10`
+- **Kuze, A., et al. (2016).** (score 0.6) → possible DOI: `10.5194/amt-9-2445-2016`
+- **Lindenmayer, D., et al. (2023).** (score 0.533) → possible DOI: `10.3389/ffgc.2022.878570`
+- **López, G., et al. (2024).** (score 0.6) → possible DOI: `10.1016/j.foreco.2022.120638`
+- **Masolele, M., et al. (2024).** (score 0.6) → possible DOI: `10.3390/rs17244057`
+- **Nóbrega, G.E.M., et al. (2024).** (score 0.45) → possible DOI: `10.35259/isi.2025_70219`
+- **Núñez, R., et al. (2024).** (score 0.6) → possible DOI: `10.1111/ddi.13761/v2/response1`
+- **Pacifici, J.K., et al. (2024).** (score 0.564) → possible DOI: `10.1111/2041-210x.14359`
+- **Pais, A., et al. (2023).** (score 0.533) → possible DOI: `10.14195/978-989-26-2298-9_250`
+- **Panagos, P., et al. (2017).** (score 0.575) → possible DOI: `10.1002/ldr.2588`
+- **Panagos, P., et al. (2024).** (score 0.564) → possible DOI: `10.5194/egusphere-egu24-9365`
+- **Pastore, F., et al. (2024).** (score 0.486) → possible DOI: `10.59319/arete.v3i1.903`
+- **Pimm, S.L., et al. (2014).** (score 0.533) → possible DOI: `10.2307/jj.41003868.13`
+- **Ponce, M., et al. (2020).** (score 0.45) → possible DOI: `10.1007/s11695-020-04957-8`
+- **Quesada, M., et al. (2022).** (score 0.533) → possible DOI: `10.3390/ijms22042104`
+- **Ramirez, R.S., et al. (2024).** (score 0.6) → possible DOI: `10.5772/intechopen.106815`
+- **Sanchez, A., et al. (2024).** (score 0.533) → possible DOI: `10.1016/j.hpb.2024.03.1010`
+- **Schmidt, M., et al. (2024).** (score 0.533) → possible DOI: `10.1016/j.agee.2024.109090`
+- **Strauch et al. 2019** (score 0.45) → possible DOI: `10.3389/fenvs.2020.00016`
+- **Tallis, H., et al. (2024).** (score 0.45) → possible DOI: `10.1117/12.2666249`
+- **Taylor, B., et al. (2024).** (score 0.533) → possible DOI: `10.2139/ssrn.5061474`
+- **Tucker, D., et al. (2024).** (score 0.533) → possible DOI: `10.5406/21567417.69.2.05`
+- **Wilkie, D., et al. (2024).** (score 0.45) → possible DOI: `10.1177/10784535251350296`
+- **Witt, F., et al. (2025).** (score 0.533) → possible DOI: `10.1515/opag-2022-0259`
+- **Zhang, M., et al. (2023).** (score 0.6) → possible DOI: `10.5194/egusphere-egu23-6294`
+
+## 📝 PARTIAL — Title doesn't match well, may be a real paper with different title
+
+- **Andela, N., et al. (2013).** (score 0.4) → unrelated top hit: A Covering-Law Model of Global Health Governance
+- **Aydin, M., et al. (2025).** (score 0.311) → unrelated top hit: Genetic mapping of mineral content in fruits of interspecies (Capsicum annuum X Capsicum frutescens)
+- **Bertoni, L. (2024).** (score 0.4) → unrelated top hit: Sweet Potato Research and Growth Potential in Paraguay: A Review
+- **Bertoni, M.S., Bertoni, A. (2024/2025).** (score 0.4) → unrelated top hit: Decision Support Systems for Engineering High Variety Low Volume Artefacts
+- **Cascales, J., et al. (2024).** (score 0.367) → unrelated top hit: Optical sensors for versatile carbon dioxide monitoring devices (Conference Presentation)
+- **Ciesielski, M., et al. (2024).** (score 0.333) → unrelated top hit: Relationships between forest ecosystem services – current state of knowledge
+- **Conover, H., et al. (2023).** (score 0.382) → unrelated top hit: Genetic diversity of Malagasy baobabs: implications for conservation
+- **Ellicott, E., et al. (2009).** (score 0.325) → unrelated top hit: Early characterization of the active fire detection products derived from the next generation NPOESS
+- **Fader, M., et al. (2024).** (score 0.4) → unrelated top hit: Integrierte Szenarienstudie zum Wasser-Energie-Nahrung-Ökosystem-Nexus im Donaueinzugsgebiet am Beis
+- **Guizar-Coutinho, A., et al. (2022).** (score 0.4) → unrelated top hit: A sentiment-based risk indicator for the Mexican financial sector
+- **Hagos, S.M., et al. (2024).** (score 0.367) → unrelated top hit: Comparison of local and remote controlling factors on the precipitation isotopic variation in northw
+- **Hamunyela, V., et al. (2024).** (score 0.4) → unrelated top hit: Examining the Impact of Covid-19 on the Performance of the Informal Sector Businesses in the Town of
+- **Hole, D., et al. (2024).** (score 0.367) → unrelated top hit: GIS in research and conservation – Lesson plans developed for Black Girls Dive Foundation
+- **Jiménez-Muñoz, G., et al. (2019).** (score 0.382) → unrelated top hit: Nonlinearity in the Tropospheric Pathway of ENSO to the North Atlantic
+- **Joly, C., et al. (2014).** (score 0.333) → unrelated top hit: Two phases of aging separated by the Smurf transition as a public path to death
+- **Kucharik, C.J., et al. (2024).** (score 0.343) → unrelated top hit: Impacts of ash tree removals on summer daytime temperatures in Madison, Wisconsin
+- **Lamarque, H., et al. (2024).** (score 0.4) → unrelated top hit: The impact of internal climate variability on OH trends between 2005 and 2014
+- **Li, X., et al. (2024).** (score 0.4) → unrelated top hit: Spatio-temporal-text fusion for hierarchical multi-label crop classification based on time-series re
+- **Magnus, L., et al. (2023).** (score 0.4) → unrelated top hit: Change in the area of Lithuanian wetlands (2002-2021
+- **Major, P., et al. (2024).** (score 0.4) → unrelated top hit: Diversity in clinical trials: It takes a village
+- **Mellor, R.B. et al. (2024).** (score 0.4) → unrelated top hit: Making and Using Pottery in Town and Country
+- **Montini, A.L., et al. (2022).** (score 0.343) → unrelated top hit: Hemoglobinuria for the early identification of STEC-HUS in high-risk children: data from the ItalKid
+- **Nature Network Paraguay 2024 (Streck, G., et al.):** (score 0.367) → unrelated top hit: Changes in biotic properties of soils due to reforestation of the former agricultural lands (Skolivs
+- **Painter, L., et al. (2024).** (score 0.367) → unrelated top hit: What’s cooking? The normalization of meat in YouTube recipe videos consumed by South Asian British M
+- **Pantoja, A., et al. (2024).** (score 0.4) → unrelated top hit: Firewood-gatherer Anumbius annumbi: a new species and genus in Bolivia
+- **Pezzuti, J.C.B., et al. (2019).** (score 0.367) → unrelated top hit: A  regulamentação da caça como ferramenta de conservação da fauna amazônica
+- **Pickert, C., et al. (2024).** (score 0.367) → unrelated top hit: Data-Driven Evaluation of Electrochemical Impedance Spectroscopy for Battery State-of-Health Diagnos
+- **Sherwin, E.B., et al. (2024).** (score 0.343) → unrelated top hit: Common practices for quantifying methane emissions from plumes detected by remote sensing
+- **Socolar, J., et al. (2024).** (score 0.367) → unrelated top hit: Crop diversification enhances cropland water-use efficiency across California's Central Valley
+- **Tidemann, S.C., Gosler, A. (eds.) (2010).** (score 0.343) → unrelated top hit: Birds and Artisans of the Roman Mosaics of Tunisia: Species, Symbolism and Origins
+- **Tortato, F.R., et al. (2024).** (score 0.4) → unrelated top hit: Circular Economy Maturity Framework for Small and Medium Enterprises
+- **Ward, M., et al. (2024).** (score 0.4) → unrelated top hit: Reflections on South-South Links and the Polycentric Nature of World Christianity
+- **Zapata, J., et al. (2024).** (score 0.382) → unrelated top hit: Indigenous People and Digital Misinformation in the Brazilian Amazon
+- **Zuloaga, F.O., et al. (2020).** (score 0.4) → unrelated top hit: Sex differences in risk factors for vascular contributions to cognitive impairment &amp; dementia
+
+## ❌ NOT_FOUND — Likely reconstruction from training data; do not cite without further search
+
+- Acock, B., et al. (2024). | LSU crop yield model integration for Paraguay.
+- Ahumada, J.A., et al. (2024). | Jaguar density in South American dry forests.
+- Arends-Berlin, J., et al. (2024). | NDVI in the Chaco
+- Bailey, N., et al. (2024). | Bird species + Paraguay forest management.
+- Banco, P., et al. (2023). | Live fence protocols and invasive grass in Eastern Paraguay.
+- Barlow, J., et al. (2018). | Multi-taxa consequences of Amazonian deforestation.
+- Barros, M., et al. (2024). | Mangrove carbon + Paraguay.
+- Baumann, M., et al. (2017). | Cited earlier
+- Becker, D.M., et al. (2025). | Black-and-chestnut eagle in Misiones, Argentina.
+- Bierregaard, R.O., et al. (2020). | Harpy eagle review.
+- Bonilla, M., et al. (2024). | Invasive grass species proliferation in Paraguayan Chaco
+- Brancalion, P.H.S., et al. (2022). | Tropical forest restoration at scale.
+- Brennan, A., et al. (2024). | Forest connectivity in managed landscapes.
+- Briggs, J., et al. (2024). | Secondary forest dynamics in dry Chaco.
+- Bryant, R., et al. (2024). | National Forest Inventory of Paraguay: methodology and initial findings.
+- Bull, J.W., et al. (2024). | Biodiversity offset methodologies.
+- Bunn, C., et al. (2024). | Biodiversity finance frameworks in developing countries.
+- Cai, W., et al. (2020). | Climate impacts of the El Niño–Southern Oscillation on South America.
+- Caplice, L., et al. (2024). | Eucalyptus plantations in Paraguay.
+- Carneiro, L.C., et al. (2023). | Population dynamics of Podocnemis.
+- Chambers, B., et al. (2007). | Working with Indigenous Peoples...
+- Chen, G., et al. (2024). | Paraguay bushfire smoke and health.
+- Chen, S., et al. (2022). | SoilGrids 2.0: producing the 30 arcsecond resolution soil property layers of the world.
+- Chou et al. 2016 | Reference: Chou S.C. et al.,
+- Durán, A.P., et al. (2024). | Multifunctional landscapes sustainability.
+- Espinoza, J.C. et al. (2024). | Droughts in the La Plata Basin
+- Fader, M., et al. (2024). | Pancontinental coupling of wetland climate.
+- Falcucci, A., et al. (2024). | Connectivity + vertebrate conservation.
+- Frick, F., et al. (2024). | Forest reference levels for Paraguay.
+- Gibbons, P., et al. (2024). | Indigenous leadership in forest conservation.
+- Grau, R.H., et al. (2015). | Opportunities and constraints for sustainable agriculture in the Gran Chaco.
+- Grimm, A., Tedeschi, M. (2009). | ENSO and extreme precipitation events in South America.
+- Guedes, T.B., et al. (2018). | Biodiversity and agricultural frontiers in Chaco.
+- Gálvez, R., et al. (2024). | Child respiratory outcomes from Gran Chaco smoke exposure.
+- Havlík, P., et al. (2014). | Climate change mitigation through livestock system transitions.
+- He, J., et al. (2022). | Indigenous community remote sensing data.
+- Hein, C.S., et al. (2023). | Multi-taxa indicators of forest restoration success in Tahiti.
+- Hengl, T., et al. (2017). | SoilGrids250m: Global gridded soil information based on machine learning.
+- Hoogendoorn, C., et al. (1992). | An index of grazing pressure.
+- Iwasaki, S., et al. (2009). | Indigenous forest management: Brazil.
+- Janzen, D.H. (1986). | Costa Rican natural history.
+- Jodocy, N., et al. (2024). | Drivers of grassland conversion in Brazil.
+- Kaiser, J.W., et al. (2012). | Biomass burning emissions estimated with a global fire assimilation system based on observed fire radiative power.
+- Kayano, M., et al. (2024). | SST impacts on Chaco precipitation.
+- Kays, R., et al. (2020). | Wildlife camera-trap data.
+- Liévano-Lascarro, J., et al. (2023). | Hunting + primate populations.
+- Marengo, J. et al. (2012). | Recent developments on South American monsoon system.
+- Matricardi, E. et al. (2020). | Quantification of forest disturbance in the Gran Chaco using Landsat time series.
+- McNeely, J.A., Scherr, S.J. (2003). | Ecoagriculture.
+- Mitchard, E.T.A. (2018). | The tropical forest carbon cycle and climate change.
+- Morbey, R., et al. (2024). | Puma-human conflict mitigation.
+- Morello, J., Adámoli, J. (2008). | The eco-geography of the Chaco.
+- Nagle, R., et al. (2023). | Indigenous-led climate politics in South America.
+- Nuno, A., Pereira, A., et al. (2024). | Tapir population dynamics in fragmented Chaco.
+- Parsons, A.W., et al. (2019). | Camera-trap abundance estimators.
+- Pavetti, D. et al. (2023). | Cassava yield in Paraguay: an empirical analysis.
+- Pavetti, D., et al. (2024). | Forest management + climate mitigation.
+- Pawson, S., Brang, P., Brockerhoff, E., et al. (2024). | Restoring forests in production landscapes: a synthesis.
+- Pennington, R.T., Prado, D. (2000). | The importance of tropical dry forest for biodiversity.
+- Pennington, R.T., et al. (2024). | Chaco vegetation + land use.
+- Pettorelli, N., et al. (2017). | Ungulate population dynamics.
+- Pileci, R.E., et al. (2024). | Reply to Falchi et al.: Quantifying the mortality benefits of solar geoengineering.
+- Pinagé, E. et al. (2024). | Detecting selective logging with GEDI
+- Portalés, A., et al. (2024). | Improved REDD+ methodologies
+- Powell, R., et al. (2024). | Indigenous-led conservation + Zero Deforestation work in the Chaco.
+- Pérez-Chamorro, J., et al. (2024). | Sub-endemic Chaco species.
+- Quirós, R., et al. (2009). | Fish fauna of the Paraguay River basin.
+- Rahbek, C., et al. (2019). | Humboldt extension: climate change + biodiversity.
+- Ramos, J., et al. (2023). | Maize-soybean succession yield.
+- Rezende, C., et al. (2018). | Atlantic Forest restoration strategies and the role of climate change.
+- Rocha, J., et al. (2024). | Native species reforestation trials in Dry Chaco.
+- Roitman, I., et al. (2024). | Cerrado biodiversity.
+- Romero, C., et al. (2024). | Native forestry in Paraguay: economic vs conservation trade-offs.
+- Schrire, B.D., et al. (2005). | Indigofera biogeography.
+- Scott, C.A., et al. (2024). | Nexus policy implementation.
+- Seminario, E.M., et al. (2024). | Paraguayan biodiversity catalogue.
+- Sen Ferreira et al. 2025-26 paper: | Mixed methods for socio-environmental post-disaster assessment
+- Souza, C. et al. (2005). | Degradation in the Amazon: quantification by satellite image spectral decomposition.
+- Strandberg L., et al. (2024) | (predicted via
+- Taubert, F., et al. (2018). | Agricultural expansion frontiers in South America.
+- Tejedor, G.C., et al. (2015). | Refuge effect studies in Chaco dry forest.
+- Tirivar, A., et al. (2024). | Mental health impacts of wildfires in rural communities.
+- Toepfer, G., et al. (2024). | Atlantic Forest primates in Paraguay.
+- Tyukavina, A., et al. (2022). | Tropical forest loss 2020-2021.
+- Vaccaro, I., et al. (2024). | Forest livelihoods in the Chaco.
+- Vautrin, K., et al. (2024). | Community forestry in Paraguay (Forest Certification).
+- Walker, W., et al. (2024). | Improved carbon stock estimation in tropical forests.
+- Walter, L.F., et al. (2024). | Soybean expansion drivers across the Cerrado and Chaco.
+- Walters, M., et al. (2025). | OpenLandMap 2.0: A paradigm for soil monitoring.
+- Wang, A., et al. (2024). | Hybrid process-based + deep learning for crop yield.
+- Wang, B., et al. (2019). | Wild cat conservation.
+- Yu, Z., et al. (2024). | Distinguishing silvopasture from pure pasture using Sentinel-1 and Sentinel-2 data fusion.
+- Zhang, M., et al. (2024). | Global Pasture Watch + Heat Stress Index.
+- Zhang, Y., et al. (2024). | Silvopasture mapping with deep learning + multi-temporal satellite data.

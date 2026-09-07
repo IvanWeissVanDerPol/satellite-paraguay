@@ -1,214 +1,103 @@
-# Changelog — SatelliteCV-Paraguay
+# CHANGELOG.md — Thesis-Affecting Commits
 
-All notable changes to this repository are documented here.
+> **Purpose:** Map commits to thesis sections so reviewers can trace provenance.
+> Format: Commit → Theme → Affected files → Thesis section
 
-## [Unreleased] — 2026-08-13
+## Theme: Citation verification (the Round-5/6 cleanup)
 
-### CI green-build pass (commit f8b5978 + a0b8a93)
+| Commit | Date | Theme | Affects | Thesis section |
+|---|---|---|---|---|
+| `c8c0c10` | 2026-09-07 | **Round-6:** 7 DOI fixes applied, 76 false-positive confirmed | `thesis/references.bib` (7 entries) | CH02 Literature Review, all 6 papers' Related Work |
+| `13b3e03` | 2026-09-04 | Refresh data_audit + drift_note from post-fix run | `outputs/data_audit.json` | CH03 Methodology |
+| `6ec9595` | 2026-09-04 | Style: black/isort on citation-stub updater | `scripts/check_citations.py` | tooling |
+| `9a36592` | 2026-09-04 | **Round-5 follow-up:** purged 7 fabricated keys (baumann2022south_american, huang2021paraguay, alphaearth2025, cristaldo2024paraguay, rikap2021indigenous, zheng2015fine_grained) | Prose in 4 papers | All 6 papers |
+| `cdf1606` | 2026-09-04 | Security audit round 2 — CI artifact data-leak guard | `tests/test_ci_artifact_security.py` | tooling |
+| `7fc3efa` | 2026-09-04 | **Round-5:** 6 verified citation entries added (carroll2022, dinerstein2020, russwurm2020, donkelaar2010, norouzzadeh2018, kamilaris2018) | `thesis/references.bib` (+6) | All papers |
+| `02f181e` | 2026-09-04 | Converted `related_work.md` → `\section{Related Work}` in 6 papers | `papers/drafts/*/paper.tex` (6) | Each paper's Related Work |
+| `699d782` | 2026-09-04 | **Round-4:** Citation cleanup + per-paper bib slices | `papers/drafts/*/references.bib` | Per-paper bibliography |
 
-Bootstrap task: get CI turning from red to green so the PR can be merged.
+## Theme: Citation reconstruction (Round-1/2/3)
 
-**Lint pass (commit f8b5978):**
-- 798 → 0 flake8 violations across 189 files
-- 189 files black-formatted, isort cleaned, autoflake removed 306 unused imports + 22 unused locals
-- 131 unnecessary f-string prefixes stripped (F541)
-- 7 duplicate test class names renamed (TestX → TestXSynthetic/V2/CacheHit)
-- 1 real bug caught: `criterion(logs[-1], y)` → `criterion(logits, y)` in train_prithvi_yvutu.py:149
-- removed unused `n11, n22` from McNemar test (intermediate contingency cells never used)
+| Commit | Date | Theme | Affects | Thesis section |
+|---|---|---|---|---|
+| `6c359da` | 2026-09-04 | **Round-3:** Citation verification + prose polish | All 6 papers prose | All papers |
+| `874b36c` | 2026-09-03 | Per-paper `related_work.md` synthesis (thesis-prose ready) | `papers/drafts/*/related_work.md` (6) | Each paper's Related Work source |
+| `1689af5` | 2026-09-03 | Made citation integration idempotent + cleanup | `scripts/convert_related_work.py` | tooling |
+| `06cd3b7` | 2026-09-03 | Cleanup redundant header + commit substrate deliverables | `scripts/substrate_sync.py` | tooling |
+| `c263668` | 2026-09-03 | **Round-2:** 47 verified CrossRef-checked DOIs | `thesis/references.bib` (+47) | All papers |
+| `4180844` | 2026-09-03 | Register citation verification — 47 of 226 verified | `papers/drafts/CITATION_STUBS.md` | Citation audit trail |
+| `94a66b1` | 2026-09-03 | Same as above (duplicate cleanup) | same | same |
+| `ce1f7a0` | 2026-09-03 | Register Round-2 100-iter research findings | `outputs/research_round_2.md` | Discovery |
+| `a5a73fa` | 2026-09-03 | Register 100-iter research campaign | `outputs/research_100_iter.md` | Discovery |
+| `68144be` | 2026-09-03 | Register research findings — 24 new entries + master catalog | `thesis/references.bib` (+24) | All papers |
+| `ec960dc` | 2026-09-03 | 30-minute professor reading path + sync-docs fix | `PROFESSOR_READING_PATH.md` | Navigation |
 
-**CI fix pass (commit a0b8a93):**
-- CI was failing on Python 3.10/3.11 tests with `ModuleNotFoundError: numpy`
-- Root cause: `pip install -e .` silently failed on rasterio/geopandas (no GDAL on runners)
-- Fix: requirements-ci.txt + `pip install -e . --no-deps` + lazy rasterio import in conftest.py
-- Flaky Hypothesis test fixed: suppress_health_check=[HealthCheck.filter_too_much] on test_bbox_validity
+## Theme: Repo infrastructure (this Round)
 
-**Verification:**
-- pytest tests/ -q --no-cov: **1028 passed, 52 skipped, 0 failed** (88s)
-- flake8 --max-line-length=120 --extend-ignore=E203,W503: **0 violations**
-- isort --check-only: **0 violations**
-- black --check: **192 files conformant**
-- check_claims.py: OK
-- check_latex.py: **6/6 papers pass**
-- 6 of 6 papers at 100%+ of target word counts (P0011 142%, P0010 106%, P0012 125%, P0025 130%, P0026 127%, P0035 106%)
+| Commit | Date | Theme | Affects |
+|---|---|---|---|
+| (pending) | 2026-09-07 | **Repo setup:** CLAUDE.md + AUDIT + TODO + CHANGELOG + verify_bib_dois.py + run_tests.sh | `CLAUDE.md`, `TODO.md`, `CHANGELOG.md`, `papers/drafts/AUDIT/*`, `scripts/verify_bib_dois.py`, `scripts/run_tests.sh` |
 
-### Added
+## Theme: Worker infrastructure (autonomous ops)
 
-- `requirements-ci.txt` — CI-only deps (no GDAL-bound packages) installed before `pip install -e . --no-deps`.
+| Commit | Date | Theme | Affects |
+|---|---|---|---|
+| `a1b8ea4` | 2026-09-02 | Content-based gate on picker — skip Vast.ai/IRB/FPIC tasks | Workers |
+| `3096f87` | 2026-09-02 | flake8 + mypy + black + isort clean on Tier 2 | `src/`, `scripts/` |
+| `e879227` | 2026-09-02 | AUTONOMOUS_WORKERS.md — cron wiring + hard-constraint spec | `docs/` |
+| `efc3906` | 2026-09-02 | Two autonomous cron workers + 24 pytest guards | Workers + tests |
+| `ae527ba` | 2026-09-02 | validate_data.py — honest data-layer audit + 10 pytest guards | `scripts/`, tests |
+| `4b09dd5` | 2026-09-02 | p0025: experiments.md + label test-fixture rand() sites | `papers/p0025`, tests |
+| `29e7f02` | 2026-08-22 | p0025: FAO/MAG public yield data puller | `scripts/download_fao_mag_p0025.py` |
+| `3cc207b` | 2026-08-22 | p0012: INE/INDI public data puller (no FPIC needed) | `scripts/download_ine_indi_p0012.py` |
+| `cb9581f` | 2026-08-22 | p0035 + p0026: LSTM v2 multi-station + iNaturalist | scripts |
+| `305189c` | 2026-08-22 | ACTIVATION.md + 4 Tier S application drafts | docs |
+| `a971bce` | 2026-08-22 | COMPLETE-PLAN.md master synthesis | docs |
+| `bf0813e` | 2026-08-22 | FUNDING_PLAN.md + funding-applications.log | docs |
+| `f9b909c` | 2026-08-22 | Phase-2.1: real-data acquisition downloaders | scripts |
+| `07c2479` | 2026-08-22 | Phase-1: pilot-readiness docs + reproducibility tests | docs, tests |
+| `2eda3ed` | 2026-08-22 | Phase-0: agent-owned deliverables for 12-week roadmap | docs |
 
-### Changed
+## Theme: Thesis-writing sessions (Aug 12)
 
-- `.github/workflows/ci.yml` — switched to `pip install -r requirements-ci.txt && pip install -e . --no-deps`
-- `tests/conftest.py` — rasterio import wrapped in try/except; fixtures skip if rasterio unavailable
-- `tests/test_properties.py` — HealthCheck.filter_too_much suppress on test_bbox_validity
-- `STATUS.md` — refreshed 2026-08-13 with this session's metrics
+| Commit | Date | Theme | Affects | Thesis section |
+|---|---|---|---|---|
+| `6847250` | 2026-08-12 | p0026: write all 6 paper sections — 21% → 90% | `papers/p0026/paper.tex` | p0026 Kai |
+| `b7dcc3e` | 2026-08-12 | p0025: write all 6 paper sections — 24% → 92% | `papers/p0025/paper.tex` | p0025 Yrupe |
+| `b15e61f` | 2026-08-12 | p0010: write all 6 paper sections — 22% → 73% | `papers/p0010/paper.tex` | p0010 Yvyra |
+| `211c338` | 2026-08-12 | p0012: write all 6 paper sections — 25% → 92% | `papers/p0012/paper.tex` | p0012 Yvy |
+| `a5872f7` | 2026-08-12 | p0011: write all 6 paper sections — 35% → 98% | `papers/p0011/paper.tex` | p0011 Yvutu |
+| `8f128fa` | 2026-08-12 | P0035 paper sections + CI integration | `papers/p0035/paper.tex` | p0035 Tatakua |
+| `cbdd704` | 2026-08-12 | Resolve 5 citation conflicts + add 5 pytest guards | `thesis/references.bib`, tests |
+| `cb2c480` | 2026-08-12 | Add BUSINESS_MODEL.md (USD 1.25M-5M Y1) + COMMERCIALIZATION_ROADMAP.md | docs |
+| `5347383` | 2026-08-12 | Fail-loud on missing data (no np.random.rand silent fills) | code, README |
+| `d3cb374` | 2026-08-12 | BRUTAL_ROAST.md, STATUS.md, AGENT_TODO.md | docs |
+| `88e337e` | 2026-08-11 | Honesty pass — fix fabricated claims | code, docs |
+| `65621c4` | 2026-08-10 | Honest-reporting pass — fix aspirational abstracts + add LICENSE/CITATION | code, docs |
+| `c0e4d88` | 2026-08-04 | Milestone: 40% coverage through systematic script refactoring | tests |
 
-## [Unreleased] — 2026-08-10
+## Theme: CI / LaTeX hardening (Aug 13)
 
-### Honest-reporting pass (autonomous)
-
-The branch `chore/honest-reporting-pass-2026-08-10` updates the six paper
-abstracts and appends a "Honest Reporting Note" to each paper.md so that
-the measured values (per `ACTUAL_RESULTS.md`) replace the literature-benchmark
-headlines that previously opened each abstract. See `WORKLOG_2026-08-10.md`
-for the full change log and the rationale.
-
-### Added
-
-- `LICENSE` — CC-BY-NC-4.0 with data-source carve-outs (Hansen, MapBiomas,
-  Sentinel-2, OpenAQ, Verra, INDI-CARE-controlled).
-- `CITATION.cff` — citation metadata for GitHub "Cite this repository" and
-  Zenodo DOI minting on next release.
-- `references.bib` (repo root) — unified bibliography of 180 unique entries
-  merged from `thesis/references.bib` (120) + `papers/references.bib` (65),
-  with 5 key conflicts flagged under a `% CONFLICTS` section.
-- `scripts/merge_bib.py` — reproducible merger (deterministic, idempotent).
-- `docs/REAL_TODO.md` — 30-item real TODO replacing the stale 345-item
-  `docs/COMPREHENSIVE_TODO.md` (kept for archeology).
-- `WORKLOG_2026-08-10.md` — session log of the autonomous honesty pass.
-
-### Changed
-
-- All six `papers/drafts/<slug>/abstract.md` now cite measured values from
-  `ACTUAL_RESULTS.md` instead of literature-benchmark headlines.
-- All six `papers/drafts/<slug>/paper.md` carry an appended "Honest Reporting
-  Note (added 2026-08-10)" section identifying unsupported claims and the
-  concrete work needed before submission.
-
-## [Unreleased] — 2026-08-04
-
-### Added
-- 80+ references in `thesis/references.bib`
-- Cross-paper transfer learning experiment (RQ4, H3) — scripts/cross_transfer_experiment.py
-- Per-pixel carbon model with Chave 2014 allometric — scripts/per_pixel_carbon.py
-- Carbon credit integrity verifier — scripts/carbon_credit_verifier.py
-- MapBiomas temporal comparison 2015-2023 — scripts/mapbiomas_temporal.py
-- Statistical significance tests (McNemar, chi², bootstrap) — scripts/statistical_tests.py
-- Interactive Plotly + Folium visualizations — scripts/interactive_viz.py
-- FastAPI server with 10 endpoints — src/api/main.py
-- Streamlit dashboard with 7 pages — src/dashboard/app.py
-- 6 Jupyter notebooks (one per paper) — notebooks/
-- Production Docker stack — docker-compose.production.yml
-- CI/CD via GitHub Actions — .github/workflows/cicd.yml
-- Stakeholder outreach plan (12 stakeholders) — STAKEHOLDER_OUTREACH.md
-- Submission plan (6 papers × 6 months) — SUBMISSION_PLAN.md
-- Open science strategy (Zenodo, DOI, license) — OPEN_SCIENCE.md
-- Policy brief in Spanish + Guaraní — POLICY_BRIEF_es.md
-- 200-angle professional roast — CRITIC_200_ANGLES.md
-- 26-week master plan — MASTER_PLAN.md
-- Final comprehensive report — FINAL_REPORT.md
-
-### Changed
-- Updated AGB model to Chave 2014 with realistic Chaco calibration
-- Statistical findings now reflect bootstrap CIs (e.g., 3.0× disparity CI [1.7, 4.2])
-- Dashboard shows ~3× disparity with confidence interval
-- Indigenous disparity metric revised from "3.3×" to "~3×" with proper CI
-
-### Tests
-- 53 tests passing in 9.72s (up from 27)
-- New tests: per-pixel carbon (7), cross-transfer (4), FastAPI (10), thesis structure (11)
-
-## [Earlier commits] — 2026-07-22 to 2026-08-03
-
-### Phase 1: Data acquisition
-- Hansen GFC v1.11 download (1.2 GB, 2 tiles)
-- Sentinel-2 L2A download (1.5 GB, 6 scenes)
-- MapBiomas Paraguay 2023 download (38 MB)
-- OpenAQ + Verra API integration
-
-### Phase 2: Initial analysis
-- Country-scale deforestation analysis (16,628 km²)
-- Department-level breakdown (Alto Paraguay 28.49%)
-- Indigenous territory overlap (3.0× disparity)
-- NDVI time series from Hansen
-- Deforestation animation GIF (23 frames)
-- Real baseline models (F1=0.017 honest baseline)
-
-### Phase 3: Improvement
-- Improved U-Net with 30 channels (F1=0.017)
-- Statistical significance testing (bootstrap CIs)
-- 200-angle professional roast
-- Master plan + 26-week calendar
-- Stakeholder outreach + ethics framework
-- Paper expansions to 5,000+ words each
-- Thesis chapters 1-11 (~52,000 words)
-
-### Phase 4: Production
-- Streamlit dashboard
-- FastAPI server
-- Docker + docker-compose
-- CI/CD with GitHub Actions
-- 53 tests (all passing)
-- Jupyter notebooks (6)
-- Interactive HTML visualizations
-- Statistical tests (McNemar, chi², bootstrap)
-
-### Phase 5: Polish
-- Comprehensive README
-- Per-pixel carbon with Chave 2014
-- Cross-paper transfer learning experiment
-- Carbon credit integrity verifier
-- MapBiomas temporal comparison
-- 6 Jupyter notebooks
-- 80+ references in bibliography
-- Honest statistical reporting throughout
-
-## [Unreleased] — 2026-08-12
-
-### SatelliteCV-Paraguay 6-paper substrate complete
-
-The autonomous pass that closed this session:
-
-- **6 papers at ≥70% of journal-target word counts** (the
-  full substrate is submit-ready as honest papers with measured
-  numbers; 3 at 90%+, 3 in the 73-91% range).
-- **Per-paper references.bib files** added at all 6 paper dirs
-  (full 193-entry master bibliography); each `paper.tex` should
-  now compile standalone.
-- **Master `references.bib`** extended to 193 entries (added the
-  13 entries that were referenced in paper bodies but missing
-  from the master: jakubik2023foundation, cong2022satmae,
-  alphaearth2025, baumann2022south_american,
-  bucher2019gran_chaco, bullock2021satellite,
-  coconier2018defensores, huang2021paraguay,
-  palau2020agricultural, riquelme2022land_use, garnett2018spatial,
-  rikap2021indigenous, zheng2015fine_grained).
-- **Thesis chapters CH3-CH8** rewritten as paper-pointer
-  summaries (~2,500 words new, total ~2,500 instead of ~3,000;
-  body is in `papers/drafts/<slug>/paper.md`).
-- **`thesis/MAIN/thesis.tex`** rewritten abstract with measured
-  numbers from each paper (F1=0.559/0.497 for Yvutu, +35.9% for
-  Yvyra under-claim, 2.90× disparity for Yvy, F1=0.497/MAE=3.20 for
-  Yrupe honest failure-mode, mAP 0.50→0.18 for Kai gap, RMSE 14.7
-  for Tatakua LSTM). All previously aspirational headline numbers
-  (F1 0.83-0.88 / R² 0.65-0.79 / MAE 11.72 µg/m³) replaced with
-  measured pilot numbers + explicit "aspirational, not measured"
-  attribution. Bibliography now points to `../references.bib`
-  (193 entries) via \bibliography{references}.
-- **check_claims.py** added `thesis/MAIN/thesis.tex` to the
-  sanctioned list (thesis master file cites aspirational
-  targets explicitly as replaced).
-- **STATUS.md** refreshed to 6 of 6 papers at ≥70% of target.
-- **20 pytest tests still passing** in `tests/test_fail_loud_guard.py`.
-
-### Final aggregate metric
-
-- **52,974 words** across papers + thesis prose (~50K+ of the
-  target thesis size = 50,000-80,000 words, depending on the
-  formatting).
-- 6 papers with honest measured numbers in `ACTUAL_RESULTS.md`.
-- All 6 papers with appended "Honest Reporting Note" naming the
-  aspirational targets that were removed.
-- All 6 papers' data-loading pipelines fail-loud since
-  2026-08-11 (raise `FileNotFoundError` rather than silently faking).
-
-### Submission recommendations per paper
-
-| Paper | Target journal | Recommendation |
+| Commit | Date | Theme |
 |---|---|---|
-| P0011 Yvutu | Remote Sensing of Environment | methodology + measured pilot |
-| P0010 Yvyra | Nature Climate Change (Letter) | Verra integrity + 5-project quantification |
-| P0012 Yvy | World Development | 2.9× disparity; publishable on strict CARE reading |
-| P0025 Yrupe | Agricultural Systems | honest failure-mode analysis (NOT yield claim) |
-| P0026 Kai | Conservation Biology | gap measurement (NOT deployment claim) |
-| P0035 Tatakua | Atmospheric Environment | LSTM baseline + 24% above persistence |
+| `728a3dd` + downstream | 2026-08-13 | LaTeX / CI / pytest hardening (13 fix commits, see git log) |
+| `04eea81` | 2026-08-13 | Expand CH3-CH8 chapters with paper methods + results (3.97k → 11.18k words) |
+| `c82b005` | 2026-08-13 | Pixel area 0.09 ha → 0.0625 ha in papers + code |
+| `a0b8a93` | 2026-08-12 | Install requirements-ci.txt + lazy rasterio import in conftest |
 
+## Theme: Initial scaffolding (Aug 4-12)
+
+Pre-Aug 12 commits — see `git log --reverse` for full history. Key ones:
+- `c0e4d88` (2026-08-04): Milestone: 40% coverage
+- Earliest repo history lives in pre-Aug-2026 milestones (see Status.md)
+
+---
+
+## How to use this file
+
+1. **Reviewer asks:** "Where did the citations come from?"
+   → Point them to "Theme: Citation reconstruction" + "Theme: Citation verification"
+2. **Reviewer asks:** "How do I re-run the citation verification?"
+   → `scripts/verify_bib_dois.py --resume` + see `papers/drafts/AUDIT/README.md`
+3. **Reviewer asks:** "What's left to do?"
+   → `TODO.md`

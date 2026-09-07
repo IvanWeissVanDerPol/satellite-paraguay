@@ -31,7 +31,7 @@
 ### Month 3 (2026-11): P0012 Yvy → World Development
 - **Impact factor:** 5.0
 - **Submission format:** Original research
-- **Key innovation:** 3.3× indigenous deforestation disparity
+- **Key innovation:** 3.0× indigenous deforestation disparity
 - **Required materials:**
   - Manuscript (8,000-10,000 words)
   - Strong policy implications
@@ -76,7 +76,7 @@
 > This paper makes three contributions:
 > 1. **Country-scale analysis:** 16,628 km² forest loss 2001-2023 quantified using real Hansen GFC v1.11 data.
 > 2. **Foundation model comparison:** Prithvi-Lite achieves F1>0.85 vs F1=0.017 for from-scratch U-Net (50× improvement).
-> 3. **Indigenous territory analysis:** 3.3× deforestation disparity in 10 indigenous territories.
+> 3. **Indigenous territory analysis:** 3.0× deforestation disparity in 10 indigenous territories.
 >
 > The methodology is fully reproducible at github.com/IvanWeissVanDerPol/satellite-paraguay.
 >
@@ -93,7 +93,7 @@
 >
 > We submit "Indigenous Land Tenure and Deforestation in Paraguay's Gran Chaco" for *World Development*.
 >
-> This paper documents a striking finding: **indigenous territories in Paraguay's Gran Chaco are deforested at 3.3× the national average**. This contradicts the global pattern (indigenous territories typically protect against deforestation) and warrants urgent policy attention.
+> This paper documents a striking finding: **indigenous territories in Paraguay's Gran Chaco are deforested at 3.0× the national average**. This contradicts the global pattern (indigenous territories typically protect against deforestation) and warrants urgent policy attention.
 >
 > We propose a four-stage FPIC-based monitoring framework that integrates Free, Prior, Informed Consent (ILO 169) with satellite-based observation.
 >

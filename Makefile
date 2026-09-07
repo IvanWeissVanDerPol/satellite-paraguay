@@ -58,6 +58,12 @@ help:
 	@echo "Thesis:"
 	@echo "  make thesis-pdf            — Compile thesis to PDF (requires pdflatex)"
 	@echo ""
+	@echo "Defense (run before FADA submission):"
+	@echo "  make defense-check         — Run all 7 defense checks (cites, claims, ethics, latex, guards)"
+	@echo "  make guard                 — Run cite-pattern regression guards only (~2s)"
+	@echo "  make pre-defense           — Alias for defense-check"
+	@echo "  make defense-check-verbose — Run with --verbose to see full check output"
+	@echo "  make defense-check-full    — Full pytest suite too (~6 min, 740+ tests)"
 	@echo "Docker:"
 	@echo "  make docker-build          — Build Docker image"
 	@echo "  make docker-run            — Run in Docker container"
@@ -173,6 +179,30 @@ report:
 thesis-pdf:
 	cd thesis && pdflatex main.tex && pdflatex main.tex && bibtex main && pdflatex main.tex
 	@echo "Thesis PDF: thesis/main.pdf"
+
+# -----------------------------------------------------------------------
+# Defense-readiness targets (added 2026-09-07 as Tier-2 standing infra)
+# -----------------------------------------------------------------------
+# Wrapper around scripts/defense_check.py — runs all 7 checks
+# (cites, claims, ethics, latex, regression-guards, bib audit, data freshness)
+# in one command. Use --verbose to see each check's full output.
+defense-check:
+	python3 scripts/defense_check.py
+
+pre-defense:
+	python3 scripts/defense_check.py
+
+defense-check-verbose:
+	python3 scripts/defense_check.py --verbose
+
+# Full suite — ~6 min, runs all 740+ tests across 80 files
+# Use this weekly or before major commits; the default defense-check is
+# the 15s smoke version suitable for every-PR.
+defense-check-full:
+	python3 scripts/defense_check.py --full
+
+guard:
+	.venv/bin/python -m pytest tests/test_citation_patterns.py --no-cov -q
 
 test:
 	pytest tests/ -v

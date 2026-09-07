@@ -1,0 +1,98 @@
+# Round-2 citations that did NOT verify (likely reconstructions)
+# Total: 94
+# DO NOT CITE these in thesis without further verification
+
+- Acock, B., et al. (2024). | LSU crop yield model integration for Paraguay.
+- Ahumada, J.A., et al. (2024). | Jaguar density in South American dry forests.
+- Arends-Berlin, J., et al. (2024). | NDVI in the Chaco
+- Bailey, N., et al. (2024). | Bird species + Paraguay forest management.
+- Banco, P., et al. (2023). | Live fence protocols and invasive grass in Eastern Paraguay.
+- Barlow, J., et al. (2018). | Multi-taxa consequences of Amazonian deforestation.
+- Barros, M., et al. (2024). | Mangrove carbon + Paraguay.
+- Baumann, M., et al. (2017). | Cited earlier
+- Becker, D.M., et al. (2025). | Black-and-chestnut eagle in Misiones, Argentina.
+- Bierregaard, R.O., et al. (2020). | Harpy eagle review.
+- Bonilla, M., et al. (2024). | Invasive grass species proliferation in Paraguayan Chaco
+- Brancalion, P.H.S., et al. (2022). | Tropical forest restoration at scale.
+- Brennan, A., et al. (2024). | Forest connectivity in managed landscapes.
+- Briggs, J., et al. (2024). | Secondary forest dynamics in dry Chaco.
+- Bryant, R., et al. (2024). | National Forest Inventory of Paraguay: methodology and initial findings.
+- Bull, J.W., et al. (2024). | Biodiversity offset methodologies.
+- Bunn, C., et al. (2024). | Biodiversity finance frameworks in developing countries.
+- Cai, W., et al. (2020). | Climate impacts of the El Niño–Southern Oscillation on South America.
+- Caplice, L., et al. (2024). | Eucalyptus plantations in Paraguay.
+- Carneiro, L.C., et al. (2023). | Population dynamics of Podocnemis.
+- Chambers, B., et al. (2007). | Working with Indigenous Peoples...
+- Chen, G., et al. (2024). | Paraguay bushfire smoke and health.
+- Chen, S., et al. (2022). | SoilGrids 2.0: producing the 30 arcsecond resolution soil property layers of the world.
+- Chou et al. 2016 | Reference: Chou S.C. et al.,
+- Durán, A.P., et al. (2024). | Multifunctional landscapes sustainability.
+- Espinoza, J.C. et al. (2024). | Droughts in the La Plata Basin
+- Fader, M., et al. (2024). | Pancontinental coupling of wetland climate.
+- Falcucci, A., et al. (2024). | Connectivity + vertebrate conservation.
+- Frick, F., et al. (2024). | Forest reference levels for Paraguay.
+- Gibbons, P., et al. (2024). | Indigenous leadership in forest conservation.
+- Grau, R.H., et al. (2015). | Opportunities and constraints for sustainable agriculture in the Gran Chaco.
+- Grimm, A., Tedeschi, M. (2009). | ENSO and extreme precipitation events in South America.
+- Guedes, T.B., et al. (2018). | Biodiversity and agricultural frontiers in Chaco.
+- Gálvez, R., et al. (2024). | Child respiratory outcomes from Gran Chaco smoke exposure.
+- Havlík, P., et al. (2014). | Climate change mitigation through livestock system transitions.
+- He, J., et al. (2022). | Indigenous community remote sensing data.
+- Hein, C.S., et al. (2023). | Multi-taxa indicators of forest restoration success in Tahiti.
+- Hengl, T., et al. (2017). | SoilGrids250m: Global gridded soil information based on machine learning.
+- Hoogendoorn, C., et al. (1992). | An index of grazing pressure.
+- Iwasaki, S., et al. (2009). | Indigenous forest management: Brazil.
+- Janzen, D.H. (1986). | Costa Rican natural history.
+- Jodocy, N., et al. (2024). | Drivers of grassland conversion in Brazil.
+- Kaiser, J.W., et al. (2012). | Biomass burning emissions estimated with a global fire assimilation system based on observed fire radiative power.
+- Kayano, M., et al. (2024). | SST impacts on Chaco precipitation.
+- Kays, R., et al. (2020). | Wildlife camera-trap data.
+- Liévano-Lascarro, J., et al. (2023). | Hunting + primate populations.
+- Marengo, J. et al. (2012). | Recent developments on South American monsoon system.
+- Matricardi, E. et al. (2020). | Quantification of forest disturbance in the Gran Chaco using Landsat time series.
+- McNeely, J.A., Scherr, S.J. (2003). | Ecoagriculture.
+- Mitchard, E.T.A. (2018). | The tropical forest carbon cycle and climate change.
+- Morbey, R., et al. (2024). | Puma-human conflict mitigation.
+- Morello, J., Adámoli, J. (2008). | The eco-geography of the Chaco.
+- Nagle, R., et al. (2023). | Indigenous-led climate politics in South America.
+- Nuno, A., Pereira, A., et al. (2024). | Tapir population dynamics in fragmented Chaco.
+- Parsons, A.W., et al. (2019). | Camera-trap abundance estimators.
+- Pavetti, D. et al. (2023). | Cassava yield in Paraguay: an empirical analysis.
+- Pavetti, D., et al. (2024). | Forest management + climate mitigation.
+- Pawson, S., Brang, P., Brockerhoff, E., et al. (2024). | Restoring forests in production landscapes: a synthesis.
+- Pennington, R.T., Prado, D. (2000). | The importance of tropical dry forest for biodiversity.
+- Pennington, R.T., et al. (2024). | Chaco vegetation + land use.
+- Pettorelli, N., et al. (2017). | Ungulate population dynamics.
+- Pileci, R.E., et al. (2024). | Reply to Falchi et al.: Quantifying the mortality benefits of solar geoengineering.
+- Pinagé, E. et al. (2024). | Detecting selective logging with GEDI
+- Portalés, A., et al. (2024). | Improved REDD+ methodologies
+- Powell, R., et al. (2024). | Indigenous-led conservation + Zero Deforestation work in the Chaco.
+- Pérez-Chamorro, J., et al. (2024). | Sub-endemic Chaco species.
+- Quirós, R., et al. (2009). | Fish fauna of the Paraguay River basin.
+- Rahbek, C., et al. (2019). | Humboldt extension: climate change + biodiversity.
+- Ramos, J., et al. (2023). | Maize-soybean succession yield.
+- Rezende, C., et al. (2018). | Atlantic Forest restoration strategies and the role of climate change.
+- Rocha, J., et al. (2024). | Native species reforestation trials in Dry Chaco.
+- Roitman, I., et al. (2024). | Cerrado biodiversity.
+- Romero, C., et al. (2024). | Native forestry in Paraguay: economic vs conservation trade-offs.
+- Schrire, B.D., et al. (2005). | Indigofera biogeography.
+- Scott, C.A., et al. (2024). | Nexus policy implementation.
+- Seminario, E.M., et al. (2024). | Paraguayan biodiversity catalogue.
+- Sen Ferreira et al. 2025-26 paper: | Mixed methods for socio-environmental post-disaster assessment
+- Souza, C. et al. (2005). | Degradation in the Amazon: quantification by satellite image spectral decomposition.
+- Strandberg L., et al. (2024) | (predicted via
+- Taubert, F., et al. (2018). | Agricultural expansion frontiers in South America.
+- Tejedor, G.C., et al. (2015). | Refuge effect studies in Chaco dry forest.
+- Tirivar, A., et al. (2024). | Mental health impacts of wildfires in rural communities.
+- Toepfer, G., et al. (2024). | Atlantic Forest primates in Paraguay.
+- Tyukavina, A., et al. (2022). | Tropical forest loss 2020-2021.
+- Vaccaro, I., et al. (2024). | Forest livelihoods in the Chaco.
+- Vautrin, K., et al. (2024). | Community forestry in Paraguay (Forest Certification).
+- Walker, W., et al. (2024). | Improved carbon stock estimation in tropical forests.
+- Walter, L.F., et al. (2024). | Soybean expansion drivers across the Cerrado and Chaco.
+- Walters, M., et al. (2025). | OpenLandMap 2.0: A paradigm for soil monitoring.
+- Wang, A., et al. (2024). | Hybrid process-based + deep learning for crop yield.
+- Wang, B., et al. (2019). | Wild cat conservation.
+- Yu, Z., et al. (2024). | Distinguishing silvopasture from pure pasture using Sentinel-1 and Sentinel-2 data fusion.
+- Zhang, M., et al. (2024). | Global Pasture Watch + Heat Stress Index.
+- Zhang, Y., et al. (2024). | Silvopasture mapping with deep learning + multi-temporal satellite data.

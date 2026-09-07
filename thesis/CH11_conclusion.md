@@ -16,7 +16,7 @@ Six reproducible pipelines (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) integrated i
 
 ### 11.1.2 An Empirical Finding
 
-The first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a **3.3× multiplier** compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
+The first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a **3.0× multiplier** compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
 
 ### 11.1.3 A Methodology
 
@@ -28,7 +28,7 @@ A rights-aware deployment methodology that integrates Free, Prior, and Informed 
 
 **RQ2:** 16,628 km² of forest lost 2001-2023, concentrated in the Chaco frontier (Alto Paraguay 28.49%). Peak in 2012, partial recovery 2018-2020.
 
-**RQ3:** Indigenous territories at 3.3× the national deforestation rate. FPIC-based monitoring is necessary but not sufficient.
+**RQ3:** Indigenous territories at 3.0× the national deforestation rate. FPIC-based monitoring is necessary but not sufficient.
 
 **RQ4:** Cross-domain transfer works when tasks share underlying features (vegetation) but fails when they differ fundamentally (vegetation vs. individual animals).
 
@@ -48,10 +48,10 @@ The thesis has limitations:
 
 ### 11.4.1 Short-term (3-6 months)
 
-1. **GPU training run:** Fine-tune Prithvi on Paraguayan data (F1>0.85 confirmed)
-2. **FPIC engagement:** Establish FPIC with 5+ indigenous communities
-3. **INFONA collaboration:** Independent verification of Verra projects
-4. **Paper submissions:** Submit P0011, P0010, P0012 to target journals
+1. **GPU training run:** Fine-tune Prithvi on real Paraguayan Sentinel-2 + Hansen labels (target: confirm F1>0.85 direction; the current CPU pilot reached F1=0.497 with the Prithvi-mock fallback). Requires ~$20-50 cloud GPU spend and is the explicit operational-claim experiment the rest of the thesis depends on.
+2. **FPIC engagement:** Establish FPIC with 5+ indigenous communities (gate for Yvy / P0012 ethics compliance).
+3. **INFONA collaboration:** Independent verification of Verra projects (extends Yvyra to a larger project sample).
+4. **Paper submissions:** Submit P0011, P0010, P0012 to target journals.
 
 ### 11.4.2 Medium-term (6-18 months)
 
@@ -71,13 +71,30 @@ The thesis has limitations:
 
 This thesis is dedicated to the indigenous communities of the Gran Chaco whose land tenure and traditional knowledge are central to Paraguay's environmental future. The thesis demonstrates that **geospatial AI can be both technically rigorous and ethically grounded**, providing Paraguay with a sovereign, open-source alternative to imported commercial monitoring systems.
 
-The most important finding of this thesis is not technical: it is that **indigenous territories in Paraguay are deforested at 3.3× the national average**. This finding demands immediate policy attention and FPIC-based monitoring. The technical infrastructure (Prithvi, MapBiomas, Hansen) is necessary but not sufficient. What is needed is **political will** to recognize indigenous land rights, enforce environmental law, and build sovereign AI capacity.
+The most important finding of this thesis is not technical: it is that **indigenous territories in Paraguay are deforested at 3.0× the national average**. This finding demands immediate policy attention and FPIC-based monitoring. The technical infrastructure (Prithvi, MapBiomas, Hansen) is necessary but not sufficient. What is needed is **political will** to recognize indigenous land rights, enforce environmental law, and build sovereign AI capacity.
 
 I hope this thesis contributes, in some small way, to a Paraguay where indigenous rights are respected, forests are protected, and geospatial AI serves the public good.
 
 — Iván Hocht-VonDerPol
 — Asunción, Paraguay
 — August 2026
+
+---
+
+## 11.6 Honest Reporting Notes
+
+This thesis adopts the convention that any claim appearing in earlier drafts has been replaced with the measured pilot number in the final manuscript, with the source-of-truth file cited in-line. The Honest Reporting Note convention is documented in `docs/CONVENTIONS.md`. The substantive substitutions made during the 2026-08-10 / 2026-08-11 honest-reporting passes are:
+
+| Topic | Earlier (aspirational) | Final (measured) |
+|---|---|---|
+| Yvutu F1, Prithvi | F1 > 0.85 | F1 = 0.497 (mock fallback) |
+| Yvutu F1, from-scratch | F1 < 0.30 | F1 = 0.559 (over-predicts) |
+| Kai mAP, real | 0.3-0.5 | 0.18 |
+| Tatakua RMSE | MAE < 5 µg/m³ (aspirational) | 14.7 µg/m³ (measured) |
+| Verra under-claim | "30-50%" | +35.9% (5 projects) |
+| Citation verification | "47 verified" | "213 verified, 13 LIKELY, 0 NOT_FOUND" (round-3, 2026-09-04) |
+
+The citation-verification row reflects the round-3 result: of 226 candidate citations from the round-2 reconstruction, 213 are now VERIFIED via OpenAlex + CrossRef title-first search with a best-of-3 scoring protocol (94% verification rate). The remaining 13 are LIKELY (score 0.4-0.6) and require manual DOI lookup or replacement. The full per-citation evidence is in `research/04-VERIFICATION/verification_report_v4.md`.
 
 ---
 

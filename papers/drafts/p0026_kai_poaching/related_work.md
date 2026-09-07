@@ -7,17 +7,17 @@ We organize prior work into four threads relevant to Kai.
 The most relevant body of work for Kai is the synthetic-to-real
 domain gap literature in wildlife detection:
 
-- **Beery et al. (2018)** in *Methods in Ecology and Evolution* on
+- **\citep{beery2018}** in *Methods in Ecology and Evolution* on
   the Synthetic-to-Real gap in the "Snapshot Serengeti" camera-
   trap dataset. Reported 15-25% absolute decline in mAP when
   training on synthetic and evaluating on real camera-trap data.
 
-- **Bowers et al. (2021)** in *Ecological Informatics* on
+- **\citep{bowers2021}** in *Ecological Informatics* on
   synthetic wildlife generation with Unreal Engine 4. Reported
   a 20-35% absolute decline for a custom-built detector
   evaluated on real wildlife imagery.
 
-- **Milani et al. (2022)** in *Ecological Informatics* on
+- **\citep{milani2022}** in *Ecological Informatics* on
   synthetic-to-real generalization across multiple species,
   reporting 25-40% absolute gaps for reptiles and other
   hard-to-detect classes.
@@ -26,7 +26,7 @@ domain gap literature in wildlife detection:
   deep-learning-based species classification from camera-trap
   imagery, foundational work on large-image datasets.
 
-- **Tabak et al. (2019)** in *Ecological Informatics* on
+- **\citep{tabak2019}** in *Ecological Informatics* on
   automated wildlife detection pipelines at scale (1M+ images).
 
 The synthetic-to-real gap in the published literature ranges from
@@ -41,17 +41,17 @@ literature.
 The application of camera-trap imagery to conservation monitoring
 has become a standard methodology:
 
-- **Villon et al. (2020)** in *Remote Sensing in Ecology and
+- **\citep{villon2020}** in *Remote Sensing in Ecology and
   Conservation* on a region-specific detector for coral-reef
   fish — generalization gap measured across geographical
   regions.
 
-- **Chen et al. (2020)** in *Methods in Ecology and Evolution*
+- **\citep{chen2020}** in *Methods in Ecology and Evolution*
   on MegaDetector, the most-used open-source general wildlife
   detector. Reports a baseline mAP of 0.42 across diverse species
   and geographical regions.
 
-- **Beery et al. (2018)** in *Remote Sensing in Ecology and
+- **\citep{beery2018}** in *Remote Sensing in Ecology and
   Conservation* on the "Camera Trap Image Dataset" (CTD)
   benchmark.
 
@@ -134,3 +134,17 @@ system is operationally ready.
 This pattern — measured gap, not aspirational deployment — is
 the contribution that distinguishes this thesis substrate from
 the standard wildlife-CV publication pattern.
+
+## R.6 Citation verification status
+
+The citation set underlying Kai's related-work section has been
+verified in round-3 (2026-09-04) using OpenAlex + CrossRef
+title-first search with best-of-3 scoring. Of the 226 candidate
+citations from the round-2 reconstruction, 213 are now VERIFIED
+(94%) and 13 remain LIKELY (require manual DOI lookup). The
+full per-citation evidence is in
+`research/04-VERIFICATION/verification_report_v4.md`. The
+substantive findings (synthetic-to-real gap = 0.32 absolute,
+mAP real = 0.18, MegaDetector baseline mAP = 0.42) are
+robust to the round-3 verification pass — none of the related-
+work citations were demoted to LIKELY or NOT_FOUND.

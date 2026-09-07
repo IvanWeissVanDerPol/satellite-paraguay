@@ -25,6 +25,21 @@ under-claim across the 5 Paraguayan Verra projects** with a 95%
 BCa bootstrap interval [21.5%, 50.6%] across the methodological
 sensitivity envelope.
 
+### Note for examiners on the Discussion section
+
+The Conclusion was edited (Round-7 audit) to remove a "30-project
+global replication" claim that was not backed by a measured run.
+The Discussion section (`discussion.md`, user-authored in commit
+`c0e4d88`) contains contextual comparisons to broader Verra-integrity
+reporting (Guardian / Bloomberg 2023) and to published Hansen / Chave
+validation studies. These are framed as **contextual benchmarks**,
+not as direct measurements of this thesis. Per the author's
+review-discipline pattern (see `papers/drafts/AUDIT/TIER-4-REVIEW-2026-09-07.md`),
+user-authored Discussion text was not modified; any unverified
+references in the Discussion should be treated as **flagged-but-
+unchanged** and verifiable against the cited Guardian / Bloomberg
+publications or the Chave 2014 / Hansen GFC v1.11 documentation.
+
 ## Significance
 
 Voluntary carbon markets issued ~170 Mt CO₂e in credits in 2023

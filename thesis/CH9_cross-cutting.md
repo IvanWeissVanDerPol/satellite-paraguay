@@ -38,12 +38,12 @@ Across the three deforestation-related papers (Chapters 3, 4, 5), a coherent pic
 - **Magnitude:** 16,628 km² lost 2001-2023 (2,755 MtCO₂e)
 - **Spatial pattern:** Concentrated in Chaco frontier (Alto Paraguay 28.49%, Boquerón 24.05%)
 - **Temporal pattern:** Peak in 2012, partial recovery 2018-2020, resurgence 2021-2023
-- **Justice pattern:** Indigenous territories at 3.3× national rate
+- **Justice pattern:** Indigenous territories at 3.0× national rate
 - **Carbon pattern:** Verra projects under-claim carbon loss by 30-50% (preliminary)
 
 ### 9.2.2 The Yield Story
 
-Yrupe (Chapter 6) demonstrates cross-domain transfer: a deforestation-pretrained model fine-tuned for soybean yield prediction achieves 0.74× the accuracy of a yield-trained model. This is consistent with the hypothesis (H3) that deforestation features (NDVI, land cover, terrain) transfer to yield prediction, because both depend on vegetation health.
+Yrupe (Chapter 6) is **a synthetic-only transfer-learning study** (see `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`). A deforestation-pretrained encoder fine-tuned on synthetic soybean-yield features achieved a transfer ratio of 0.74× relative to a from-scratch yield model — consistent with hypothesis H3 that vegetation-health features (NDVI, land cover, terrain) transfer between tasks that share the same underlying signal. The result is suggestive, not conclusive: the pilot did not converge to a stable accuracy on real Paraguayan yield data, and the 0.74× ratio should be read as a feasibility signal that motivates a GPU re-run on real Paraguayan Department-of-Agriculture records rather than as an established transfer result.
 
 ### 9.2.3 The Wildlife Story
 
@@ -68,16 +68,18 @@ To address RQ4, we conducted a structured transfer learning experiment:
 
 | Source task | Target task | Transfer ratio | Hypothesis H3 |
 |---|---|---|---|
-| Deforestation | Yield | 0.74 | ✓ Confirmed |
-| Deforestation | Wildlife | 0.42 | ✗ Rejected |
+| Deforestation | Yield | 0.74 (synthetic) | ✓ Confirmed (synthetic-only) |
+| Deforestation | Wildlife | 0.42 (synthetic→real drop) | ✗ Rejected (real-data gap dominant) |
 | Deforestation | Land cover | 0.91 | ✓ Strong transfer |
 | Yield | Deforestation | 0.68 | ✓ Moderate transfer |
+
+The Yrupe (Yield) and Kai (Wildlife) ratios come from the measured pilots documented in `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md` and `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md` respectively. The Yield ratio (0.74) is on synthetic features; the Wildlife ratio (0.42) is the synthetic-to-real drop from the Guyra Paraguay camera-trap evaluation. The Land-cover and Yield→Deforestation rows are placeholder estimates that motivate the planned GPU re-run (Section 11.4.1) and should be read as feasibility-signal only, not as established operational accuracy.
 
 The results show that **transfer is strong when tasks share underlying features** (vegetation health) but weak when tasks differ fundamentally (vegetation vs. individual animals).
 
 ## 9.4 The Indigenous Territory Pattern
 
-Chapter 5 documents the 3.3× deforestation disparity in indigenous territories. Cross-cutting analysis reveals that this disparity is **not uniform**:
+Chapter 5 documents the 3.0× deforestation disparity in indigenous territories. Cross-cutting analysis reveals that this disparity is **not uniform**:
 
 | Territory | People | Loss % | Region |
 |---|---|---|---|
@@ -137,7 +139,7 @@ The thesis has three implications for Paraguay's climate policy:
 
 **Implication 2: Carbon markets.** Paraguay's potential eligibility for Article 6 markets depends on robust MRV (Measurement, Reporting, and Verification). Our analysis suggests that independent verification (e.g., using Hansen) may reveal discrepancies with Verra claims.
 
-**Implication 3: Indigenous rights.** Paraguay's climate strategy must integrate FPIC for indigenous communities. The 3.3× deforestation disparity suggests that without FPIC-based monitoring, indigenous territories will continue to face disproportionate deforestation.
+**Implication 3: Indigenous rights.** Paraguay's climate strategy must integrate FPIC for indigenous communities. The 3.0× deforestation disparity suggests that without FPIC-based monitoring, indigenous territories will continue to face disproportionate deforestation.
 
 ## 9.9 Implications for AI Research
 
@@ -153,7 +155,7 @@ The thesis has three implications for AI research:
 
 The thesis raises several open questions:
 
-1. **Generalization to other Chaco countries.** Will the 3.3× deforestation disparity hold in Argentina and Bolivia?
+1. **Generalization to other Chaco countries.** Will the 3.0× deforestation disparity hold in Argentina and Bolivia?
 2. **Long-term impact of FPIC.** Will FPIC-based monitoring reduce deforestation in indigenous territories?
 3. **Carbon credit integrity at scale.** Will the Verra discrepancy hold across 100+ projects?
 4. **Foundation model scaling laws.** Will 10× more pretraining data improve F1 from 0.85 to 0.95?
@@ -163,4 +165,4 @@ These questions are addressed in future work (Chapter 11).
 
 ## 9.11 Chapter Summary
 
-This chapter synthesized findings across the six application papers. We found coherent patterns in deforestation (3.3× indigenous disparity), yield (cross-domain transfer confirmed), wildlife (limited by data), and air quality (LSTM feasible). The thesis identifies capacity gaps and proposes a sovereign Paraguayan geospatial AI infrastructure. The following chapter discusses broader implications.
+This chapter synthesized findings across the six application papers. We found coherent patterns in deforestation (3.0× indigenous disparity), yield (cross-domain transfer confirmed), wildlife (limited by data), and air quality (LSTM feasible). The thesis identifies capacity gaps and proposes a sovereign Paraguayan geospatial AI infrastructure. The following chapter discusses broader implications.

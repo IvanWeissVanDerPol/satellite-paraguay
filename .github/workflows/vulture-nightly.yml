@@ -50,4 +50,4 @@ jobs:
           name: vulture-reports
           path: reports/vulture-*.txt
           retention-days: 90
-          if-no-files-found: warn
+          if-no-files-found: error  # Scenario 2 mitigation

@@ -13,13 +13,13 @@ data in the US). Subsequent work added multi-source satellite fusion.
 **LSTM-based time-series forecasting** has become the de facto
 standard for >24-h air-quality prediction. Key prior work:
 
-- **Wen et al. (2019)** — LSTM for PM₂.₅ forecasting in
+- **\citep{wen2019}** — LSTM for PM₂.₅ forecasting in
   Beijing using ground stations + meteorological data. RMSE
   reductions of 15-25% over ARIMA, on urban station networks.
-- **Karevan & Nápoles (2020)** — multi-site LSTM air-quality
+- **Karevan & \citep{napoles2020}** — multi-site LSTM air-quality
   prediction, demonstrating transfer-learning benefits across
   stations.
-- **Lin et al. (2022)** — transformer-based air-quality
+- **\citep{lin2022}** — transformer-based air-quality
   forecasting, showing modest gains over LSTMs at large scale
   (100+ stations). At our 12-station scale, transformer benefits
   are not yet established.
@@ -34,10 +34,10 @@ mostly CPU) typical of low- and middle-income countries, and
 The use of satellite AOD for ground-level PM₂.₅ estimation has a
 ~20-year literature. Key contributions:
 
-- **van Donkelaar et al. (2010)** — global PM₂.₅ estimates from
+- **\citep{donkelaar2010}** — global PM₂.₅ estimates from
   MODIS AOD via vertical-rescaling.
-- **Chudnovsky et al. (2014)** — MODIS-to-PM₂.₅ scaling in the US.
-- **van Donkelaar et al. (2015)** — global PM₂.₅ for the
+- **\citep{chudnovsky2014}** — MODIS-to-PM₂.₅ scaling in the US.
+- **\citep{donkelaar2015}** — global PM₂.₅ for the
   Global Burden of Disease study.
 - **TROPOMI operational products** (Copernicus) provide
   daily AOD at 7 km × 3.5 km since April 2018.
@@ -54,7 +54,7 @@ TROPOMI over a non-satellite LSTM (Section R.4).
 
 Direct prior work on PM₂.₅ forecasting for Paraguay is sparse:
 
-- **de la Hoz et al. (2018)** — a single-station LSTM for
+- **de la \citep{hoz2018}** — a single-station LSTM for
   Asunción, 6-month retrospective, RMSE ≈ 7 µg/m³ for 1-h horizon.
   Not directly comparable to Tatakua (which targets 24-h horizon
   and uses leave-one-station-out CV).
@@ -62,7 +62,7 @@ Direct prior work on PM₂.₅ forecasting for Paraguay is sparse:
   published forecast models to our knowledge.
 
 Broader Southern Cone work has been limited by ground-station
-coverage, with the Pantanoso et al. (2020) Buenos Aires LSTM the
+coverage, with the \citep{pantanoso2020} Buenos Aires LSTM the
 closest published analogue. Paraguay is among the least-studied
 countries in South America for air-quality forecasting; this
 contributes to the policy-relevance of even a baseline-quality
@@ -75,9 +75,9 @@ burning emissions, both local (deforestation fires in the Chaco)
 and regional (agricultural burning in Argentina and Brazil). Key
 context:
 
-- **Artaxo et al. (2013)** — South American biomass burning
+- **\citep{artaxo2013}** — South American biomass burning
   aerosol characterization.
-- **Kumar et al. (2018)** — FRP-AOD scaling relationships during
+- **\citep{kumar2018}** — FRP-AOD scaling relationships during
   Amazon fires.
 - **ECMWF CAMS regional ensemble** — the operational standard for
   biomass-burning PM₂.₅ forecasting in South America.

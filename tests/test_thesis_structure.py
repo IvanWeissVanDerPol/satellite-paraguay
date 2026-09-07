@@ -102,10 +102,14 @@ def test_policy_brief_exists():
 
 
 def test_indigenous_finding():
-    """Indigenous 3.3x disparity is documented in thesis abstract."""
+    """Indigenous 3.0x disparity is documented in thesis abstract.
+
+    Note: was 3.3x in older drafts (per Tier-1 finding #1 — fixed in a70c9c6).
+    Empirical value: 3.0x with 95% bootstrap CI [1.72, 4.20]x.
+    """
     path = Path(__file__).parent.parent / "THESIS_ABSTRACT.md"
     content = path.read_text()
-    assert "3.3" in content, "Indigenous 3.3x disparity missing from abstract"
+    assert "3.0" in content, "Indigenous 3.0x disparity missing from abstract"
 
 
 def test_h1_foundation_models():

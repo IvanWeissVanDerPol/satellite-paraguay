@@ -22,6 +22,36 @@ The **second repo** (`paraguay-geodata-vlm` / `P1 GeoData v2`) was originally fr
 
 ---
 
+## 👨‍🏫 Reading Path for an Evaluator (Profesor / Comité / Revisor)
+
+If you only have **30 minutes**, follow this order. Every doc is short, every doc links forward.
+
+| # | Read this | Time | Why it matters |
+|---|---|---|---|
+| 1 | **[`README.md`](README.md)** | 3 min | The TL;DR — 8 headline findings table (measured, with provenance), honest status flags, repo structure diagram. |
+| 2 | **[`THESIS_ABSTRACT.md`](THESIS_ABSTRACT.md)** | 3 min | The 250-word abstract + 5 research questions + 3 hypotheses (H1, H2, H3) + defense timeline. |
+| 3 | **[`STATUS.md`](STATUS.md)** | 5 min | Per-paper scorecard with **measured-vs-aspirational** flags. Critical for honest calibration. Only P0035 Tatakua (75/100) and P0010 Vyrá (57/100) are publishable as-is today. |
+| 4 | **[`thesis/CH3_paper1_P0011_yvutu.md`](thesis/CH3_paper1_P0011_yvutu.md)** through **`thesis/CH8_paper6_P0035_tatakua.md`** | 15 min | The 6 paper chapters — read the abstract + measured results of each. P0011 Yvutu (deforestation), P0010 Vyrá (carbon credits), P0012 Yvy (indigenous), P0025 Yrupe (yield — honest failure-mode paper), P0026 Kai (wildlife), P0035 Tatakua (air quality). |
+| 5 | **[`papers/drafts/p0035_tatakua_air_quality/paper.md`](papers/drafts/p0035_tatakua_air_quality/paper.md)** | 5 min | The single most-mature paper. LSTM trained on real OpenAQ data, RMSE 14.7 µg/m³, 12-month retro. Reads as a complete journal paper. |
+| 6 | **[`BRUTAL_ROAST.md`](BRUTAL_ROAST.md)** | 10 min | The 200-angle self-audit — what is weak, what is missing, what is aspirational vs. measured. Shows epistemic rigor. |
+
+**Optional deeper dives** (if the reviewer wants code/data/methodology):
+
+| Doc | For whom |
+|---|---|
+| [`thesis/CH1_introduction.md`](thesis/CH1_introduction.md) + [`CH2_methodology.md`](thesis/CH2_methodology.md) | The thesis introduction + methodology |
+| [`docs/THREATS_TO_VALIDITY.md`](docs/THREATS_TO_VALIDITY.md) | Threats to validity across all 6 papers |
+| [`papers/drafts/P0011_yvutu_deforestation/paper.md`](papers/drafts/P0011_yvutu_deforestation/paper.md) | The deforestation paper (P0011) |
+| [`papers/drafts/P0012_yvy_indigenous/paper.md`](papers/drafts/P0012_yvy_indigenous/paper.md) | The indigenous rights paper (P0012) — note: **blocked by ethics**, 0/10 communities contacted for FPIC |
+| [`etica/IRB_protocol_paraguay_UNA.md`](etica/IRB_protocol_paraguay_UNA.md) | IRB protocol |
+| The substrate repo ([`paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm)) | The data acquisition + web-demo half. Public web app: <https://paraguay-mapa.paragu-ai.com> |
+
+**What this thesis is *not*:** it is **not** the AIW Paraguay CivicTech project (`salud-abierta`, `corrupcion-cero`, `transito-seguro`, etc. — that is a different AIW product). If you see references to "8 sitios live" or "ENSIMUP / DNCP" data, that is a separate project; the thesis uses satellite + earth-observation data only.
+
+---
+
+---
+
 ## Data Flow
 
 ```
@@ -162,7 +192,7 @@ When one changes, the other should too. These are the cross-reference docs:
 | **Status snapshot** | `STATUS.md` | `PROGRESS.md` |
 | **Headline findings** | `README.md` (TL;DR table) | `THESIS_SUMMARY.md` |
 | **Roadmap** | `docs/12-week-roadmap-2026-Q3.md` | `MASTER_PLAN.md` (autonomous 30-day) |
-| **Def**" | `DEFENSE_PLAN.md` | (substrate side has none yet — gap) |
+| **Defense plan** | `DEFENSE_PLAN.md` | (substrate side has none yet — gap) |
 | **References** | `references.bib` (182 entries) | `REFERENCES.bib` (24 entries, starter) |
 
 **Rule**: when you update a sync doc in one repo, run a quick `grep` in the other for the same keyword and update the matching entry.
@@ -229,5 +259,5 @@ When you add a new artifact that crosses the boundary (a new paper, a new datase
 4. Update the **sync docs** in both repos
 5. Commit this `THESIS_ARCHITECTURE.md` to both repos with the same content
 
-Last updated: 2026-08-15
+Last updated: 2026-09-03
 Maintained by: Hermes agent (cross-repo architecture review)

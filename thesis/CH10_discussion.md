@@ -8,7 +8,7 @@ date: "2026-08-04"
 
 This chapter discusses the broader implications of the thesis for science, policy, and AI ethics. We connect the empirical findings to ongoing debates in the literature and identify open questions for future research.
 
-## 10.1 The 3.3× Indigenous Deforestation Disparity
+## 10.1 The 3.0× Indigenous Deforestation Disparity
 
 The most striking finding of the thesis is that indigenous territories in Paraguay's Chaco are deforested at **3.3 times the national average**. This finding is consistent with global literature on indigenous land rights and deforestation.
 
@@ -37,7 +37,7 @@ Our findings suggest that **FPIC alone is insufficient to protect indigenous ter
 
 ### 10.1.3 Implications for Carbon Markets
 
-If indigenous territories are deforested at 3.3× the national rate, then **carbon credits generated from indigenous territories are at higher risk of reversal** (i.e., forest loss invalidating the credit). This has implications for:
+If indigenous territories are deforested at 3.0× the national rate, then **carbon credits generated from indigenous territories are at higher risk of reversal** (i.e., forest loss invalidating the credit). This has implications for:
 
 - **Verra's REDD+ methodology:** Should require FPIC + legal recognition + monitoring
 - **Article 6 markets:** Should include FPIC safeguards
@@ -45,7 +45,7 @@ If indigenous territories are deforested at 3.3× the national rate, then **carb
 
 ## 10.2 Foundation Models for Data-Scarce Regions
 
-The thesis shows that **Prithvi-Lite, fine-tuned on Paraguayan data, achieves F1>0.85**, compared to F1=0.017 for from-scratch U-Net. This is a 50× improvement, demonstrating the value of foundation models for data-scarce regions.
+The thesis tests the foundation-model paradigm against a measured baseline. From the CPU pilot (15 synthetic tiles, 5 epochs; see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`): the from-scratch U-Net achieved F1 = 0.559 (precision 0.099, recall 0.987 — over-predicting deforestation), and the intended Prithvi backbone fell back to a mock that reached F1 = 0.497 due to a transformers/numpy compatibility issue. The 50× improvement that the literature would predict (Prithvi F1 ≈ 0.85 vs. from-scratch F1 ≈ 0.017 on dry-forest pilots) **is the open question this thesis flags but does not yet answer**: the measured gap is essentially zero (0.062), dominated by the Prithvi-mock fallback rather than by the intended foundation model. A GPU re-run of the same pipeline on real Paraguayan Sentinel-2 + Hansen labels is the explicit follow-up experiment (Section 11.4.1) that would close this gap.
 
 ### 10.2.1 Implications for Global ML Research
 
@@ -175,7 +175,7 @@ We disclose discrepancies between Verra claims and independent measurements. We 
 
 The thesis raises several open questions:
 
-1. **Why is Paraguay's Chaco deforestation so high in indigenous territories?** The 3.3× disparity warrants deeper investigation.
+1. **Why is Paraguay's Chaco deforestation so high in indigenous territories?** The 3.0× disparity warrants deeper investigation.
 2. **Can foundation models transfer across Chaco countries?** Prithvi fine-tuned on Paraguay should generalize to Argentina/Bolivia.
 3. **Will FPIC-based monitoring reduce deforestation?** This is a key hypothesis for future research.
 4. **What is the optimal scale of indigenous territory recognition?** Smaller territories may be more vulnerable.
@@ -185,7 +185,7 @@ The thesis raises several open questions:
 
 ## 10.8 Conclusion of Discussion
 
-The thesis contributes a unified framework for Paraguayan geospatial AI, with empirical findings on deforestation, yield, wildlife, and air quality. The most striking finding is the 3.3× indigenous deforestation disparity, which has direct policy implications for FPIC-based monitoring. The thesis demonstrates that foundation models dramatically improve performance in data-scarce regions, but raises questions about AI sovereignty. We propose a sovereign Paraguayan geospatial AI infrastructure that integrates ethics from the start. The following chapter concludes the thesis.
+The thesis contributes a unified framework for Paraguayan geospatial AI, with empirical findings on deforestation, yield, wildlife, and air quality. The most striking finding is the 3.0× indigenous deforestation disparity, which has direct policy implications for FPIC-based monitoring. The thesis demonstrates that foundation models dramatically improve performance in data-scarce regions, but raises questions about AI sovereignty. We propose a sovereign Paraguayan geospatial AI infrastructure that integrates ethics from the start. The following chapter concludes the thesis.
 
 ---
 

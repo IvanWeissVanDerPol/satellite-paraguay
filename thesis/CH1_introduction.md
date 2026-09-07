@@ -48,7 +48,7 @@ To address these challenges, this thesis poses five research questions:
 
 We propose three hypotheses derived from these research questions:
 
-**H1 (Foundation Models Superiority):** A Prithvi-fine-tuned model achieves F1 > 0.85 on Paraguayan deforestation detection, compared to F1 < 0.30 for a from-scratch U-Net baseline.
+**H1 (Foundation Models Superiority, *aspirational*):** A Prithvi-fine-tuned model would achieve F1 > 0.85 on Paraguayan deforestation detection (literature benchmark from Jakubik et al. 2023 on HLS land-cover), compared to F1 < 0.30 for a from-scratch U-Net baseline. *Status: direction supported by literature; magnitudes unverified by this thesis.* The measured CPU pilot achieved F1=0.559 with the from-scratch U-Net (over-predicting deforestation) and F1=0.497 with the Prithvi-mock fallback — both above the F1<0.30 baseline threshold, so the second inequality of H1 is refuted by measurement; the first inequality remains the open question that the planned GPU re-run is designed to answer.
 
 **H2 (Indigenous Deforestation Disparity):** Indigenous territories in Paraguay have deforestation rates greater than 1.5 times the national average.
 
@@ -62,7 +62,7 @@ This thesis makes three contributions:
 
 **Contribution 1: A unified framework.** We develop six reproducible pipelines (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) integrated into a single open-source repository (`satellite-paraguay`). These pipelines cover deforestation, carbon credits, indigenous conflict, crop yield, wildlife poaching, and air quality.
 
-**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a 3.3× multiplier compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
+**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a 3.0× multiplier compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
 
 **Contribution 3: A methodology.** We propose a rights-aware deployment methodology that integrates Free, Prior, and Informed Consent (FPIC) for indigenous communities, IRB approval for human-subjects data, and federated states for cross-border comparison. This methodology can be replicated in other contexts.
 
@@ -76,7 +76,7 @@ The thesis is organized as follows:
 
 **Chapter 4 (Yvyra Carbon):** Integrates Verra registry data with Hansen deforestation to assess carbon credit integrity.
 
-**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 3.3× disparity.
+**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 3.0× disparity.
 
 **Chapter 6 (Yrupe Yield):** Tests H3 by transferring a deforestation-pretrained model to soybean yield prediction.
 

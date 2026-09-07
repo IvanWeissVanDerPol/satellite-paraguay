@@ -13,7 +13,7 @@
 
 ## Abstract (250 words)
 
-This thesis develops **Yvutu** (a Guaraní name for "wind"), a multi-temporal satellite computer vision framework for Paraguay grounded in open Earth-observation data and recent foundation models. The work directly addresses **three challenges** facing Paraguay: (1) accelerating deforestation in the Gran Chaco—one of Earth's most active forest frontiers, with **16,628 km² lost between 2001 and 2023 (2,755 MtCO₂e)**; (2) **land-tenure insecurity** affecting indigenous communities, who we find are deforested at **3.3× the national rate**; and (3) **limited local capacity** for geospatial AI, where Paraguay imports most of its monitoring infrastructure from abroad.
+This thesis develops **Yvutu** (a Guaraní name for "wind"), a multi-temporal satellite computer vision framework for Paraguay grounded in open Earth-observation data and recent foundation models. The work directly addresses **three challenges** facing Paraguay: (1) accelerating deforestation in the Gran Chaco—one of Earth's most active forest frontiers, with **16,628 km² lost between 2001 and 2023 (2,755 MtCO₂e)**; (2) **land-tenure insecurity** affecting indigenous communities, who we find are deforested at **3.0× the national rate**; and (3) **limited local capacity** for geospatial AI, where Paraguay imports most of its monitoring infrastructure from abroad.
 
 To address these challenges, we propose **three contributions**:
 
@@ -67,7 +67,7 @@ The thesis shows that **geospatial AI can be both technically rigorous and ethic
 The thesis contributes a **complete, reproducible, ethically-grounded framework** for Paraguay's geospatial AI needs, with three specific novel contributions:
 
 1. **Six reproducible pipelines** in a single open-source repository (`satellite-paraguay`)
-2. **One quantitative finding** (3.3× indigenous deforestation multiplier) that has not been published elsewhere
+2. **One quantitative finding** (3.0× indigenous deforestation multiplier) that has not been published elsewhere
 3. **One methodological framework** (FPIC + IRB + foundation models) for rights-aware AI deployment in the Gran Chaco
 
 ---

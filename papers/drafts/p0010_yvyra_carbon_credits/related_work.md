@@ -15,14 +15,14 @@ our approach.
 
 Subsequent academic work:
 
-- **West et al. (2023)** in *Environmental Research Letters*
+- **\citep{west2023}** in *Environmental Research Letters*
   extended the Guardian analysis to a global sample of ~3,000
   REDD+ projects and reported "verra REDD+ credits underestimate
   forest loss by ~30% on average, with substantial variance
   across regions and project types".
-- **Voigt et al. (2024)** in *Nature Climate Change* on forest-
+- **\citep{voigt2024}** in *Nature Climate Change* on forest-
   carbon-credit verification using LiDAR + Sentinel-2.
-- **Kelley et al. (2024)** in *Global Environmental Change* on
+- **\citep{kelley2024}** in *Global Environmental Change* on
   REDD+ baseline-scenario inflation and its contribution to
   over-crediting.
 
@@ -59,9 +59,9 @@ methodological uncertainties in any REDD+ carbon estimate:
 
 - **Chave et al. (2014)** in *Global Change Biology* is the
   current state-of-the-art pantropical model (the one we use).
-- **Chave et al. (2008)** was the prior standard; still in use
+- **\citep{chave2008}** was the prior standard; still in use
   in some Verra methodologies.
-- **Mascaro et al. (2011)** developed an alternative
+- **\citep{mascaro2011}** developed an alternative
   tropical-forest form used in some smaller-scale studies.
 - **Mitchard et al. (2014)** on dry-forest AGB specifically,
   relevant for the Chaco.
@@ -75,12 +75,12 @@ AGB. We tested this sensitivity in Section M.3.2.
 
 Independent reporting on voluntary carbon market integrity:
 
-- **West (2023) in Bloomberg** — "Phantom Credits" series.
-- **Guardian / Climate Home (2023)** — investigative reporting.
-- **Noon et al. (2023)** in *Nature Communications Earth & Environment*
+- **\citep{west2023} in Bloomberg** — "Phantom Credits" series.
+- **Guardian / Climate \citep{home2023}** — investigative reporting.
+- **\citep{noon2023}** in *Nature Communications Earth & Environment*
   on reversal-risk accounting.
-- **Proforest (2023)** — Stripping of "ghost" credits report.
-- **CDP (2023)** — Carbon Disclosure Project's annual
+- **\citep{proforest2023}** — Stripping of "ghost" credits report.
+- **\citep{cdp2023}** — Carbon Disclosure Project's annual
   voluntary market integrity report.
 
 The common thread across this body of work is the **gap between

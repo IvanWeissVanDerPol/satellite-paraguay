@@ -53,6 +53,9 @@ jobs:
       - name: Honest-Reporting Guard (check_claims.py)
         run: python3 scripts/check_claims.py
 
+      - name: Ethics Gate (check_ethics.py)
+        run: python3 scripts/check_ethics.py
+
   # ====== Multi-Python test matrix ======
   test:
     name: Tests (Python ${{ matrix.python-version }})
@@ -186,6 +189,7 @@ jobs:
         with:
           name: dist
           path: dist/
+          if-no-files-found: error  # Scenario 2 mitigation
 
   # ====== Dependency audit ======
   dependencies:
@@ -220,6 +224,7 @@ jobs:
         with:
           name: weekly-results
           path: outputs/weekly/
+          if-no-files-found: error  # Scenario 2 mitigation
       - name: Check alerts
         run: python3 scripts/alert_cron_failures.py
         if: always()

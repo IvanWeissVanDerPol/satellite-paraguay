@@ -15,7 +15,7 @@
 The thesis develops a multi-temporal satellite computer vision framework for Paraguay, integrating Sentinel-2, MapBiomas Paraguay, Hansen GFC, OpenAQ, and Verra data. The research addresses three challenges:
 
 1. **Deforestation monitoring** in the Gran Chaco (one of Earth's most active forest frontiers)
-2. **Land tenure security** for indigenous communities (3.3× deforestation disparity)
+2. **Land tenure security** for indigenous communities (3.0× deforestation disparity)
 3. **Limited local capacity** for geospatial AI in Paraguay
 
 The research uses **only public, non-personally-identifying data** for most analyses. Human subjects data is limited to parcel ownership information from Catastro Nacional, which is publicly available but contains property owner identifiers.

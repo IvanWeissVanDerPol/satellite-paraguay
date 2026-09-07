@@ -80,7 +80,7 @@ characteristics:
    resources have been historically thin in this region.
 
 This pattern supports the "governance matters more than statute"
-hypothesis discussed in REDMOPy (2024). **Indigenous land tenure
+hypothesis discussed in \citep{redmopy2024}. **Indigenous land tenure
 per se, as a legal category, does not protect forest in the
 absence of community-level governance**. The reverse direction
 is also observable: territories with active governance can be
@@ -109,7 +109,7 @@ The analysis so far has measured aggregate per-territory loss
 rates. A natural follow-on question — which we leave to future
 work — is **where within each territory** the loss is concentrated.
 
-The expectation, based on the REDMOPy (2024) visual reports, is
+The expectation, based on the \citep{redmopy2024} visual reports, is
 that loss is concentrated at territory boundaries (the
 agricultural frontier's expansion front) and along road
 corridors (logging and cattle-transport routes). If this is
