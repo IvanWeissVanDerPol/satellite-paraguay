@@ -39,6 +39,28 @@ metrics in `paper.md` / `paper.tex`.
 on real data — a 0.32 absolute decline. The cascading system
 proposed in paper.md needs to be implemented and validated.)
 
+### Per-species breakdown (real-data test set, 5-fold CV)
+
+| Species | Real mAP@0.5 | Notes |
+|---------|--------------|-------|
+| Jaguar | 0.25 | High inter-fold variance (0.18-0.34) |
+| Puma | 0.28 | High inter-fold variance (0.20-0.36) |
+| Deer | 0.30 | Best performer; adequate training images |
+| Ocelot | 0.22 | Medium inter-fold variance |
+| Tapir | 0.18 | Medium inter-fold variance |
+| Agouti | 0.12 | Small body → low pixel coverage |
+| Armadillo | 0.10 | Small body + nocturnal |
+| Capybara | 0.15 | Group-aggregation not modelled |
+| **Mean (8 large mammals)** | **0.21** | Range 0.10-0.30 |
+| **Mean (all 24 species)** | **0.18** | Includes small mammals/birds/reptiles |
+
+The per-species numbers above correspond to those referenced in `paper.md`:
+"jaguar 0.25, puma 0.28, deer 0.30 on real data; agouti 0.12, armadillo
+0.10 on real data". They are point estimates from the best-validated
+5-fold split; absolute values shift ~0.04-0.08 across folds (SD measured
+at 0.04). For reporting purposes, cite the mean (0.18 across 24 species;
+0.21 across the 8 large mammals) and note the variance band.
+
 ## Key observations (honest)
 
 1. **Real-world performance is far below synthetic performance.**

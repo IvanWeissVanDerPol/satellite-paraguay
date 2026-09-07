@@ -51,44 +51,64 @@ REPO_ROOT = Path(__file__).parent.parent
 
 # Each entry: (label, regex_pattern, context_words_for_sanction)
 # A match is only counted if the line does NOT contain any context_words.
-CANONICAL_NUMBERS: list[tuple[str, str, tuple[str, ...]]] = [
+CANONICAL_NUMBERS: list = [  # type: ignore[valid-type]  # 4th element is optional sentinel (bool)
     # ----- P0010 Yvyra: Verra carbon credits -----
     # Measured: 35.9% mean under-claim, range 33.3-50.0% (95% bootstrap CI excludes 0%)
-    ("P0010 stale range 27-41%", r"\b27\s*[-–]\s*41\s*%", ("aspirational", "earlier", "replaced", "previous", "this report", "stale", "audit")),
-    ("P0010 stale mean 4.44 Mt", r"\b4\.44\s*Mt", ("aspirational", "earlier", "replaced", "previous")),
-    ("P0010 stale +1.14 Mt over-credit", r"\b1\.14\s*Mt", ("aspirational", "earlier", "replaced", "previous")),
+    ("P0010 stale range 27-41%", r"\b27\s*[-–]\s*41\s*%", ("aspirational", "earlier", "replaced", "previous", "this report", "stale", "audit"), False),
+    ("P0010 stale mean 4.44 Mt", r"\b4\.44\s*Mt", ("aspirational", "earlier", "replaced", "previous"), False),
+    ("P0010 stale +1.14 Mt over-credit", r"\b1\.14\s*Mt", ("aspirational", "earlier", "replaced", "previous"), False),
     ("P0010 fabricated 30-Verra-project replication",
      r"30[\s-]+Verra\s+projects?\s+(across|in|throughout)",
-     ("aspirational", "earlier", "replaced", "previous", "was not", "not yet", "honest")),
+     ("aspirational", "earlier", "replaced", "previous", "was not", "not yet", "honest"), False),
     # ----- P0011 Yvutu: Chaco deforestation -----
     # Measured F1 = 0.5592 / 0.4970; aspirational F1 = 0.876 in earlier drafts
-    ("P0011 stale F1 = 0.876", r"F1\s*=\s*0\.876\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale")),
-    ("P0011 stale mIoU = 0.794", r"mIoU\s*=\s*0\.794\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale")),
+    ("P0011 stale F1 = 0.876", r"F1\s*=\s*0\.876\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale"), False),
+    ("P0011 stale mIoU = 0.794", r"mIoU\s*=\s*0\.794\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale"), False),
     # ----- P0012 Yvy: Indigenous territories -----
     # Measured: Mbyá Guaraní Itakyry = 19.50%; aspirational was 2.91%
-    ("P0012 stale Mbyá Guaraní 2.91%", r"\bMbyá[^\n]*\b2\.91\s*%", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit")),
-    ("P0012 stale 43 kha", r"\b43\s*kha\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "km²", "hectare")),
+    ("P0012 stale Mbyá Guaraní 2.91%", r"\bMbyá[^\n]*\b2\.91\s*%", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"), False),
+    ("P0012 stale 43 kha", r"\b43\s*kha\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "km²", "hectare"), False),
     # Measured: 2.90× with 95% CI [1.72, 4.20]; aspirational was 3.0× / 3.3×
-    ("P0012 stale 3.0× indigenous ratio", r"\b3\.0\s*×\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately", "round")),
-    ("P0012 stale 3.3 times indigenous ratio", r"\b3\.3\s*times\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately")),
-    ("P0012 stale 28.4% indigenous average", r"\b28\.4\s*%\s+(?:which|average|of)", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit")),
+    # Tier-6 escape class: LaTeX math mode renders × as `$\times$`, so we
+    # must catch both the unicode × AND the LaTeX math-mode form.
+    ("P0012 stale 3.0× indigenous ratio (unicode ×)",
+     r"\b3\.0\s*×\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately", "round"), False),
+    ("P0012 stale 3.0× indigenous ratio (LaTeX math mode)",
+     r"\b3\.0\s*\$\\times\$", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately", "round"), False),
+    ("P0012 stale 3.3 times indigenous ratio", r"\b3\.3\s*times\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately"), False),
+    ("P0012 stale 28.4% indigenous average", r"\b28\.4\s*%\s+(?:which|average|of)", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"), False),
+    # Tier-6 escape class: prose mentions "2.9%" without "Mbyá" context and
+    # without an honest-reporting disclaimer. The measured value is 19.50%.
+    # The Mbyá context can be 1-2 lines away from the 2.9% value (multi-line
+    # prose paragraph), so we use [\s\S] to span newlines within a window.
+    # Use raw string with single [character class containing both \s and \S]
+    # by using the dotall flag DOTALL — simpler: use re.DOTALL at compile time.
+    # We mark these entries with a sentinel; the test loop compiles with DOTALL.
+    ("P0012 stale Mbyá 2.9% prose (should be 19.50%)",
+     r"\b(?:Mbyá|Mby\\'a).{0,80}?\b2\.9\s*\\?%",
+     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"),
+     True),  # _use_dotall
+    ("P0012 stale 'lowest loss (2.9%)' prose",
+     r"\bloss\s*\(\s*2\.9\s*\\?%\s*\)",
+     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"),
+     False),
     # ----- P0025 Yrupe: Soybean yield -----
     # Measured: MAE = 3.20 t/ha; aspirational was 0.74 / 0.78 / 0.81
-    ("P0025 stale MAE = 0.74 t/ha", r"MAE\s*=\s*0\.74\s*t/ha", ("aspirational", "earlier", "replaced", "previous", "honest", "stale")),
+    ("P0025 stale MAE = 0.74 t/ha", r"MAE\s*=\s*0\.74\s*t/ha", ("aspirational", "earlier", "replaced", "previous", "honest", "stale"), False),
     ("P0025 stale MAE < 1.0 t/ha in title/abstract",
-     r"MAE\s*<\s*1\.0\s*t/ha", ("aspirational", "earlier", "replaced", "previous", "honest", "stale")),
+     r"MAE\s*<\s*1\.0\s*t/ha", ("aspirational", "earlier", "replaced", "previous", "honest", "stale"), False),
     # ----- P0035 Tatakua: Air quality -----
     # Measured: RMSE 14.7 (3-layer × 64-hidden); aspirational was 4.8 / 6.1 / 8.6 / 11.72
-    ("P0035 stale LSTM-1layer RMSE 4.8", r"LSTM-?1\s*layer[^.\n]*\b4\.8\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured")),
-    ("P0035 stale LSTM-2layer RMSE 6.1", r"LSTM-?2\s*layer[^.\n]*\b6\.1\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured")),
+    ("P0035 stale LSTM-1layer RMSE 4.8", r"LSTM-?1\s*layer[^.\n]*\b4\.8\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured"), False),
+    ("P0035 stale LSTM-2layer RMSE 6.1", r"LSTM-?2\s*layer[^.\n]*\b6\.1\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured"), False),
     # 4.8 µg/m³ as headline RMSE (not in an honest-reporting disclaimer)
     ("P0035 stale RMSE 4.8 µg/m³",
      r"(?<![\d.])4\.8\s*(?:\\micro\s*g|µg|ug)[^\n]{0,8}m[^\n]{0,5}3",
-     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured", "above", "is well above")),
+     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "measured", "above", "is well above"), False),
     # MAE = 11.72 µg/m³ as a measurement (NOT as a historical disclaimer)
     ("P0035 stale MAE = 11.72 (as measurement)",
      r"MAE\s*=\s*11\.72\b[^.\n]{0,40}\b(measured|pilot|achieved)",
-     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit")),
+     ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"), False),
 ]
 
 # Files exempt from this check — they explain the bug history, document audits,
@@ -178,14 +198,19 @@ def _context_qualifies(line: str, label: str) -> bool:
 # ----- Parametric regression tests -----
 
 
-@pytest.mark.parametrize("label,pattern,context_words", CANONICAL_NUMBERS, ids=[c[0] for c in CANONICAL_NUMBERS])
-def test_no_stale_canonical_numbers(label, pattern, context_words):
+@pytest.mark.parametrize("label,pattern,context_words,_use_dotall", CANONICAL_NUMBERS, ids=[c[0] for c in CANONICAL_NUMBERS])
+def test_no_stale_canonical_numbers(label, pattern, context_words, _use_dotall):
     """Tier-6 lesson: a paper can report measured-but-superseded numbers.
 
     Each test case scans every text file and fails if a stale number appears
     outside of an honest-reporting / historical-context sentence.
     """
-    rx = re.compile(pattern, re.IGNORECASE)
+    # _use_dotall is True for patterns that span multiple lines (e.g. Mbyá
+    # context is on a different line from the 2.9% value). The sentinel
+    # selects re.DOTALL.
+    use_dotall = bool(_use_dotall)
+    flags = re.IGNORECASE | (re.DOTALL if use_dotall else 0)
+    rx = re.compile(pattern, flags)
     findings = []
 
     for f in _iter_text_files():
