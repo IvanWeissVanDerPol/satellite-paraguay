@@ -97,6 +97,9 @@
 | Related-work → `\section{Related Work}` LaTeX | `02f181e` | 2026-08-13 |
 | Round-5: 6 verified entries + 7 fabricated flagged | `7fc3efa` | 2026-09-04 |
 | Round-5 follow-up: purge 7 fabricated keys | `9a36592` | 2026-09-04 |
+| Repo infrastructure: CLAUDE.md + AUDIT + verify_bib_dois.py | `7c86263` | 2026-09-07 |
+| Document Hermes-hook noise on background test runs | `d6c7632` | 2026-09-07 |
+| **Tier-1: 5 Conclusion sections + cite-pattern regression guard** | `6661c67` | 2026-09-07 |
 | Round-6: 7 DOI fixes applied, 76 false-positive confirmed | `c8c0c10` | 2026-09-07 |
 | Repo infrastructure: CLAUDE.md + AUDIT + verify_bib_dois.py | (this commit) | 2026-09-07 |
 
