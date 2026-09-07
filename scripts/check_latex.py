@@ -7,6 +7,8 @@ from pathlib import Path
 from pylatexenc.latexwalker import LatexWalker, LatexWalkerError
 
 base = Path("papers/drafts")
+# F-1 (2026-09-07): all 6 papers share thesis/references.bib as canonical.
+CANONICAL_BIB = Path("thesis/references.bib")
 papers = [
     "p0011_yvutu_deforestation",
     "p0010_yvyra_carbon_credits",
@@ -24,17 +26,19 @@ def get_bib_keys(refs_path):
     return {m.group(1).strip() for m in re.finditer(r"@\w+\s*\{\s*([^,]+),", text)}
 
 
+# F-1: read canonical bib ONCE; all 6 papers reference the same source of truth.
+canonical_keys = get_bib_keys(CANONICAL_BIB)
+
 print("AC3 -- LaTeX syntax + bib-resolve check")
 print("=" * 60)
 results = {}
 for p in papers:
     paper_tex = base / p / "paper.tex"
-    refs_bib = base / p / "references.bib"
     if not paper_tex.exists():
         print(f"\n{p}: MISSING")
         continue
     text = paper_tex.read_text()
-    bib_keys = get_bib_keys(refs_bib)
+    bib_keys = canonical_keys  # F-1: shared canonical
 
     walker = LatexWalker(text)
     try:

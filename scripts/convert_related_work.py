@@ -26,11 +26,18 @@ import re
 import sys
 
 REPO_ROOT = "/opt/data/work/satellite-paraguay"
+# F-1 (2026-09-07): all papers share thesis/references.bib as the canonical bib.
+CANONICAL_BIB = os.path.join(REPO_ROOT, "thesis", "references.bib")
 
 
 def get_paper_keys(paper_id):
-    """Read all BibTeX keys from the per-paper references.bib."""
-    bib_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "references.bib")
+    """Read all BibTeX keys from the canonical shared references.bib.
+
+    F-1: per-paper references.bib was removed; every paper reads from the
+    same canonical thesis/references.bib. The paper_id parameter is kept
+    for backward compatibility but ignored.
+    """
+    bib_path = CANONICAL_BIB
     with open(bib_path) as f:
         content = f.read()
     return set(re.findall(r"@\w+\{([^,\s]+)\s*,", content))
@@ -220,7 +227,8 @@ def main():
 
     md_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "related_work.md")
     tex_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "paper.tex")
-    bib_path = os.path.join(REPO_ROOT, "papers", "drafts", paper_id, "references.bib")
+    # F-1 (2026-09-07): per-paper references.bib was removed; use canonical shared bib.
+    bib_path = CANONICAL_BIB
 
     with open(md_path) as f:
         md = f.read()

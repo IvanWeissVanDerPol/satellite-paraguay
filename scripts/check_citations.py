@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Citation cross-check: verify every \\cite{key} in a .tex file resolves
-in the .bib file.
+in the canonical shared .bib file.
 
 Usage:
-  python3 check_citations.py paper.tex references.bib
+  python3 check_citations.py paper.tex
   python3 check_citations.py --all  # check all papers
+
+F-1 consolidation (2026-09-07): All 6 papers share
+thesis/references.bib as the canonical bibliography (371 entries).
+Per-paper references.bib duplicates were removed.
 """
 
 import argparse
@@ -13,6 +17,7 @@ import re
 import sys
 
 PAPERS_DIR = "/opt/data/work/satellite-paraguay/papers/drafts"
+CANONICAL_BIB = "/opt/data/work/satellite-paraguay/thesis/references.bib"
 
 
 def parse_bib(path):
@@ -42,7 +47,7 @@ def extract_cites(tex_path):
 
 def check_paper(pid):
     tex_path = os.path.join(PAPERS_DIR, pid, "paper.tex")
-    bib_path = os.path.join(PAPERS_DIR, pid, "references.bib")
+    bib_path = CANONICAL_BIB  # F-1: shared canonical bib
     if not os.path.exists(tex_path):
         return {"error": f"{tex_path} not found"}
     if not os.path.exists(bib_path):

@@ -2,7 +2,7 @@
 
 Run this test to verify that:
 1. Each paper.tex parses cleanly with pylatexenc (no syntax errors)
-2. Every \\cite{...} key resolves to an entry in references.bib
+2. Every \\cite{...} key resolves to an entry in the canonical shared references.bib
 3. Every \\ref{...} key resolves to a \\label{...} in the same file
 4. All \\begin{env} have matching \\end{env}
 
@@ -10,6 +10,10 @@ This catches regressions where:
 - Someone removes a bib entry that a paper depends on
 - Someone introduces a malformed \\cite command
 - Someone unbalanced an environment
+
+F-1 consolidation (2026-09-07): all 6 papers share thesis/references.bib
+as the canonical single source of truth (371 entries). Per-paper bib
+duplicates were removed.
 """
 
 from __future__ import annotations
@@ -22,6 +26,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent
+CANONICAL_BIB = REPO / "thesis" / "references.bib"  # F-1 single source of truth
 
 PAPERS = [
     "p0011_yvutu_deforestation",
@@ -44,6 +49,12 @@ def _run_check_latex() -> subprocess.CompletedProcess:
     )
 
 
+def _canonical_bib_keys() -> set[str]:
+    """Read all BibTeX keys from the canonical shared bib."""
+    text = CANONICAL_BIB.read_text()
+    return {m.group(1).strip() for m in re.finditer(r"@\w+\s*\{\s*([^,]+),", text)}
+
+
 class TestLatexSyntaxAndBibResolve:
     """Each paper.tex must compile syntactically + reference-resolve."""
 
@@ -61,15 +72,14 @@ class TestLatexSyntaxAndBibResolve:
         assert (REPO / "papers/drafts" / paper / "paper.tex").exists()
 
     @pytest.mark.parametrize("paper", PAPERS)
-    def test_paper_references_bib_exists(self, paper):
-        assert (REPO / "papers/drafts" / paper / "references.bib").exists()
-
-    @pytest.mark.parametrize("paper", PAPERS)
     def test_paper_cite_keys_resolve(self, paper):
-        """Every \\cite{...} in paper.tex resolves in references.bib."""
+        """Every \\cite{...} in paper.tex resolves in canonical references.bib.
+
+        F-1 (2026-09-07): all 6 papers share thesis/references.bib, so this
+        check uses the canonical shared bib instead of per-paper copies.
+        """
         text = (REPO / "papers/drafts" / paper / "paper.tex").read_text()
-        refs = (REPO / "papers/drafts" / paper / "references.bib").read_text()
-        bib_keys = {m.group(1).strip() for m in re.finditer(r"@\w+\s*\{\s*([^,]+),", refs)}
+        bib_keys = _canonical_bib_keys()
 
         cite_keys = set()
         for m in re.finditer(r"\\cite[a-z]?\*?(?:\[[^\]]*\])?\{([^}]+)\}", text):
@@ -77,7 +87,7 @@ class TestLatexSyntaxAndBibResolve:
                 cite_keys.add(k.strip())
 
         unresolved = cite_keys - bib_keys
-        assert not unresolved, f"{paper}: \\cite keys not in references.bib: {sorted(unresolved)}"
+        assert not unresolved, f"{paper}: \\cite keys not in canonical references.bib: {sorted(unresolved)}"
 
     @pytest.mark.parametrize("paper", PAPERS)
     def test_paper_ref_keys_resolve(self, paper):
@@ -97,15 +107,13 @@ class TestLatexSyntaxAndBibResolve:
         unbalanced = begins - ends
         assert not unbalanced, f"{paper}: unbalanced environments: {unbalanced}"
 
-    def test_master_references_bib_has_at_least_190_entries(self):
-        """The master references.bib must have grown beyond the 193 baseline."""
-        text = (REPO / "references.bib").read_text()
-        n = len(re.findall(r"@\w+\s*\{", text))
-        assert n >= 170, f"Master references.bib has only {n} entries (expected >= 170)"
+    def test_canonical_references_bib_has_at_least_300_entries(self):
+        """The canonical references.bib (thesis/references.bib) must have enough entries.
 
-    @pytest.mark.parametrize("paper", PAPERS)
-    def test_per_paper_references_bib_has_at_least_180_entries(self, paper):
-        """Each per-paper references.bib must contain the master entries."""
-        text = (REPO / "papers/drafts" / paper / "references.bib").read_text()
+        F-1 (2026-09-07): replaced `references.bib` master check with the
+        canonical thesis/references.bib. The previous per-paper bibs were
+        deleted; the canonical now holds all 371 entries.
+        """
+        text = CANONICAL_BIB.read_text()
         n = len(re.findall(r"@\w+\s*\{", text))
-        assert n >= 160, f"{paper}/references.bib has only {n} entries (expected >= 160)"
+        assert n >= 300, f"Canonical references.bib has only {n} entries (expected >= 300)"

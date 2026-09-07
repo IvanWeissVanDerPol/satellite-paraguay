@@ -371,12 +371,13 @@ All data sources are documented in
 \texttt{docs/HARDWARE.md} and \texttt{data/datasheets/}.
 
 \bibliographystyle{plainnat}
-\bibliography{references}  %% points to ../references.bib (193 entries, master bibliography)
+\bibliography{../references}  %% canonical shared bibliography (371 entries; thesis/references.bib is the single source of truth)
 
 %% --- Per-paper bibliography note ---
 %% Each thesis chapter (CH3-CH8) is the thesis-voice summary of a standalone
 %% paper submission. The full paper body and LaTeX compilation live in
-%% papers/drafts/<slug>/ paper.md + paper.tex + references.bib. The master
-%% references.bib at repo root is the merged bibliography of all 6 papers.
+%% papers/drafts/<slug>/ paper.md + paper.tex. All papers and the thesis
+%% share thesis/references.bib (371 entries) as the single canonical bib.
+%% Per-paper references.bib duplicates were removed in F-1 consolidation.
 
 \end{document}

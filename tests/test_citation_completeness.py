@@ -18,6 +18,13 @@ A future PR could:
   - Use a typo in a cite key
 
 This test fails CI if ANY \\cite{} key is not defined in references.bib.
+
+CANONICAL BIB (F-1 consolidation, 2026-09-07)
+=============================================
+After F-1 (bib trim), every paper.tex points at \\bibliography{../thesis/references}
+and the canonical single source of truth is thesis/references.bib (371 entries).
+The previous per-paper references.bib duplicates were removed; this test
+was updated to read the canonical shared bib instead of per-paper copies.
 """
 
 from __future__ import annotations
@@ -29,6 +36,7 @@ import pytest
 
 REPO_ROOT = Path(__file__).parent.parent
 PAPERS_ROOT = REPO_ROOT / "papers" / "drafts"
+CANONICAL_BIB = REPO_ROOT / "thesis" / "references.bib"  # F-1 single source of truth
 
 
 # Match \cite, \citep, \citet, \citealp, \citeauthor, \citeyear, \citeyearpar
@@ -40,14 +48,17 @@ BIB_ENTRY_PATTERN = re.compile(r"@\w+\{([^,\s]+)\s*,")
 
 
 def _iter_paper_pairs():
-    """Yield (paper_dir, paper.tex, references.bib) for each paper."""
+    """Yield (paper_dir, paper.tex, shared bib) for each paper.
+
+    F-1 (2026-09-07): Every paper.tex now points at \\bibliography{../thesis/references},
+    so there is one canonical shared bib instead of 6 per-paper copies.
+    """
     for paper_dir in sorted(PAPERS_ROOT.iterdir()):
         if not paper_dir.is_dir():
             continue
         tex = paper_dir / "paper.tex"
-        bib = paper_dir / "references.bib"
-        if tex.exists() and bib.exists():
-            yield paper_dir, tex, bib
+        if tex.exists():
+            yield paper_dir, tex, CANONICAL_BIB
 
 
 def _extract_cite_keys(tex_text: str) -> set[str]:
@@ -70,9 +81,10 @@ def _extract_bib_keys(bib_text: str) -> set[str]:
 
 
 # Parametrize one test per paper so failures point at the specific paper.
+# F-1: bib_path is now the canonical shared thesis/references.bib (same for all).
 @pytest.mark.parametrize(
     "paper_name,tex_path,bib_path",
-    [(d.name, d / "paper.tex", d / "references.bib") for d, _, _ in _iter_paper_pairs()],
+    [(d.name, d / "paper.tex", CANONICAL_BIB) for d, _, _ in _iter_paper_pairs()],
     ids=[d.name for d, _, _ in _iter_paper_pairs()],
 )
 def test_all_cite_keys_resolve_to_bib(paper_name, tex_path, bib_path):
@@ -95,21 +107,27 @@ def test_all_cite_keys_resolve_to_bib(paper_name, tex_path, bib_path):
 
 
 def test_no_phantom_bib_entries_smoke():
-    """Smoke test: every paper has at least 1 cite and at least 1 bib entry.
+    """Smoke test: every paper has at least 1 cite and the shared bib is non-empty.
 
     Catches the empty-bib-file regression (a paper with no \\cite calls
     might be silently broken if the bib is empty too).
+
+    F-1 (2026-09-07): all 6 papers share thesis/references.bib; we now check
+    the canonical bib is non-empty instead of per-paper bibs.
     """
+    # F-1: shared canonical bib exists and is non-empty
+    assert CANONICAL_BIB.exists(), f"Canonical bib missing: {CANONICAL_BIB}"
+    canonical_text = CANONICAL_BIB.read_text(encoding="utf-8")
+    canonical_keys = _extract_bib_keys(canonical_text)
+    assert canonical_keys, f"Canonical bib {CANONICAL_BIB} has no @entry keys"
+
     for paper_dir, tex, bib in _iter_paper_pairs():
         tex_text = tex.read_text(encoding="utf-8")
-        bib_text = bib.read_text(encoding="utf-8")
+        # bib is the shared canonical — read once for all papers
         cited = _extract_cite_keys(tex_text)
-        defined = _extract_bib_keys(bib_text)
+        # defined uses the canonical (already read above)
+        unresolved = cited - canonical_keys
         assert cited, f"{paper_dir.name}: no \\cite calls found in paper.tex"
-        assert defined, f"{paper_dir.name}: no @entry keys found in references.bib"
-        # Sanity: cited should be a subset of defined (we have other tests
-        # for that, but ensure no obviously broken state here).
-        unresolved = cited - defined
         assert not unresolved, (
-            f"{paper_dir.name}: {len(unresolved)} unresolved cite key(s)"
+            f"{paper_dir.name}: {len(unresolved)} unresolved cite key(s) — add to {CANONICAL_BIB}"
         )

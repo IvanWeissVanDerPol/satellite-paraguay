@@ -104,3 +104,4 @@ secrets/
 
 # pytest-benchmark output
 .benchmarks/
+.scratch/
