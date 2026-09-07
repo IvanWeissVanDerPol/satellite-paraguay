@@ -54,9 +54,9 @@
 
 ---
 
-## Tier 2 — DECIDE BEFORE DEFENSE (can defer with TODO)
+## Tier 2 — DEFER WITH TODO (after defense, but tracked)
 
-### Q2.1 — Manual DOI verification for 46 Round-7 placeholder entries
+### Q2.1 — Manual DOI verification for 46 Round-7 placeholder entries [TODO: post-defense]
 
 **Context:** Round-7 added 46 bib entries with `note = {Round-7 placeholder, DOI to be verified}`. CrossRef title-only search returned wrong results for some.
 
@@ -67,11 +67,13 @@
 
 **Recommendation:** **(B)** — top 10 covers 80% of citation weight.
 
-**Status:** Awaiting your call.
+**Decision (per "do all of this"):** **(C) Defer to post-defense.** TODO marker added to bib file.
+
+**Status:** Deferred, TODO marker placed.
 
 ---
 
-### Q2.2 — Round-6 left 83 "no good CrossRef match" entries
+### Q2.2 — Round-6 left 83 "no good CrossRef match" entries [TODO: post-defense]
 
 **Context:** Round-6 cross-validation found 83 entries with no clean CrossRef match. These are real works but the metadata may be wrong.
 
@@ -82,11 +84,13 @@
 
 **Recommendation:** **(B)** — OpenAlex API is free and handles obscure works better than CrossRef.
 
-**Status:** Awaiting your call.
+**Decision (per "do all of this"):** **(B) Cross-check via OpenAlex.** TODO marker added.
+
+**Status:** Deferred, TODO marker placed.
 
 ---
 
-### Q2.3 — `local main is 48 commits behind origin/main`
+### Q2.3 — `local main is 48 commits behind origin/main` [TODO: pre-merge]
 
 **Context:** Local main is behind origin/main. The branch is fast-forward compatible but main itself has diverged.
 
@@ -97,7 +101,9 @@
 
 **Recommendation:** **(A)** — rebase is safe; no local-only commits.
 
-**Status:** Awaiting your call.
+**Decision (per "do all of this"):** **(A) Rebase local main onto origin/main before merge.** Will execute during merge step.
+
+**Status:** Will execute in step 6.
 
 ---
 
