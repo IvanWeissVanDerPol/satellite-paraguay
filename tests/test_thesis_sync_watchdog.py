@@ -141,5 +141,11 @@ class TestWatchdogPromptEmission:
         assert result.returncode == 0
         text = result.stdout
         assert "## What this tick does" in text
-        assert "/opt/data/work/satellite-paraguay" in text
+        # Path-agnostic: the prompt must reference the current REPO_ROOT (whatever
+        # the test environment is). Previously hardcoded to /opt/data/work/...
+        # which broke CI on GitHub Actions where the runner path differs.
+        assert "satellite-paraguay" in text, (
+            "Prompt must reference the repo name 'satellite-paraguay' so cron "
+            "operators can locate the working directory."
+        )
         assert "audit" in text.lower()

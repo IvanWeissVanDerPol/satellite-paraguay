@@ -129,9 +129,11 @@ def test_no_unresolved_inline_citations():
     surnames here is encouraged as new ones are discovered.
     """
     import subprocess
+    import sys
 
+    # Use sys.executable so this works both with .venv and system python (CI).
     result = subprocess.run(
-        [".venv/bin/python", "scripts/check_inline_citations.py"],
+        [sys.executable, "scripts/check_inline_citations.py"],
         cwd=Path(__file__).parent.parent,
         capture_output=True,
         text=True,
