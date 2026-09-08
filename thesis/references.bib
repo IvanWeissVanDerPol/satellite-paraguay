@@ -2633,17 +2633,38 @@
 }
 
 % ============================================================================
-% ROUND-7 NOTE: 23 placeholder entries added 2026-09-07 for inline-cited
-% references that were not in the master bib. Each placeholder is marked with
-% `note={Round-7 placeholder, DOI to be verified}`. The user should verify
-% each entry against the source paper and add the correct DOI.
+% ROUND-8 STATUS (2026-09-08): The 45 Round-7 placeholder entries below
+% were CrossRef-verified on 2026-09-08 via scripts/verify_bib_dois.py.
+% Result: 1 verified (beery2018, DOI 10.1007/978-3-030-01270-0_28), 44
+% are unverified / have no safe CrossRef match.
 %
-% These were identified by an inline-citation scan (Tier-5 audit) that
-% found 47 author-year inline citations without corresponding bib entries.
-% The 23 entries below are the academic-paper subset (excluding noise like
-% REDMOPy/ICVCM/CDP which are software/org references, not papers).
+% Why 44 are unverified: the Round-7 inline-citation scan synthesized
+% plausible-looking (author, title, year) triples to fill citation gaps,
+% but the underlying papers do not exist in CrossRef or have entirely
+% different authors/titles (the cross-questions doc warned of exactly
+% this: "searching 'Beery 2018' returned a stormwater-infrastructure
+% paper instead of Sara Beery's wildlife-CV paper" — this kind of
+% false-positive trap is what catches the other 44).
 %
-% Verify with: scripts/verify_bib_dois.py --key KEY
+% Action taken in Round-8:
+%   - beery2018: added verified DOI (10.1007/978-3-030-01270-0_28) +
+%     "Round-8 verified" note
+%   - The other 44 entries: kept the existing
+%     "Round-7 placeholder, DOI to be verified" notes UNCHANGED. The
+%     Round-7 notes are accurate (these DOIs are still unverified).
+%     Re-tagging them as "Round-8 NO MATCH" would suggest a definitive
+%     conclusion the CrossRef data does not support — many of these
+%     papers may exist under slightly different titles/authors that
+%     CrossRef's title-search did not surface.
+%
+% Per the "no fabricated DOIs" doctrine (CLAUDE.md §6 + BRUTAL_ROAST.md),
+% these entries are NOT safe to cite until Ivan verifies each against
+% the actual source paper. The check_claims.py guard does not catch
+% fabricated citations; the `note={Round-7 placeholder, DOI to be
+% verified}` field is the runtime signal.
+%
+% Verify: scripts/verify_bib_dois.py --summary
+% Progress: /opt/data/scratchpad/verify_bib_progress.json
 % ============================================================================
 
 @article{beery2018,
@@ -2651,7 +2672,8 @@
   title={Recognition in Terra Incognita},
   journal={Methods in Ecology and Evolution},
   year={2018},
-  note={Round-7 placeholder, DOI to be verified — Synthetic-to-Real gap in Snapshot Serengeti camera-trap dataset}
+  doi={10.1007/978-3-030-01270-0_28},
+  note={Round-8 verified via CrossRef title+author+year (score 9.0/11) on 2026-09-08 — canonical Snapshot Serengeti synthetic-to-real gap paper; replaces previous Round-7 placeholder note}
 }
 
 @article{bowers2021,

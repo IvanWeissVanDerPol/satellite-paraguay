@@ -198,16 +198,12 @@ def save_progress(progress):
 
 
 def verify_one(entry, dry_run=False):
-    """Verify a single bib entry, return result dict."""
-    if not entry.get("doi"):
-        return {
-            **entry,
-            "best_doi": None,
-            "best_score": 0,
-            "action": "NO_DOI",
-            "all_candidates": [],
-        }
+    """Verify a single bib entry, return result dict.
 
+    Always queries CrossRef (even if entry has no current DOI).
+    Empty-DOI entries are the common case for Round-7 placeholders —
+    without this query, the script would never find a DOI to verify.
+    """
     first_surname = entry["author"].split(",")[0].strip() if entry["author"] else ""
     query = f"{first_surname} {entry['title']} {entry['year']}".strip()
 
@@ -223,7 +219,19 @@ def verify_one(entry, dry_run=False):
 
     best = candidates[0]["r"] if candidates else None
     best_score = candidates[0]["score"] if candidates else 0
-    action, _ = classify(best_score, entry.get("doi"), best["doi"] if best else None)
+
+    # When entry has no DOI, a CrossRef match is a CANDIDATE_NEW_DOI
+    # (the Round-7 placeholders need this branch — the previous version
+    # short-circuited to NO_DOI and never queried).
+    if not entry.get("doi"):
+        if best and best_score >= 7:
+            action = "CANDIDATE_NEW_DOI_HIGH_CONF"
+        elif best and best_score >= 4:
+            action = "CANDIDATE_NEW_DOI_MED_REVIEW"
+        else:
+            action = "NO_MATCH"
+    else:
+        action, _ = classify(best_score, entry.get("doi"), best["doi"] if best else None)
 
     return {
         **entry,
