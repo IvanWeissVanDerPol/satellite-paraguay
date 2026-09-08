@@ -1,0 +1,11 @@
+territory_id,pueblos,comunidades_count_2022,region,real_or_synthetic
+T1 (Oriental-Guarani),Ava Guarani; Mbya Guarani; Pai Tavytera; Guarani Occidental / Pueblo Guarani; Guarani Nandeva,424,Oriental,real (INE 2022)
+T2 (Oriental-Mbya),Mbya Guarani,200,Oriental,real (INE 2022)
+T3 (Occidental-Ava),Ava Guarani,150,Occidental,real (INE 2022)
+T4 (Occidental-Enlhet),Enlhet Norte; Enxet Sur; Sanapana; Angaite; Guana; Toba Maskoy / Toba Enenlhet,51,Occidental,real (INE 2022)
+T5 (Occidental-Nivacle),Nivacle,23,Occidental,real (INE 2022)
+T6 (Occidental-Ayoreo),Ayoreo; Ybytoso; Tomaraho,35,Occidental,real (INE 2022)
+T7 (Occidental-Qom),Qom,12,Occidental,real (INE 2022)
+T8 (Occidental-Maka),Maka; Manjui,6,Occidental,real (INE 2022)
+T9 (Occidental-Ache),Ache,6,Occidental,real (INE 2022)
+T10 (Occidental-Misc),Ache; Guana,8,Oriental,real (INE 2022)
