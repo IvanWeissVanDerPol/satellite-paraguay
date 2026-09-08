@@ -115,6 +115,7 @@ def _strip_latex_comments(text: str) -> str:
 # Implementation: walk character-by-character inside each {...} argument
 # and look for `%` whose previous non-whitespace char is not `\`.
 
+
 def _iter_command_arguments(text: str):
     """Yield (cmd_name, body_start, body_end, full_match_end) for each \\cmd{...} arg.
 
@@ -207,14 +208,11 @@ def test_no_unescaped_percent_in_command_arguments():
                 line_no = text.count("\n", 0, abs_pos) + 1
                 line = text.split("\n")[line_no - 1].strip()
                 rel = str(tex_path.relative_to(REPO_ROOT))
-                findings.append(
-                    f"  {rel}:{line_no}: cmd=\\{cmd}, unescaped '%' in: {line[:80]}"
-                )
+                findings.append(f"  {rel}:{line_no}: cmd=\\{cmd}, unescaped '%' in: {line[:80]}")
 
     assert not findings, (
         f"Found {len(findings)} unescaped %-in-braces bug(s). "
-        f"Replace X%Y inside \\cmd{{...}} with X\\\\%Y.\n"
-        + "\n".join(findings[:20])
+        f"Replace X%Y inside \\cmd{{...}} with X\\\\%Y.\n" + "\n".join(findings[:20])
     )
 
 
@@ -275,6 +273,7 @@ def test_cite_commands_have_natbib_declared():
 # TEST 3: Brace balance per command argument
 # =====================================================================
 
+
 def test_braces_balance_per_command_argument():
     """Round-Tier-6 heuristic: each \\cmd{...} has matched braces.
 
@@ -305,6 +304,4 @@ def test_braces_balance_per_command_argument():
             rel = str(tex_path.relative_to(REPO_ROOT))
             findings.append(f"  {rel}:{line_no}: unbalanced braces (final depth={depth})")
 
-    assert not findings, (
-        f"Found {len(findings)} brace-balance issue(s):\n" + "\n".join(findings[:20])
-    )
+    assert not findings, f"Found {len(findings)} brace-balance issue(s):\n" + "\n".join(findings[:20])

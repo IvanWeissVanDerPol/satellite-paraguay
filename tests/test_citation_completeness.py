@@ -128,6 +128,4 @@ def test_no_phantom_bib_entries_smoke():
         # defined uses the canonical (already read above)
         unresolved = cited - canonical_keys
         assert cited, f"{paper_dir.name}: no \\cite calls found in paper.tex"
-        assert not unresolved, (
-            f"{paper_dir.name}: {len(unresolved)} unresolved cite key(s) — add to {CANONICAL_BIB}"
-        )
+        assert not unresolved, f"{paper_dir.name}: {len(unresolved)} unresolved cite key(s) — add to {CANONICAL_BIB}"

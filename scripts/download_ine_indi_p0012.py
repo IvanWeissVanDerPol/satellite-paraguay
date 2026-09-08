@@ -35,8 +35,14 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 #  endpoints returned 404; the canonical 2022 data is published as PDF/XLSX
 #  in /censo2022/documentos/ and /Publicaciones/Biblioteca/documento/.)
 INE_CENSUS_DOCS_URL = "https://www.ine.gov.py/censo2022/documentos/"
-INE_INDIGENOUS_BOOK_URL = "https://www.ine.gov.py/Publicaciones/Biblioteca/documento/259/Censo%20de%20Comunidades%20de%20los%20Pueblos%20Indigenas%20-%20Resultados%20Finales%202022.pdf"
-INE_INDIGENOUS_LIBRO_VERDE_URL = "https://www.ine.gov.py/Publicaciones/Biblioteca/documento/260/Censo-indigena%202022-Libro-verde.pdf"
+INE_INDIGENOUS_BOOK_URL = (
+    "https://www.ine.gov.py/Publicaciones/Biblioteca/documento/259/"
+    "Censo%20de%20Comunidades%20de%20los%20Pueblos%20Indigenas%20-"
+    "Resultados%20Finales%202022.pdf"
+)
+INE_INDIGENOUS_LIBRO_VERDE_URL = (
+    "https://www.ine.gov.py/Publicaciones/Biblioteca/documento/260/" "Censo-indigena%202022-Libro-verde.pdf"
+)
 # Legacy URLs retained as fallbacks (return 404 as of 2026-09-08 but kept
 # in case the agency re-publishes CSV endpoints).
 INE_CENSUS_URL = "https://www.ine.gov.py/censo2022/datos/csv"

@@ -17,4 +17,5 @@ exclude =
     src/papers/*/output
 per-file-ignores =
     __init__.py: F401
-    tests/*: S101
+    tests/*: S101,F401,F841
+    scripts/*: E501
