@@ -72,7 +72,43 @@ This sentence belongs in the abstract or a clearly-labeled "Honest
 Reporting Note" appended to the paper body, NOT in a git commit message
 or PR description (which can become detached from the paper text).
 
-## 5. References
+## 6. Canonical numbers lifecycle (added 2026-09-08)
+
+The `CANONICAL_NUMBERS` table in `tests/test_numerical_consistency.py`
+is a **stale-list guard**, not a source of truth. It exists to catch
+regressions where an aspirational number leaks back into the prose.
+
+When a measured value replaces an aspirational one, the corresponding
+stale-list entry MUST be removed in the **same commit** that updates
+the prose. The convention:
+
+1. **Identify the decision** — the value must be locked in either
+   `docs/decisions/OPEN-QUESTIONS-FOR-HUMAN-2026-09-07.md` (or a newer
+   decisions doc), in `STATUS.md` per-paper scorecard, or in
+   `THESIS_ABSTRACT.md`. Without a documented decision, the stale-list
+   entry stays.
+
+2. **Single commit, two changes** — the prose change AND the
+   `CANONICAL_NUMBERS` entry removal belong in one commit. Splitting
+   them creates a window where the prose is canonical but the guard
+   still forbids it (Round-8 regression class).
+
+3. **Comment the lifecycle** — when removing a stale-list entry,
+   replace the comment with a one-liner citing the decision
+   (e.g., "Q6 recommendation A: 3.0× is canonical, see
+   THESIS_ABSTRACT.md L62-63"). Future maintainers reading
+   `CANONICAL_NUMBERS` must be able to understand why a number
+   was demoted from stale-list.
+
+4. **Watch for stale-list vs measured-value drift** — the regression
+   pattern caught in Round-8 (2026-09-08): `CANONICAL_NUMBERS` still
+   had `3.0× indigenous ratio` flagged as stale after `OPEN-QUESTIONS
+   Q6` made 3.0× the canonical headline value. The test caught it
+   (`test_no_stale_canonical_numbers`); the fix removed 3 stale-list
+   entries + added a comment pointer to the decision. This is the
+   pattern to watch for.
+
+## 7. References
 
 The unified `references.bib` at the repo root is the single BibTeX
 source for both the thesis and the six paper drafts. Conflicts are

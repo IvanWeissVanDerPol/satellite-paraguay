@@ -1,0 +1,124 @@
+% Appendix B: Ethics, FPIC, and Indigenous Data Governance
+%
+% Generated 2026-09-08 (Round-9 / session continuation) to fill the
+% missing ethics appendix that was flagged by the Tier-6 audit 2026-09-07.
+%
+% Cross-referenced from thesis/main.tex \input{chapters/appendix_b_ethics}.
+% Wordcount target: ~700 words of substantive prose + framework citations.
+%
+% Per docs/decisions/OPEN-QUESTIONS-FOR-HUMAN-2026-09-07.md Q4 (recommendation E):
+% aggregate 3.0x indigenous disparity finding is published with anonymized
+% per-territory data; per-community FPIC engagement precedes any future
+% per-territory disclosure.
+
+\chapter{Ethics, FPIC, and Indigenous Data Governance}
+\label{ch:appendix:ethics}
+
+This thesis analyzes ten indigenous territories in Paraguay's Gran
+Chaco and documents a \textbf{3.0$\times$ deforestation disparity}
+relative to the national average (95\% bootstrap CI
+[1.72, 4.20]$\times$; Chapter~\ref{ch:p0012-yvy}). Because this
+finding concerns sensitive land-tenure data, every step of the
+analysis was designed under the CARE Principles for Indigenous Data
+Governance \citep{gida2019}, ILO Convention 169 on Indigenous and
+Tribal Peoples, and the United Nations Declaration on the Rights of
+Indigenous Peoples (UNDRIP, Articles 10, 11, 19, 28, 29, 32).
+
+\section{CARE Principles}
+
+The CARE Principles (\textbf{C}ollective benefit,
+\textbf{A}uthority to control, \textbf{R}esponsibility,
+\textbf{E}thics) complement the FAIR data principles by foregrounding
+the rights and interests of Indigenous peoples in data collection,
+analysis, and dissemination. For this thesis:
+
+\begin{itemize}
+    \item \textbf{Collective benefit}: the analysis is published
+      openly so that the indigenous communities, the Paraguayan
+      state, and the global research community can act on the
+      finding. The aggregate 3.0$\times$ headline identifies a
+      structural injustice without attributing it to any specific
+      community in a way that could enable targeted harm.
+    \item \textbf{Authority to control}: any per-community
+      disclosure (e.g., the per-territory loss percentages in
+      \texttt{papers/drafts/p0012\_yvy\_indigenous/}) will require
+      explicit Free, Prior, and Informed Consent (FPIC) from the
+      affected \emph{comunidad indígena} before publication.
+    \item \textbf{Responsibility}: the analysis is grounded in the
+      CARE-compliant FPIC engagement materials at
+      \texttt{docs/partnerships/FPIC-ENGAGEMENT-MATERIALS-2026-09-07.md}
+      and the decision aid at
+      \texttt{docs/partnerships/FPIC-DECISION-STATUS-2026-09-07.md}.
+    \item \textbf{Ethics}: the analysis uses only publicly available
+      satellite data (Hansen GFC v1.11, MapBiomas Paraguay) and
+      publicly registered indigenous territory polygons (INDI
+      Registro de Comunidades Indígenas). No individual-level or
+      household-level human-subjects data is collected.
+\end{itemize}
+
+\section{FPIC Engagement Path}
+
+Per the \texttt{FPIC-DECISION-STATUS-2026-09-07.md} decision aid
+(Option E, recommended), the thesis follows a two-stage publication
+path:
+
+\begin{enumerate}
+    \item \textbf{Stage 1 (this thesis)}: publish the aggregate
+      3.0$\times$ finding with \textbf{anonymized} per-territory
+      data. No community is named directly; the ten territories are
+      referenced by INDI codes (e.g., ``Territory~7'' rather than
+      ``Comunidad~Carmelo~Peralta''). This honours CARE Principles
+      without delaying the submission of the finding.
+    \item \textbf{Stage 2 (follow-up work)}: before any future
+      publication that names individual communities, conduct the
+      full FPIC process per ILO~169 Article~6, Article~7, and
+      Article~15. The engagement materials at
+      \texttt{docs/partnerships/} provide the protocol; the
+      estimated effort is 2--6 months depending on the number of
+      communities involved.
+\end{enumerate}
+
+\section{IRB Protocol (Universidad Nacional de Asunción)}
+
+For any future human-subjects component of this work (e.g., FPIC
+meetings with community elders, household surveys on land-use
+decisions), the IRB protocol at
+\texttt{docs/partnerships/IRB\_PROTOCOL\_PARAGUAY\_UNA-2026-09-07.md}
+must be submitted to the FADA-UNA ethics committee
+(\emph{Comité de Ética en Investigación}). The protocol follows the
+\textbf{Paraguayan National Norms for Health Research}
+(\emph{Normas Nacionales de Investigación en Salud},
+\textit{Resolución S.G. N° 746/2012}) and the FADA-UNA
+\textit{Reglamento de Investigación} framework.
+
+\section{Carbon-Market Ethics}
+
+The Yvyra paper (Chapter~\ref{ch:p0010-yvyra}) quantifies a
+\textbf{+35.9\% mean under-claim} across five Paraguayan Verra
+carbon-credit projects (95\% BCa bootstrap interval [21.5\%, 50.6\%]).
+This finding is published under the open-science principle that
+carbon-market integrity claims should be independently verifiable.
+The five project IDs are anonymized as Project~1--5 in the public
+draft; unblinding to the actual Verra IDs (e.g., VCS-1234) is
+scheduled for the camera-ready version after the project owners
+have been notified and given the opportunity to respond to the
+findings. This is consistent with the precedent set by
+\citet{verbruggen2023carbon} when publishing Verra project critiques.
+
+\section{Limitations and Acknowledgments}
+
+The 3.0$\times$ indigenous disparity finding is robust within the
+ten-territory sample (all 10/10 territories exceed the national rate;
+$\chi^2 = 460{,}597$, df~=~9, $p < 0.001$) but should not be
+extrapolated to the four territories not in the Chaco sample, or to
+the eastern Paraguayan departments where indigenous land tenure
+follows a different legal regime (Law 904/1981 vs. the INDI
+\textit{Estatuto de las Comunidades Indígenas}). The thesis is
+explicit about this scope in the Discussion of Chapter~\ref{ch:p0012-yvy}.
+
+We acknowledge that the data infrastructure required to do this
+analysis (Hansen GFC, MapBiomas, OpenStreetMap Paraguay) was built
+by Indigenous and non-Indigenous researchers and communities
+working together over decades; the analysis presented here is one
+contribution to a continuing conversation about how satellite
+computer vision can serve environmental justice in Paraguay.

@@ -1,0 +1,114 @@
+% Appendix A: Reproducibility Setup
+%
+% Generated 2026-09-08 (Round-9 / session continuation) to fill the
+% missing appendix that was flagged by the Tier-6 audit 2026-09-07
+% as part of the "Emergency stop" build issue.
+%
+% Cross-referenced from thesis/main.tex \input{chapters/appendix_a_setup}.
+% Wordcount target: ~500 words of substantive prose + commands.
+
+\chapter{Reproducibility Setup}
+\label{ch:appendix:setup}
+
+This appendix documents the complete reproducibility chain for the
+six-paper thesis substrate: how to clone the repository, install the
+Python dependencies, verify the installation, and run the full
+verification suite. Every result in the thesis body is reproducible
+from the public GitHub release by following the steps below; no
+proprietary data or hidden state is required.
+
+\section{Prerequisites}
+
+The repository targets Python 3.10+ and depends on the
+\texttt{uv} package manager for reproducible environment installation.
+System-level dependencies (GDAL, GEOS, PROJ) are required for the
+\texttt{rasterio} and \texttt{geopandas} imports used in the data
+loaders; on Debian/Ubuntu these can be installed via the
+\texttt{libgdal-dev} / \texttt{libgeos-dev} / \texttt{libproj-dev}
+packages, or via the bundled multi-stage \texttt{Dockerfile}
+which provisions them automatically.
+
+\section{Installation}
+
+The standard install path uses the project Makefile:
+
+\begin{verbatim}
+git clone https://github.com/IvanWeissVanDerPol/satellite-paraguay
+cd satellite-paraguay
+make install          # uv sync --all-extras + pip install -e .
+make bootstrap        # install + data catalog + sample download
+\end{verbatim}
+
+The \texttt{bootstrap} target creates the \texttt{.venv/} virtual
+environment, installs all Python dependencies pinned in
+\texttt{uv.lock}, and downloads the sample Sentinel-2 + Hansen tiles
+needed for the smoke tests. A full data bootstrap (real Hansen
+v1.11 coverage of Paraguay + Sentinel-2 batch download) is the
+\texttt{make data-sentinel} + \texttt{make data-mapbiomas} +
+\texttt{make data-hansen} target chain.
+
+\section{Verification}
+
+Three verification commands establish that the installed environment
+matches the canonical state of the repository:
+
+\begin{itemize}
+    \item \texttt{bash scripts/run\_tests.sh} — full pytest suite
+      (~759 tests, ~80\,s wall-clock). Catches regressions in
+      \texttt{src/}, \texttt{tests/}, \texttt{scripts/}, and the
+      per-paper \texttt{paper.tex} / \texttt{references.bib} files.
+    \item \texttt{bash scripts/run\_tests\_fast.sh} — fast inner-loop
+      subset (7 test files, ~5\,s). Recommended for post-edit
+      sanity checks during development.
+    \item \texttt{bash scripts/defense\_check.py} — eight-check defense
+      gate that bundles citation resolution, claim integrity,
+      LaTeX syntax, ethics gates, and CrossRef DOI verification.
+      This is the canonical pre-submission command.
+\end{itemize}
+
+All three commands are designed to exit non-zero on any failure; the
+\texttt{run\_tests.sh} wrapper uses \texttt{set -euo pipefail} so a
+single broken test blocks the whole run.
+
+\section{Data Version Control}
+
+Datasets larger than a few megabytes are tracked via DVC
+(\texttt{dvc.yaml}) rather than committed to git. The canonical data
+storage layer is the companion repository
+\href{https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm}{\texttt{paraguay-geodata-vlm}}
+(local path \texttt{/opt/data/thesis-active/}), which contains the
+9-dataset manifest, OSM Paraguay downloader, and SAM +
+GroundingDINO annotation pipeline. Per-paper \texttt{DATA\_MANIFEST.md}
+files record which datasets are required for each paper; the
+\texttt{scripts/validate\_data.py} worker audits whether the local
+files actually exist or are missing/synthetic placeholders.
+
+\section{Containerized Reproducibility}
+
+For environments without \texttt{uv} or with restricted network
+access, the bundled \texttt{Dockerfile} provides a fully
+self-contained build:
+
+\begin{verbatim}
+docker build -t satellite-paraguay .
+docker run -it --rm \
+    -v $(pwd)/data:/app/data \
+    satellite-paraguay bash scripts/run_tests.sh
+\end{verbatim}
+
+The image is multi-stage (Python 3.10-slim + GDAL system deps +
+\texttt{uv}-installed Python deps) and produces a deterministic
+environment that matches the \texttt{uv.lock} lock file. A
+\texttt{docker-compose.production.yml} file is included for
+deploying the FastAPI + Streamlit demo to a remote host.
+
+\section{Continuous Integration}
+
+The repository includes a GitHub Actions workflow
+(\texttt{.github/workflows/ci.yml}) that runs the fast pytest subset
++ lint chain (black + flake8 + isort + mypy strict) on every push
+and PR. A separate \texttt{latex.yml} workflow compiles each of the
+six \texttt{paper.tex} files with TeX Live, ensuring that no paper
+silently loses its ability to compile. The CI workflow SHAs were
+pinned to v4.4.0 in commit \texttt{0b66057} after the v7.0.1
+references were force-pushed upstream.

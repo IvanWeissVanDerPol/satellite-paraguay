@@ -157,4 +157,11 @@ For each paper, suggest 3-5 potential reviewers who are NOT in your network:
 
 ---
 
+## Round-9 status note (2026-09-08)
+
+- `beery2018` now has a verified DOI: `10.1007/978-3-030-01270-0_28` (Round-8 CrossRef verification, score 9.0/11).
+- 44 of 45 Round-7 placeholder bib entries remain **unverified** — see `outputs/ROUND_8_VERIFICATION_2026-09-08.md` for the full breakdown. They are NOT safe to cite in any journal submission until each is verified by Ivan against the actual source paper.
+- The per-paper bib slices (one per paper in `papers/drafts/p00XX/references.bib`) are auto-generated from `thesis/references.bib` via `scripts/generate_per_paper_bib.py`. They will need re-generation once the Round-7 placeholders are resolved.
+- `thesis/main.tex` has 15 active `\input{...}` lines (CH0 abstract, CH00 acknowledgments, CH1-CH11, appendix A, appendix B) and 0 commented-out inputs. The Tier-6 audit-flagged "Emergency stop" build issue is fully resolved.
+
 **This document is updated by Erebus (autonomous agent) based on submission status.**

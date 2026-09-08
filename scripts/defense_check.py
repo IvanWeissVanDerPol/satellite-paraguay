@@ -124,6 +124,15 @@ CHECKS = [
         "weight": "critical",
         "description": "Tier-6 fix: every \\cite{key} in paper.tex must have a bib entry (no [?] renders)",
     },
+    # ===== Round-9 additions (2026-09-08) =====
+    {
+        "name": "Per-paper bib regeneration drift",
+        "cmd": [".venv/bin/python", "scripts/generate_per_paper_bib.py"],
+        "expect_zero_exit": False,  # informational per Q7 recommendation A
+        "weight": "informational",
+        "description": "Round-9: per-paper bib slices should be in sync with master "
+        "(non-blocking; surfaces drift between thesis/references.bib and the 6 per-paper slices)",
+    },
 ]
 
 # Full pytest suite (only run with --full). Runs ~6 minutes.
