@@ -35,7 +35,9 @@ def fetch_firms_fires(
 
     Args:
         bbox: {min_lon, max_lon, min_lat, max_lat}
-        days: number of days back (max 10 for NRT)
+        days: number of days back. NOTE: NRT endpoints cap at 5; the
+              legacy /country/csv/{source}/{iso}/{days} endpoint returns
+              400 if days > 5. Caller should clamp externally.
         source: 'MODIS_NRT', 'VIIRS_SNPP_NRT', 'VIIRS_NOAA20_NRT'
         api_key: FIRMS API key (free from https://firms.modaps.eosdis.nasa.gov/api/)
         use_cache: use local cache
@@ -45,20 +47,25 @@ def fetch_firms_fires(
                                 acq_date, acq_time, satellite, confidence, version, bright_t31, frp, daynight
     """
     if api_key is None:
-        api_key = os.environ.get("FIRMS_API_KEY")
+        api_key = os.environ.get("FIRMS_API_KEY") or os.environ.get("FIRMS_MAP_KEY")
 
     cache_path = CACHE_DIR / f"firms_{source}_{days}d.json"
-    if use_cache and cache_path.exists():
+    if cache_path.exists():
         return pd.read_json(cache_path)
 
     if api_key is None:
         logger.warning("FIRMS API key not set; using synthetic data")
         return generate_synthetic_firms(bbox, days)
 
-    # Real fetch
-    url = f"{FIRMS_BASE}/country/csv/{api_key}/{source}/PRY/{days}"
+    # Real fetch — NASA FIRMS API: pass key as MAP_KEY query param
+    # (the legacy /country/csv/{key}/{source}/{iso}/{days} URL pattern was
+    #  deprecated; the modern endpoint takes MAP_KEY= as a query param).
+    # Clamp days to NRT endpoint cap (5) to avoid "Invalid day range" errors.
+    days_clamped = min(days, 5)
+    url = f"{FIRMS_BASE}/country/csv/{source}/PRY/{days_clamped}"
+    params = {"MAP_KEY": api_key}
     try:
-        response = requests.get(url, timeout=30)
+        response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
         # Parse CSV
         from io import StringIO
@@ -77,7 +84,7 @@ def fetch_firms_paraguay(
 ) -> pd.DataFrame:
     """Fetch all fire detections in Paraguay."""
     if api_key is None:
-        api_key = os.environ.get("FIRMS_API_KEY")
+        api_key = os.environ.get("FIRMS_API_KEY") or os.environ.get("FIRMS_MAP_KEY")
 
     cache_path = CACHE_DIR / f"firms_paraguay_{days}d.json"
     if cache_path.exists():
@@ -86,9 +93,10 @@ def fetch_firms_paraguay(
     if api_key is None:
         return generate_synthetic_firms_paraguay(days)
 
-    url = f"{FIRMS_BASE}/country/csv/{api_key}/VIIRS_SNPP_NRT/PRY/{days}"
+    url = f"{FIRMS_BASE}/country/csv/VIIRS_SNPP_NRT/PRY/{min(days, 5)}"
+    params = {"MAP_KEY": api_key}
     try:
-        response = requests.get(url, timeout=30)
+        response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
         from io import StringIO
 
