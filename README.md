@@ -196,7 +196,7 @@ docker-compose -f docker-compose.production.yml up -d
 ### Foundation models
 - Prithvi-Lite (NASA-IBM, 100M params)
 - 30 channels input, fine-tune for Paraguay
-- Comparison: from-scratch U-Net (F1=0.017) vs Prithvi (F1>0.85)
+- Measured pilot (15 synthetic tiles, 5 CPU epochs): from-scratch U-Net F1=0.5592 (precision 0.0992, recall 0.9873 — over-predicts); Prithvi-300M fine-tune fell back to mock F1=0.4968 due to transformers/numpy compatibility issue + non-convergence in the 5-CPU-epoch budget. See `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md` and paper.tex §3 for the honest-reporting note. A real Prithvi run on 150 Chaco tiles is the next step (blocked on GPU budget).
 
 ### Indigenous rights
 - ILO 169 + UN Declaration

@@ -65,8 +65,7 @@ It is **fine and expected** to disagree with a prior version of a paper.
 The convention for documenting disagreement:
 
 ```markdown
-The F1 = 0.83 figure quoted in earlier drafts was an aspirational target,
-not a measurement, and has been replaced by the measured F1 = 0.497.
+The F1 = 0.5592 figure (U-Net from-scratch on 15 synthetic Chaco tiles, 5 CPU epochs) is the current **measured** pilot value (over-prediction: precision 0.0992, recall 0.9873); see `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md` and paper.tex §3. The earlier-draft F1 = 0.83 figure was an aspirational target and has been removed from all public-facing surfaces in the 2026-08-10 honest-reporting pass. The aspirational-vs-measured distinction is enforced by `scripts/check_claims.py` (run in CI).
 ```
 
 This sentence belongs in the abstract or a clearly-labeled "Honest

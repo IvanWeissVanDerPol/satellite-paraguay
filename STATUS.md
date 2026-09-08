@@ -49,7 +49,7 @@ repo from a CI-red state to a CI-green state with hardening:
 
 | Paper | Data real? | Model trained? | Paper text / target | Ethics | **Overall** |
 |---|---|---|---|---|---|
-| P0011 Yvutu | **5/100** (1/30 Hansen tiles, 2/150 Sentinel-2 tiles, F1=0.497 mock) | **0/100** (F1=0.497 mock fallback, U-Net honest baseline F1=0.017) | **100/100** (11,378 / 8,000 words; all 6 sections complete 2026-08-12) | **n/a** | **35/100** |
+| P0011 Yvutu | **5/100** (1/30 Hansen tiles, 2/150 Sentinel-2 tiles; no real Sentinel-2 batch) | **30/100** (U-Net honest baseline F1=0.5592 on 15 synthetic tiles; Prithvi mock F1=0.4968 due to non-convergence in 5-CPU-epoch budget) | **100/100** (11,378 / 8,000 words; all 6 sections complete 2026-08-12) | **n/a** | **35/100** |
 | P0010 Yvyra | **80/100** (5 Verra projects real, +35.9% under-claim finding solid) | **0/100** (AlphaEarth literature benchmark, not run) | **100/100** (8,454 / 8,000 words; 2026-08-12) | **50/100** (Verra is OK, but Verbruggen et al precedent) | **57/100** |
 | P0012 Yvy | **70/100** (10 territories real, Hansen overlap real) | **0/100** (LLaVA stub, no labeled conflict benchmark) | **100/100** (9,400 / 7,500 words; 2026-08-13) | **0/100 (BLOCKED by ethics)** (no FPIC, no partnership) | **42/100** but **BLOCKED by ethics** |
 | P0025 Yrupe | **0/100** (synthetic labels only) | **0/100** (F1=0.497, transfer 0.082, did not converge) | **100/100** (7,810 / 6,000 words; failure-mode framing 2026-08-12) | **60/100** (INBIO partnership needed) | **40/100** |
