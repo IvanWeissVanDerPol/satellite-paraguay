@@ -1,13 +1,11 @@
 {
-  "timestamp_utc": "2026-09-08T18:40:17+00:00",
+  "timestamp_utc": "2026-09-08T20:57:25.147276+00:00",
   "repo_root": "/opt/data/work/satellite-paraguay",
   "total_claims": 17,
   "by_status_count": {
-    "present": 8,
-    "missing": 0,
     "off-repo": 6,
-    "synthetic": 3,
-    "partial": 0
+    "partial": 1,
+    "present": 10
   },
   "claims": [
     {
@@ -131,11 +129,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "synthetic",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/indi_territories_PLACEHOLDER.csv",
-      "actual_size_mb": 0.0,
+      "status": "partial",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/p0012_indigenous_territories_real.csv",
+      "actual_size_mb": 0.0008153915405273438,
       "sha256_prefix": "dd1b84657840",
-      "notes": "Filename contains PLACEHOLDER \u2014 not real data"
+      "notes": "PARTIAL: real per-pueblo community counts from INE 2022 census are present (557 communities across 19 pueblos); territory POLYGONS still missing (need INDI shapefile from indi.gov.py \u2014 verified: no .shp/.gpkg/.gdb files anywhere on the local substrate). 10 thesis-anonymized territories (T1..T10) have real community counts."
     },
     {
       "name": "INE census 2022 by depto + ethnicity (CSV)",
@@ -147,11 +145,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "synthetic",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/ine_census_2022_depto_etnia_SYNTHETIC.csv",
-      "actual_size_mb": 0.0,
-      "sha256_prefix": "109cbe243e5d",
-      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/indigenous_communities_2022_summary.csv (+ 2022_comunidades/ + 3 derived CSVs)",
+      "actual_size_mb": 0.12101268768310547,
+      "sha256_prefix": null,
+      "notes": "Replaced SYNTHETIC placeholder with real INE IV Censo Nacional de Poblacion y Viviendas para Pueblos Indigenas 2022 data. Source: datos.gov.py dataset 4dda0f78-9bbc-496d-b26b-208f5cde60c8. Total: 557 comunidades across 19 pueblos + 789 aldeas. 49 raw cuadros + 3 derived CSVs in data/raw/ine_indi/."
     },
     {
       "name": "FAO/MAG Paraguay yield 2023 (JSON)",
@@ -179,11 +177,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "synthetic",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/synthetic_yield_2020_2023.csv",
-      "actual_size_mb": 0.01,
-      "sha256_prefix": "1ad28a2a837a",
-      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
+      "status": "present",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/ (18 CSVs: 6 crops \u00d7 superficie/produccion/rendimiento \u00d7 18 years \u00d7 ~18 departments)",
+      "actual_size_mb": 0.06313800811767578,
+      "sha256_prefix": null,
+      "notes": "Replaced SYNTHETIC placeholder with real MAG (Ministerio de Agricultura y Ganader\u00eda) cereal yield data from datos.gov.py dataset ffc383ae-bbdb-4fb3-a4a8-0cbb85b5f7a6. Source: DCEA (Direcci\u00f3n de Censos y Estad\u00edsticas Agropecuarias del MAG). Coverage: 2007/08 \u2192 2024/25 (17 crop years). Crops: SOJA, MA\u00cdZ, SORGO, TRIGO, SESAMO, ARROZ CON RIEGO. Per-department data for surface (ha), production (tn), and yield (kg/ha). SOJA national total verified: 2,463,511 ha in 2007/08 (matches sheet TOTAL row of 2,463,510). 18 per-(crop \u00d7 metric) CSVs written to data/raw/fao_mag/."
     },
     {
       "name": "INBIO soybean trial 2024 (CSV)",

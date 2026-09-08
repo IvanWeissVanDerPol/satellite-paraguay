@@ -1,184 +1,200 @@
-"""P0025 Yrupe - public agricultural yield data (no INBIO partnership needed).
+#!/usr/bin/env python3
+"""download_fao_mag_p0025.py — Real FAO/MAG cereal yield data for P0025 Yrupe.
 
-Per FUNDING_PLAN.md Path 2, we use public datasets to avoid the INBIO
-partnership bottleneck. This script pulls:
+Downloads the official Ministerio de Agricultura y Ganadería
+(MAG) cereal yield dataset from datos.gov.py (Paraguay open data
+portal). Contains surface (ha), production (tn), and yield (kg/ha)
+for 6 main crops × 18 crop-years × ~18 departments.
 
-1. FAO - Food and Agriculture Organization global crop yield statistics
-2. MAG (Ministerio de Agricultura y Ganaderia) - Paraguay crop data
-3. CAPECO - Camara de Exportadores de Cereales y Oleaginosos (annual reports)
+Source: datos.gov.py dataset ffc383ae-bbdb-4fb3-a4a8-0cbb85b5f7a6
+Title: Superficie y Rendimiento de los Principales Cereales
+Publisher: Dirección de Censos y Estadísticas Agropecuarias (DCEA)
+License: https://www.paraguay.gov.py/datos-abiertos/licencias
 
-All sources are public. No partnership required for aggregate statistics.
-
-Usage:
-    python3 scripts/download_fao_mag_p0025.py
-    python3 scripts/download_fao_mag_p0025.py --years 2020-2024
+Crops covered:
+  - SOJA          (soybean)
+  - MAÍZ          (corn)
+  - SORGO         (sorghum)
+  - TRIGO         (wheat)
+  - SESAMO        (sesame)
+  - ARROZ CON RIEGO  (irrigated rice)
 
 Output:
-    data/raw/fao_mag/yield_paraguay_<years>.csv
-    data/raw/fao_mag/variety_trial_data.csv
+  data/raw/fao_mag/mag_<crop>_superficie.csv    (ha by dept × year)
+  data/raw/fao_mag/mag_<crop>_produccion.csv     (tn by dept × year)
+  data/raw/fao_mag/mag_<crop>_rendimiento.csv   (kg/ha by dept × year)
+
+Usage:
+  python3 scripts/download_fao_mag_p0025.py
+  python3 scripts/download_fao_mag_p0025.py --years 2020-2023
+  python3 scripts/download_fao_mag_p0025.py --out-dir data/raw/fao_mag
 """
 
 import argparse
 import csv
-import json
-import logging
-import time
+import sys
 from pathlib import Path
-from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+
+import requests
+from openpyxl import load_workbook
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-
-# FAO FAOSTAT API endpoint
-FAO_API = "https://fenixservices.fao.org/faostat/api/v1/en/data"
-
-# Public Paraguay crop yield sources
-PARAGUAY_YIELD_SOURCES = [
-    # FAOSTAT Paraguay crop yield (soy, maize, wheat)
-    # (FAO API requires item codes; we use a curated set)
-    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=236&element=5412&year=2023",  # Soy
-    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=56&element=5412&year=2023",  # Maize
-    "https://fenixservices.fao.org/faostat/api/v1/en/data/QCL?area=138&item=15&element=5412&year=2023",  # Wheat
+DATA_URL = "https://www.datos.gov.py/sites/default/files/" "CEREALES_2007-08%20al%202024-25.xlsx"
+YEARS = [
+    "2007/08",
+    "2008/09",
+    "2009/10",
+    "2010/11",
+    "2011/12",
+    "2012/13",
+    "2013/14",
+    "2014/15",
+    "2015/16",
+    "2016/17",
+    "2017/18",
+    "2018/19",
+    "2019/20",
+    "2020/21",
+    "2021/22",
+    "2022/23",
+    "2023/24",
+    "2024/25",
 ]
+SECTIONS = ["SUPERFICIE (ha.)", "PRODUCCION (tn)", "RENDIMIENTO (kg/ha)"]
 
 
-def fetch_fao_yield_data(year: int, output_dir: Path):
-    """Fetch FAO crop yield data for Paraguay for a specific year.
-
-    FAOSTAT API is public (no auth required) and returns CSV.
-    """
-    output_dir.mkdir(parents=True, exist_ok=True)
-    headers = {"User-Agent": "satellite-paraguay/0.1.0 (research; contact@example.com)"}
-
-    # FAOSTAT QCL endpoint for production data
-    # Item codes: 236=Soy, 56=Maize, 15=Wheat, 27=Sunflower
-    # Element 5412 = Yield (kg/ha)
-    items = [
-        ("Soy", 236),
-        ("Maize", 56),
-        ("Wheat", 15),
-        ("Sunflower", 27),
-    ]
-    crops_data = {}
-
-    for crop_name, item_code in items:
-        url = (
-            f"https://fenixservices.fao.org/faostat/api/v1/en/data/QCL"
-            f"?area=138&item={item_code}&element=5412&year={year}"
-        )
-        try:
-            req = Request(url, headers=headers)
-            with urlopen(req, timeout=5) as resp:  # short timeout - fall back fast
-                data = json.loads(resp.read())
-            # FAOSTAT returns {"data": [[year, area, item, element, value, flag], ...]}
-            rows = data.get("data", [])
-            values = [r[4] for r in rows if len(r) > 4 and isinstance(r[4], (int, float))]
-            if values:
-                crops_data[crop_name] = values[0] if values else None
-        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as e:
-            logging.debug(f"FAOSTAT fetch skipped for {crop_name}: {type(e).__name__}")
-            time.sleep(0.5)
-
-    out_path = output_dir / f"fao_yield_{year}_paraguay.json"
-    out_path.write_text(json.dumps(crops_data, indent=2))
-    return out_path, crops_data
+def safe_num(v):
+    """Parse a cell value as float; return None for empty/'--'."""
+    if v is None or v == "-" or (isinstance(v, str) and not v.strip()):
+        return None
+    if isinstance(v, (int, float)):
+        return v
+    try:
+        return float(str(v).replace(",", ""))
+    except (ValueError, TypeError):
+        return None
 
 
-def generate_synthetic_yield_data(years: list, output_dir: Path):
-    """Generate synthetic yield data based on real Paraguay historical averages.
+def slugify(name):
+    """Turn 'ARROZ CON RIEGO' into 'arroz_con_riego'."""
+    s = name.lower().strip()
+    # Replace Spanish diacritics
+    repl = {
+        "í": "i",
+        "á": "a",
+        "é": "e",
+        "ó": "o",
+        "ú": "u",
+        "ñ": "n",
+    }
+    for src, dst in repl.items():
+        s = s.replace(src, dst)
+    return s.replace(" ", "_")
 
-    Real averages (kg/ha from FAOSTAT 2014-2023):
-    - Soy: ~3,000 kg/ha (highly variable due to climate)
-    - Maize: ~4,500 kg/ha
-    - Wheat: ~2,500 kg/ha
-    - Sunflower: ~1,800 kg/ha
 
-    These are reproducible from open data, used here when API is unavailable.
-    """
-    output_dir.mkdir(parents=True, exist_ok=True)
-    rng_seed = sum(years)  # deterministic
-    import random
+def parse_sheet(ws):
+    """Parse one XLSX sheet into {dept: {year: {section: value}}}."""
+    rows = list(ws.iter_rows(values_only=True))
+    # Find section start rows (the row with the section label in col 1)
+    section_rows = {}
+    for i, row in enumerate(rows):
+        if row[1] in SECTIONS:
+            section_rows[row[1]] = i + 1  # 0-indexed → 1-indexed
+    if not section_rows:
+        return {}
 
-    random.seed(rng_seed)
+    out = {}
+    HEADER_ROWS = (
+        "TOTAL",
+        "DEPARTAMENTO",
+        "(-) Ningun Valor",
+        "Fuente: Sintesis Estadisticas DCEA/",
+        "*Datos del Censo 2007/08, 2021/22",
+        "** Merma en el rendimiento, por efe",
+    )
+    HEADER_TOKENS = (
+        "MINISTERIO",
+        "DIRECCION",
+        "SOJA -",
+        "MAIZ -",
+        "MAÍZ -",
+        "SORGO -",
+        "TRIGO -",
+        "SESAMO -",
+        "ARROZ -",
+    )
 
-    out_path = output_dir / f"synthetic_yield_{years[0]}_{years[-1]}.csv"
-    with out_path.open("w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(
-            [
-                "year",
-                "crop",
-                "yield_kg_ha",
-                "department",
-                "source",
-            ]
-        )
-        # Paraguay dept-level yield
-        departments = [
-            "Alto Parana",
-            "Itapua",
-            "Canindeyu",
-            "Caaguazu",
-            "San Pedro",
-            "Misiones",
-            "Amambay",
-            "Caazapa",
-            "Concepcion",
-            "Boqueron",
-        ]
-        for year in years:
-            for crop, base_yield in [
-                ("Soy", 3000),
-                ("Maize", 4500),
-                ("Wheat", 2500),
-                ("Sunflower", 1800),
-            ]:
-                for dept in departments:
-                    # Climate-driven variability
-                    yield_kg = base_yield * random.uniform(0.7, 1.3)
-                    writer.writerow([year, crop, round(yield_kg, 1), dept, "synthetic (FAOSTAT API fallback)"])
-    return out_path
+    for sec_label, sec_row in section_rows.items():
+        for j, year in enumerate(YEARS):
+            col_idx = 1 + j  # year columns start at col 1 (col 0 = DEPARTAMENTO)
+            for k in range(sec_row + 1, min(sec_row + 22, len(rows))):
+                row = rows[k - 1]
+                dept = row[0]
+                if not dept or not isinstance(dept, str):
+                    continue
+                dept = dept.strip()
+                if dept in HEADER_ROWS or dept in ("",):
+                    continue
+                if any(t in dept.upper() for t in HEADER_TOKENS):
+                    continue
+                if col_idx < len(row):
+                    val = safe_num(row[col_idx])
+                    if dept not in out:
+                        out[dept] = {}
+                    if year not in out[dept]:
+                        out[dept][year] = {}
+                    out[dept][year][sec_label] = val
+    return out
+
+
+def download_and_extract(out_dir: Path, years: list[str]) -> dict:
+    """Download the XLSX, parse all 6 sheets, write 18 CSVs."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Downloading {DATA_URL[:80]}...")
+    r = requests.get(DATA_URL, timeout=120)
+    r.raise_for_status()
+    xlsx_path = out_dir / "CEREALES_2007-08_al_2024-25.xlsx"
+    xlsx_path.write_bytes(r.content)
+    print(f"Saved {xlsx_path} ({len(r.content) / 1024:.1f} KB)")
+
+    wb = load_workbook(xlsx_path)
+    summary = {}
+    for sname in wb.sheetnames:
+        parsed = parse_sheet(wb[sname])
+        if not parsed:
+            print(f"  {sname}: EMPTY (skipping)")
+            continue
+        for sec_label in SECTIONS:
+            crop_slug = slugify(sname)
+            sec_slug = sec_label.split("(")[0].strip().lower()
+            csv_path = out_dir / f"mag_{crop_slug}_{sec_slug}.csv"
+            with open(csv_path, "w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["departamento"] + years)
+                for dept, by_year in parsed.items():
+                    row = [dept] + [by_year.get(y, {}).get(sec_label) for y in years]
+                    w.writerow(row)
+            nonzero = sum(1 for d, by in parsed.items() for y in years if by.get(y, {}).get(sec_label) is not None)
+            summary[f"{sname} / {sec_label}"] = {
+                "file": str(csv_path),
+                "depts": len(parsed),
+                "non_null_cells": nonzero,
+            }
+    return summary
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="P0025 Yrupe - public FAO/MAG agricultural yield data (no INBIO partnership needed)"
-    )
-    parser.add_argument(
-        "--years", type=int, nargs="+", default=[2020, 2021, 2022, 2023], help="Years to fetch (default 2020-2023)"
-    )
-    parser.add_argument("--output", type=Path, default=REPO_ROOT / "data" / "raw" / "fao_mag")
-    args = parser.parse_args()
-
-    print("=" * 70)
-    print(f"P0025 Yrupe - public FAO/MAG agricultural yield data ({min(args.years)}-{max(args.years)})")
-    print("=" * 70)
+    p = argparse.ArgumentParser()
+    p.add_argument("--out-dir", default=str(REPO_ROOT / "data/raw/fao_mag"))
+    p.add_argument("--years", nargs="*", default=YEARS, help="Subset of years to extract (default: all 18)")
+    args = p.parse_args()
+    out_dir = Path(args.out_dir)
+    summary = download_and_extract(out_dir, args.years)
     print()
-    print("This uses PUBLIC data only (FAO + MAG + CAPECO). No partnership needed.")
-    print()
-
-    args.output.mkdir(parents=True, exist_ok=True)
-
-    # Try FAO FAOSTAT for the most recent year
-    last_year = max(args.years)
-    fao_path, fao_data = fetch_fao_yield_data(last_year, args.output)
-    print(f"FAO {last_year}: {fao_data}")
-
-    # Fall back to synthetic if FAO didn't return data
-    if not fao_data or all(v is None for v in fao_data.values()):
-        print("FAO API returned no data. Generating synthetic placeholder...")
-        syn_path = generate_synthetic_yield_data(args.years, args.output)
-        print(f"  Synthetic: {syn_path}")
-    else:
-        syn_path = generate_synthetic_yield_data(args.years, args.output)
-        print(f"  Supplement synthetic (departmental breakdown): {syn_path}")
-
-    print(f"\nDone. Output: {args.output}/")
-    print()
-    print("Next steps:")
-    print("  1. python3 scripts/train_yrupe_gru.py --data", args.output)
-    print("  2. Update papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md with measured values")
+    print("=== Files written ===")
+    for k, v in summary.items():
+        print(f"  {k:50s}  {v['depts']:>2} depts, " f"{v['non_null_cells']:>4} cells  -> {v['file']}")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
