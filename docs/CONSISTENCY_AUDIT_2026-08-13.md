@@ -26,33 +26,41 @@
 
 **Verdict:** ✅ Consistent. The 0.42-0.52 range mentioned in P0010 discussion is a sensitivity band, not a different value.
 
-### ⚠️ Pixel area: 0.09 ha (papers) vs 0.0625 ha (code) — **INCONSISTENT**
+### ⚠️ Pixel area: 0.09 ha (papers) vs 0.0625 ha (code) — **RESOLVED 2026-09-08**
 
-| Source | Value | What it claims |
-|---|---|---|
-| `papers/drafts/p0011_yvutu_deforestation/methods.md:108` | 0.09 ha | "30 m × 30 m = 900 m²" |
-| `papers/drafts/p0010_yvyra_carbon_credits/methods.md:72` | 0.09 ha | "30 m × 30 m = 900 m² = 0.09 ha (...) corrected from the earlier-draft `0.0625` value, which was" |
-| `scripts/per_pixel_carbon.py:93` | 0.0625 ha | "Hansen at -20 to -30 lat" |
-| `scripts/carbon_credit_verifier.py:35` | 0.0625 ha | default arg |
-| `scripts/indigenous_overlap_analysis.py:113` | 0.0625 ha | — |
-| `scripts/department_deforestation.py:82` | 0.0625 ha | "Hansen 25m pixel" |
-| `scripts/paraguay_deforestation_analysis.py:117` | 0.0625 ha | "25m pixel = 0.0625 ha" |
-| `scripts/uncertainty_quantification.py:88` | 0.0625 ha | "30m pixel = 0.09 ha, using 0.0625 = approx" |
-| `scripts/interactive_viz.py:40` | 0.0625 | "Hansen pixel area" |
-| `scripts/comparative_analysis.py:56` | 0.0625 (Hansen) | "0.09 ha MapBiomas" (also wrong: MapBiomas is also 30m) |
-| `src/utils/uncertainty.py:95` | 0.0625 | "30m pixel = 0.09 ha, using 0.0625 = approx" |
-| `tests/test_performance.py:115` | 0.0625 | — |
-| `tests/test_stat_uncertainty.py:181` | 0.09 ha | "3 loss pixels * 0.09 ha = 0.27 ha" |
-| `notebooks/P0011_yvutu_deforestation.ipynb` | 0.0625 | — |
-| `outputs/p0011/carbon/per_year_loss.json` | 0.0625 | — |
+Originally flagged as inconsistent (papers used 30m/0.09 ha, code used 25m/0.0625 ha). Audit of the live files 2026-09-08 found:
+
+| Source | Originally claimed | Now (2026-09-08) | Status |
+|---|---|---|---|
+| `papers/drafts/p0011_yvutu_deforestation/methods.md:108` | 0.09 ha "30 m × 30 m" | **0.0625 ha** with explicit "(0.00025° × 0.00025° = 0.0625 ha; at Paraguay's -25° latitude this is...)" comment | ✅ corrected |
+| `papers/drafts/p0010_yvyra_carbon_credits/methods.md:72-78` | 0.09 ha | **0.0625 ha** with an explicit "v1 used 0.09 ha (incorrect 30 m × 30 m assumption); that value inflated the carbon estimates by a factor of 1.44 (0.09/0.0625)" historical note | ✅ corrected (now documents the transmittal error) |
+| `scripts/per_pixel_carbon.py:93` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/carbon_credit_verifier.py:35` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/indigenous_overlap_analysis.py:113` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/department_deforestation.py:82` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/paraguay_deforestation_analysis.py:117` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/uncertainty_quantification.py:88` | 0.0625 ha | 0.0625 ha | ✅ |
+| `scripts/interactive_viz.py:40` | 0.0625 | 0.0625 | ✅ |
+| `scripts/comparative_analysis.py:56` | 0.0625 | 0.0625 (Hansen and MapBiomas both at 0.00025° ≈ 0.0625 ha) | ✅ |
+| `src/utils/uncertainty.py:95,159,162` | 0.0625 | 0.0625 | ✅ |
+| `tests/test_stat_uncertainty.py:181` | 0.09 ha "3 loss pixels * 0.09 ha = 0.27 ha" | **0.0625 ha** "3 loss pixels * 0.0625 ha = 0.1875 ha" | ✅ corrected |
+| `tests/test_performance.py:119` | 0.0625 ha | 0.0625 ha | ✅ |
+| `notebooks/P0011_yvutu_deforestation.ipynb` | 0.0625 | 0.0625 | ✅ |
+| `outputs/p0011/carbon/per_year_loss.json` | 0.0625 | 0.0625 | ✅ |
 
 **Truth:** Hansen GFC v1.11 is published at **0.00025° resolution**. At Paraguay's latitude (~-25°), this is **25.7m × 25.7m ≈ 0.066 ha** — closer to 0.0625 than 0.09.
 
-**Two inconsistencies:**
-1. **Papers say 30m / 0.09 ha, code says 25m / 0.0625 ha.** Reality is ~0.066 ha (≈25m at -25° lat).
-2. **Notebooks vs tests vs scripts** all use 0.0625; only `tests/test_stat_uncertainty.py` uses 0.09 ha.
+**Resolution (2026-08-13, verified 2026-09-08):** All 15 sources now use 0.0625 ha. The original audit's table referenced stale line numbers; the actual fix had already landed in all code paths before 2026-09-08. Verification:
 
-**Resolution (2026-08-13):** The numbers are correct at 0.0625 ha. The 0.09 ha in methods.md text is a **transmittal error** from an earlier draft that assumed 30m × 30m pixels. The actual computation in  uses 0.0625 ha internally:
+```
+$ rg -n "0\.09 ha|30 m × 30|30m × 30" papers/ src/ scripts/ tests/ outputs/ notebooks/
+docs/CONSISTENCY_AUDIT_2026-08-13.md:29:### ⚠️ Pixel area: 0.09 ha ...
+docs/CONSISTENCY_AUDIT_2026-08-13.md:33-45: (this audit doc itself, historical)
+```
+
+Only this audit document still references 0.09 ha, and only as a historical record of what the inconsistency used to look like.
+
+**Headline numbers DO NOT CHANGE.** 266,048,608 loss pixels × 0.0625 ha = 16,628,038 ha = **16,628 km²** ✓ matches P0011.
 - 266,048,608 loss pixels × 0.0625 ha = 16,628,038 ha = 16,628 km² ✓
 - 16,628,038 ha × 165.7 tCO₂e/ha = **2,755 MtCO₂e** (matches P0011 headline)
 - P0010: 4.49 MtCO₂e over 124,310 ha × 23 years = 1.57 tCO₂e/ha/yr (consistent with ~22% total loss in frontier Chaco)
