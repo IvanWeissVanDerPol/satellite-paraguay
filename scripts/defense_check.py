@@ -32,6 +32,7 @@ Exit codes:
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -39,54 +40,66 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
-PYTEST = ".venv/bin/python -m pytest"
+
+# Detect the Python interpreter to use:
+# - Local dev: .venv/bin/python (from `uv sync --all-extras`)
+# - CI runner (pip install --no-deps): sys.executable (system Python
+#   since pip-installed packages land in the system site-packages)
+# Use sys.executable if .venv doesn't exist OR if running under CI
+# (the CI_RUN env var is set by GitHub Actions).
+if (REPO_ROOT / ".venv" / "bin" / "python").exists() and "CI" not in os.environ:
+    PYTHON_BIN = str(REPO_ROOT / ".venv" / "bin" / "python")
+else:
+    PYTHON_BIN = sys.executable
+
+PYTEST = f"{PYTHON_BIN} -m pytest"
 
 CHECKS = [
     {
         "name": "Citation resolution",
-        "cmd": [".venv/bin/python", "scripts/check_citations.py", "--all"],
+        "cmd": [PYTHON_BIN, "scripts/check_citations.py", "--all"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "All \\cite{} in paper.tex must resolve to master bib",
     },
     {
         "name": "Paper claims integrity",
-        "cmd": [".venv/bin/python", "scripts/check_claims.py"],
+        "cmd": [PYTHON_BIN, "scripts/check_claims.py"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "No specific claims (MAE < X, etc) without backing in ACTUAL_RESULTS.md",
     },
     {
         "name": "Ethics gates",
-        "cmd": [".venv/bin/python", "scripts/check_ethics.py"],
+        "cmd": [PYTHON_BIN, "scripts/check_ethics.py"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "Each paper passes its ethics gate (FPIC, partnerships, etc.)",
     },
     {
         "name": "LaTeX syntax",
-        "cmd": [".venv/bin/python", "scripts/check_latex.py"],
+        "cmd": [PYTHON_BIN, "scripts/check_latex.py"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "All 6 papers compile clean (braces, citations, labels)",
     },
     {
         "name": "Cite-pattern regression",
-        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_citation_patterns.py", "--no-cov", "-q"],
+        "cmd": [PYTHON_BIN, "-m", "pytest", "tests/test_citation_patterns.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "guard",
         "description": "No bare \\cite{}, every paper has \\section{Conclusion}",
     },
     {
         "name": "Bib DOI audit",
-        "cmd": [".venv/bin/python", "scripts/verify_bib_dois.py", "--summary"],
+        "cmd": [PYTHON_BIN, "scripts/verify_bib_dois.py", "--summary"],
         "expect_zero_exit": False,  # summary always returns 0
         "weight": "informational",
         "description": "Round-6 audit: 7 fixes applied, 76 false-positive confirmed",
     },
     {
         "name": "Inline citation resolution",
-        "cmd": [".venv/bin/python", "scripts/check_inline_citations.py"],
+        "cmd": [PYTHON_BIN, "scripts/check_inline_citations.py"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "All (Author, Year) inline citations must resolve to master bib",
@@ -97,7 +110,7 @@ CHECKS = [
     # the 7 critical checks above missed.
     {
         "name": "Numerical consistency regression",
-        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_numerical_consistency.py", "--no-cov", "-q"],
+        "cmd": [PYTHON_BIN, "-m", "pytest", "tests/test_numerical_consistency.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "Tier-6 fix: stale numerical values from earlier drafts must not "
@@ -105,21 +118,21 @@ CHECKS = [
     },
     {
         "name": "Input reference resolution",
-        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_input_references.py", "--no-cov", "-q"],
+        "cmd": [PYTHON_BIN, "-m", "pytest", "tests/test_input_references.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "Tier-6 fix: every include directive in master tex must point to an existing file",
     },
     {
         "name": "LaTeX safety (compile-breakers)",
-        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_latex_safety.py", "--no-cov", "-q"],
+        "cmd": [PYTHON_BIN, "-m", "pytest", "tests/test_latex_safety.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "Tier-6 fix: no unescaped percent inside command arguments, cite commands require natbib",
     },
     {
         "name": "Citation completeness",
-        "cmd": [".venv/bin/python", "-m", "pytest", "tests/test_citation_completeness.py", "--no-cov", "-q"],
+        "cmd": [PYTHON_BIN, "-m", "pytest", "tests/test_citation_completeness.py", "--no-cov", "-q"],
         "expect_zero_exit": True,
         "weight": "critical",
         "description": "Tier-6 fix: every \\cite{key} in paper.tex must have a bib entry (no [?] renders)",
@@ -127,7 +140,7 @@ CHECKS = [
     # ===== Round-9 additions (2026-09-08) =====
     {
         "name": "Per-paper bib regeneration drift",
-        "cmd": [".venv/bin/python", "scripts/generate_per_paper_bib.py"],
+        "cmd": [PYTHON_BIN, "scripts/generate_per_paper_bib.py"],
         "expect_zero_exit": False,  # informational per Q7 recommendation A
         "weight": "informational",
         "description": "Round-9: per-paper bib slices should be in sync with master "
@@ -140,7 +153,7 @@ CHECKS = [
 # importorskip at the module level, but full mode still surfaces their
 # state. The previous 3 rasterio failures are now properly skipped.
 FULL_PYTEST_CMD = [
-    ".venv/bin/python",
+    PYTHON_BIN,
     "-m",
     "pytest",
     "tests/",

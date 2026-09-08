@@ -13,10 +13,15 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# Set up venv if missing
-if [[ ! -x ".venv/bin/python" ]]; then
-  echo "→ .venv missing; running 'uv sync --all-extras'..."
-  uv sync --all-extras
+# Set up venv if missing (local dev only — CI runner uses pip install)
+if [[ ! -x ".venv/bin/python" ]] && [[ "${SKIP_UV_FALLBACK:-0}" != "1" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    echo "→ .venv missing; running 'uv sync --all-extras'..."
+    uv sync --all-extras
+  else
+    echo "→ .venv missing AND no 'uv' binary; assuming CI runner with pip-installed deps."
+    echo "   Set SKIP_UV_FALLBACK=1 to suppress this fallback entirely."
+  fi
 fi
 
 PYTEST=".venv/bin/python -m pytest"
