@@ -1,0 +1,180 @@
+% Chapter 6: Paper P0025 -- Yrupe (soybean yield prediction, NEGATIVE pilot)
+
+\chapter{Yrupe: Cross-domain transfer learning for soybean yield
+prediction in the Eastern Paraguay Pampas}\n\label{ch:yrupe}
+
+This chapter summarises Paper~P0025, the soybean-yield prediction study.
+Unlike the other five papers in this thesis, Yrupe reports a
+\emph{negative} pilot result: the multi-task CNN did not converge under
+the synthetic-data, CPU-only training budget available, and the
+measured cross-domain transfer ratio of 0.082 is far below the typical
+threshold for meaningful transfer. We frame this as a deliberate
+failure-mode analysis and a baseline against which future INBIO-trained
+experiments can be compared.
+
+\section{Introduction}
+\label{sec:yrupe-intro}
+
+Soybean is Paraguay's largest crop, accounting for approximately 25\%
+of agricultural GDP. Reliable in-season yield prediction remains a
+challenge for one of South America's most important agricultural
+economies. Deep-learning approaches to yield forecasting have advanced
+substantially over the past decade \citep{prenafeta2018,yang2021}, with
+multi-source satellite + climate models reporting R$^2$ values up to
+0.78 for Brazilian soybean \citep{peng2023}. Transformer-based
+architectures have shown modest gains over CNN baselines at large scale
+\citep{huang2022}. Cross-domain transfer from one remote-sensing task
+to another has been studied \citep{russwurm2020,kattenborn2021,tseng2022},
+but the specific case of deforestation-to-agriculture transfer in
+Paraguayan soybean has not been tested at scale.
+
+We present \textbf{Yrupe} (Guaran\'i for ``puddle''), a satellite-based
+yield prediction pipeline combining multi-temporal Sentinel-2 imagery,
+Hansen Global Forest Change historical forest cover, and a multi-task
+convolutional neural network with task-specific heads for (i)
+soybean-pixel classification, (ii) above-ground biomass (AGB) prediction,
+and (iii) yield regression. The architecture is the right one for the
+problem; the measured pilot result is the wrong one for the problem.
+We retain the paper as a reproducible failure-mode analysis.
+
+\section{Methods}
+\label{sec:yrupe-methods}
+
+\paragraph{Study area.} The Eastern Paraguay Pampas (departamentos of
+Itap\'ua, Alto Paran\'a, and Caaguaz\'u), the historical core of
+Paraguayan soybean production.
+
+\paragraph{Data.} The pilot uses a synthetic soybean dataset
+constructed for pipeline smoke-testing: 4 scenes / 18 monthly
+composites / 3 spectral bands, with 786{,}432 total pixels
+(256$\times$256 per scene), partitioned 80/32/32 into train/val/test
+tiles. The synthetic ground truth does not capture the seasonal
+dynamics that distinguish soybean from other crops; the
+\texttt{ACTUAL\_RESULTS.md} file flags this as the principal limitation.
+The production pipeline ingests real Sentinel-2 L2A \citep{esa2015},
+Hansen GFC v1.11 \citep{hansen2013}, and INBIO farm-level yield
+returns, but those data were not loaded in this pilot.
+
+\paragraph{Model.} A 12-layer ResNet encoder feeds three task-specific
+heads: (i) soybean-pixel classification (binary cross-entropy);
+(ii) AGB regression in Mg/ha (mean squared error); (iii) yield
+regression in t/ha (mean absolute error, primary loss). The cross-
+domain transfer signal is taken as the ratio of the AGB-head gradient
+norm after fine-tuning on the deforestation pre-training task versus
+the gradient norm from random initialisation.
+
+\paragraph{Training.} AdamW, learning rate $10^{-4}$, weight decay
+$0.01$, batch size 1 (CPU constraint), 8 epochs, random seed 42. Total
+wall clock approximately 7 minutes on an Intel CPU with about 3\,GB peak
+RAM. The production target is 30+ epochs on a GPU with batch size 32,
+which is required to make batch normalisation operate in its
+meaningful regime.
+
+\paragraph{Baselines.} Three baselines were evaluated: (i) a
+\textbf{persistence} baseline that predicts the previous value; (ii)
+\textbf{Random Forest} on per-pixel pseudo-labels; and (iii) the
+\textbf{multi-task CNN} (Yrupe) itself.
+
+\section{Results}
+\label{sec:yrupe-results}
+
+\paragraph{Headline claim versus measurement.} Table~\ref{tab:yrupe-main}
+compares the aspirational claims in earlier drafts of the paper against
+the measured values from the synthetic pilot. All three task heads
+failed to converge in 8 epochs: classification F$_1$ = 0.000
+(claimed 0.83), AGB regression R$^2$ = 0.000 (claimed 0.62), yield
+regression MAE = 3.20\,t/ha (claimed 0.74\,t/ha).
+
+\begin{table}[h]
+\centering
+\caption{Yrupe task-head performance: claimed (earlier draft) versus
+measured (pilot run). All three heads failed to converge in 8 CPU
+epochs on synthetic labels; the cross-domain transfer ratio of 0.082
+is far below the 0.74 aspirational value and far below the typical
+$r > 0.80$ threshold for meaningful transfer.}
+\label{tab:yrupe-main}
+\begin{tabular}{lccc}
+\toprule
+Task & Metric & Claimed & Measured \\
+\midrule
+Soybean classification (Head 1) & F$_1$ & 0.83 & 0.000 \\
+AGB regression (Head 2) & R$^2$ & 0.62 & 0.000 \\
+Yield regression (Head 3) & MAE (t/ha) & 0.74 & 3.20 \\
+Cross-domain transfer ratio & --- & 0.74 & \textbf{0.082} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Model-level breakdown.} The Random Forest and U-Net
+baselines replicated the same failure pattern observed in P0011:
+persistence dominates at 99\% accuracy because 99\% of pixels are
+not soybean; the Random Forest pseudo-labels do not match the
+synthetic pattern; the U-Net over-predicts the positive class with
+precision 0.0992 and recall 0.9873. The Yrupe multi-task CNN
+collapsed to a constant output on every head.
+
+\paragraph{Cross-domain transfer ratio.} The measured cross-domain
+transfer ratio (0.082) is the principal negative finding. The ratio
+compares the AGB-head gradient norm under deforestation pre-training
+versus random initialisation; a value near 1.0 would indicate strong
+transfer, near 0.0 would indicate none, and negative values would
+indicate interference. The measured 0.082 is below the conventional
+threshold of 0.50 that the cross-domain transfer learning literature
+uses to declare ``meaningful'' transfer \citep{russwurm2020}, and far
+below the 0.74 claimed in earlier drafts of this paper.
+
+\section{Discussion}
+\label{sec:yrupe-discussion}
+
+\paragraph{The negative result is the contribution.} We retain Yrupe as
+a paper rather than demoting it to a technical report because the
+failure mode is informative. Three observations follow.
+
+\paragraph{Under-training dominates.} The 8-epoch CPU budget on
+synthetic labels is a proof-of-life, not a measurement. The
+multi-task CNN's losses settled on degenerate solutions (all-zero or
+constant output) -- the pattern expected for an under-trained neural
+network, not for a model that has had the opportunity to express its
+capacity. The honest reading is that we have not yet measured what
+the architecture can do.
+
+\paragraph{Synthetic labels do not match real phenology.} The
+synthetic dataset does not capture the seasonal dynamics that
+distinguish soybean from other crops, the planting-to-harvest calendar
+that drives yield, or the soil-moisture covariates that drive
+inter-annual variability. Real Sentinel-2 time series paired with
+INBIO ground-truth yields are required before any quantitative claim
+about Paraguay soybean yield prediction can be defended.
+
+\paragraph{Cross-domain transfer is task-dependent.} The 0.082 ratio
+indicates that the deforestation pre-training signal does not transfer
+to the soybean AGB head at the scale tested. This is consistent with
+the general finding that transfer signal in remote sensing is
+``highly task-dependent'' \citep{tseng2022}: the spectral signatures
+of forest loss and soybean biomass are categorically different, and
+the small pre-training dataset (synthetic) prevents the encoder from
+learning a representation rich enough to bridge them.
+
+\paragraph{Position in the literature.} Published R$^2$ values for
+soybean yield prediction range from 0.55 to 0.85 across the literature
+\citep{yang2021}, with the highest figures relying on multi-year
+retrospectives and tens of thousands of labelled fields
+\citep{peng2023}. Yrupe's measured MAE of 3.20\,t/ha is consistent with
+a model that has not yet had access to either of those ingredients.
+The aspirational 0.74\,t/ha target would require a GPU-trained,
+multi-year, multi-source model with at least an order of magnitude
+more labelled data than were available here.
+
+\section{Conclusion}
+\label{sec:yrupe-conclusion}
+
+Yrupe presents a multi-task CNN for satellite-based soybean yield
+prediction in Paraguay. In the measured pilot, the multi-task CNN
+failed to converge (F$_1$ = 0.000, R$^2$ = 0.000, MAE = 3.20\,t/ha) and
+the cross-domain transfer ratio measured 0.082, well below the 0.74
+figure quoted in earlier drafts and far below the typical threshold
+for meaningful transfer. The F$_1$ = 0.83, R$^2$ = 0.62, and
+MAE = 0.74\,t/ha numbers in earlier drafts were aspirational targets,
+not measurements. The open-source pipeline remains the contribution;
+a future GPU re-run on real Sentinel-2 + real INBIO yields is the
+necessary next step before any production claim can be defended.

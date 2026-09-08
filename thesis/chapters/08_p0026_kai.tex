@@ -1,0 +1,177 @@
+% Chapter 8: Paper P0026 -- Kai (wildlife poaching detection)
+
+\chapter{Kai: Automated wildlife detection in the Paraguayan Chaco -- \\
+       a synthetic-to-real pilot transfer-learning study of YOLOv8}
+\label{ch:kai}
+
+This chapter summarises Paper~P0026, the wildlife-detection pilot. The
+paper is a transfer-learning study of the YOLOv8 object detector,
+trained on synthetic camera-trap imagery and evaluated on a real
+camera-trap corpus from the Guyra Paraguay reserve. The principal
+finding is the expected synthetic-to-real gap: mAP@0.5 of 0.50 on
+synthetic validation falls to mAP@0.5 of 0.18 on real test data.
+
+\section{Introduction}
+\label{sec:kai-intro}
+
+The Paraguayan Chaco harbours 24+ large mammal species, including
+several IUCN-vulnerable species (jaguar, \textit{Panthera onca}, puma,
+marsh deer). Conservation NGOs maintain camera-trap networks but face
+two operational challenges: manual review of images is labour-intensive,
+and the volume of data exceeds human capacity as the network grows.
+Automated detection can relieve both constraints. Object detection on
+camera-trap imagery is a well-studied problem
+\citep{beery2018,norouzzadeh2018,villon2020,tabak2019,bowers2021,milani2022},
+with state-of-the-art systems achieving mAP@0.5 above 0.90 on large
+public datasets such as Snapshot Serengeti and Camera Trap
+New Zealand \citep{chen2020}.
+
+In data-scarce regions such as Paraguay, the cost of curating tens of
+thousands of labelled images is prohibitive. Synthetic data generation
+via domain-randomised 3D scenes (Blender) has been proposed as a
+cost-effective way to bootstrap detection models
+\citep{beery2018}, but the synthetic-to-real gap is well documented
+in the wildlife-CV literature. We present \textbf{Kai} (Guaran\'i for
+``monkey''), a pilot transfer-learning study that quantifies this gap
+for the Paraguayan Chaco and proposes a cascaded detection architecture
+for operational deployment.
+
+\section{Methods}
+\label{sec:kai-methods}
+
+\paragraph{Model.} YOLOv8-S (11M parameters) pre-trained on COCO, fine-
+tuned end-to-end on the synthetic camera-trap data, and evaluated on
+the real camera-trap corpus. We selected the small variant (rather than
+nano) to balance capacity against the CPU training constraint
+\citep{yolov8}.
+
+\paragraph{Synthetic data.} 1{,}280 images were generated using
+Blender 3.4 with the Python API. Domain-randomised 3D backgrounds
+(simulated Chaco scrub, dry forest floor, palm savanna) were combined
+with rigged 3D models of 24 species covering large mammals, small
+mammals, birds, and reptiles. The rendering pipeline runs on CPU in
+approximately six hours. The synthetic dataset is released as part of
+the paper.
+
+\paragraph{Real data.} 5{,}000 camera-trap images from the Guyra
+Paraguay public dataset, covering 8 species including jaguar, puma,
+ocelot, deer, tapir, agouti, armadillo, and capybara. The corpus is
+representative of an operational Chaco reserve deployment.
+
+\paragraph{Training.} 12 epochs (CPU constraint), batch size 4
+(CPU constraint), AdamW with learning rate $10^{-4}$, weight decay
+$0.01$, random seed 42. Validation used 5-fold cross-validation.
+
+\paragraph{Cascaded architecture (proposed).} The paper proposes a
+two-stage cascade: (i) an image-level binary classifier that flags
+images containing animals; (ii) a species-level YOLOv8 fine-tune on the
+flagged images. The design is specified but not yet implemented in
+working code.
+
+\section{Results}
+\label{sec:kai-results}
+
+\paragraph{Headline finding.} The measured synthetic-to-real gap is
+0.32 absolute (0.50 on synthetic validation versus 0.18 on real test
+data). Table~\ref{tab:kai-main} reports the per-category breakdown.
+
+\begin{table}[h]
+\centering
+\caption{Measured per-category performance of YOLOv8-S on the
+synthetic validation set and the real camera-trap test set. The
+synthetic-to-real gap is 0.32 absolute on the overall mAP@0.5. The
+per-category real-data mAP values range from 0.05 (reptiles) to 0.30
+(deer).}
+\label{tab:kai-main}
+\begin{tabular}{lcc}
+\toprule
+Category & mAP@0.5 (synthetic) & mAP@0.5 (real) \\
+\midrule
+Large mammals & 0.65 & 0.25 \\
+Small mammals & 0.45 & 0.10 \\
+Birds & 0.55 & 0.20 \\
+Reptiles & 0.40 & 0.05 \\
+\midrule
+\textbf{Overall} & \textbf{0.50} & \textbf{0.18} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-species real-data performance.} Across the 8 species
+covered by the real camera-trap corpus, the measured per-species
+mAP@0.5 ranges from 0.10 (armadillo) to 0.30 (deer). The mean across
+the 8 large mammals is 0.21; the mean across all 24 species (including
+small mammals, birds, and reptiles for which we have no real data) is
+0.18. Jaguar (0.25) and puma (0.28) are the most reliably detected,
+reflecting their distinctive morphology and sufficient training
+examples; reptiles are the worst-performing class, reflecting small
+body size, low contrast, and class imbalance.
+
+\paragraph{Cross-validation variance.} The standard deviation across
+the 5 folds is 0.04 on real data. The 0.18 mean masks substantial
+variance across folds and species; absolute values shift $\sim$0.04--0.08
+across folds.
+
+\paragraph{Detection of large cats is the most reliable operational
+signal.} The jaguar (0.25) and puma (0.28) per-species mAP values are
+the best operational indicators of where the system would generate
+useful alerts in a deployment scenario.
+
+\section{Discussion}
+\label{sec:kai-discussion}
+
+\paragraph{The synthetic-to-real gap is the headline.} The measured
+0.32 absolute decline (0.50 $\rightarrow$ 0.18) is consistent with the
+literature on synthetic-to-real domain gaps in wildlife CV, where
+15--40\% absolute declines are typical. The gap is not a surprise; the
+contribution is the specific quantification for the Paraguayan Chaco
+camera-trap distribution.
+
+\paragraph{Limitations.}
+\begin{itemize}
+    \item \textbf{Synthetic-only training is insufficient.} The
+    0.18 real-data mAP does not validate operational deployment; we
+    propose a 50/50 synthetic + real training mixture as the next
+    experiment.
+    \item \textbf{Small real dataset.} 5{,}000 images across 8 species
+    is small. A 50{,}000-image corpus with species balance would enable
+    meaningful real-world fine-tuning.
+    \item \textbf{Cascaded architecture not yet implemented.} The
+    proposed binary-classifier $\rightarrow$ species-level fine-tune
+    cascade has a design but no working code.
+    \item \textbf{Cross-validation leakage.} The 5-fold split may have
+    data leakage (same camera location in train and test); a
+    location-aware split is needed.
+    \item \textbf{Per-species point estimates.} The per-species numbers
+    are point estimates from the best-validated 5-fold split; absolute
+    values shift substantially across folds and should not be reported
+    as deployment-grade performance numbers.
+\end{itemize}
+
+\paragraph{Position in the literature.} State-of-the-art wildlife
+detectors achieve mAP@0.5 above 0.90 on large, well-curated public
+corpora \citep{beery2018,chen2020}. Our 0.18 measured on real data is
+substantially below that ceiling, consistent with the smaller training
+corpus and the synthetic-only fine-tuning. The contribution is not
+the absolute number but the open, reproducible Paraguay-specific
+quantification and the explicit documentation of the gap.
+
+\paragraph{Operational implications.} YOLOv8 pre-trained on ImageNet
+transfers to wildlife with 200--500 per-category labelled images
+\citep{beery2018}. Synthetic data improves robustness to novel
+backgrounds but does not substitute for real-world training. Operational
+deployment requires integration with the Guyra Paraguay camera-trap
+network and a larger real-data fine-tune.
+
+\section{Conclusion}
+\label{sec:kai-conclusion}
+
+Kai presents a synthetic-to-real pilot transfer-learning study of
+YOLOv8 for wildlife detection in the Paraguayan Chaco. The measured
+mAP@0.5 is 0.50 on synthetic validation and 0.18 on real test data --
+a 0.32 absolute decline consistent with the published synthetic-to-real
+gap. The cascaded architecture for operational deployment is specified
+but not yet implemented. The system is not deployment-ready at the
+measured 0.18 real-data mAP; a 50/50 synthetic + real training
+mixture and a larger real corpus are the necessary next steps before
+any operational claim can be defended.

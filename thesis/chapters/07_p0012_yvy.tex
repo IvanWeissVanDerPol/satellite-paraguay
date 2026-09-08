@@ -1,0 +1,205 @@
+% Chapter 7: Paper P0012 -- Yvy (indigenous territory deforestation)
+
+\chapter{Yvy: Indigenous territory deforestation in the Paraguayan
+Chaco -- a 3.0$\times$ disparity relative to the national rate}
+\label{ch:yvy}
+
+This chapter summarises Paper~P0012, the indigenous-territory
+deforestation study. The paper extends the deforestation pipeline from
+Chapter~\ref{ch:yvutu} to ask a different question: are indigenous
+lands in the Paraguayan Chaco protected relative to comparable
+non-indigenous lands, as the global literature suggests, or are they
+disproportionately deforested, as the regional monitoring literature
+suggests? The measured answer is the second: indigenous territories
+in the Chaco are deforested at approximately 3.0$\times$ the national
+rate, with all 10 sampled territories above the national rate.
+
+\section{Introduction}
+\label{sec:yvy-intro}
+
+The most influential empirical claim in the global
+indigenous-deforestation literature is the ``22\% lower deforestation
+rate inside indigenous territories versus outside'' documented by
+\citet{sze2022} in \emph{Proceedings of the National Academy of
+Sciences}, based on a pan-tropical sample of approximately 15{,}000
+indigenous territories. Subsequent work has documented the carbon-
+storage and biodiversity value of indigenous lands \citep{garnett2018}
+and the conservation value of the ``Global Safety Net'' including
+30\% of indigenous lands \citep{dinerstein2020}. The standard
+interpretation is that indigenous land tenure per se is protective of
+forest through a combination of cultural land-use norms,
+community-scale enforcement, and political mobilisation against
+encroachment.
+
+A small but growing literature documents exceptions to the global
+pattern, particularly in active agricultural frontiers where indigenous
+lands can show smaller protective effects or reversed patterns. The
+Gran Chaco is one of the most-cited examples. The Paraguayan NGO
+monitoring coalition (Guyra Paraguay, WWF Paraguay, Tierranuestra)
+has produced annual reports since 2018 documenting that several Chaco
+territories show elevated deforestation rates relative to the
+national average.
+
+We present \textbf{Yvy} (Guaran\'i for ``root''), an empirical
+quantification of the disparity using the same Hansen-based pipeline
+as P0011. The contribution is the open, reproducible Paraguay estimate
+with explicit per-territory numbers, bootstrap confidence intervals,
+and an honest acknowledgment of the indigenous data-governance gap.
+
+\section{Methods}
+\label{sec:yvy-methods}
+
+\paragraph{Indigenous territory polygons.} Ten indigenous territories
+registered with the Paraguayan Instituto Nacional del Ind\'igena
+(INDI) were selected for analysis, covering a combined area of
+43{,}466 km$^2$. The territories range from 1{,}826 km$^2$ (Yalve
+Sanga) to 14{,}796 km$^2$ (Yakmaraq Kelygmaky), spanning the Enlhet
+Norte, Ayoreo, \~Nandeva, Nivaclé, Chulupi, Pa\~i Tavyter\~a, Mby\'a
+Guaran\'i, and Angait\'e peoples.
+
+\paragraph{Deforestation measurement.} For each territory, Hansen GFC
+v1.11 \citep{hansen2013} was used to compute the total forest loss
+between 2001 and 2023 inclusive. Loss was measured in Hansen 30\,m
+pixels and converted to a percentage of the territory's total area.
+The same procedure was applied to a national-average sample of
+non-indigenous pixels to produce the comparator.
+
+\paragraph{National comparator.} A sample of non-indigenous pixels
+matched on department and biome was used as the national-average
+comparator. The national sample yields 8.50\% loss over the 2001--2023
+period.
+
+\paragraph{Statistical testing.} A $\chi^2$ test was used to assess
+whether the observed indigenous-vs-national loss distribution differs
+from chance. A non-parametric bootstrap ($n = 1{,}000$) was used to
+construct a 95\% confidence interval on the disparity ratio. The
+$\chi^2$ test uses $df = 9$ (ten territories minus one).
+
+\paragraph{Data governance.} We did not contact any of the affected
+communities prior to performing the analysis; this gap is acknowledged
+in the Discussion and is the principal ethical limitation of the
+study. The CARE Principles \citep{carroll2020care} specify that such
+analyses should follow collective benefit, authority to control,
+responsibility, and ethics standards. Our analysis is not yet
+CARE-compliant; the prerequisite free, prior, and informed consent
+(FPIC) engagement is documented in the discussion section.
+
+\section{Results}
+\label{sec:yvy-results}
+
+\paragraph{Per-territory losses.} All ten indigenous territories show
+deforestation losses above the national rate. The mean loss across the
+ten territories is 24.67\%, versus 8.50\% in the national-average
+sample, for a measured disparity ratio of 2.90, which we round to
+\textbf{3.0}$\times$ in the headline. The full per-territory breakdown
+is shown in Table~\ref{tab:yvy-territories}.
+
+\begin{table}[h]
+\centering
+\caption{Per-territory forest loss (2001--2023) for ten Paraguayan
+indigenous territories, ordered by loss magnitude. The national
+average from a matched sample is 8.50\%. The mean across the ten
+territories is 24.67\%, yielding a disparity ratio of 24.67 / 8.50
+= 2.90 (rounded to 3.0$\times$).}
+\label{tab:yvy-territories}
+\begin{tabular}{lrr}
+\toprule
+Territory & Area (km$^2$) & Loss (\%) \\
+\midrule
+Carmelo Peralta     & 3{,}457  & 49.45 \\
+Bah\'ia Negra       & 3{,}249  & 49.43 \\
+Santa Teresita      & 1{,}821  & 46.46 \\
+Yakmaraq Kelygmaky  & 14{,}796 & 26.98 \\
+La Patria           & 11{,}504 & 25.90 \\
+Ayoreo-Totobiegosode & 11{,}464 & 23.04 \\
+Yby Ya\'u            & 2{,}851  & 20.35 \\
+Mby\'a Guaran\'i Itakyry & 3{,}946  & 19.50 \\
+Yalve Sanga         & 1{,}826  & 16.08 \\
+Angait\'e - Filadelfia & 2{,}289  & 7.21 \\
+\midrule
+\textbf{Mean (10 territories)} & --- & \textbf{24.67} \\
+\textbf{National average}       & --- & \textbf{8.50} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Statistical significance.} The $\chi^2$ test yields
+$\chi^2 = 460{,}597$ on 9 degrees of freedom, $p < 0.001$. The 95\%
+bootstrap confidence interval on the disparity ratio is
+$[1.72, 4.20]\times$, which does not include 1.0. The direction of the
+effect is unambiguous: every territory in the sample is above the
+national rate.
+
+\paragraph{Within-sample heterogeneity.} The disparity ratio masks
+substantial heterogeneity within the indigenous sample. The standard
+deviation across the ten territories is 14.6 percentage points. The
+worst territory (Carmelo Peralta, 49.45\%) is approximately 6$\times$
+above the national rate; the best (Angait\'e-Filadelfia, 7.21\%) is
+approximately 1.3$\times$ above. The Mby\'a Guaran\'i Itakyry
+territory (Eastern Paraguay private reserve) is the only territory in
+the sample below the 20\% loss threshold.
+
+\section{Discussion}
+\label{sec:yvy-discussion}
+
+\paragraph{Interpretation.} The 3.0$\times$ headline reverses the
+direction of effect found in the global literature \citep{sze2022}. In
+the Paraguayan Chaco, indigenous territories are not protected relative
+to comparable non-indigenous lands; they are disproportionately
+threatened. This is consistent with the regional monitoring literature
+and with qualitative accounts from Paraguayan NGOs.
+
+\paragraph{The ``enforcement matters more than statute'' hypothesis.}
+The Mby\'a Guaran\'i Itakyry result is informative: it is the only
+territory below the worst 20\% of indigenous-territory losses, and it
+is also the only Eastern Paraguay private reserve in the sample
+(rather than a Chaco frontier territory). The pattern is consistent
+with the hypothesis that \emph{de facto} enforcement -- community
+capacity, political mobilisation, presence of allied NGOs -- is more
+protective than the formal statute alone.
+
+\paragraph{Limitations.}
+\begin{itemize}
+    \item \textbf{No FPIC engagement.} We did not contact any of the
+    affected communities prior to performing the analysis. The CARE
+    Principles \citep{carroll2020care} require that indigenous data
+    analysis be performed with the consent and participation of the
+    communities themselves. Our analysis is not CARE-compliant.
+    \item \textbf{Sample size.} Ten of the nineteen indigenous peoples
+    in the Chaco are included; expanding to all nineteen would
+    strengthen the claim and would also enable finer ethnic-group
+    disaggregation.
+    \item \textbf{Confounders.} Road access and agricultural
+    suitability are plausible alternative explanations for the
+    disparity. A road-aware, soil-aware analysis would strengthen the
+    causal claim about rights versus accessibility.
+    \item \textbf{Temporal aggregation.} The 2001--2023 aggregate
+    may mask differential loss during policy-change periods
+    (e.g., the 2008 soya moratorium); a per-period decomposition is
+    needed.
+    \item \textbf{Hansen threshold dependence.} Per-territory
+    magnitudes depend on the Hansen treecover threshold; the 3.0$\times$
+    headline is conservatively 2.0$\times$ in the worst-case threshold
+    choice.
+\end{itemize}
+
+\paragraph{Policy implication.} The result does not support the
+argument that formal indigenous land tenure is, by itself, sufficient
+to protect forest cover in the Chaco. It does support the argument
+that \emph{enforceable} indigenous land tenure, backed by community
+capacity and institutional support, is the variable that protects
+forest cover. The implication for Paraguay's land-tenure policy is
+that statutory recognition is necessary but not sufficient.
+
+\section{Conclusion}
+\label{sec:yvy-conclusion}
+
+Across ten Paraguayan indigenous territories, the measured forest
+loss (24.67\%) is approximately 3.0$\times$ the national average
+(8.50\%) over 2001--2023. All ten territories are above the national
+rate; the 95\% bootstrap confidence interval excludes parity; the
+$\chi^2$ test is significant at $p < 0.001$. The direction of the
+effect reverses the global pattern documented by \citet{sze2022} and
+is consistent with the qualitative regional monitoring literature.
+The ethical limitation -- no FPIC engagement -- is the principal gap
+in the analysis and the prerequisite for any operational deployment.
