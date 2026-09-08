@@ -50,8 +50,16 @@ def fetch_firms_fires(
         api_key = os.environ.get("FIRMS_API_KEY") or os.environ.get("FIRMS_MAP_KEY")
 
     cache_path = CACHE_DIR / f"firms_{source}_{days}d.json"
-    if cache_path.exists():
-        return pd.read_json(cache_path)
+    if use_cache and cache_path.exists():
+        # Treat an empty cache file as a cache miss so the caller falls
+        # through to the API or synthetic fallback rather than getting
+        # an empty DataFrame that looks like a real (but empty) result.
+        try:
+            cached = pd.read_json(cache_path)
+            if not cached.empty:
+                return cached
+        except (ValueError, pd.errors.EmptyDataError):
+            pass
 
     if api_key is None:
         logger.warning("FIRMS API key not set; using synthetic data")
@@ -88,7 +96,12 @@ def fetch_firms_paraguay(
 
     cache_path = CACHE_DIR / f"firms_paraguay_{days}d.json"
     if cache_path.exists():
-        return pd.read_json(cache_path)
+        try:
+            cached = pd.read_json(cache_path)
+            if not cached.empty:
+                return cached
+        except (ValueError, pd.errors.EmptyDataError):
+            pass
 
     if api_key is None:
         return generate_synthetic_firms_paraguay(days)

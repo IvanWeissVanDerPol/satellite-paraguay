@@ -131,15 +131,25 @@ def fetch_openaq_for_location(
             if all_measurements:
                 df = pd.DataFrame(all_measurements)
                 if not df.empty:
+                    # Build a date_utc column from whichever field the API
+                    # returned. If none of period/date/value is present
+                    # (an old or stripped API response), skip caching and
+                    # fall through to synthetic rather than KeyError.
                     if "period" in df.columns:
                         df["date_utc"] = df["period"].apply(
                             lambda x: x.get("datetimeFrom", {}).get("utc") if isinstance(x, dict) else None
                         )
                     elif "date" in df.columns:
                         df["date_utc"] = df["date"].apply(lambda x: x.get("utc") if isinstance(x, dict) else None)
+                    else:
+                        logger.warning(
+                            f"OpenAQ response missing period/date column; "
+                            f"got columns {list(df.columns)[:6]} — falling back to synthetic"
+                        )
+                        df["date_utc"] = pd.NaT
                     df["date_utc"] = pd.to_datetime(df["date_utc"], errors="coerce")
                     df = df.dropna(subset=["date_utc"])
-                    if "value" in df.columns:
+                    if "value" in df.columns and not df.empty:
                         df.to_json(cache_path)
                         return df
 
