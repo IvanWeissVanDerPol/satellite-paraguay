@@ -85,6 +85,33 @@ jobs:
       - name: Run verify script
         run: python scripts/verify.py || echo "verify had warnings"
 
+  # Fast inner-loop feedback (~2s wall-clock). Runs the 7 test files
+  # from scripts/run_tests_fast.sh + the 3 always-on guards
+  # (check_claims.py, check_latex.py, verify_bib_dois.py --summary).
+  # Catches the regression-protection layer failures (numerical
+  # consistency drift, missing \input{} refs, bare \cite{} usage,
+  # citation completeness, LaTeX syntax, bibliography, citation
+  # patterns) before the slower full pytest + defense-check jobs run.
+  # Added 2026-09-08 after Round-10 caught 2 regressions that the
+  # full-suite check would have caught but the agent's manual
+  # inner-loop subset (previously just 5 files) missed.
+  fast-feedback:
+    name: Fast feedback (inner-loop subset)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          pip install -e ".[ci]"
+          pip install -e . --no-deps
+          pip install pytest
+      - name: Run fast feedback (7 tests + 3 guards, ~5s)
+        run: |
+          bash scripts/run_tests_fast.sh
+
   # Defense check: 12 critical checks (7 base + 4 Tier-6 regression tests
   # + data audit freshness). Catches: broken citations, numerical drift,
   # dangling \input{} refs, unescaped %-in-braces, missing bib entries.
