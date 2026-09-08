@@ -105,3 +105,6 @@ secrets/
 # pytest-benchmark output
 .benchmarks/
 .scratch/
+
+# Hermes TUI runtime artifacts (desktop-attachments etc.)
+.hermes/
