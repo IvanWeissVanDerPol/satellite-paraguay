@@ -11,21 +11,27 @@ also exists as LaTeX in `thesis/MAIN/thesis.tex` for journal-style typesetting.
 
 ## Core chapters (one per paper)
 
-| Ch | Paper ID | Title | Submission target |
-|----|----------|-------|-------------------|
-| 3 | P0011 | Yvutu — Deforestation Detection | Remote Sensing of Environment |
-| 4 | P0010 | Yvyra — Carbon Credit Verification | Nature Climate Change (Letter) |
-| 5 | P0012 | Yvy — Indigenous Land Tenure | World Development |
-| 6 | P0025 | Yrupe — Soybean Yield | Agricultural Systems |
-| 7 | P0026 | Kai — Wildlife Poaching | Conservation Biology |
-| 8 | P0035 | Tatakua — Air Quality | Atmospheric Environment |
+| Ch | Paper ID | Title | LaTeX (canonical) | Submission target |
+|----|----------|-------|-------------------|-------------------|
+| 4 | P0011 | Yvutu — Deforestation Detection | [`chapters/04_p0011_yvutu.tex`](chapters/04_p0011_yvutu.tex) | Remote Sensing of Environment |
+| 5 | P0010 | Yvyra — Carbon Credit Verification | [`chapters/05_p0010_yvyra.tex`](chapters/05_p0010_yvyra.tex) | Nature Climate Change (Letter) |
+| 6 | P0025 | Yrupe — Cross-Domain Transfer | [`chapters/06_p0025_yrupe.tex`](chapters/06_p0025_yrupe.tex) | Agricultural Systems |
+| 7 | P0012 | Yvy — Indigenous Land Tenure | [`chapters/07_p0012_yvy.tex`](chapters/07_p0012_yvy.tex) | World Development |
+| 8 | P0026 | Kai — Wildlife Detection | [`chapters/08_p0026_kai.tex`](chapters/08_p0026_kai.tex) | Conservation Biology |
+| 9 | P0035 | Tatakua — Air Quality Forecasting | [`chapters/09_p0035_tatakua.tex`](chapters/09_p0035_tatakua.tex) | Atmospheric Environment |
 
-- [`thesis/CH3_paper1_P0011_yvutu.md`](CH3_paper1_P0011_yvutu.md)
-- [`thesis/CH4_paper2_P0010_yvyra.md`](CH4_paper2_P0010_yvyra.md)
-- [`thesis/CH5_paper3_P0012_yvy.md`](CH5_paper3_P0012_yvy.md)
-- [`thesis/CH6_paper4_P0025_yrupe.md`](CH6_paper4_P0025_yrupe.md)
-- [`thesis/CH7_paper5_P0026_kai.md`](CH7_paper5_P0026_kai.md)
-- [`thesis/CH8_paper6_P0035_tatakua.md`](CH8_paper6_P0035_tatakua.md)
+The LaTeX `.tex` files under `chapters/` are the canonical source for the
+thesis PDF build (compiled via `make thesis-pdf` → `pdflatex thesis/main.tex`).
+The Markdown `.md` files (`CH3_paper1_P0011_yvutu.md` etc.) are
+human-readable snapshots that mirror the measured numbers from the
+LaTeX chapters, ACTUAL_RESULTS.md, and paper.tex.
+
+- [`CH3_paper1_P0011_yvutu.md`](CH3_paper1_P0011_yvutu.md) ←→ [`chapters/04_p0011_yvutu.tex`](chapters/04_p0011_yvutu.tex)
+- [`CH4_paper2_P0010_yvyra.md`](CH4_paper2_P0010_yvyra.md) ←→ [`chapters/05_p0010_yvyra.tex`](chapters/05_p0010_yvyra.tex)
+- [`CH5_paper3_P0012_yvy.md`](CH5_paper3_P0012_yvy.md) ←→ [`chapters/07_p0012_yvy.tex`](chapters/07_p0012_yvy.tex)
+- [`CH6_paper4_P0025_yrupe.md`](CH6_paper4_P0025_yrupe.md) ←→ [`chapters/06_p0025_yrupe.tex`](chapters/06_p0025_yrupe.tex)
+- [`CH7_paper5_P0026_kai.md`](CH7_paper5_P0026_kai.md) ←→ [`chapters/08_p0026_kai.tex`](chapters/08_p0026_kai.tex)
+- [`CH8_paper6_P0035_tatakua.md`](CH8_paper6_P0035_tatakua.md) ←→ [`chapters/09_p0035_tatakua.tex`](chapters/09_p0035_tatakua.tex)
 
 ## Closing chapters
 

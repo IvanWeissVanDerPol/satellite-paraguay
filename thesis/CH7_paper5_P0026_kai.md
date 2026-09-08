@@ -1,120 +1,37 @@
-# P0026 Kai: Synthetic-to-Real Gap in Wildlife Detection in the Gran Chaco
+# P0026 Kai: Wildlife Detection in the Paraguayan Chaco
 
-> **Thesis-voice chapter** — this is the unified-thesis summary of
-> paper `papers/drafts/p0026_kai_poaching/paper.md`. The full paper body (≥6,000
-> words) is in the paper directory; this chapter is ~800-1000 words.
+> **Snapshot generated 2026-09-08.** The LaTeX chapter at
+> [`chapters/08_p0026_kai.tex`](chapters/08_p0026_kai.tex) is the
+> canonical source for the thesis PDF build. This file is a
+> human-readable summary that mirrors the LaTeX chapter's measured
+> numbers and structure.
 
 - **Journal target:** Conservation Biology
-- **Paper source-of-truth:** `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`
-- **Honest Reporting Notes:** appended at end of paper.md
+- **LaTeX chapter (canonical):** `thesis/chapters/08_p0026_kai.tex` (1,081 words)
+- **Paper source-of-truth:** `papers/drafts/p0026_kai_poaching/paper.tex`
+- **Measured pilot:** `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`
 
----
+## Summary (mirrors chapter §1–§5)
 
-## Thesis-voice abstract
+This chapter summarises Paper P0026, the wildlife-detection experiment that quantifies the synthetic-to-real performance gap for camera-trap species classification in the Paraguayan Chaco. Kai is presented as a gap-measurement study: the architecture works on synthetic data, and the measured gap to real camera-trap images is large but quantifiable.
 
-# Abstract
+**Measured pilot numbers (YOLOv8-S, 12 CPU epochs, batch=4):**
 
-## Kai: Wildlife Poaching Detection in Defensores del Chaco
+| Quantity | Measured value | Target | Status |
+|---|---|---|---|
+| mAP@0.5 (synthetic Blender, 1,280 images) | **0.50** | — | (training distribution) |
+| mAP@0.5 (real Guyra Paraguay, 5,000 images) | **0.18** | > 0.7 | ⚠ **0.32 gap** |
+| Synthetic-to-real gap | 0.32 absolute | Minimize | ❌ substantial |
+| Species covered (synthetic) | 24 | — | — |
+| Species covered (real) | 8 (jaguar, puma, ocelot, …) | — | — |
+| Hardware | CPU | GPU | ⚠ acknowledged |
 
-We present Kai, an AI-based wildlife detection system for Paraguay's Defensores del Chaco and Teniente Agripino Enciso national parks. We fine-tune YOLOv8-S on Blender-synthetic wildlife imagery (1,280 images, 24 species) and evaluate on 5,000 real camera-trap images from Guyra Paraguay. **mAP@0.5 drops from 0.50 on synthetic validation to 0.18 on real test data** — a 0.32 absolute gap consistent with the literature on synthetic-to-real domain shift. Reptile detection is worst (mAP=0.05 real). The mAP@0.5>0.70 headline and the WWF/Guyra deployment claims quoted in earlier drafts were aspirational and have been replaced with measured values in `ACTUAL_RESULTS.md`. We frame this as a contribution precisely because the gap quantifies how much Paraguay-specific labeled wildlife data is needed before operational deployment.
+**Country-scale finding:** The synthetic-to-real gap exists and is large (0.32 absolute mAP@0.5). YOLOv8-S scales to 24 species without architectural problems. Per-category variance is substantial; reptiles are the hardest class.
 
-## Keywords
+**Aspirational-vs-measured gap:** Earlier-draft headline of mAP>0.7 was an aspirational target, not a measurement. The measured mAP@0.5 on real camera-trap data is **0.18** — below operational deployment readiness. A 50/50 synthetic+real training mixture on a 50,000-image dataset is the proposed next experiment.
 
-Earth observation, deep learning, Paraguay, p0026, sentinel-2
+**Keywords:** wildlife detection, camera traps, YOLOv8, synthetic-to-real gap, Paraguay, Guyra Paraguay
 
-## Author
+**Author:** Iván Weiss Van der Pol (FP-UNA)
 
-Iván Weiss Van der Pol (FP-UNA)
-
-
----
-
-## Thesis-voice introduction (1-2 paragraphs)
-
-This chapter is one of six papers in the SatelliteCV-Paraguay
-thesis substrate (Chapter 3: Yvutu / Chapter 4: Yvyra / Chapter 5:
-Yvy / Chapter 6: Yrupe / Chapter 7: Kai / Chapter 8: Tatakua).
-Each is a stand-alone submission-ready paper with measured pilot
-numbers in its `ACTUAL_RESULTS.md` and a per-paper references.bib
-slice. The aspiration targets that appeared in earlier drafts of
-this chapter were replaced with measured pilot numbers in the
-2026-08-10 + 2026-08-11 honest-reporting passes; the swap is
-documented in `docs/CONVENTIONS.md` + the appended Honest Reporting
-Notes in each paper.md.
-
----
-
-## Methods summary (link to paper.md for full body)
-
-**Author:** Iván Weiss Van der Pol
-**Status:** Chapter of the thesis (in journal-preparation as honest synthetic-to-real gap measurement)
-**Target journal:** Conservation Biology (IF 5.2)
-
----
-
-## Abstract
-
-We present **Kai**, a measured **synthetic-to-real gap
-quantification** for a YOLOv8-S detector trained on
-Blender-rendered wildlife imagery of 24 species and evaluated on
-the 5,000-image **Guyra Paraguay public camera-trap dataset**
-(8 large-mammal species including jaguar, puma, ocelot, tapir,
-deer, capybara, agouti, armadillo). The pilot is motivated by
-wildlife-monitoring resource constraints in Paraguay's
-Defensores del Chaco and Teniente Agripino Enciso national parks,
-which face acute field-access limitations and observer bias.
-
-The headline finding is the **synthetic-to-real mAP@0.5 gap**:
-
-| Evaluation set | mAP@0.5 |
-|----------------|--------:|
-| Synthetic validation (320 of 1,280 training images) | **0.50** |
-| Real camera-trap test (5,000 Guyra Paraguay images, 5-fold CV) | **0.18** |
-
----
-
-## Results summary
-
-The headline measurement of this chapter is documented in
-`paper.md` Section 3 and the source data in `ACTUAL_RESULTS.md`.
-Key result categories:
-
-- **Measured pilot performance** (with epistemic confidence)
-- **Statistical robustness** tests (sign test, Wilcoxon, BCa
-  bootstrap, χ², sensitivity envelope)
-- **Honest limitations** (what the measured result does NOT show)
-
----
-
-## Thesis-voice synthesis
-
-This chapter's contribution to the overall thesis substrate:
-
-- **Novel finding:** [paper-specific, see `paper.md` Section 1 for
-  the 4 contributions framed as the substantive scientific
-  contribution]
-
-- **What it does NOT claim:** [paper-specific aspirational items
-  that were REFUTED by the measured pilot — documented in the
-  Honest Reporting Note appended to paper.md]
-
-- **What it WOULD require to operationalize:** [paper-specific:
-  partnership letters + (where applicable) GPU re-train $20-50]
-
-For the operational-deployment roadmap, see `docs/AGENT_TODO.md`
-Tier 1-4 items.
-
----
-
-## How to read this chapter
-
-1. Start with this document for the **thesis-voice summary**.
-2. Read `papers/drafts/p0026_kai_poaching/paper.md` for the full paper body.
-3. Read `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md` for the measured
-   numbers (source of truth).
-4. Read `papers/drafts/p0026_kai_poaching/paper.tex` for the LaTeX submission
-   to the journal.
-
----
-
-*Total words in chapter: ~800-1000. Full paper body: ≥6,000 words.*
+**Status:** Chapter of the thesis (in journal-preparation; Conservation Biology submission pending larger real-labeled dataset + Guyra partnership).
