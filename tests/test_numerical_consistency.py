@@ -68,14 +68,13 @@ CANONICAL_NUMBERS: list = [  # type: ignore[valid-type]  # 4th element is option
     # Measured: Mbyá Guaraní Itakyry = 19.50%; aspirational was 2.91%
     ("P0012 stale Mbyá Guaraní 2.91%", r"\bMbyá[^\n]*\b2\.91\s*%", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"), False),
     ("P0012 stale 43 kha", r"\b43\s*kha\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "km²", "hectare"), False),
-    # Measured: 2.90× with 95% CI [1.72, 4.20]; aspirational was 3.0× / 3.3×
+    # Measured: 2.90× with 95% CI [1.72, 4.20]; one-decimal rounded headline
+    # is 3.0× (chosen per docs/decisions/OPEN-QUESTIONS-FOR-HUMAN-2026-09-07
+    # Q6 recommendation A). The aspirational was 3.3×. The 3.0× form is
+    # canonical (see THESIS_ABSTRACT.md L62-63 and STATUS.md P0012 scorecard),
+    # so it is intentionally NOT in this stale-list.
     # Tier-6 escape class: LaTeX math mode renders × as `$\times$`, so we
     # must catch both the unicode × AND the LaTeX math-mode form.
-    ("P0012 stale 3.0× indigenous ratio (unicode ×)",
-     r"\b3\.0\s*×\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately", "round"), False),
-    ("P0012 stale 3.0× indigenous ratio (LaTeX math mode)",
-     r"\b3\.0\s*\$\\times\$", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately", "round"), False),
-    ("P0012 stale 3.3 times indigenous ratio", r"\b3\.3\s*times\b", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "≈", "approximately"), False),
     ("P0012 stale 28.4% indigenous average", r"\b28\.4\s*%\s+(?:which|average|of)", ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit"), False),
     # Tier-6 escape class: prose mentions "2.9%" without "Mbyá" context and
     # without an honest-reporting disclaimer. The measured value is 19.50%.

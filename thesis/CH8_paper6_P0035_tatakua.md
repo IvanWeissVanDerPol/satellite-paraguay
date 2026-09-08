@@ -1,13 +1,13 @@
 # P0035 Tatakua: Air-Quality Forecasting over Paraguay with Satellite-Informed LSTM
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/09_p0035_tatakua.tex`](chapters/09_p0035_tatakua.tex) is
+> [`chapters/p0035_tatakua_ch09.tex`](chapters/p0035_tatakua_ch09.tex) is
 > the canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** Atmospheric Environment
-- **LaTeX chapter (canonical):** `thesis/chapters/09_p0035_tatakua.tex` (1,112 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0035_tatakua_ch09.tex` (1,112 words)
 - **Paper source-of-truth:** `papers/drafts/p0035_tatakua_air_quality/paper.tex`
 - **Measured pilot:** `papers/drafts/p0035_tatakua_air_quality/ACTUAL_RESULTS.md`
 

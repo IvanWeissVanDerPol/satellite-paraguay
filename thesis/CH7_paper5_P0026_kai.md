@@ -1,13 +1,13 @@
 # P0026 Kai: Wildlife Detection in the Paraguayan Chaco
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/08_p0026_kai.tex`](chapters/08_p0026_kai.tex) is the
+> [`chapters/p0026_kai_ch08.tex`](chapters/p0026_kai_ch08.tex) is the
 > canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** Conservation Biology
-- **LaTeX chapter (canonical):** `thesis/chapters/08_p0026_kai.tex` (1,081 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0026_kai_ch08.tex` (1,081 words)
 - **Paper source-of-truth:** `papers/drafts/p0026_kai_poaching/paper.tex`
 - **Measured pilot:** `papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`
 

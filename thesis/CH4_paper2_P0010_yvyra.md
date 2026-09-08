@@ -1,13 +1,13 @@
 # P0010 Yvyra: Carbon-Credit Verification in Paraguay
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/05_p0010_yvyra.tex`](chapters/05_p0010_yvyra.tex) is the
+> [`chapters/p0010_yvyra_ch05.tex`](chapters/p0010_yvyra_ch05.tex) is the
 > canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** Nature Climate Change (Letter format, 4 pages, 30 references)
-- **LaTeX chapter (canonical):** `thesis/chapters/05_p0010_yvyra.tex` (1,138 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0010_yvyra_ch05.tex` (1,138 words)
 - **Paper source-of-truth:** `papers/drafts/p0010_yvyra_carbon_credits/paper.tex`
 - **Measured pilot:** `papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md`
 

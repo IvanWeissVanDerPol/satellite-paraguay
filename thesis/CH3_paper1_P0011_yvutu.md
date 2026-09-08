@@ -1,13 +1,13 @@
 # P0011 Yvutu: Multi-Temporal Satellite Computer Vision for Chaco Deforestation
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/04_p0011_yvutu.tex`](chapters/04_p0011_yvutu.tex) is the
+> [`chapters/p0011_yvutu_ch04.tex`](chapters/p0011_yvutu_ch04.tex) is the
 > canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** Remote Sensing of Environment
-- **LaTeX chapter (canonical):** `thesis/chapters/04_p0011_yvutu.tex` (1,401 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0011_yvutu_ch04.tex` (1,401 words)
 - **Paper source-of-truth:** `papers/drafts/p0011_yvutu_deforestation/paper.tex`
 - **Measured pilot:** `papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`
 - **Honest Reporting Notes:** appended at end of paper.tex

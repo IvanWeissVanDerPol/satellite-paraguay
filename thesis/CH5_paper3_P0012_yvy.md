@@ -1,13 +1,13 @@
 # P0012 Yvy: Indigenous Land Tenure and Deforestation in Paraguay
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/07_p0012_yvy.tex`](chapters/07_p0012_yvy.tex) is the
+> [`chapters/p0012_yvy_ch07.tex`](chapters/p0012_yvy_ch07.tex) is the
 > canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** World Development
-- **LaTeX chapter (canonical):** `thesis/chapters/07_p0012_yvy.tex` (1,314 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0012_yvy_ch07.tex` (1,314 words)
 - **Paper source-of-truth:** `papers/drafts/p0012_yvy_indigenous/paper.tex`
 - **Measured pilot:** `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md`
 - **Honest Reporting Notes:** BLOCKED at ethics=0/100 — FPIC engagement required

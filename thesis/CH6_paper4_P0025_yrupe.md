@@ -1,13 +1,13 @@
 # P0025 Yrupe: Cross-Domain Transfer for Soybean Yield Prediction
 
 > **Snapshot generated 2026-09-08.** The LaTeX chapter at
-> [`chapters/06_p0025_yrupe.tex`](chapters/06_p0025_yrupe.tex) is the
+> [`chapters/p0025_yrupe_ch06.tex`](chapters/p0025_yrupe_ch06.tex) is the
 > canonical source for the thesis PDF build. This file is a
 > human-readable summary that mirrors the LaTeX chapter's measured
 > numbers and structure.
 
 - **Journal target:** Agricultural Systems
-- **LaTeX chapter (canonical):** `thesis/chapters/06_p0025_yrupe.tex` (1,243 words)
+- **LaTeX chapter (canonical):** `thesis/chapters/p0025_yrupe_ch06.tex` (1,243 words)
 - **Paper source-of-truth:** `papers/drafts/p0025_yrupe_yield/paper.tex`
 - **Measured pilot:** `papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`
 

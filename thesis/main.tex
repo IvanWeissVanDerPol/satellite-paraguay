@@ -2,8 +2,8 @@
 % Master file — compile with: make thesis-pdf
 %
 % Chapter input statements reference the per-paper chapters under
-% thesis/chapters/. The 6 per-paper chapter files (04_p0011_yvutu.tex
-% through 09_p0035_tatakua.tex) were generated 2026-09-08 using measured
+% thesis/chapters/. The 6 per-paper chapter files (p0011_yvutu_ch04.tex
+% through p0035_tatakua_ch09.tex) were generated 2026-09-08 using measured
 % pilot numbers from ACTUAL_RESULTS.md and paper.tex, with explicit
 % honest-reporting notes where measured < aspirational.
 
@@ -39,14 +39,15 @@ Six Papers from One Python Package}
 \input{chapters/01_introduction}
 \input{chapters/02_literature_review}
 \input{chapters/03_methodology}
-% Per-paper chapters 04-09 (generated 2026-09-08 from ACTUAL_RESULTS.md;
-% see thesis/chapters/04_p0011_yvutu.tex through 09_p0035_tatakua.tex).
-\input{chapters/04_p0011_yvutu}
-\input{chapters/05_p0010_yvyra}
-\input{chapters/06_p0025_yrupe}
-\input{chapters/07_p0012_yvy}
-\input{chapters/08_p0026_kai}
-\input{chapters/09_p0035_tatakua}
+% Per-paper chapters (renamed 2026-09-08 to put paper-ID first so
+% tests/test_input_references.py can catch digit-transposition typos
+% like p0100_ vs p0010_; generated from ACTUAL_RESULTS.md).
+\input{chapters/p0011_yvutu_ch04}
+\input{chapters/p0010_yvyra_ch05}
+\input{chapters/p0025_yrupe_ch06}
+\input{chapters/p0012_yvy_ch07}
+\input{chapters/p0026_kai_ch08}
+\input{chapters/p0035_tatakua_ch09}
 \input{chapters/10_integration}
 \input{chapters/11_conclusions}
 
