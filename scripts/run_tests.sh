@@ -24,7 +24,15 @@ if [[ ! -x ".venv/bin/python" ]] && [[ "${SKIP_UV_FALLBACK:-0}" != "1" ]]; then
   fi
 fi
 
-PYTEST=".venv/bin/python -m pytest"
+# Detect the Python interpreter to use (CI vs local dev):
+# - Local dev: .venv/bin/python (from `uv sync --all-extras`)
+# - CI runner: system Python (no .venv; pip-installed deps land in site-packages)
+# CI runners signal with GITHUB_ACTIONS=true (and/or CI=true on some providers).
+if [[ -x ".venv/bin/python" ]] && [[ -z "${GITHUB_ACTIONS:-}" ]] && [[ -z "${CI:-}" ]]; then
+    PYTEST=".venv/bin/python -m pytest"
+else
+    PYTEST="${PYTHON:-python3} -m pytest"
+fi
 
 # Mode selection
 if [[ "${1:-}" == "--full" ]]; then

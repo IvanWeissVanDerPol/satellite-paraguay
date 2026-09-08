@@ -45,9 +45,11 @@ REPO_ROOT = Path(__file__).parent.parent
 # - Local dev: .venv/bin/python (from `uv sync --all-extras`)
 # - CI runner (pip install --no-deps): sys.executable (system Python
 #   since pip-installed packages land in the system site-packages)
-# Use sys.executable if .venv doesn't exist OR if running under CI
-# (the CI_RUN env var is set by GitHub Actions).
-if (REPO_ROOT / ".venv" / "bin" / "python").exists() and "CI" not in os.environ:
+# CI signals: GITHUB_ACTIONS=true (GitHub Actions primary signal) or
+# CI=true (generic). No .venv present in CI either way.
+if (REPO_ROOT / ".venv" / "bin" / "python").exists() and not (
+    os.environ.get("GITHUB_ACTIONS") or os.environ.get("CI")
+):
     PYTHON_BIN = str(REPO_ROOT / ".venv" / "bin" / "python")
 else:
     PYTHON_BIN = sys.executable
