@@ -47,9 +47,7 @@ REPO_ROOT = Path(__file__).parent.parent
 #   since pip-installed packages land in the system site-packages)
 # CI signals: GITHUB_ACTIONS=true (GitHub Actions primary signal) or
 # CI=true (generic). No .venv present in CI either way.
-if (REPO_ROOT / ".venv" / "bin" / "python").exists() and not (
-    os.environ.get("GITHUB_ACTIONS") or os.environ.get("CI")
-):
+if (REPO_ROOT / ".venv" / "bin" / "python").exists() and not (os.environ.get("GITHUB_ACTIONS") or os.environ.get("CI")):
     PYTHON_BIN = str(REPO_ROOT / ".venv" / "bin" / "python")
 else:
     PYTHON_BIN = sys.executable

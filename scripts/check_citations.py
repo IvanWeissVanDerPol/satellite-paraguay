@@ -16,8 +16,9 @@ import os
 import re
 import sys
 
-PAPERS_DIR = "/opt/data/work/satellite-paraguay/papers/drafts"
-CANONICAL_BIB = "/opt/data/work/satellite-paraguay/thesis/references.bib"
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PAPERS_DIR = os.path.join(REPO_ROOT, "papers", "drafts")
+CANONICAL_BIB = os.path.join(REPO_ROOT, "thesis", "references.bib")
 
 
 def parse_bib(path):

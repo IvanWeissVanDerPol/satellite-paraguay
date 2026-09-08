@@ -131,7 +131,7 @@ jobs:
           pip install pytest
       - name: Run 12 defense checks
         run: |
-          python scripts/defense_check.py
+          python scripts/defense_check.py --verbose
       - name: Run Tier-6 regression tests directly
         # Run the 4 new test files explicitly so failures show file/line info
         # (defense_check aggregates but pytest output is more verbose).

@@ -31,8 +31,9 @@ import urllib.parse
 import urllib.request
 from collections import Counter
 
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROGRESS_PATH = "/opt/data/scratchpad/verify_bib_progress.json"
-BIB_PATH = "/opt/data/work/satellite-paraguay/thesis/references.bib"
+BIB_PATH = os.path.join(REPO_ROOT, "thesis", "references.bib")
 
 CROSSREF_UA = "thesis-verify/6.0 (mailto:ivan@weiss.ai)"
 

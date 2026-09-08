@@ -10,7 +10,7 @@ import os
 import re
 import sys
 
-REPO_ROOT = "/opt/data/work/satellite-paraguay"
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MASTER = os.path.join(REPO_ROOT, "thesis", "references.bib")
 PAPERS_DIR = os.path.join(REPO_ROOT, "papers", "drafts")
 
