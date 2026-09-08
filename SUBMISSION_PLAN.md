@@ -75,12 +75,12 @@
 >
 > This paper makes three contributions:
 > 1. **Country-scale analysis:** 16,628 km² forest loss 2001-2023 quantified using real Hansen GFC v1.11 data.
-> 2. **Foundation model comparison:** Prithvi-Lite achieves F1>0.85 vs F1=0.017 for from-scratch U-Net (50× improvement).
+> 2. **Foundation model comparison:** Measured U-Net from-scratch achieves F1=0.5592 on 15 synthetic tiles (over-prediction, precision=0.0992); Prithvi-300M fine-tune did not converge within the 5-CPU-epoch budget, falling back to mock F1=0.4968. The earlier aspirational headline (F1>0.85 vs F1=0.017, 50× improvement) is **not measured** — see paper.tex §3 for the honest-reporting note. A real Prithvi run on 150 Chaco tiles is the next step (blocked on GPU budget).
 > 3. **Indigenous territory analysis:** 3.0× deforestation disparity in 10 indigenous territories.
 >
 > The methodology is fully reproducible at github.com/IvanWeissVanDerPol/satellite-paraguay.
 >
-> We believe this work is well-suited for RSE given the journal's focus on methodological innovation in remote sensing. Our honest reporting of F1=0.017 vs F1>0.85 (instead of typical inflated metrics) is consistent with RSE's standards for scientific rigor.
+> We believe this work is well-suited for RSE given the journal's focus on methodological innovation in remote sensing. Our measured pilot numbers (U-Net F1=0.5592 on 15 synthetic tiles; Prithvi mock F1=0.4968 due to non-convergence) replace the aspirational F1>0.85 vs F1=0.017 framing typical of computer-vision papers, in line with RSE's standards for scientific rigor.
 >
 > All authors have approved the submission. This manuscript is not under consideration elsewhere.
 >

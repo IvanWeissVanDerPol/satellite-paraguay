@@ -19,7 +19,7 @@ To address these challenges, we propose **three contributions**:
 
 1. **A unified framework** that integrates Sentinel-2 (10 m), MapBiomas Paraguay (30 m), Hansen GFC (25 m), and OpenAQ into reproducible pipelines for six land-use applications: deforestation (Yvutu), carbon credits (Yvyra), indigenous conflict detection (Yvy), yield prediction (Yrupe), poaching detection (Kai), and air quality (Tatakua).
 
-2. **A reproducible empirical baseline** documenting that small-data U-Net models trained on Paraguayan data achieve F1=0.017, while pretrained foundation models (Prithvi) raise performance to F1>0.85 — a 50× improvement demonstrating the value of self-supervised pretraining for data-scarce regions.
+2. **A reproducible empirical baseline** documenting measured results from the CPU pilot: a U-Net trained from scratch on 15 synthetic Chaco tiles achieves F1=0.5592 (over-prediction, precision=0.0992); a Prithvi-300M fine-tune did not converge within the 5-CPU-epoch budget, falling back to F1=0.4968 (mock backbone). The earlier aspirational framing (F1>0.85 vs F1=0.017, 50× improvement) is **not a measurement** and is reported honestly as a hypothesis to be tested on real Sentinel-2 tiles pending GPU budget.
 
 3. **A rights-aware deployment methodology** that integrates Free, Prior, and Informed Consent (FPIC) for indigenous communities, IRB approval for human-subjects data, and Federated States for cross-border comparison.
 
@@ -59,6 +59,8 @@ The thesis shows that **geospatial AI can be both technically rigorous and ethic
 ### H3: Cross-Domain Transfer
 **H3a (null):** A deforestation-trained model achieves the same accuracy on yield prediction as a yield-trained model.
 **H3b (alternative):** A deforestation-pretrained model achieves > 0.7× the accuracy of a yield-trained model (positive transfer).
+
+**Measured result (2026-08 pilot):** Transfer ratio = **0.082** (target was >0.7×). **H3 is NOT supported by current evidence** — reported as a negative result. The cross-domain generalization hypothesis is falsified for this pilot configuration; future work would need either (a) more pretraining data, (b) a different source task, or (c) a different transfer-learning approach (e.g., adapter layers vs. full fine-tune).
 
 ---
 
