@@ -53,7 +53,7 @@ def fetch_overpass(mirror: str) -> dict:
         timeout=180,
     )
     r.raise_for_status()
-    return r.json()
+    return dict(r.json())
 
 
 def overpass_to_geojson(raw: dict) -> dict:

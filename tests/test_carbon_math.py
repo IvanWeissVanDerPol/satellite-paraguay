@@ -51,7 +51,7 @@ class TestCarbonMath:
         assert agb_from_canopy_cover_heuristic(np.array([-10.0]))[0] == 0.0
 
     def test_carbon_stock_is_47_percent(self):
-        from src.utils.carbon_math import carbon_stock, agb_from_canopy_cover_heuristic
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic, carbon_stock
 
         tc = np.array([50.0])
         cs = carbon_stock(tc)
@@ -167,7 +167,7 @@ class TestCarbonMath:
 
     def test_constant_values(self):
         """The renamed constants exist with correct values."""
-        from src.utils.carbon_math import COEFFICIENT, EXPONENT, CARBON_FRACTION, C_STOIC_RATIO
+        from src.utils.carbon_math import C_STOIC_RATIO, CARBON_FRACTION, COEFFICIENT, EXPONENT
 
         assert COEFFICIENT == 240.0
         assert EXPONENT == 2.5
