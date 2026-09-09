@@ -35,7 +35,7 @@ This shared foundation enables cross-paper transfer learning (Section 9.3).
 
 Across the three deforestation-related papers (Chapters 3, 4, 5), a coherent picture emerges:
 
-- **Magnitude:** 16,628 km² lost 2001-2023 (2,755 MtCO₂e)
+- **Magnitude:** 16,628 km² lost 2001-2023 *(literature estimate; MapBiomas Paraguay Collection 2)* — ~122 Mt CO₂e at mean 50% treecover (range 34–192 Mt, see CH1 + `src/utils/carbon_math.py`)
 - **Spatial pattern:** Concentrated in Chaco frontier (Alto Paraguay 28.49%, Boquerón 24.05%)
 - **Temporal pattern:** Peak in 2012, partial recovery 2018-2020, resurgence 2021-2023
 - **Justice pattern:** Indigenous territories at 2.90× national rate

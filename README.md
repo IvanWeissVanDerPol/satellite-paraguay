@@ -39,7 +39,7 @@ measured values; the 2026-08-11 fail-loud pass replaced silent
 | Finding | Value | Confidence |
 |---|---|---|
 | Forest loss 2001-2023 | 16,628 km² | Hansen GFC v1.11 |
-| Carbon emitted | 2,755 Mt CO₂e | Chave 2014 AGB |
+| Carbon emitted | **~122 Mt CO₂e** (range 34–192 Mt) | AGB heuristic, see `src/utils/carbon_math.py` |
 | Indigenous disparity | **3.0× national rate** | CI [1.7, 4.2]×, p<0.001 |
 | Worst territory (Carmelo Peralta) | 49.45% loss | Hansen GFC |
 | Verra under-claim | 35.9% mean (range 33.3%-50.0%) | 5/5 projects, 124,310 ha |

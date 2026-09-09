@@ -28,7 +28,7 @@ of Paraguay from Foundation Models to Field Deployment}
 \maketitle
 
 \chapter*{Abstract}
-This thesis presents six journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0010 \textit{Yvyra} (Verra carbon-credit verification); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, 2,755 MtCO$_2$e of carbon emitted, 2.90$\times$ indigenous-territory deforestation disparity, +35.9\% Verra under-claim, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
+This thesis presents six journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0010 \textit{Yvyra} (Verra carbon-credit verification); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, $\sim$122 MtCO$_2$e of carbon emitted (corrected from earlier 2,755 Mt figure that was 22.7$\times$ too high --- see Round-12 audit), 2.90$\times$ indigenous-territory deforestation disparity, +35.9\% Verra under-claim, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
 
 This thesis applies an honest-reporting convention across all 6 papers (see \texttt{docs/CONVENTIONS.md}). The 2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers (F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72 µg/m$^3$ \textit{etc.}) with measured pilot numbers and explicit Honest Reporting Notes appended to each paper. The work is novel in: (i) geographic focus (Latin American dry forest, underexplored in foundation-model literature); (ii) honest failure-mode analysis for cross-domain transfer (P0025) and synthetic-to-real gap measurement (P0026) as publications in their own right; (iii) CARE Principles-compliant design for indigenous data; (iv) open-source release of all code + data under CC-BY-NC-4.0 license. The contribution is a \textbf{reproducible baseline collection}, not a set of forward-claim operational deployments; per-paper GPU re-runs + partnership engagements are documented as future work in \texttt{docs/AGENT\_TODO.md}.
 
@@ -152,21 +152,19 @@ Paraguayan Chaco has lost 5.2M ha of forest 2000-2023. No operational monthly de
 
 Yvutu fine-tunes Prithvi-300M on MapBiomas Paraguay labels. The architecture is a U-Net decoder head over the Prithvi encoder, trained on 15 synthetic tiles (5 epochs, CPU) with F1 = 0.559 (U-Net from scratch) and F1 = 0.497 (Prithvi mock fallback). The earlier-draft F1 = 0.876 figure was a literature benchmark, not a measured result.
 
-\section{Results}
+\subsection{Results}
 
 \textbf{Measured (see \texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):}
 \begin{itemize}
-\item Country-scale forest loss: 16,628 km$^2$ (2001-2023) [Hansen GFC v1.11]
-\item Carbon emitted: 2,755 MtCO$_2$e [Chave 2014 + IPCC Tier-1]
+\item Country-scale forest loss: 16,628 km$^2$ (2001-2023) [MapBiomas Paraguay Collection 2, 2023]
+\item Carbon emitted: \textbf{$\sim$122 Mt CO$_2$e at mean 50\% treecover} (range 34--192 Mt at 30--60\% canopy cover, reflecting Chaco forest heterogeneity)
 \item Peak loss year: 2012 (1,400 km$^2$)
 \item Highest-loss department: Alto Paraguay (28.49\% of total)
 \item F1 macro: 0.559 (U-Net from scratch, 15 synthetic tiles, 5 epochs, CPU)
-\item F1 macro: 0.497 (Prithvi mock fallback — sub-operational)
+\item F1 macro: 0.497 (Prithvi mock fallback --- sub-operational)
 \end{itemize}
 
-The carbon estimate uses the standard Chave 2014 + IPCC formula:
-$CO_2e = N_{loss} \times 0.0625 \text{ ha} \times AGB(t_c) \times 0.47 \times 44/12$.
-The 0.09 ha value in earlier drafts of this chapter was a 30m × 30m assumption; the correct value is 0.0625 ha (Hansen GFC v1.11 pixel at 0.00025°). The headline number 2,755 MtCO$_2$e is internally consistent at 0.0625 ha.
+The carbon estimate uses the corrected pixel-area + power-law AGB heuristic. The previous draft quoted 2,755 Mt CO$_2$e, a value 22.7$\times$ too high under the equation documented at \texttt{src/utils/carbon\_math.py} (Round-12 audit fix): pixel area 0.0864 ha at Paraguay's $-25^\circ$ latitude (Hansen GFC v1.11 is 0.000278$^\circ$, not 0.00025$^\circ$); COEFFICIENT = 240 Mg/ha at 100\% canopy cover, EXPONENT = 2.5; IPCC carbon fraction 0.47; CO$_2$/C molar ratio 44/12. The 2,755 Mt figure also attributed the heuristic to Chave 2014 (which describes a tree-level pantropical allometry using diameter + wood density + height, not a canopy-cover-to-biomass power law) --- see the module docstring for the full disambiguation.
 
 \chapter{P0010 Yvyra: Carbon Credit Verification}
 \label{ch:p0010}
@@ -339,8 +337,8 @@ satellite-paraguay/
 This thesis delivers 6 published-quality papers on Paraguay environmental monitoring, all built atop shared infrastructure. The aggregate contribution is:
 
 \begin{itemize}
-\item 16,628 km$^2$ of measured forest loss quantified (Hansen GFC v1.11)
-\item 2,755 MtCO$_2$e carbon emitted (Chave 2014 + IPCC Tier-1)
+\item 16,628 km$^2$ of measured forest loss quantified (MapBiomas Paraguay Collection 2)
+\item $\sim$122 MtCO$_2$e carbon emitted (corrected from 2,755 Mt, see Round-12 audit)
 \item 2.90$\times$ indigenous-territory deforestation disparity (95\% CI [1.72, 4.20])
 \item +35.9\% mean Verra under-claim across 5 projects
 \item 0.50$\to$0.18 synthetic-to-real mAP gap (gauge for camera-trap CV)

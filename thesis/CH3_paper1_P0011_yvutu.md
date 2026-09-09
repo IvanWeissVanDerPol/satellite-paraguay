@@ -26,10 +26,12 @@ This chapter summarises Paper P0011, the multi-temporal deforestation detection 
 | Yvutu (Prithvi, mock) | 0.4968 | 0.4936 | 0.500 | transformers/numpy issue |
 
 **Country-scale finding (real Hansen GFC v1.11 data):**
-- 16,628 km² forest loss 2001–2023
-- 2,755 MtCO₂e carbon emitted
+- 16,628 km² forest loss 2001–2023 *(literature estimate from MapBiomas Paraguay Collection 2 — the thesis's own Hansen tile sample is 256×256 = ~56 km²)*
+- **~122 Mt CO₂e carbon emitted** at mean 50% treecover (range 34–192 Mt at 30–60% canopy cover, see `src/utils/carbon_math.py` for the calculation chain)
 - Peak deforestation 2012, partial recovery 2018–2020
 - Concentration in Alto Paraguay Chaco (28.49%)
+
+The previous draft's "2,755 Mt CO₂e" was 22.7× too high — corrected via the Round-12 audit fixes (pixel area 0.0625 → 0.0864 ha; Chave 2014 attribution dropped; transcription error fixed).
 
 **Aspirational-vs-measured gap:** Earlier-draft headline framing was "Prithvi F1>0.85 vs U-Net F1=0.017 (50× improvement)". Measured pilot: U-Net F1=0.5592 (over-prediction); Prithvi mock F1=0.4968 (non-convergence in CPU budget). Real Prithvi run on 150 Chaco tiles is the next step — blocked on GPU budget.
 
