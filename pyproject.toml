@@ -24,12 +24,14 @@ packages = [
     "src.timeseries",
     "src.evaluation",
     "src.papers",
-    "src.papers.p0011_yvytu_deforestation",
-    "src.papers.p0100_yvyra_carbon_credits",
+    "src.papers.p0011_yvutu_deforestation",
     "src.papers.p0025_yrupe_yield",
     "src.papers.p0012_yvy_indigenous",
     "src.papers.p0026_kai_poaching",
     "src.papers.p0035_tatakua_air_quality",
+    # Note (2026-09-09, Round-12 audit): src.papers.p0100_yvyra_carbon_credits
+    # removed (P0010 Yvyra was np.random.normal fabrication).
+    # Replaced by P0030 in Phase 10.
 ]
 
 [tool.setuptools.package-data]
