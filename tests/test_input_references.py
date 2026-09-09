@@ -177,8 +177,13 @@ def test_thesis_main_tex_no_typos_in_input_refs():
             # Check for digit-transposition typos (e.g. p0100 vs p0010)
             # Paper IDs (Round-12): p0011/p0012/p0025/p0026/p0035 (p0010 removed)
             if "p00" in basename and not any(
-                pid in basename for pid in (
-                    "p0011", "p0012", "p0025", "p0026", "p0035",
+                pid in basename
+                for pid in (
+                    "p0011",
+                    "p0012",
+                    "p0025",
+                    "p0026",
+                    "p0035",
                 )
             ):
                 typo.append((str(tex_path.relative_to(REPO_ROOT)), m.start(), rel_path))

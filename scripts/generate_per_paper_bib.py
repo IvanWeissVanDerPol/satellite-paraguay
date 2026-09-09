@@ -59,7 +59,6 @@ def main():
             "segmentation",
             "hls",
             "earth observation",
-        ],
             "carbon",
             "redd+",
             "redd +",

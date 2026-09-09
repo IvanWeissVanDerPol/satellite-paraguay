@@ -102,8 +102,10 @@ class TestChiSquaredIndigenous:
         territory_lost = [50, 30]
         territory_total = [100, 100]
         result = chi_squared_indigenous(
-            territory_lost, territory_total,
-            national_lost=20, national_total=100,
+            territory_lost,
+            territory_total,
+            national_lost=20,
+            national_total=100,
         )
         assert "chi2" in result
         assert "p_value" in result
@@ -115,8 +117,10 @@ class TestChiSquaredIndigenous:
         territory_lost = [10, 8]
         territory_total = [50, 50]
         result = chi_squared_indigenous(
-            territory_lost, territory_total,
-            national_lost=8, national_total=100,
+            territory_lost,
+            territory_total,
+            national_lost=8,
+            national_total=100,
         )
         assert isinstance(result, dict)
         assert "p_value" in result

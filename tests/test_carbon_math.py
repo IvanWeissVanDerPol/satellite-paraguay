@@ -179,8 +179,7 @@ class TestCarbonMath:
         from src.utils import carbon_math as cm
 
         assert not hasattr(cm, "CHAVE_COEFFICIENT"), (
-            "CHAVE_COEFFICIENT was removed because it misattributed the "
-            "canopy-cover heuristic to Chave 2014."
+            "CHAVE_COEFFICIENT was removed because it misattributed the " "canopy-cover heuristic to Chave 2014."
         )
 
     def test_lossyear_to_calendar_year(self):
