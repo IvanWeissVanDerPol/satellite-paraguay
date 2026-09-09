@@ -48,11 +48,17 @@ def test_dashboard_app_imports():
     # The dashboard uses top-level streamlit calls (no main() function);
     # verify that the PAGES dict exists and has the expected keys.
     assert hasattr(mod, "PAGES"), "PAGES dict missing"
-    expected_pages = {"Overview", "Departments", "Indigenous Territories",
-                      "Carbon & Verra", "Models", "Uncertainty", "References"}
+    expected_pages = {
+        "Overview",
+        "Departments",
+        "Indigenous Territories",
+        "Carbon & Verra",
+        "Models",
+        "Uncertainty",
+        "References",
+    }
     assert set(mod.PAGES.keys()) == expected_pages, (
-        f"PAGES keys mismatch: got {set(mod.PAGES.keys())}, "
-        f"expected {expected_pages}"
+        f"PAGES keys mismatch: got {set(mod.PAGES.keys())}, " f"expected {expected_pages}"
     )
 
 
