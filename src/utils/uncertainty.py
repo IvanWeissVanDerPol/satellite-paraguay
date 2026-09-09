@@ -92,7 +92,7 @@ def agb_sensitivity(lossyear: np.ndarray, treecover: np.ndarray) -> dict[str, di
     Returns dict with low/mid/high scenarios.
     """
     n_loss = int((lossyear > 0).sum())
-    area_ha = n_loss * 0.0625  # Hansen GFC v1.11 pixel = 0.0625 ha at the equator
+    area_ha = n_loss * 0.0864  # Hansen GFC v1.11 pixel at Paraguay ~-25° lat
 
     agb_scenarios = {
         "low": {"tc": 30, "agb": 18},
@@ -156,13 +156,21 @@ def pixel_loss_rate(lossyear: np.ndarray) -> float:
     return float((flat > 0).sum() / flat.size)
 
 
-def loss_area_hectares(lossyear: np.ndarray, pixel_area_ha: float = 0.0625) -> float:
+def loss_area_hectares(lossyear: np.ndarray, pixel_area_ha: float = 0.0864) -> float:
     """Convert loss pixel count to hectares.
 
-    Default pixel_area_ha = 0.0625 (Hansen GFC v1.11 pixel = 0.00025° ×
-    0.00025° = 0.0625 ha at the equator; ~0.066 ha at Paraguay's -25°
-    latitude). Sentinel-2 10m pixel = 0.01 ha (pass this explicitly
-    when working with Sentinel-2 data).
+    Default pixel_area_ha = 0.0864 ha. Hansen GFC v1.11 is a 1 arc-second
+    grid (0.000278° resolution), NOT 0.00025°. At Paraguay's latitude
+    (~-23° to -27°), the correct pixel area is:
+
+        0.0864 ha = (0.000278 * 111000) * (0.000278 * 111000 * cos(-25°))
+                   ≈ 30.9 m * 27.8 m
+
+    Previous value 0.0625 was off by 1.38x. See Round-12 audit
+    §1.1 for the calculation.
+
+    Sentinel-2 10m pixel = 0.01 ha (pass this explicitly when working
+    with Sentinel-2 data).
     """
     n_loss = int((lossyear > 0).sum())
     return float(n_loss * pixel_area_ha)

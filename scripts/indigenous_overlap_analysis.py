@@ -110,7 +110,7 @@ def main():
             combined_results[name]["loss_pixels"] += stats["loss_pixels"]
 
     # Build full results with metadata
-    pixel_area_ha = 0.0625
+    pixel_area_ha = 0.0864
     mean_tc = 50.0
     agb = 100 * mean_tc**2 / (100 + mean_tc**2)
     carbon_per_ha = agb * 0.47

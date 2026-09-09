@@ -85,7 +85,7 @@ def block_bootstrap_fast(lossyear, block_size=100, n_boot=1000, seed=42):
 def agb_sensitivity(lossyear, treecover):
     """Sensitivity analysis: how much does carbon estimate change with AGB assumptions?"""
     n_loss = (lossyear > 0).sum()
-    area_ha = n_loss * 0.0625
+    area_ha = n_loss * 0.0864
 
     # Different AGB assumptions
     agb_scenarios = {

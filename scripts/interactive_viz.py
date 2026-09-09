@@ -37,7 +37,9 @@ def annual_loss_plotly():
 
     years = list(range(2001, 2024))
     counts = [(lossyear == (y - 2000)).sum() for y in years]
-    counts_km2 = [c * 0.0625 for c in counts]  # Hansen pixel area
+    counts_ha = [
+        c * 0.0864 for c in counts
+    ]  # Hansen pixel area at Paraguay ~-25° lat (was: counts_km2 = c*0.0625 -- 100x unit error in T1.2)
 
     fig_html = f"""<!DOCTYPE html>
 <html><head><title>Annual Forest Loss Paraguay</title>
@@ -51,7 +53,7 @@ def annual_loss_plotly():
 <script>
   const data = [{{
     x: {years},
-    y: {counts_km2},
+    y: {counts_ha},
     type: 'scatter',
     mode: 'lines+markers',
     name: 'Forest loss (km²)',

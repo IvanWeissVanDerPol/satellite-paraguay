@@ -1,5 +1,7 @@
 # Core Python
-python>=3.10
+# (No "python>=3.10" line -- python is the interpreter, not a PyPI package.
+#  README previously had `python>=3.10` here which caused every `pip install`
+#  to fail. The required interpreter version is declared in pyproject.toml.)
 numpy>=1.24
 pandas>=2.0
 scipy>=1.11

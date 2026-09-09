@@ -79,7 +79,7 @@ def rasterize_departments(hansen_path, geojson_path):
 def compute_dept_stats(dept_array, lossyear, dept_ids):
     """For each department: total pixels, loss pixels (2001-2023), %, area, CO2e."""
     results = []
-    pixel_area_ha = 0.0625  # Hansen 25m pixel
+    pixel_area_ha = 0.0864  # Hansen GFC v1.11 at Paraguay ~-25° lat (1 arc-sec)
     mean_tc = 50.0  # Assume 50% treecover
 
     for i, dept in enumerate(dept_ids):

@@ -114,7 +114,7 @@ def compute_carbon_loss(tiles):
     forest (mean treecover ~50%) before loss.
     """
     total_loss_pixels = 0
-    pixel_area_ha = 0.0625  # 25m pixel = 0.0625 ha
+    pixel_area_ha = 0.0864  # Hansen GFC v1.11 at Paraguay ~-25° lat
 
     for tile, data in tiles.items():
         if "annual_hist" in data:
@@ -375,7 +375,7 @@ def main():
     print(f"Figures saved to {FIG_DIR}/real_*.png")
     print("\nKey findings:")
     print(f"  Total deforestation (2001-2023): {int(annual_loss.sum()):,} pixels")
-    print(f"  Approximate area: {annual_loss.sum() * 0.0625 / 1000:.0f} km²")
+    print(f"  Approximate area: {annual_loss.sum() * 0.0864 / 1000:.0f} km²")
     print(f"  CO2e released: {carbon['co2e_tons']/1e6:.2f} Mt")
 
 
