@@ -18,7 +18,7 @@ global papers:
   the carbon storage and biodiversity value of indigenous lands,
   documenting that ~45% of the world's "intact forest landscapes"
   are on indigenous territory.
-- **Fa et al. (2020)** in Nature Sustainability documented that
+- **[CITE-REMOVED-ROUND-12-AUDIT]** in Nature Sustainability documented that
   indigenous lands in Central Africa have lower deforestation
   rates than comparable non-indigenous lands.
 - **Dinerstein et al. (2020)** in Nature Sustainability

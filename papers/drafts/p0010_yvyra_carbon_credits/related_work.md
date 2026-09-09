@@ -57,7 +57,7 @@ would require Verra engagement (Section D.4.1 of
 The choice of allometric equation is one of the largest
 methodological uncertainties in any REDD+ carbon estimate:
 
-- **Chave et al. (2014)** in *Global Change Biology* is the
+- **[CITE-REMOVED-ROUND-12-AUDIT]** in *Global Change Biology* is the
   current state-of-the-art pantropical model (the one we use).
 - **\citep{chave2008}** was the prior standard; still in use
   in some Verra methodologies.

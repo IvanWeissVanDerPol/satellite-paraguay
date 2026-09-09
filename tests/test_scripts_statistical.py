@@ -88,24 +88,40 @@ class TestPairedTtestDrought:
 
 
 class TestChiSquaredIndigenous:
-    """Tests for chi_squared_indigenous function."""
+    """Tests for chi_squared_indigenous function.
+
+    Signature updated 2026-09-09 (Round-12 audit fix): the function
+    now takes per-territory lists + national totals, not single
+    observed/expected dicts (that was the old pixel-level
+    pseudoreplication interface).
+    """
 
     def test_small_table(self):
-        """Test with simple observed vs expected dicts."""
-        observed = {"lost": 50, "total": 100}
-        expected = {"lost": 30, "total": 100}
-        result = chi_squared_indigenous(observed, expected)
+        """Test with simple per-territory lists."""
+        # 2 territories, both above national rate
+        territory_lost = [50, 30]
+        territory_total = [100, 100]
+        result = chi_squared_indigenous(
+            territory_lost, territory_total,
+            national_lost=20, national_total=100,
+        )
         assert "chi2" in result
         assert "p_value" in result
         assert result["chi2"] > 0
+        assert result["n_territories"] == 2
 
     def test_returns_dict(self):
         """Should return dict with expected keys."""
-        observed = {"lost": 10, "total": 50}
-        expected = {"lost": 8, "total": 50}
-        result = chi_squared_indigenous(observed, expected)
+        territory_lost = [10, 8]
+        territory_total = [50, 50]
+        result = chi_squared_indigenous(
+            territory_lost, territory_total,
+            national_lost=8, national_total=100,
+        )
         assert isinstance(result, dict)
         assert "p_value" in result
+        assert "t_statistic" in result  # primary test is now one-sample t-test
+        assert "ratio_territory_to_national" in result
 
 
 class TestBootstrapDisparity:

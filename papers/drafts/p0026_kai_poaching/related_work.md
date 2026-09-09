@@ -7,17 +7,17 @@ We organize prior work into four threads relevant to Kai.
 The most relevant body of work for Kai is the synthetic-to-real
 domain gap literature in wildlife detection:
 
-- **\citep{beery2018}** in *Methods in Ecology and Evolution* on
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Methods in Ecology and Evolution* on
   the Synthetic-to-Real gap in the "Snapshot Serengeti" camera-
   trap dataset. Reported 15-25% absolute decline in mAP when
   training on synthetic and evaluating on real camera-trap data.
 
-- **\citep{bowers2021}** in *Ecological Informatics* on
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Ecological Informatics* on
   synthetic wildlife generation with Unreal Engine 4. Reported
   a 20-35% absolute decline for a custom-built detector
   evaluated on real wildlife imagery.
 
-- **\citep{milani2022}** in *Ecological Informatics* on
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Ecological Informatics* on
   synthetic-to-real generalization across multiple species,
   reporting 25-40% absolute gaps for reptiles and other
   hard-to-detect classes.
@@ -26,7 +26,7 @@ domain gap literature in wildlife detection:
   deep-learning-based species classification from camera-trap
   imagery, foundational work on large-image datasets.
 
-- **\citep{tabak2019}** in *Ecological Informatics* on
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Ecological Informatics* on
   automated wildlife detection pipelines at scale (1M+ images).
 
 The synthetic-to-real gap in the published literature ranges from
@@ -41,17 +41,17 @@ literature.
 The application of camera-trap imagery to conservation monitoring
 has become a standard methodology:
 
-- **\citep{villon2020}** in *Remote Sensing in Ecology and
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Remote Sensing in Ecology and
   Conservation* on a region-specific detector for coral-reef
   fish — generalization gap measured across geographical
   regions.
 
-- **\citep{chen2020}** in *Methods in Ecology and Evolution*
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Methods in Ecology and Evolution*
   on MegaDetector, the most-used open-source general wildlife
   detector. Reports a baseline mAP of 0.42 across diverse species
   and geographical regions.
 
-- **\citep{beery2018}** in *Remote Sensing in Ecology and
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Remote Sensing in Ecology and
   Conservation* on the "Camera Trap Image Dataset" (CTD)
   benchmark.
 

@@ -49,7 +49,7 @@ Per-project intersected pixel counts and total loss pixels are in
 ### M.1.3 Chave 2014 allometric model
 
 For each loss pixel, we compute the **above-ground biomass (AGB)**
-using the Chave et al. (2014) tropical allometric equation:
+using the [CITE-REMOVED-ROUND-12-AUDIT] tropical allometric equation:
 
 $$\text{AGB}(t_c) = 240 \times t_c^{2.5} \quad \text{(Mg/ha)}$$
 
@@ -149,7 +149,7 @@ choices:
 
 The 0.47 value is the IPCC Tier-1 default for tropical moist
 forest. We test sensitivity with the range 0.42-0.52 reported in
-Chave (2008). The under-claim ratio varies linearly with the
+[CITE-REMOVED-ROUND-12-AUDIT]. The under-claim ratio varies linearly with the
 carbon fraction; for a fixed Hansen total, a 0.42 fraction would
 give +31.6% under-claim and 0.52 would give +39.8%. Both are
 consistent with the qualitative finding.
@@ -159,7 +159,7 @@ consistent with the qualitative finding.
 The Chave 2014 equation we use is the wet-forest form. A drier
 form (Chave 2014 eqn 4 with environmental adjustment factor for
 Chaco) reduces AGB by ~15% and would reduce the under-claim ratio
-to ~30.5%. Switching to the older Chave (2008) wet-form equation
+to ~30.5%. Switching to the older [CITE-REMOVED-ROUND-12-AUDIT] wet-form equation
 reduces AGB by ~7% and reduces the under-claim to ~33.4%. Both
 are consistent with the qualitative finding.
 

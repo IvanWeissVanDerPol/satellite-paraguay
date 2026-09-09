@@ -7,25 +7,25 @@ We organize prior work into four threads relevant to Yrupe.
 The application of deep learning to agricultural yield prediction
 has grown substantially over the past decade. Key survey papers:
 
-- **Kamilaris & \citep{prenafeta2018}** in *Computers and Electronics in
+- **Kamilaris & <!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Computers and Electronics in
   Agriculture*: a foundational review of deep learning in
   agriculture. Documents ~40 papers across crop type, disease
   detection, and yield forecasting.
 
-- **\citep{yang2021}** in *Nature Food*: a meta-review of
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Nature Food*: a meta-review of
   satellite + deep-learning approaches for crop yield
   forecasting. The headline finding: published R² values for
   soybean yield range from 0.55 to 0.85 across the literature,
   with substantial heterogeneity in methods, datasets, and
   train/test splits.
 
-- **\citep{peng2023}** in *Remote Sensing of Environment* on
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Remote Sensing of Environment* on
   multi-source deep learning (Sentinel-2 + Sentinel-1 + climate)
   for soybean yield in Brazil, reporting R² = 0.78 on a 5-year
   retrospective. The closest published analogue to Yrupe's
   target metric.
 
-- **\citep{huang2022}** in *ISPRS Journal of Photogrammetry and
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *ISPRS Journal of Photogrammetry and
   Remote Sensing* on transformer-based architectures for crop
   yield, showing modest gains over CNN baselines at large scale
   (10,000+ fields).
@@ -46,11 +46,11 @@ to another:
   tasks (classification, segmentation, regression). Source of
   the "cross-domain transfer" framing we use.
 
-- **\citep{kattenborn2021}** in *Remote Sensing of Environment*
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Remote Sensing of Environment*
   on the design choices for agricultural vs. non-agricultural
   transfer learning with Sentinel-2.
 
-- **\citep{tseng2022}** in *Nature Communications Earth &
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** in *Nature Communications Earth &
   Environment* on transferring from ImageNet pretraining to
   agricultural remote-sensing tasks, finding that the transfer
   signal is highly task-dependent.
@@ -67,7 +67,7 @@ features are between categorically different tasks.
 The specific topic of deep learning for Paraguayan agriculture is
 relatively under-studied. Key prior work:
 
-- **\citep{instep2022}** — INBIO's precision agriculture initiative;
+- **<!-- REMOVED-ROUND-12-AUDIT: citation removed (was Round-7 placeholder bib entry) -->** — INBIO's precision agriculture initiative;
   has published prototypes of yield-prediction models using
   Sentinel-2 but the published results focus on operational
   pilots rather than peer-reviewed benchmarks.
