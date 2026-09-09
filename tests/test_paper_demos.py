@@ -73,20 +73,3 @@ class TestTatakuaDemo:
         assert "OpenAQ" in captured.out
         assert "Sentinel-5P" in captured.out
         assert "Forecast" in captured.out
-
-
-class TestYvyraDemo:
-    """Tests for run_yvyra_demo function."""
-
-    def test_yvyra_demo_runs(self, monkeypatch, capsys):
-        from src.papers.p0100_yvyra_carbon_credits.pipeline import run_yvyra_demo
-
-        with patch("src.papers.p0100_yvyra_carbon_credits.pipeline.YvyraPipeline") as mock_class:
-            mock_instance = MagicMock()
-            mock_instance.load_verra_data.return_value = {"status": "loaded"}
-            mock_instance.load_hansen_data.return_value = {"status": "loaded"}
-            mock_instance.detect_discrepancies.return_value = [{"id": 1}]
-            mock_class.return_value = mock_instance
-            run_yvyra_demo()
-        captured = capsys.readouterr()
-        assert "Demo" in captured.out or "Verra" in captured.out or "carbon" in captured.out.lower()

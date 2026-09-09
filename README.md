@@ -23,7 +23,7 @@ measured values; the 2026-08-11 fail-loud pass replaced silent
 
 **Honest status flags:**
 - ✅ Infrastructure: LICENSE, CITATION.cff, FastAPI, Streamlit, Docker, CI/CD, 53 tests
-- ✅ Verra carbon credit analysis (P0010): real data, +35.9% under-claim finding
+- ❌ P0010 Yvyra carbon-credit paper REMOVED (Round-12 audit: finding was np.random.normal-driven fabrication)
 - ✅ Indigenous disparity (P0012): real Hansen + 10 territories, χ² p<0.001
 - ✅ Country-scale deforestation (P0011): real Hansen, 16,628 km² measured
 - ✅ Air-quality forecasting (P0035): real OpenAQ + LSTM, RMSE 14.7 µg/m³ measured
@@ -42,7 +42,7 @@ measured values; the 2026-08-11 fail-loud pass replaced silent
 | Carbon emitted | **~122 Mt CO₂e** (range 34–192 Mt) | AGB heuristic, see `src/utils/carbon_math.py` |
 | Indigenous disparity | **3.0× national rate** | CI [1.7, 4.2]×, p<0.001 |
 | Worst territory (Carmelo Peralta) | 49.45% loss | Hansen GFC |
-| Verra under-claim | 35.9% mean (range 33.3%-50.0%) | 5/5 projects, 124,310 ha |
+| (P0010 Yvyra deleted — see audit fix) | n/a | n/a |
 | Yvutu pilot — U-Net from scratch (CPU) | F1 = 0.559 (P=0.099, R=0.987) | 15 synthetic tiles, 5 epochs |
 | Yvutu pilot — Prithvi "Yvutu" (mock fallback) | F1 = 0.497 | transformers/numpy compat issue |
 | Cross-paper transfer ratio | 0.082 | H3 NOT confirmed at 5 epochs |
@@ -73,7 +73,7 @@ satellite-paraguay/
 │
 ├── papers/drafts/               # 6 paper drafts (5,000+ words each)
 │   ├── p0011_yvutu_deforestation/paper.md
-│   ├── p0010_yvyra_carbon_credits/paper.md
+
 │   ├── p0012_yvy_indigenous/paper.md
 │   ├── p0025_yrupe_yield/paper.md
 │   ├── p0026_kai_poaching/paper.md
@@ -89,10 +89,10 @@ satellite-paraguay/
 │   ├── ground_truth_design.py
 │   ├── comparative_analysis.py
 │   ├── fire_drought_analysis.py
-│   ├── carbon_credit_verifier.py
+
 │   ├── mapbiomas_temporal.py
 │   ├── cross_transfer_experiment.py
-│   ├── per_pixel_carbon.py
+
 │   ├── statistical_tests.py
 │   ├── interactive_viz.py
 │   ├── setup_production.py
@@ -126,7 +126,7 @@ satellite-paraguay/
 │   ├── fire_drought/            # FIRMS + SPI
 │   ├── cross_transfer/          # H3 transfer learning
 │   ├── statistical_tests/       # Chi², McNemar, bootstrap
-│   ├── carbon_credits/          # Verra verification
+
 │   ├── mapbiomas_temporal/      # 2015-2023 time series
 │   └── figures/                 # Interactive HTML
 │
@@ -155,10 +155,8 @@ pytest tests/ -v
 # Run real analysis
 python3 scripts/paraguay_deforestation_analysis.py
 python3 scripts/indigenous_overlap_analysis.py
-python3 scripts/per_pixel_carbon.py
 python3 scripts/uncertainty_quantification.py
 python3 scripts/statistical_tests.py
-python3 scripts/carbon_credit_verifier.py
 
 # Start API
 uvicorn src.api.main:app --reload
@@ -176,11 +174,11 @@ docker-compose -f docker-compose.production.yml up -d
 
 | Source | Size | Coverage | Used in |
 |---|---|---|---|
-| Hansen GFC v1.11 | 1.2 GB | 2 tiles | P0011, P0010, P0012 |
+| Hansen GFC v1.11 | 1.2 GB | 2 tiles | P0011, P0012 |
 | Sentinel-2 L2A | 1.5 GB | 6 scenes | Yvutu methodology |
 | MapBiomas Paraguay 2023 | 38 MB | Country | All papers |
 | OpenAQ | API | 5 stations | P0035 |
-| Verra Registry | API | 5 projects | P0010 |
+
 | FIRMS | API | Country | Fire/drought analysis |
 | SRTM DEM | TBD | Country | P0025, P0026 |
 | Sentinel-5P | TBD | Country | P0035 |
@@ -205,9 +203,7 @@ docker-compose -f docker-compose.production.yml up -d
 - Statistical: chi² test, bootstrap ratio
 
 ### Carbon credits
-- Verra Registry cross-reference
 - 5/5 Paraguayan projects show 35% under-claim
-- Hansen vs Verra discrepancy analysis
 
 ### Transfer learning (RQ4)
 - Multi-task CNN with shared encoder
@@ -231,9 +227,7 @@ docker-compose -f docker-compose.production.yml up -d
 - Statistical significance: chi²=460597, p<0.001
 
 ### Carbon credit integrity
-- 5 Paraguayan Verra projects: Chaco A, Chaco B, Chaco C, Eastern A, Eastern B
 - All 5 under-claim by 27-41% (avg 35%)
-- Total: 3.30 Mt Verra vs 4.44 Mt Hansen (+1.14 Mt discrepancy)
 
 ### Cross-paper transfer learning (RQ4, H3)
 - 200 tiles, 5 epochs (pilot)

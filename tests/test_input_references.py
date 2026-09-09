@@ -5,7 +5,6 @@ WHAT IT CATCHES
 Tier-6 audit found `thesis/main.tex` (the Makefile target) referencing 9
 chapter files that did not exist:
     \\input{chapters/04_p0011_yvutu}     ← file missing
-    \\input{chapters/05_p0100_yvyra}     ← file missing + typo p0100
     ...
 This would crash `make thesis-pdf` with "Emergency stop" from pdflatex.
 
@@ -162,11 +161,9 @@ def test_no_dangling_input_in_master_tex():
 
 
 def test_thesis_main_tex_no_typos_in_input_refs():
-    """Round-Tier-6 lesson: typo `p0100_yvyra` should be `p0010_yvyra`.
-
-    Catches simple digit-transposition typos in chapter file references
-    by ensuring every referenced basename starts with 'p00' (paper IDs
-    are p0010, p0011, p0012, p0025, p0026, p0035).
+    """Catches simple digit-transposition typos in chapter file references
+    by ensuring every referenced basename matches a known paper ID.
+    Paper IDs (Round-12): p0011/p0012/p0025/p0026/p0035 (p0010 removed).
     """
     typo = []
     for tex_path in _iter_master_tex_files():
@@ -178,8 +175,11 @@ def test_thesis_main_tex_no_typos_in_input_refs():
             _resolve_tex_target(base_dir, rel_path)  # exercise for coverage
             basename = Path(rel_path).name
             # Check for digit-transposition typos (e.g. p0100 vs p0010)
+            # Paper IDs (Round-12): p0011/p0012/p0025/p0026/p0035 (p0010 removed)
             if "p00" in basename and not any(
-                basename.startswith(p) for p in ("p0010_", "p0011_", "p0012_", "p0025_", "p0026_", "p0035_")
+                pid in basename for pid in (
+                    "p0011", "p0012", "p0025", "p0026", "p0035",
+                )
             ):
                 typo.append((str(tex_path.relative_to(REPO_ROOT)), m.start(), rel_path))
 

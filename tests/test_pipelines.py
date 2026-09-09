@@ -21,21 +21,24 @@ except (PermissionError, OSError):
     _HAS_DATA = False
 
 
-def test_yvytu_pipeline_instantiates():
-    """P0011 pipeline can be created."""
-    from src.papers.p0011_yvytu_deforestation import YvytuPipeline
+def test_yvutu_pipeline_instantiates():
+    """P0011 pipeline can be created.
+
+    Note (2026-09-08, Round-12 audit): the live directory is
+    p0011_yvutu_deforestation (y-v-u-t-y, double-y). The duplicate
+    p0011_yvutu_deforestation directory (y-v-u-t-u) is being
+    consolidated in Phase 9; for now the live import uses the
+    actual class name `YvytuPipeline` (not the typo'd version).
+    """
+    from src.papers.p0011_yvutu_deforestation import YvytuPipeline
 
     pipeline = YvytuPipeline()
     assert pipeline is not None
     assert pipeline.config is not None
 
 
-def test_yvyra_pipeline_instantiates():
-    """P0100 pipeline can be created."""
-    from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
-
-    pipeline = YvyraPipeline()
-    assert pipeline is not None
+# NOTE: test_yvyra_pipeline_instantiates removed in Round-12 (P0010
+# Yvyra was np.random.normal fabrication).
 
 
 def test_yrupe_pipeline_instantiates():
@@ -72,11 +75,11 @@ def test_tatakua_pipeline_instantiates():
     assert "pm25" in pipeline.config["pollutants"]
 
 
-def test_yvytu_select_chaco_tiles():
+def test_yvutu_select_chaco_tiles():
     """P0011 selects Chaco tiles."""
     if not _HAS_DATA:
         pytest.skip("paraguay-geodata not readable (set PARAGUAY_GEODATA_DIR)")
-    from src.papers.p0011_yvytu_deforestation import YvytuPipeline
+    from src.papers.p0011_yvutu_deforestation import YvytuPipeline
 
     pipeline = YvytuPipeline()
     tiles = pipeline.select_tiles()
@@ -84,13 +87,7 @@ def test_yvytu_select_chaco_tiles():
     assert isinstance(tiles, list)
 
 
-def test_yvyra_fetch_verra():
-    """P0100 fetches Verra projects."""
-    from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
-
-    pipeline = YvyraPipeline()
-    projects = pipeline.fetch_verra_projects()
-    assert "id" in projects.columns
+# NOTE: test_yvyra_fetch_verra removed in Round-12 (P0010 deleted).
 
 
 def test_kai_select_defensores():

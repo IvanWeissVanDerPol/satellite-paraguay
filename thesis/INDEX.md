@@ -14,11 +14,10 @@ also exists as LaTeX in `thesis/MAIN/thesis.tex` for journal-style typesetting.
 | Ch | Paper ID | Title | LaTeX (canonical) | Submission target |
 |----|----------|-------|-------------------|-------------------|
 | 4 | P0011 | Yvutu — Deforestation Detection | [`chapters/p0011_yvutu_ch04.tex`](chapters/p0011_yvutu_ch04.tex) | Remote Sensing of Environment |
-| 5 | P0010 | Yvyra — Carbon Credit Verification | [`chapters/p0010_yvyra_ch05.tex`](chapters/p0010_yvyra_ch05.tex) | Nature Climate Change (Letter) |
+| 5 | P0012 | Yvy — Indigenous Land Tenure | [`chapters/p0012_yvy_ch05.tex`](chapters/p0012_yvy_ch05.tex) | World Development |
 | 6 | P0025 | Yrupe — Cross-Domain Transfer | [`chapters/p0025_yrupe_ch06.tex`](chapters/p0025_yrupe_ch06.tex) | Agricultural Systems |
-| 7 | P0012 | Yvy — Indigenous Land Tenure | [`chapters/p0012_yvy_ch07.tex`](chapters/p0012_yvy_ch07.tex) | World Development |
-| 8 | P0026 | Kai — Wildlife Detection | [`chapters/p0026_kai_ch08.tex`](chapters/p0026_kai_ch08.tex) | Conservation Biology |
-| 9 | P0035 | Tatakua — Air Quality Forecasting | [`chapters/p0035_tatakua_ch09.tex`](chapters/p0035_tatakua_ch09.tex) | Atmospheric Environment |
+| 7 | P0026 | Kai — Wildlife Detection | [`chapters/p0026_kai_ch07.tex`](chapters/p0026_kai_ch07.tex) | Conservation Biology |
+| 8 | P0035 | Tatakua — Air Quality Forecasting | [`chapters/p0035_tatakua_ch08.tex`](chapters/p0035_tatakua_ch08.tex) | Atmospheric Environment |
 
 The LaTeX `.tex` files under `chapters/` are the canonical source for the
 thesis PDF build (compiled via `make thesis-pdf` → `pdflatex thesis/main.tex`).
@@ -27,11 +26,10 @@ human-readable snapshots that mirror the measured numbers from the
 LaTeX chapters, ACTUAL_RESULTS.md, and paper.tex.
 
 - [`CH3_paper1_P0011_yvutu.md`](CH3_paper1_P0011_yvutu.md) ←→ [`chapters/p0011_yvutu_ch04.tex`](chapters/p0011_yvutu_ch04.tex)
-- [`CH4_paper2_P0010_yvyra.md`](CH4_paper2_P0010_yvyra.md) ←→ [`chapters/p0010_yvyra_ch05.tex`](chapters/p0010_yvyra_ch05.tex)
-- [`CH5_paper3_P0012_yvy.md`](CH5_paper3_P0012_yvy.md) ←→ [`chapters/p0012_yvy_ch07.tex`](chapters/p0012_yvy_ch07.tex)
-- [`CH6_paper4_P0025_yrupe.md`](CH6_paper4_P0025_yrupe.md) ←→ [`chapters/p0025_yrupe_ch06.tex`](chapters/p0025_yrupe_ch06.tex)
-- [`CH7_paper5_P0026_kai.md`](CH7_paper5_P0026_kai.md) ←→ [`chapters/p0026_kai_ch08.tex`](chapters/p0026_kai_ch08.tex)
-- [`CH8_paper6_P0035_tatakua.md`](CH8_paper6_P0035_tatakua.md) ←→ [`chapters/p0035_tatakua_ch09.tex`](chapters/p0035_tatakua_ch09.tex)
+- [`CH4_paper2_P0012_yvy.md`](CH4_paper2_P0012_yvy.md) ←→ [`chapters/p0012_yvy_ch05.tex`](chapters/p0012_yvy_ch05.tex)
+- [`CH5_paper3_P0025_yrupe.md`](CH5_paper3_P0025_yrupe.md) ←→ [`chapters/p0025_yrupe_ch06.tex`](chapters/p0025_yrupe_ch06.tex)
+- [`CH6_paper4_P0026_kai.md`](CH6_paper4_P0026_kai.md) ←→ [`chapters/p0026_kai_ch07.tex`](chapters/p0026_kai_ch07.tex)
+- [`CH7_paper5_P0035_tatakua.md`](CH7_paper5_P0035_tatakua.md) ←→ [`chapters/p0035_tatakua_ch08.tex`](chapters/p0035_tatakua_ch08.tex)
 
 ## Closing chapters
 
@@ -49,7 +47,6 @@ LaTeX chapters, ACTUAL_RESULTS.md, and paper.tex.
 ## Submission papers (LaTeX)
 
 - [`../papers/drafts/p0011_yvutu_deforestation/paper.tex`](../papers/drafts/p0011_yvutu_deforestation/paper.tex)
-- [`../papers/drafts/p0010_yvyra_carbon_credits/paper.tex`](../papers/drafts/p0010_yvyra_carbon_credits/paper.tex)
 - [`../papers/drafts/p0012_yvy_indigenous/paper.tex`](../papers/drafts/p0012_yvy_indigenous/paper.tex)
 - [`../papers/drafts/p0025_yrupe_yield/paper.tex`](../papers/drafts/p0025_yrupe_yield/paper.tex)
 - [`../papers/drafts/p0026_kai_poaching/paper.tex`](../papers/drafts/p0026_kai_poaching/paper.tex)
@@ -59,7 +56,6 @@ LaTeX chapters, ACTUAL_RESULTS.md, and paper.tex.
 
 Each paper has `ACTUAL_RESULTS.md` documenting measured vs. claimed metrics:
 - [`../papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md`](../papers/drafts/p0011_yvutu_deforestation/ACTUAL_RESULTS.md)
-- [`../papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md`](../papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md)
 - [`../papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md`](../papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md)
 - [`../papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md`](../papers/drafts/p0025_yrupe_yield/ACTUAL_RESULTS.md)
 - [`../papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md`](../papers/drafts/p0026_kai_poaching/ACTUAL_RESULTS.md)

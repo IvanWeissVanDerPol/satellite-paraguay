@@ -27,14 +27,14 @@ class TestCarbonModelBenchmarks:
 
     def test_chave_scalar_benchmark(self, benchmark):
         """Single scalar computation."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         result = benchmark(chave_agb, 50.0)
         assert 35 < result < 50
 
     def test_chave_vector_benchmark(self, benchmark):
         """Vectorized computation over 4M pixels."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         tc = np.random.default_rng(42).uniform(0, 100, size=(2000, 2000)).astype(np.float32)
         result = benchmark(chave_agb, tc)
@@ -42,7 +42,7 @@ class TestCarbonModelBenchmarks:
 
     def test_chave_huge_array(self, benchmark):
         """Large array (16M pixels)."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         tc = np.random.default_rng(42).uniform(0, 100, size=(4000, 4000)).astype(np.float32)
         result = benchmark(chave_agb, tc)
@@ -109,7 +109,7 @@ class TestEndToEndBenchmarks:
         """Full per-pixel carbon pipeline."""
         import rasterio
 
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         with rasterio.open(tmp_hansen_dir / "hansen_lossyear_20S_060W.tif") as src:
             lossyear = src.read(1)
@@ -131,7 +131,7 @@ class TestPerformanceRegression:
 
     def test_chave_computation_fast(self):
         """Chave on 4M pixels should complete in < 1 second."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         tc = np.random.default_rng(42).uniform(0, 100, (2000, 2000)).astype(np.float32)
         start = time.time()

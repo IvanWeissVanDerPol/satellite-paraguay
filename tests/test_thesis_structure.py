@@ -68,11 +68,14 @@ def test_references_bib_count():
 
 
 def test_papers_exist():
-    """All 6 paper drafts exist."""
+    """All 5 paper drafts exist.
+
+    P0010 Yvyra removed in Round-12 (Verra finding was np.random.normal
+    fabrication). Replaced with the new P0030 in Round-13 / Phase 10.
+    """
     repo_root = Path(__file__).parent.parent
     papers = [
         "p0011_yvutu_deforestation/paper.md",
-        "p0010_yvyra_carbon_credits/paper.md",
         "p0012_yvy_indigenous/paper.md",
         "p0025_yrupe_yield/paper.md",
         "p0026_kai_poaching/paper.md",

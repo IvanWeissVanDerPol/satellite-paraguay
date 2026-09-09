@@ -148,7 +148,7 @@ def main():
 
         import numpy as np
 
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         tc = np.random.default_rng(42).uniform(0, 100, (2000, 2000)).astype(np.float32)
         start = time.time()

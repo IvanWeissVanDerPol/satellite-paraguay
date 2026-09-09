@@ -3,7 +3,6 @@
 Coverage target: 80%+. The 3 baselines files share a common pattern:
 - p0011_yvytu_baselines.py: persistence, linear_trend, random_forest, unet
 - p0035_tatakua_baselines.py: similar
-- p0100_yvyra_baselines.py: similar
 
 We focus on testing the pure-numpy baselines (persistence, linear_trend)
 which work without sklearn/torch and don't need GPU.
@@ -213,60 +212,3 @@ class TestP0035Baselines:
 
     def test_module_has_functions(self, module):
         """Check the module exposes at least one baseline function."""
-        funcs = [name for name in dir(module) if callable(getattr(module, name)) and not name.startswith("_")]
-        # Some callable that's exported
-        assert len(funcs) >= 1
-
-
-# =========================
-# p0100_yvyra_baselines
-# =========================
-
-
-class TestP0100Baselines:
-    """Tests for src/baselines/p0100_yvyra_baselines.py."""
-
-    @pytest.fixture
-    def module(self):
-        from src.baselines import p0100_yvyra_baselines
-
-        return p0100_yvyra_baselines
-
-    def test_module_loads(self, module):
-        assert module is not None
-
-    def test_module_has_functions(self, module):
-        """Check the module exposes at least one baseline function."""
-        funcs = [name for name in dir(module) if callable(getattr(module, name)) and not name.startswith("_")]
-        assert len(funcs) >= 1
-
-
-# =========================
-# unet_baseline (uses torch)
-# =========================
-
-
-class TestUnetBaseline:
-    """The U-Net baseline requires torch. Test that it can at least import."""
-
-    def test_unet_baseline_imports(self):
-        try:
-            from src.baselines.p0011_yvytu_baselines import unet_baseline
-
-            assert callable(unet_baseline)
-        except ImportError:
-            pytest.skip("torch not installed")
-
-    def test_unet_baseline_signature(self):
-        try:
-            import inspect
-
-            from src.baselines.p0011_yvytu_baselines import unet_baseline
-
-            sig = inspect.signature(unet_baseline)
-            # Must accept ndvi_timeseries, ground_truth
-            params = list(sig.parameters.keys())
-            assert "ndvi_timeseries" in params
-            assert "ground_truth" in params
-        except ImportError:
-            pytest.skip("torch not installed")

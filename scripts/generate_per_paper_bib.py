@@ -60,7 +60,6 @@ def main():
             "hls",
             "earth observation",
         ],
-        "p0010_yvyra_carbon_credits": [
             "carbon",
             "redd+",
             "redd +",

@@ -1,10 +1,13 @@
 {
-  "timestamp_utc": "2026-09-09T17:41:58.453193+00:00",
+  "timestamp_utc": "2026-09-09T21:06:28+00:00",
   "repo_root": "/opt/data/work/satellite-paraguay",
   "total_claims": 17,
   "by_status_count": {
+    "present": 8,
+    "missing": 0,
     "off-repo": 6,
-    "present": 11
+    "synthetic": 3,
+    "partial": 0
   },
   "claims": [
     {
@@ -14,7 +17,6 @@
       "purpose": "Forest cover at year 2000, eastern Paraguay tile",
       "paper_ids": [
         "P0011",
-        "P0010",
         "P0012"
       ],
       "expected_layers": [
@@ -34,7 +36,6 @@
       "purpose": "Forest cover at year 2000, Chaco tile",
       "paper_ids": [
         "P0011",
-        "P0010",
         "P0012"
       ],
       "expected_layers": null,
@@ -52,7 +53,6 @@
       "purpose": "Year of loss event 2001-2023, eastern tile",
       "paper_ids": [
         "P0011",
-        "P0010",
         "P0012"
       ],
       "expected_layers": null,
@@ -70,7 +70,6 @@
       "purpose": "Year of loss event 2001-2023, Chaco tile",
       "paper_ids": [
         "P0011",
-        "P0010",
         "P0012"
       ],
       "expected_layers": null,
@@ -86,13 +85,7 @@
       "claimed_path": "data/mapbiomas/mapbiomas_paraguay_2023.tif",
       "claimed_size_mb": 38.0,
       "purpose": "Land cover 2023 (33867 x 34409 pixels @ 30 m)",
-      "paper_ids": [
-        "P0011",
-        "P0010",
-        "P0012",
-        "P0025",
-        "P0026"
-      ],
+      "paper_ids": [],
       "expected_layers": null,
       "off_repo_canonical": "data/cache/mapbiomas/mapbiomas_py_2022.npy",
       "status": "off-repo",
@@ -128,11 +121,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "present",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/osm_indigenous/osm_comunidades_indigenas_py.geojson",
-      "actual_size_mb": 0.04913520812988281,
-      "sha256_prefix": null,
-      "notes": "Replaced SYNTHETIC + partial placeholder with REAL OSM polygons fetched via Overpass API (overpass.kumi.systems, 2026-09-08). Query: relation[\"name\"~\"^Comunidad\",i] in PY bbox. 30 features, all admin_level=10/11. EPSG:4326 GeoJSON, 50.3 KB. Limitation: only 30 of ~557 INE-2022 communities are mapped in OSM with polygon geometries; the remaining 527 are points/nodes only or unmapped. For full coverage, use INE 2022 census list in data/raw/ine_indi/ and pair with FPIC engagement to obtain INDI shapefile directly."
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/indi_territories_PLACEHOLDER.csv",
+      "actual_size_mb": 0.0,
+      "sha256_prefix": "dd1b84657840",
+      "notes": "Filename contains PLACEHOLDER \u2014 not real data"
     },
     {
       "name": "INE census 2022 by depto + ethnicity (CSV)",
@@ -144,11 +137,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "present",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/indigenous_communities_2022_summary.csv (+ 2022_comunidades/ + 3 derived CSVs)",
-      "actual_size_mb": 0.12101268768310547,
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/ine_indi/ine_census_2022_depto_etnia_SYNTHETIC.csv",
+      "actual_size_mb": 0.0,
       "sha256_prefix": "109cbe243e5d",
-      "notes": "Replaced SYNTHETIC placeholder with real INE IV Censo Nacional de Poblacion y Viviendas para Pueblos Indigenas 2022 data (Round-11). 557 comunidades across 19 pueblos, 789 aldeas. 49 raw cuadros + 3 derived CSVs in data/raw/ine_indi/."
+      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
     },
     {
       "name": "FAO/MAG Paraguay yield 2023 (JSON)",
@@ -176,11 +169,11 @@
       ],
       "expected_layers": null,
       "off_repo_canonical": null,
-      "status": "present",
-      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/ (18 CSVs: 6 crops x superficie/produccion/rendimiento)",
-      "actual_size_mb": 0.06313800811767578,
+      "status": "synthetic",
+      "actual_path": "/opt/data/work/satellite-paraguay/data/raw/fao_mag/synthetic_yield_2020_2023.csv",
+      "actual_size_mb": 0.01,
       "sha256_prefix": "1ad28a2a837a",
-      "notes": "Replaced SYNTHETIC placeholder with real MAG (Ministerio de Agricultura y Ganaderia) cereal yield data (Round-11 commit 00d69c9). Source: datos.gov.py ffc383ae-bbdb-4fb3-a4a8-0cbb85b5f7a6 (DCEA, 2007/08 to 2024/25). 6 crops x 3 metrics x ~18 departments."
+      "notes": "Filename contains SYNTHETIC \u2014 fixture only"
     },
     {
       "name": "INBIO soybean trial 2024 (CSV)",
@@ -219,9 +212,7 @@
       "claimed_path": "data/cache/verra/verra_paraguay.json",
       "claimed_size_mb": null,
       "purpose": "Carbon credit projects, P0010 Yvyra",
-      "paper_ids": [
-        "P0010"
-      ],
+      "paper_ids": [],
       "expected_layers": null,
       "off_repo_canonical": null,
       "status": "present",

@@ -74,10 +74,13 @@ class TestEndToEndSmoke:
         assert p.config is not None
 
     def test_yvyra_pipeline_full_init(self):
-        from src.papers.p0100_yvyra_carbon_credits.pipeline import YvyraPipeline
+        """P0010 Yvyra was removed in Round-12 audit (np.random.normal fabrication).
 
-        p = YvyraPipeline()
-        assert p.config is not None
+        This test placeholder documents the deletion. The P0010 slot is
+        now occupied by the new P0030 paper (Phase 10), which will
+        get its own pipeline_init test when built.
+        """
+        assert True
 
 
 class TestDataFlow:
@@ -85,7 +88,7 @@ class TestDataFlow:
 
     def test_ndvi_to_carbon(self):
         """NDVI → AGB conversion roundtrip."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         ndvi = np.random.rand(20, 20).astype(np.float32) * 100  # tree cover %
         agb = chave_agb(ndvi)
@@ -111,7 +114,7 @@ class TestCarbonCalculations:
 
     def test_agb_to_carbon(self):
         """AGB → biomass carbon → CO2 conversion."""
-        from scripts.per_pixel_carbon import chave_agb
+        from src.utils.carbon_math import agb_from_canopy_cover_heuristic as chave_agb
 
         # 100% tree cover
         agb = chave_agb(np.array([[100.0]]))
@@ -154,7 +157,6 @@ class TestPipelineImports:
             "p0025_yrupe_yield",
             "p0026_kai_poaching",
             "p0035_tatakua_air_quality",
-            "p0100_yvyra_carbon_credits",
         ],
     )
     def test_import_paper_module(self, paper_name):
@@ -172,7 +174,6 @@ class TestPipelineImports:
             ("p0025_yrupe_yield", "YrupePipeline"),
             ("p0026_kai_poaching", "KaiPipeline"),
             ("p0035_tatakua_air_quality", "TatakuaPipeline"),
-            ("p0100_yvyra_carbon_credits", "YvyraPipeline"),
         ],
     )
     def test_paper_class_instantiation(self, paper_name, class_name):

@@ -78,11 +78,13 @@ def main():
 
     papers = [
         "p0011_yvutu_deforestation",
-        "p0010_yvyra_carbon_credits",
         "p0012_yvy_indigenous",
         "p0025_yrupe_yield",
         "p0026_kai_poaching",
         "p0035_tatakua_air_quality",
+        # p0010_yvyra_carbon_credits removed in Round-12 (Verra finding was
+        # np.random.normal fabrication). Replaced with the new P0030 in
+        # Round-13 / Phase 10.
     ]
 
     targets = papers if args.all else ([args.paper] if args.paper else [])

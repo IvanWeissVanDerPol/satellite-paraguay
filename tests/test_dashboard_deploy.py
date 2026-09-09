@@ -30,19 +30,30 @@ def test_dashboard_app_imports():
                 f"Dashboard dep {mod!r} missing: {e}. " f"Run: uv pip install plotly folium streamlit-folium"
             ) from e
 
-    # Now load dashboard/app.py as a module
-    app_path = REPO / "dashboard" / "app.py"
-    assert app_path.exists(), f"dashboard/app.py not found at {app_path}"
+    # Now load src/dashboard/app.py as a module (Round-12: dashboard/
+    # duplicate was deleted; src/dashboard/ is the canonical copy)
+    app_path = REPO / "src" / "dashboard" / "app.py"
+    assert app_path.exists(), f"src/dashboard/app.py not found at {app_path}"
 
     spec = importlib.util.spec_from_file_location("dashboard_app", app_path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
 
-    # Verify expected symbols
-    assert hasattr(mod, "HAS_STREAMLIT"), "HAS_STREAMLIT not set"
-    assert hasattr(mod, "load_paraguay_data"), "load_paraguay_data missing"
-    assert hasattr(mod, "main"), "main() entry point missing"
-    assert mod.HAS_STREAMLIT is True, "streamlit not detected"
+    # Verify expected symbols.
+    # Note (Round-12 audit): the HAS_STREAMLIT guard was removed because
+    # it was a no-op (turned ImportError into AttributeError); we now
+    # assume streamlit is installed and let it fail loudly if not.
+    assert hasattr(mod, "page_overview"), "page_overview() missing"
+    assert hasattr(mod, "page_departments"), "page_departments() missing"
+    # The dashboard uses top-level streamlit calls (no main() function);
+    # verify that the PAGES dict exists and has the expected keys.
+    assert hasattr(mod, "PAGES"), "PAGES dict missing"
+    expected_pages = {"Overview", "Departments", "Indigenous Territories",
+                      "Carbon & Verra", "Models", "Uncertainty", "References"}
+    assert set(mod.PAGES.keys()) == expected_pages, (
+        f"PAGES keys mismatch: got {set(mod.PAGES.keys())}, "
+        f"expected {expected_pages}"
+    )
 
 
 def test_dashboard_pages_directory():

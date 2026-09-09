@@ -30,11 +30,12 @@ CANONICAL_BIB = REPO / "thesis" / "references.bib"  # F-1 single source of truth
 
 PAPERS = [
     "p0011_yvutu_deforestation",
-    "p0010_yvyra_carbon_credits",
     "p0012_yvy_indigenous",
     "p0025_yrupe_yield",
     "p0026_kai_poaching",
     "p0035_tatakua_air_quality",
+    # np.random.normal fabrication). Replaced with the new P0030 in
+    # Round-13 / Phase 10.
 ]
 
 

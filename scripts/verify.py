@@ -45,7 +45,6 @@ def verify_pipelines():
         from src.papers.p0025_yrupe_yield import YrupePipeline
         from src.papers.p0026_kai_poaching import KaiPipeline
         from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
-        from src.papers.p0100_yvyra_carbon_credits import YvyraPipeline
 
         for cls in [YvytuPipeline, YvyraPipeline, YrupePipeline, YvyPipeline, KaiPipeline, TatakuaPipeline]:
             cls()

@@ -28,9 +28,9 @@ of Paraguay from Foundation Models to Field Deployment}
 \maketitle
 
 \chapter*{Abstract}
-This thesis presents six journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0010 \textit{Yvyra} (Verra carbon-credit verification); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, $\sim$122 MtCO$_2$e of carbon emitted (corrected from earlier 2,755 Mt figure that was 22.7$\times$ too high --- see Round-12 audit), 2.90$\times$ indigenous-territory deforestation disparity, +35.9\% Verra under-claim, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
+This thesis presents five journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, $\sim$122 MtCO$_2$e of carbon emitted (corrected from earlier 2,755 Mt figure that was 22.7$\times$ too high --- see Round-12 audit), 2.90$\times$ indigenous-territory deforestation disparity, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
 
-This thesis applies an honest-reporting convention across all 6 papers (see \texttt{docs/CONVENTIONS.md}). The 2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers (F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72 µg/m$^3$ \textit{etc.}) with measured pilot numbers and explicit Honest Reporting Notes appended to each paper. The work is novel in: (i) geographic focus (Latin American dry forest, underexplored in foundation-model literature); (ii) honest failure-mode analysis for cross-domain transfer (P0025) and synthetic-to-real gap measurement (P0026) as publications in their own right; (iii) CARE Principles-compliant design for indigenous data; (iv) open-source release of all code + data under CC-BY-NC-4.0 license. The contribution is a \textbf{reproducible baseline collection}, not a set of forward-claim operational deployments; per-paper GPU re-runs + partnership engagements are documented as future work in \texttt{docs/AGENT\_TODO.md}.
+This thesis applies an honest-reporting convention across all 5 papers (see \texttt{docs/CONVENTIONS.md}). The 2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers (F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72 µg/m$^3$ \textit{etc.}) with measured pilot numbers and explicit Honest Reporting Notes appended to each paper. The work is novel in: (i) geographic focus (Latin American dry forest, underexplored in foundation-model literature); (ii) honest failure-mode analysis for cross-domain transfer (P0025) and synthetic-to-real gap measurement (P0026) as publications in their own right; (iii) CARE Principles-compliant design for indigenous data; (iv) open-source release of all code + data under CC-BY-NC-4.0 license. The contribution is a \textbf{reproducible baseline collection}, not a set of forward-claim operational deployments; per-paper GPU re-runs + partnership engagements are documented as future work in \texttt{docs/AGENT\_TODO.md}. The P0010 Yvyra carbon-credit paper was removed entirely in Round-12 after the audit identified it as 	exttt{np.random.normal}-driven; see commit message for commit 7c... [replaced with replacement paper in Phase 10].
 
 \tableofcontents
 
@@ -68,7 +68,6 @@ This thesis makes 6 contributions:
 
 \begin{enumerate}
 \item \textbf{P0011 Yvutu}: First Paraguay-specific Prithvi fine-tuning for deforestation detection. \textbf{Measured CPU pilot result (see \texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):} F1 = 0.559 (U-Net from scratch), F1 = 0.497 (Prithvi mock fallback). The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
-\item \textbf{P0010 Yvyra}: First AI carbon credit verifier for Paraguay. \textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):} +35.9\% mean Verra under-claim across 5 projects (124,310 ha). The F1 = 0.83 and R$^2$ = 0.79 figures in earlier drafts were aspirational.
 \item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 claim in earlier drafts was aspirational, not measured; see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md} for the measured 2.90$\times$ disparity from 10 territories with 95\% BCa bootstrap CI [1.72, 4.20]).
 \item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):} multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer ratio 0.082. The R$^2$ = 0.78 figure in earlier drafts was aspirational.
 \item \textbf{P0026 Kai}: First YOLOv8 wildlife detector for Paraguay's national parks. \textbf{Measured synthetic-vs-real gap (see \texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):} mAP@0.5 = 0.50 synthetic, 0.18 real (Guyra 5,000 images).
@@ -166,32 +165,6 @@ Yvutu fine-tunes Prithvi-300M on MapBiomas Paraguay labels. The architecture is 
 
 The carbon estimate uses the corrected pixel-area + power-law AGB heuristic. The previous draft quoted 2,755 Mt CO$_2$e, a value 22.7$\times$ too high under the equation documented at \texttt{src/utils/carbon\_math.py} (Round-12 audit fix): pixel area 0.0864 ha at Paraguay's $-25^\circ$ latitude (Hansen GFC v1.11 is 0.000278$^\circ$, not 0.00025$^\circ$); COEFFICIENT = 240 Mg/ha at 100\% canopy cover, EXPONENT = 2.5; IPCC carbon fraction 0.47; CO$_2$/C molar ratio 44/12. The 2,755 Mt figure also attributed the heuristic to Chave 2014 (which describes a tree-level pantropical allometry using diameter + wood density + height, not a canopy-cover-to-biomass power law) --- see the module docstring for the full disambiguation.
 
-\chapter{P0010 Yvyra: Carbon Credit Verification}
-\label{ch:p0010}
-
-\section{Problem}
-
-5 Verra projects in Paraguay totaling 124,310 ha. No satellite-based verification.
-
-\section{Method}
-
-Yvyra combines Hansen GFC v1.11 with the Verra VCS registry. For each project, Hansen-derived CO$_2$e loss (per-pixel Chave 2014 AGB + IPCC Tier-1 conversion) is compared against the Verra-claimed emissions reduction. The AlphaEarth embedding component was not run in this thesis; the R$^2$ = 0.79 figure in earlier drafts was an AlphaEarth literature benchmark on different data, not a Yvyra measurement.
-
-\section{Results}
-
-\textbf{Measured (see \texttt{papers/drafts/p0010\_yvyra\_carbon\_credits/ACTUAL\_RESULTS.md}):}
-\begin{itemize}
-\item Total Verra-claimed CO$_2$e reductions (2001-2023): 3.30 MtCO$_2$e
-\item Total Hansen-derived CO$_2$e loss (2001-2023): 4.49 MtCO$_2$e
-\item Total over-crediting across 5 projects: +1.19 MtCO$_2$e
-\item Mean under-claim ratio: +35.9\% (range +33.3\% to +50.0\%)
-\item Sign test: 5 of 5 positive, $p = 0.0625$ (one-tailed)
-\item Wilcoxon signed-rank: $p = 0.031$
-\item Sensitivity band: ±8\% across carbon fraction (0.42-0.52) + Chave wet/dry + forest threshold (30/50/70\%)
-\end{itemize}
-
-The negative finding is robust under all tested sensitivity scenarios. The qualitative direction (all 5 Verra projects under-claim) is statistically robust. The F1 = 0.83 / R$^2$ = 0.79 figures in earlier drafts were aspirational.
-
 \chapter{P0012 Yvy: Indigenous Land Tenure}
 \label{ch:p0012}
 
@@ -209,7 +182,7 @@ Buffer-based conflict detection between Hansen GFC v1.11 loss polygons and the 1
 \begin{itemize}
 \item 2.90$\times$ disparity ratio (mean indigenous-territory deforestation rate 24.67\% vs. national 8.50\%)
 \item 95\% BCa bootstrap CI: [1.72, 4.20] (n=1000 resamples)
-\item $\chi^2 = 460{,}597$, df=9, $p < 0.001$
+\item One-sample $t$-test on territory proportions (n=10): $t(9) = 3.99$, one-sided $p = 0.0016$ (audit-fixed value; the previous $\chi^2 = 460{,}597$ used pixel-level pseudoreplication)
 \item 10 of 10 territories have above-national deforestation rate
 \item Worst single case: Carmelo Peralta (Enlhet Norte) at 49.45\%
 \item Best single case: Angaité-Filadelfia (Angaité) at 7.21\%
@@ -324,8 +297,7 @@ satellite-paraguay/
 \item 7,912 Paraguay tiles (10x10 km)
 \item 8,010 Catastro parcels
 \item 10 indigenous territories
-\item 5 Verra projects
-\item 1,825 OpenAQ records
+\item \item 1,825 OpenAQ records
 \item 13 months Sentinel-5P
 \end{itemize}
 
@@ -334,13 +306,12 @@ satellite-paraguay/
 
 \section{Contributions}
 
-This thesis delivers 6 published-quality papers on Paraguay environmental monitoring, all built atop shared infrastructure. The aggregate contribution is:
+This thesis delivers 5 published-quality papers on Paraguay environmental monitoring, all built atop shared infrastructure. The aggregate contribution is:
 
 \begin{itemize}
 \item 16,628 km$^2$ of measured forest loss quantified (MapBiomas Paraguay Collection 2)
 \item $\sim$122 MtCO$_2$e carbon emitted (corrected from 2,755 Mt, see Round-12 audit)
 \item 2.90$\times$ indigenous-territory deforestation disparity (95\% CI [1.72, 4.20])
-\item +35.9\% mean Verra under-claim across 5 projects
 \item 0.50$\to$0.18 synthetic-to-real mAP gap (gauge for camera-trap CV)
 \item 14.7 \micro g/m$^3$ RMSE air-quality LSTM (24\% over persistence)
 \end{itemize}

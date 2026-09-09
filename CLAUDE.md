@@ -13,15 +13,17 @@ answering a research question about earth observation of Paraguay:
 
 | ID | Paper | Topic |
 |---|---|---|
-| `p0011_yvutu_deforestation` | Yvutu | Deforestation detection (Sentinel-2, Chaco) |
-| `p0010_yvyra_carbon_credits` | Yvyra | Carbon credit verification (Sentinel-1) |
+| `p0011_yvutu_deforestation` | Yvutu | Deforestation detection (Sentinel-2) |
 | `p0012_yvy_indigenous` | Yvy | Indigenous land monitoring (Landsat time series) |
 | `p0025_yrupe_yield` | Yrupe | Soybean yield prediction (Sentinel-2 + MODIS) |
 | `p0026_kai_poaching` | Kai | Wildlife poaching detection (camera traps) |
 | `p0035_tatakua_air_quality` | Tatakua | Air quality from satellite AOD (MODIS) |
 
-The 6 Guaraní names (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) are the
+The 5 Guaraní names (Yvutu, Yvy, Yrupe, Kai, Tatakua) are the
 **first-author voice** of each paper. They are NOT placeholders.
+
+**P0010 removal note (2026-09-08, Round-12 audit):** P0010 Yvyra was removed from this monograph after the external audit identified the Verra finding as np.random.normal-driven fabrication (35 + np.random.normal(0, 5), with Hansen estimate computed and discarded). The directory `papers/drafts/p0010_yvyra_carbon_credits/` and `src/papers/p0100_yvyra_carbon_credits/` are deleted; the related scripts `carbon_credit_verifier.py`, `per_pixel_carbon.py`, and config `configs/p0010_yvyra.yaml` are also removed. See commit message for commit 7c... (Phase 8).
+
 
 ---
 

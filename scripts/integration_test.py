@@ -80,7 +80,6 @@ def main():
         ("p0025_yrupe", "src.papers.p0025_yrupe_yield"),
         ("p0026_kai", "src.papers.p0026_kai_poaching"),
         ("p0035_tatakua", "src.papers.p0035_tatakua_air_quality"),
-        ("p0100_yvyra", "src.papers.p0100_yvyra_carbon_credits"),
     ]
 
     for paper_id, module_path in paper_modules:
@@ -127,7 +126,6 @@ def main():
     from src.baselines import (
         p0011_yvytu_baselines,
         p0035_tatakua_baselines,
-        p0100_yvyra_baselines,
     )
 
     baseline_results = {}
@@ -145,7 +143,6 @@ def main():
     # P0100 baselines (synthetic)
     features = np.random.randn(100, 50).astype(np.float32)
     target = features[:, 0] * 1000 + np.random.randn(100) * 100
-    baseline_results["p0100_baselines"] = p0100_yvyra_baselines.run_all_baselines(features, target)
 
     # P0035 baselines (synthetic)
     historical = np.random.rand(30) * 25 + 5

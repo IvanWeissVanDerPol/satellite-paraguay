@@ -72,7 +72,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/hansen/hansen_treecover2000_20S_060W.tif",
         claimed_size_mb=620.0,
         purpose="Forest cover at year 2000, eastern Paraguay tile",
-        paper_ids=["P0011", "P0010", "P0012"],
+        paper_ids=["P0011", "P0012"],  # TODO: verify per-claim paper IDs
         expected_layers=["treecover2000"],
         off_repo_canonical="data/cache/hansen/hansen_2018_2023.npz",
     ),
@@ -81,7 +81,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/hansen/hansen_treecover2000_20S_070W.tif",
         claimed_size_mb=620.0,
         purpose="Forest cover at year 2000, Chaco tile",
-        paper_ids=["P0011", "P0010", "P0012"],
+        paper_ids=["P0011", "P0012"],  # TODO: verify per-claim paper IDs
         off_repo_canonical="data/cache/hansen/hansen_2018_2023.npz",
     ),
     DataClaim(
@@ -89,7 +89,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/hansen/hansen_lossyear_20S_060W.tif",
         claimed_size_mb=152.0,
         purpose="Year of loss event 2001-2023, eastern tile",
-        paper_ids=["P0011", "P0010", "P0012"],
+        paper_ids=["P0011", "P0012"],  # TODO: verify per-claim paper IDs
         off_repo_canonical="data/cache/hansen/hansen_2018_2023.npz",
     ),
     DataClaim(
@@ -97,7 +97,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/hansen/hansen_lossyear_20S_070W.tif",
         claimed_size_mb=152.0,
         purpose="Year of loss event 2001-2023, Chaco tile",
-        paper_ids=["P0011", "P0010", "P0012"],
+        paper_ids=["P0011", "P0012"],  # TODO: verify per-claim paper IDs
         off_repo_canonical="data/cache/hansen/hansen_2018_2023.npz",
     ),
     # ---------- MapBiomas Paraguay 2023 ----------
@@ -106,7 +106,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/mapbiomas/mapbiomas_paraguay_2023.tif",
         claimed_size_mb=38.0,
         purpose="Land cover 2023 (33867 x 34409 pixels @ 30 m)",
-        paper_ids=["P0011", "P0010", "P0012", "P0025", "P0026"],
+        paper_ids=[],  # populated per claim
         off_repo_canonical="data/cache/mapbiomas/mapbiomas_py_2022.npy",
     ),
     # ---------- Sentinel-2 L2A ----------
@@ -171,7 +171,7 @@ CLAIMS: list[DataClaim] = [
         claimed_path="data/cache/verra/verra_paraguay.json",
         claimed_size_mb=None,
         purpose="Carbon credit projects, P0010 Yvyra",
-        paper_ids=["P0010"],
+        paper_ids=[],  # populated per claim
         off_repo_canonical=None,
         notes="Curated list — downloaded via Verra web registry, no API.",
     ),

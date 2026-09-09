@@ -59,12 +59,6 @@ class TestPaperScriptsExist:
                 ],
             ),
             (
-                "P0010",
-                [
-                    "papers/drafts/p0010_yvyra_carbon_credits/ACTUAL_RESULTS.md",
-                ],
-            ),
-            (
                 "P0012",
                 [
                     "papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md",
@@ -222,7 +216,6 @@ class TestConfigFiles:
     @pytest.mark.parametrize(
         "config",
         [
-            "configs/p0010_yvyra.yaml",
             "configs/p0011_yvutu.yaml",
             "configs/p0012_yvy.yaml",
             "configs/p0025_yrupe.yaml",
@@ -260,7 +253,6 @@ class TestPaperLaTeX:
     @pytest.mark.parametrize(
         "paper_id,paper_dir",
         [
-            ("P0010", "papers/drafts/p0010_yvyra_carbon_credits"),
             ("P0011", "papers/drafts/p0011_yvutu_deforestation"),
             ("P0012", "papers/drafts/p0012_yvy_indigenous"),
             ("P0025", "papers/drafts/p0025_yrupe_yield"),
@@ -284,8 +276,8 @@ class TestStatusScorecard:
 
     def test_scorecard_has_six_papers(self):
         content = (REPO_ROOT / "STATUS.md").read_text()
-        # 6 papers: P0010, P0011, P0012, P0025, P0026, P0035
-        for pid in ["P0010", "P0011", "P0012", "P0025", "P0026", "P0035"]:
+        # 5 papers (P0010 removed in Round-12); P0011, P0012, P0025, P0026, P0035
+        for pid in ["P0011", "P0012", "P0025", "P0026", "P0035"]:
             assert pid in content, f"{pid} not in STATUS.md"
 
 
