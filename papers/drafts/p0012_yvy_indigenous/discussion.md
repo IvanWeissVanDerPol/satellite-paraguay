@@ -1,13 +1,13 @@
 # Discussion
 
-## D.1 The 2.90× disparity as the reversal of a global pattern
+## D.1 The 3.27× disparity as the reversal of a global pattern
 
 The most consequential finding of this paper is **statistically
-robust**: across two independent test families (parametric χ² on
+robust**: across two independent test families (one-sample t-test (n=10) and bootstrap on
 the categorical lose/not-lose table, and non-parametric BCa
 bootstrap on the ratio), the indigenous territories of the
-Paraguayan Chaco show 2.90× the national deforestation rate,
-95% CI [1.72, 4.20]. All 10 of 10 territories exceed the national
+Paraguayan Chaco show 3.27× the national deforestation rate,
+95% CI [2.26, 4.37]. All 10 of 10 territories exceed the national
 rate; the worst case (Carmelo Peralta) has lost nearly half of
 its 2000 forest cover.
 
@@ -15,7 +15,7 @@ This finding **reverses** the dominant pattern documented in the
 indigenous-land literature. Sze et al. (2022) report a 22% lower
 deforestation rate inside indigenous territories versus outside,
 controlling for biome and confounders, based on a global sample of
-~15,000 territories. Our 2.90× disparity (= 190% higher
+~15,000 territories. Our 3.27× disparity (= 190% higher
 deforestation) is in the opposite direction. **The reversal is
 not subtle**: it is a 7-fold flip in the direction of effect.
 
@@ -37,7 +37,7 @@ D.5 and are not done in this paper.
 
 ### D.1.1 What the disparity is *not*
 
-The 2.90× disparity is **not** a measurement of legal status of
+The 3.27× disparity is **not** a measurement of legal status of
 indigenous lands under Paraguayan law. It is a measurement of
 observed deforestation from satellite data. Whether this
 disparity reflects:
@@ -125,7 +125,7 @@ this analysis is *not* in this paper.
 
 ## D.4 Confounders we did not control for
 
-The 2.90× disparity is **uncontrolled** in the formal
+The 3.27× disparity is **uncontrolled** in the formal
 epidemiological sense. We compare per-pixel loss inside vs outside
 territories, but we do not match on covariates that would
 strengthen the causal claim.
@@ -166,7 +166,7 @@ the legal-claims data from INDI's boundary commission.
 
 The unprojected magnitude of these controls is uncertain without
 the actual analysis. The conservative expectation is that the
-point estimate drops from 2.90× to somewhere in [1.5, 2.5]× after
+point estimate drops from 3.27× to somewhere in [1.5, 2.5]× after
 controls. Even at 1.5×, the disparity is statistically and
 substantively significant. The qualitative finding ("territories
 deforest faster than the national rate") is not contingent on
@@ -175,7 +175,7 @@ the controls.
 ## D.5 The CARE Principles gap
 
 This paper's substantive finding — that indigenous territories
-in the Chaco are deforested at 2.90× the national rate — is a
+in the Chaco are deforested at 3.27× the national rate — is a
 **public data analysis** that anyone can reproduce from the
 published sources. **It is not** a CARE-compliant analysis
 of indigenous data because the data flow has been:
@@ -202,7 +202,7 @@ Per the **CARE Principles for Indigenous Data Governance**
    per-community attribution could also be used to target
    communities for unwanted attention.
 
-We conclude that **the substantive finding (2.90× disparity) is
+We conclude that **the substantive finding (3.27× disparity) is
 public-data and is therefore publishable without CARE
 compliance on a strict reading**. However, the **per-community
 maps and per-community polygon attribution** are not publishable
@@ -215,7 +215,7 @@ The prerequisite work for any P0012 operational deployment:
 
 1. **Per-community courtesy briefing** (~1 hour per community,
    ~10 total). Present the country-scale analysis and the
-   2.90× disparity finding to each community council. Document
+   3.27× disparity finding to each community council. Document
    the briefing in INDI's records.
 2. **INDI coordination** (~3-6 months human time). Discuss
    preferred reporting format, frequency, data sovereignty.
@@ -240,7 +240,7 @@ the paper's operational deployment.
 Publishable today, with the current FPIC gap explicitly
 acknowledged:
 
-- The 2.90× disparity finding (Section 3) — no per-community
+- The 3.27× disparity finding (Section 3) — no per-community
   attribution needed, just the aggregate numbers.
 - The per-territory ranking (Section R.4.1) — at the level of
   "Carmelo Peralta is the worst at 49.45%", without maps showing
@@ -260,7 +260,7 @@ This is consistent with the project's broader `docs/CONVENTIONS.md`
 principle: "aspirational claims require future evidence, not
 reframing of past work."
 
-## D.6 What the 2.90× finding does NOT imply
+## D.6 What the 3.27× finding does NOT imply
 
 We deliberately resist the temptation to over-interpret:
 
@@ -280,7 +280,7 @@ We deliberately resist the temptation to over-interpret:
 
 3. **It does not imply that all 10 territories are equally
    affected.** The 7× spread is itself a contribution; the
-   headline 2.90× is a summary statistic, not a per-community
+   headline 3.27× is a summary statistic, not a per-community
    characterization.
 
 4. **It does not provide a basis for policy prioritization of

@@ -6,7 +6,7 @@ labels, and a Chave-2014-derived AGB feature stack to predict
 soybean yields in the Eastern Paraguay Pampas. The **measured
 pilot result** on synthetic data is that the headline hypothesis
 (P1: cross-domain transfer ratio ≥ 0.50) was **not validated**:
-the measured transfer ratio was 0.082, the F1 was 0.497 (vs. the
+the measured transfer ratio was undefined, the F1 was 0.497 (vs. the
 0.83 target), the AGB R² was undefined, and the yield MAE was
 3.20 t/ha (4.3× the 0.74 target).
 

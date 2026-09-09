@@ -11,7 +11,7 @@ against the actually measured values from the 2026-08-03 pilot run.
 | Head 1: Soybean-pixel classification | F1 | 0.83 | **0.497** | ❌ Far below |
 | Head 2: AGB regression (per-pixel) | R² | 0.62 | **not defined** (constant prediction) | ❌ Failed |
 | Head 3: Yield regression (per-pixel) | MAE (t/ha) | 0.74 | **3.20** | ❌ 4.3× worse than claimed |
-| Cross-domain transfer ratio | — | 0.74 | **0.082** | ❌ Far below |
+| Cross-domain transfer ratio | — | 0.74 | **undefined** | ❌ Far below |
 
 **The headline result of this paper is that the measured
 performance does not validate the headline claim.** All four
@@ -83,7 +83,7 @@ $$r_{\text{MAE}} = 1 - \frac{\text{MAE}_{\text{transfer}} - \text{MAE}_{\text{pe
 
 where MAE$_{oracle}$ is the floor of 1.0 t/ha (a noise-level
 predictor). For both transfer and from-scratch, MAE$_{transfer}$ ≈
-MAE$_{persistence}$ ≈ 3.20, giving $r_{\text{MAE}} \approx 0.082$.
+MAE$_{persistence}$ ≈ 3.20. (Note: the "transfer ratio undefined" reported elsewhere in this paper does NOT have a corresponding code implementation; the CNN did not converge, so no transfer ratio can be derived from a trained model. The undefined figure should be treated as a placeholder pending a working multi-task implementation.)
 
 This is **far below** the published threshold of "meaningful
 transfer" ($r > 0.50$). The conclusion: **the cross-domain
@@ -121,7 +121,7 @@ The degenerate failure mode is informative:
 
 In one sentence: **the cross-domain transfer hypothesis (P1)
 fails on the synthetic dataset with F1 = 0.497 (vs. 0.74
-target), transfer ratio 0.082 (vs. 0.74 target), MAE = 3.20
+target), transfer ratio: undefined (CNN did not converge), MAE = 3.20
 t/ha (vs. 0.74 target), R² undefined (vs. 0.62 target).**
 
 We deliberately do not compute confidence intervals, bootstrap
@@ -137,7 +137,7 @@ sophistication would not change the qualitative finding.
 | F1 = 0.83 soybean classification | ❌ **aspirational** | Claimed in paper.md; measured = 0.497 |
 | R² = 0.62 AGB regression | ❌ **aspirational** | Claimed in paper.md; measured = undefined |
 | MAE = 0.74 t/ha yield | ❌ **aspirational** | Claimed in paper.md; measured = 3.20 (4.3× worse) |
-| Transfer ratio = 0.74 | ❌ **aspirational** | Claimed in paper.md; measured = 0.082 |
+| Transfer ratio = 0.74 | ❌ **aspirational** | Claimed in paper.md; measured = undefined |
 | Pipeline runs end-to-end | ✅ measured | Synthetic dataset, 8 CPU epochs |
 | Training data fusion (Sentinel-2 + INBIO labels) | ❌ **not run** | All training was on synthetic data |
 | Cross-domain transfer hypothesis | ❌ **falsified under this setup** | Documented in Section R.3 |

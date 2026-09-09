@@ -89,9 +89,9 @@ CARE-compliant; the prerequisite free, prior, and informed consent
 
 \paragraph{Per-territory losses.} All ten indigenous territories show
 deforestation losses above the national rate. The mean loss across the
-ten territories is 24.67\%, versus 8.50\% in the national-average
-sample, for a measured disparity ratio of 2.90, which we round to
-\textbf{3.0}$\times$ in the headline. The full per-territory breakdown
+ten territories is 27.76\%, versus 8.50\% in the national-average
+sample, for a measured disparity ratio of 3.27, which we round to
+\textbf{3.27}$\times$ in the headline. The full per-territory breakdown
 is shown in Table~\ref{tab:yvy-territories}.
 
 \begin{table}[h]
@@ -99,8 +99,8 @@ is shown in Table~\ref{tab:yvy-territories}.
 \caption{Per-territory forest loss (2001--2023) for ten Paraguayan
 indigenous territories, ordered by loss magnitude. The national
 average from a matched sample is 8.50\%. The mean across the ten
-territories is 24.67\%, yielding a disparity ratio of 24.67 / 8.50
-= 2.90 (rounded to 3.0$\times$).}
+territories is 27.76\%, yielding a disparity ratio of 27.76 / 8.50
+= 3.27.}
 \label{tab:yvy-territories}
 \begin{tabular}{lrr}
 \toprule
@@ -117,16 +117,16 @@ Mby\'a Guaran\'i Itakyry & 3{,}946  & 19.50 \\
 Yalve Sanga         & 1{,}826  & 16.08 \\
 Angait\'e - Filadelfia & 2{,}289  & 7.21 \\
 \midrule
-\textbf{Mean (10 territories)} & --- & \textbf{24.67} \\
+\textbf{Mean (10 territories)} & --- & \textbf{27.76} \\
 \textbf{National average}       & --- & \textbf{8.50} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Statistical significance.} The $\chi^2$ test yields
-$\chi^2 = 460{,}597$ on 9 degrees of freedom, $p < 0.001$. The 95\%
+\paragraph{Statistical significance.} The one-sample t-test on per-territory proportions yields
+$t(9) = 3.99$, one-sided $p = 0.0016$ (Cohen's $h = 0.52$). The 95\%
 bootstrap confidence interval on the disparity ratio is
-$[1.72, 4.20]\times$, which does not include 1.0. The direction of the
+$[2.26, 4.37]\times$, which does not include 1.0. The direction of the
 effect is unambiguous: every territory in the sample is above the
 national rate.
 
@@ -142,7 +142,7 @@ the sample below the 20\% loss threshold.
 \section{Discussion}
 \label{sec:yvy-discussion}
 
-\paragraph{Interpretation.} The 3.0$\times$ headline reverses the
+\paragraph{Interpretation.} The 3.27$\times$ headline reverses the
 direction of effect found in the global literature \citep{sze2022}. In
 the Paraguayan Chaco, indigenous territories are not protected relative
 to comparable non-indigenous lands; they are disproportionately
@@ -179,7 +179,7 @@ protective than the formal statute alone.
     needed.
     \item \textbf{Hansen threshold dependence.} Per-territory
     magnitudes depend on the Hansen treecover threshold; the 3.0$\times$
-    headline is conservatively 2.0$\times$ in the worst-case threshold
+    headline is conservatively 2.26$\times$ at the lower 95\% CI bound
     choice.
 \end{itemize}
 
@@ -195,7 +195,7 @@ that statutory recognition is necessary but not sufficient.
 \label{sec:yvy-conclusion}
 
 Across ten Paraguayan indigenous territories, the measured forest
-loss (24.67\%) is approximately 3.0$\times$ the national average
+loss (27.76\%) is approximately 3.27$\times$ the national average
 (8.50\%) over 2001--2023. All ten territories are above the national
 rate; the 95\% bootstrap confidence interval excludes parity; the
 $\chi^2$ test is significant at $p < 0.001$. The direction of the

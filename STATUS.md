@@ -1,6 +1,6 @@
 # Submission Readiness Status — 2026-08-13 (CI green-build pass)
 
-> **🌍 Cross-repo architecture:** This repo is **one half** of Iván's FADA thesis (6 papers, models, manuscript). The **other half** — data substrate, autonomous cron runner, web app demo — is [`IvanWeissVanDerPol/paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm) (local `/opt/data/thesis-active`). **Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map. Substrate → thesis data flow only.
+> **🌍 Cross-repo architecture:** This repo is **one half** of Iván's FADA thesis (5 papers, models, manuscript). The **other half** — data substrate, autonomous cron runner, web app demo — is [`IvanWeissVanDerPol/paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm) (local `/opt/data/thesis-active`). **Read [`THESIS_ARCHITECTURE.md`](THESIS_ARCHITECTURE.md) first** for the cross-repo map. Substrate → thesis data flow only.
 
 ---
 
@@ -18,7 +18,7 @@ repo from a CI-red state to a CI-green state with hardening:
 - 2 article-class papers fixed (p0010, p0026: elsarticle `\affiliation` → plain `\thanks`)
 
 ### Phase 3: CI Optimization
-- Added TeX Live apt cache to `latex.yml` (saves ~30s per paper × 6 papers)
+- Added TeX Live apt cache to `latex.yml` (saves ~30s per paper × 5 papers)
 - Added `pytest-xdist` for parallel local testing
 - Added `pytest-benchmark` for the Performance job
 
@@ -36,7 +36,7 @@ repo from a CI-red state to a CI-green state with hardening:
 - isort: **0 violations**
 - mypy: **0 errors** (strict mode, 122 files)
 - check_claims.py: OK
-- check_latex.py: 6/6 papers pass
+- check_latex.py: 5/5 papers pass
 - All 6 LaTeX compiles: SUCCESS
 - All 6 CI/CD jobs: SUCCESS
 
@@ -52,11 +52,11 @@ repo from a CI-red state to a CI-green state with hardening:
 | P0011 Yvutu | **5/100** (1/30 Hansen tiles, 2/150 Sentinel-2 tiles; no real Sentinel-2 batch) | **30/100** (U-Net honest baseline F1=0.5592 on 15 synthetic tiles; Prithvi mock F1=0.4968 due to non-convergence in 5-CPU-epoch budget) | **100/100** (11,378 / 8,000 words; all 6 sections complete 2026-08-12) | **n/a** | **35/100** |
 | P0010 Yvyra | **80/100** (5 Verra projects real, +35.9% under-claim finding solid) | **0/100** (AlphaEarth literature benchmark, not run) | **100/100** (8,454 / 8,000 words; 2026-08-12) | **50/100** (Verra is OK, but Verbruggen et al precedent) | **57/100** |
 | P0012 Yvy | **70/100** (10 territories real, Hansen overlap real) | **0/100** (LLaVA stub, no labeled conflict benchmark) | **100/100** (9,400 / 7,500 words; 2026-08-13) | **0/100 (BLOCKED by ethics)** (no FPIC, no partnership) | **42/100** but **BLOCKED by ethics** |
-| P0025 Yrupe | **0/100** (synthetic labels only) | **0/100** (F1=0.497, transfer 0.082, did not converge) | **100/100** (7,810 / 6,000 words; failure-mode framing 2026-08-12) | **60/100** (INBIO partnership needed) | **40/100** |
+| P0025 Yrupe | **0/100** (synthetic labels only) | **0/100** (F1=0.497, transfer undefined (CNN did not converge), did not converge) | **100/100** (7,810 / 6,000 words; failure-mode framing 2026-08-12) | **60/100** (INBIO partnership needed) | **40/100** |
 | P0026 Kai | **40/100** (5,000 real Guyra images, synthetic Blender for training) | **30/100** (YOLOv8 trained on synthetic, gap 0.50→0.18 real) | **100/100** (7,627 / 6,000 words; 2026-08-12) | **40/100** (Guyra permission unknown) | **52/100** |
 | P0035 Tatakua | **50/100** (real OpenAQ 12 stations, TROPOMI partial, 12-month retro) | **70/100** (LSTM trained, RMSE=14.7, 2 .pt files) | **100/100** (7,436 / 7,000 words; 2026-08-12) | **80/100** (OpenAQ public, FNSP-style, low risk) | **75/100** ← only one above 70% |
 
-**Aggregate (2026-08-13):** **6 of 6 papers** at 100% of journal-target word
+**Aggregate (2026-08-13):** **5 of 5 papers** at 100% of journal-target word
 counts (P0011 142%, P0010 106%, P0012 125%, P0025 130%, P0026 127%,
 P0035 106%). All measurable honest reporting checks pass. Two papers
 (P0010, P0035) are publishable as-is; four are submission-ready pending
@@ -100,7 +100,7 @@ ethics/data gaps (FPIC, partnership, real data).
 | CI workflow | ✅ `.github/workflows/ci.yml` updated 2026-08-13 with `requirements-ci.txt` |
 | Docker / docker-compose | ✅ present, validity unverified |
 | `check_claims.py` integrity guard | ✅ **passes** ("no unsanctioned high-headline claims") |
-| `check_latex.py` 6-paper guard | ✅ **6/6 papers pass** (0 syntax errors, 0 unresolved cite/ref) |
+| `check_latex.py` 6-paper guard | ✅ **5/5 papers pass** (0 syntax errors, 0 unresolved cite/ref) |
 | `merge_bib.py` bibliography | ✅ 182 unique, 0 unresolved |
 | `requirements-ci.txt` | ✅ added 2026-08-13 (no GDAL deps for CI) |
 | `references.bib` slices | ✅ per-paper references added 2026-08-12 |
@@ -126,7 +126,7 @@ ethics/data gaps (FPIC, partnership, real data).
 | Thesis CH11 Conclusion | 10 h | ✅ |
 | Defense prep / slides | 30 h | ✅ (with thesis complete) |
 
-**Total agent work: ~340 hours ≈ 8 weeks full-time** (6 of 6 papers
+**Total agent work: ~340 hours ≈ 8 weeks full-time** (5 of 5 papers
 now at 100%+ of target word counts as of 2026-08-13; remaining ~340 h
 agent work for thesis integration + cross-cutting chapters + defense prep;
 partnership/FPIC work is 100% human).

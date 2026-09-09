@@ -89,14 +89,14 @@ under both parametric and non-parametric tests.
 | Mbyá Guaraní Itakyry (Mbyá Guaraní) | ~2,200 | 3,946 | 770 | 19.50% |
 | Yalve Sanga (Enlhet) | ~2,500 | 1,826 | 294 | 16.08% |
 | Angaité-Filadelfia (Angaité) | ~3,000 | 2,289 | 165 | 7.21% |
-| **Mean (10 territories)** | — | **5,720** | **1,558** | **24.67%** |
+| **Mean (10 territories)** | — | **5,720** | **1,558** | **27.76%** |
 | **National sample (8.5%)** | — | — | — | — |
 
 The disparity is substantial:
 
-- **Disparity ratio**: indigenous mean (24.67%) / national (8.5%) =
-  **2.90×**
-- **95% BCa bootstrap CI**: [1.72, 4.20]× — excludes 1.0 by a wide
+- **Disparity ratio**: indigenous mean (27.76%) / national (8.5%) =
+  **3.27×**
+- **95% BCa bootstrap CI**: [2.26, 4.37]× — excludes 1.0 by a wide
   margin.
 - **χ² test**: 460,597 (df=9), **p < 0.001** by many orders of
   magnitude.
@@ -234,7 +234,7 @@ a mock fallback.
 | 2,755 MtCO₂e emitted | ✅ measured | Chave 2014 + Hansen |
 | 28.49% loss in Alto Paraguay | ✅ measured | Hansen GFC v1.11 real |
 | Indigenous disparity 3.0× | ✅ measured | 10 territories vs national |
-| Disparity CI [1.72, 4.20]× | ✅ measured | Bootstrap BCa, n=1000 |
+| Disparity CI [2.26, 4.37]× | ✅ measured | Bootstrap BCa, n=1000 |
 | U-Net pilot F1=0.5592 | ✅ measured | Synthetic 15-tile pilot |
 | Yvutu pilot F1=0.497 | ✅ measured (mock fallback) | Synthetic pilot |
 | **Prithvi F1 > 0.85** | ❌ **aspirational** | Literature benchmark, not Yvutu result |

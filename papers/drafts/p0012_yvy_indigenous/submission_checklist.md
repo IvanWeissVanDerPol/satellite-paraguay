@@ -17,7 +17,7 @@ includes the layer as a stub. See `paper.md` Section D.5 for the
 FPIC + labeled-evaluation prerequisite work for any per-community
 attribution.
 
-Publication of the **aggregate 2.90× disparity finding** is
+Publication of the **aggregate 3.27× disparity finding** is
 CARE-compliant on a strict reading (public data; no community
 attribution in the released maps). Per-community map release
 requires FPIC engagement (Section D.5 of `discussion.md`).

@@ -14,7 +14,7 @@ with **measured** numbers from the 2026-08-03 pilot run. See
 
 2. **Per-department analysis showing 28.49% loss in Alto Paraguay, with the Chaco frontier accounting for ~47.8% of national loss.**
 
-3. **Per-indigenous-territory analysis showing 2.90× the national rate (95% BCa CI [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001), with Carmelo Peralta worst at 49.45% loss.**
+3. **Per-indigenous-territory analysis showing 3.27× the national rate (95% BCa CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001), with Carmelo Peralta worst at 49.45% loss.**
 
 4. **End-to-end ML pipeline + measured pilot baseline: F1 = 0.5592 (U-Net from scratch) and F1 = 0.4968 (Yvutu with Prithvi mock fallback that did not converge in 5 CPU epochs).**
 

@@ -8,12 +8,12 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](pyproject.toml)
 
 Multi-temporal satellite computer vision for Paraguay. Thesis substrate for
-6 papers on deforestation, carbon credits, indigenous rights, yield prediction,
+5 papers on deforestation, indigenous rights, yield prediction,
 wildlife detection, and air quality.
 
 **Author:** Iván Hocht-VonDerPol (Universidad Nacional de Asunción)
 **Started:** 2026-07-22 (Hansen data acquisition)
-**Status:** **Pilot stage.** ~25% submission-ready across 6 papers. Only P0035
+**Status:** **Pilot stage.** ~25% submission-ready across 5 papers. Only P0035
 Tatakua has a real trained model (LSTM, RMSE = 14.7 µg/m³ measured on real
 OpenAQ data). See [`STATUS.md`](STATUS.md) for per-paper scorecards and
 [`BRUTAL_ROAST.md`](BRUTAL_ROAST.md) for the full self-audit. The 2026-08-10
@@ -45,7 +45,7 @@ measured values; the 2026-08-11 fail-loud pass replaced silent
 | (P0010 Yvyra deleted — see audit fix) | n/a | n/a |
 | Yvutu pilot — U-Net from scratch (CPU) | F1 = 0.559 (P=0.099, R=0.987) | 15 synthetic tiles, 5 epochs |
 | Yvutu pilot — Prithvi "Yvutu" (mock fallback) | F1 = 0.497 | transformers/numpy compat issue |
-| Cross-paper transfer ratio | 0.082 | H3 NOT confirmed at 5 epochs |
+| Cross-paper transfer ratio | undefined (CNN did not converge) | H3 NOT confirmed at 5 epochs |
 | Tatakua air-quality — mean RMSE across 12 stations | 14.7 µg/m³ (24% over persistence) | OpenAQ + TROPOMI, 12-month retro |
 
 ## Repository structure
@@ -57,7 +57,7 @@ satellite-paraguay/
 ├── MASTER_PLAN.md               # 26-week shipping calendar
 ├── CRITIC_200_ANGLES.md         # 200-angle professional roast
 ├── STAKEHOLDER_OUTREACH.md      # 12 stakeholder emails
-├── SUBMISSION_PLAN.md           # 6 papers × 6 months schedule
+├── SUBMISSION_PLAN.md           # 5 papers × 6 months schedule
 ├── OPEN_SCIENCE.md              # Zenodo, DOI, license strategy
 ├── POLICY_BRIEF_es.md           # Spanish + Guaraní policy brief
 ├── FINAL_REPORT.md              # Comprehensive state report
@@ -221,7 +221,7 @@ docker-compose -f docker-compose.production.yml up -d
 
 ### Indigenous disparity (most striking finding)
 - 10 territories, mean loss 24.71%
-- vs national 8.5% rate → ratio 2.91× (bootstrap CI [1.72, 4.20])
+- vs national 8.5% rate → ratio 2.91× (bootstrap CI [2.26, 4.37])
 - Worst: Carmelo Peralta (Enlhet) at 49.45%
 - Best: Mbyá Guaraní Itakyry at 2.91% (smaller Eastern territory)
 - Statistical significance: chi²=460597, p<0.001
@@ -248,7 +248,7 @@ docker-compose -f docker-compose.production.yml up -d
 - **5,000+ lines Python** (production scripts)
 - **60,000+ lines Markdown** (thesis, papers, docs)
 - **80 references** in thesis bibliography
-- **6 papers** in submission queue
+- **5 papers** in submission queue
 - **12 stakeholders** identified for engagement
 
 ## Next steps (1-2 weeks)
@@ -286,7 +286,7 @@ github.com/IvanWeissVanDerPol
 
 ---
 
-**Status as of 2026-08-04:** 30 commits, 53 tests, 6 papers, 12 stakeholders, full production stack, all data real.
+**Status as of 2026-08-04:** 30 commits, 53 tests, 5 papers, 12 stakeholders, full production stack, all data real.
 See `FINAL_REPORT.md` for complete state inventory.
 
 ## 🌍 Cross-repo architecture

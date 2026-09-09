@@ -74,7 +74,7 @@ This paper addresses four questions:
 
 2. **Alarming indigenous disparity finding**: Indigenous territories
    are deforested at **3.0× the national rate** (95% bootstrap CI
-   [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001). All 10 of 10
+   [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001). All 10 of 10
    territories exceed the national rate. The worst,
    Carmelo Peralta (Enlhet Norte), is at 49.45% loss — almost half
    the territory deforested.

@@ -1,0 +1,13 @@
+FIRMS MAP_KEY probe — 2026-09-08T19:50Z
+  key: 442c4acd243b6a6f4d145fed4abe0cd0 (BWS hermes, 32 chars, ghp_-style prefix)
+  status:
+    /api/area?MAP_KEY=...                         200  25446 bytes (HTML dashboard)
+    /api/country/csv/VIIRS_SNPP_NRT/world/1      400  'Invalid API call.'
+    /api/country/csv/MODIS_NRT/world/1           400  'Invalid API call.'
+    /api/country/csv/VIIRS_SNPP_NRT/PRY/5        400  'Invalid API call.'
+    /api/data/active_fire/csv/source/VIIRS_SNPP_NRT/country/world/1day 400  'Invalid API call.'
+  conclusion: MAP_KEY is valid at dashboard layer but invalid at CSV
+  endpoint layer. Most likely cause: key is for Earthdata Login
+  (broader NASA auth), NOT specifically for FIRMS API. Needs to be
+  regenerated at https://firms.modaps.eosdis.nasa.gov/api/ with a
+  new FIRMS-specific signup.

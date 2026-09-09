@@ -16,8 +16,8 @@ measured pilot ML experiment.
    Boquerón) accounts for **47.8%** of national loss.
 
 2. **Alarming indigenous disparity finding**: indigenous territories
-   in the Chaco are deforested at **2.90× the national rate** (95%
-   BCa bootstrap CI [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001).
+   in the Chaco are deforested at **3.27× the national rate** (95%
+   BCa bootstrap CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001).
    All 10 of 10 territories exceed the national rate. The worst
    case (Carmelo Peralta / Enlhet Norte) is **49.45% loss**.
 

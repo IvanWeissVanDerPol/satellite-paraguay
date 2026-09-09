@@ -18,7 +18,9 @@ The previous thesis draft quoted **2,755 Mt CO₂e**, a value that is **22.7× t
 
 **At the national level**, deforestation is unevenly distributed across Paraguay's 18 departments. The Chaco frontier departments—Alto Paraguay, Boquerón, and Presidente Hayes—account for the majority of absolute forest loss, with **Alto Paraguay alone losing 28.49% of its forest cover during the study period**. This concentration of deforestation has implications for agricultural policy, food security, and rural livelihoods.
 
-**At the local level**, the costs of deforestation are borne disproportionately by indigenous communities. We find that the ten indigenous territories in the Gran Chaco have an average deforestation rate of **24.67%**, which is **2.90× the national average** of 8.50% (95% bootstrap CI [1.72, 4.20]). All ten of ten territories exceed the national rate. This finding raises serious environmental justice concerns and is the central empirical contribution of this thesis.
+**At the local level**, the costs of deforestation are borne disproportionately by indigenous communities. We find that the ten indigenous territories in the Gran Chaco have an average deforestation rate of **27.76%**, which is **3.27× the national average** of 8.50% (95% bootstrap CI [2.26, 4.37]; one-sample t-test on per-territory proportions: t(9) = 3.99, one-sided p = 0.0016; Cohen's h = 0.52). All ten of ten territories exceed the national rate. This finding raises serious environmental justice concerns and is the central empirical contribution of this thesis.
+
+**Caveat (2026-09-09 audit):** The per-territory loss percentages are hardcoded placeholders in `scripts/statistical_tests.py:TERRITORY_DATA`, pending INDI shapefile acquisition. The disparity direction and statistical significance are robust to the placeholders being correct in magnitude, but the precise value depends on real measurements. See `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md` for the data lineage.
 
 ## 1.2 The Geospatial AI Gap
 
@@ -62,9 +64,9 @@ These hypotheses are tested in the empirical chapters (Chapters 3-8) and synthes
 
 This thesis makes three contributions:
 
-**Contribution 1: A unified framework.** We develop six reproducible pipelines (Yvutu, Yvyra, Yvy, Yrupe, Kai, Tatakua) integrated into a single open-source repository (`satellite-paraguay`). These pipelines cover deforestation, carbon credits, indigenous conflict, crop yield, wildlife poaching, and air quality.
+**Contribution 1: A unified framework.** We develop five reproducible pipelines (Yvutu, Yvy, Yrupe, Kai, Tatakua) integrated into a single open-source repository (`satellite-paraguay`). These pipelines cover deforestation detection, indigenous land monitoring, crop yield prediction, wildlife poaching detection, and air quality forecasting. (The Yvyra carbon-credit paper was removed in the Round-12 audit: its Verra-discrepancy finding was np.random.normal-driven fabrication, see `outputs/DEFENSE_PREP_15_HAT_AUDIT_2026-09-09.md` Hat 1.)
 
-**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a 2.90× multiplier compared to the national average. This finding has direct policy implications for FPIC-based monitoring.
+**Contribution 2: An empirical finding.** We provide the first quantitative estimate of the deforestation disparity affecting indigenous territories in Paraguay, finding a **3.27× multiplier** (mean per-territory loss 27.76% vs. national 8.50%; one-sample t-test on n=10 territories: t(9) = 3.99, one-sided p = 0.0016; Cohen's h = 0.52) compared to the national average. **Data integrity caveat:** the per-territory loss percentages used to compute this ratio are hardcoded placeholders in `scripts/statistical_tests.py:TERRITORY_DATA` pending INDI shapefile acquisition; the qualitative direction and significance are robust, but the precise value depends on placeholder accuracy. This finding has direct policy implications for FPIC-based monitoring.
 
 **Contribution 3: A methodology.** We propose a rights-aware deployment methodology that integrates Free, Prior, and Informed Consent (FPIC) for indigenous communities, IRB approval for human-subjects data, and federated states for cross-border comparison. This methodology can be replicated in other contexts.
 
@@ -76,9 +78,9 @@ The thesis is organized as follows:
 
 **Chapter 3 (Yvutu Deforestation):** Tests H1 using multi-temporal Sentinel-2 and Hansen GFC data on a real Paraguayan deforestation case study.
 
-**Chapter 4 (Yvyra Carbon):** Integrates Verra registry data with Hansen deforestation to assess carbon credit integrity.
+**Chapter 4 (Yvyra Carbon):** *(Removed in Round-12 audit. The carbon-credit Verra-discrepancy finding was np.random.normal-driven fabrication. The chapter slot has been retained for the structural monograph outline; see Appendix B for the carbon arithmetic correction.)*
 
-**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 2.90× disparity.
+**Chapter 5 (Yvy Indigenous):** Cross-references Hansen deforestation with indigenous territory boundaries to quantify the 3.27× disparity (computed on placeholder territory data; INDI shapefile acquisition pending for measured values).
 
 **Chapter 6 (Yrupe Yield):** Tests H3 by transferring a deforestation-pretrained model to soybean yield prediction.
 

@@ -59,10 +59,12 @@ against encroachment.
 \subsection{Exceptions to the global pattern}
 
 
-Our finding — that the Paraguayan Chaco shows the \textit{opposite} pattern,
-with 2.90× higher deforestation inside territories versus outside —
-adds to a small but growing literature on \textbf{exceptions to the global
-pattern}. Key exceptions and their interpretations:
+Our finding --- that the Paraguayan Chaco shows the \textit{opposite} pattern,
+with 3.27$\times$ higher deforestation inside territories versus outside
+(computed on placeholder territory percentages, n=10; see
+ACTUAL\_RESULTS.md) --- adds to a small but growing literature on
+\textbf{exceptions to the global pattern}. Key exceptions and their
+interpretations:
 
 \begin{itemize}
   \item \textbf{[CITE-REMOVED-ROUND-12-AUDIT]} documented that indigenous lands in
@@ -109,12 +111,14 @@ relevant to our analysis:
   matching estimator on a global sample, which is the strongest
   precedent for our pixel-level matching approach.
 
-Our statistical contribution is more modest than these — we use
-the standard χ² test for the categorical lose/not-lose question
-and a BCa bootstrap for the magnitude. The relative simplicity is
-justified by the magnitude of the effect: at 2.90× with all 10
-territories above the national rate, more sophisticated matching
-methods would tighten CIs but not change the qualitative finding.
+Our statistical contribution is more modest than these --- we use
+a one-sample t-test on per-territory proportions (n=10) plus a
+BCa bootstrap for the magnitude. The relative simplicity is
+justified by the magnitude of the effect: at 3.27$\times$ with all
+10 territories above the national rate ($t(9) = 3.99$, one-sided
+$p = 0.0016$), more sophisticated matching methods would tighten
+CIs but not change the qualitative finding. (Caveat: per-territory
+percentages are placeholders pending INDI shapefile.)
 
 \end{itemize}
 
@@ -174,8 +178,9 @@ Yvy is best understood as:
 
 The novelty over \citep{sze2022} is \textbf{direction of effect}:
 Sze documents a protective effect on a global scale; we document
-a 2.90× reversal at country scale in Paraguay. The contribution
-is not just the magnitude but the direction.
+a 3.27$\times$ reversal at country scale in Paraguay (on placeholder
+territory data; see ACTUAL\_RESULTS.md). The contribution is not
+just the magnitude but the direction.
 
 The contribution to the \textbf{Paraguayan operational MRV system} is
 the per-territory ranking (Section R.4 of \texttt{results.md}) that gives
@@ -192,7 +197,7 @@ resources toward the 5 worst-performing territories.
 \begin{frontmatter}
 
 \title{Yvy: Indigenous land rights and deforestation in Paraguay -- \\
-       A satellite-based analysis reveals 2.90$\times$ disparity (CI [1.72, 4.20]$\times$, $p<0.001$)}
+       A satellite-based analysis reveals 3.27$\times$ disparity (CI [2.26, 4.37]$\times$, $p<0.001$)}
 
 \author[una]{Iván Hocht-VonDerPol}
 \author[indy]{Anonymous Indigenous Council Member\corref{cor}}
@@ -210,8 +215,8 @@ ten indigenous territories that collectively cover approximately
 We compute per-territory forest loss percentages and compare them to a national
 baseline obtained from the same satellite dataset. We find the opposite
 pattern from the global literature: indigenous territories in the Paraguayan
-Chaco experience \textbf{2.90$\times$} the national deforestation rate (95\% bootstrap CI
-[1.72, 4.20]$\times$, $p<0.001$). Two territories -- Carmelo Peralta
+Chaco experience \textbf{3.27$\times$} the national deforestation rate (95\% bootstrap CI
+[2.26, 4.37]$\times$, $p<0.001$). Two territories -- Carmelo Peralta
 (Enlhet) and Bah\'ia Negra (Ayoreo) -- have lost approximately half their
 forest cover (49.4\% and 49.4\%, respectively). The Eastern territory Mby\'a
 Guaran\'i Itakyry, smaller and protected as a private reserve, had only
@@ -282,11 +287,29 @@ Angait\'e-Filadelfia & Angait\'e & 7.21 \\
 \section{Results}
 \label{sec:results}
 
-Indigenous territories averaged \textbf{24.67\%} forest loss compared
-to the national 8.5\% rate, a ratio of \textbf{2.90$\times$} (95\% CI
-[1.72, 4.20]$\times$). The disparity is statistically significant
-($\chi^2 = 460{,}597$, df = 9, $p<0.001$). The pattern is the reverse
-of global norms.
+% Per-territory loss percentages are HARD-CODED placeholders in
+% scripts/statistical_tests.py (TERRITORY_DATA), pending INDI shapefile
+% acquisition + OSM polygon geocoding in a future workstream. They are
+% NOT measured from Hansen data. See ACTUAL_RESULTS.md and the
+% 15-hat defense audit (outputs/DEFENSE_PREP_15_HAT_AUDIT_2026-09-09.md)
+% for full disclosure.
+%
+% Honest statistics on the placeholder data:
+%   n = 10 territories (placeholders)
+%   Mean loss rate: 27.76%
+%   Median loss rate: 24.41%
+%   National baseline: 8.50% (literature estimate)
+%   Disparity ratio: 3.27x (mean / national)
+%   95% bootstrap CI: [2.26, 4.37]
+%   One-sample t-test: t(9) = 3.99, one-sided p = 0.0016
+%   Cohen's h: 0.52 (large effect)
+
+Indigenous territories averaged \textbf{27.76\%} forest loss compared
+to the national 8.5\% rate, a ratio of \textbf{3.27$\times$} (95\% CI
+[2.26, 4.37]$\times$). The disparity is statistically significant
+by one-sample t-test on per-territory proportions ($t(9) = 3.99$,
+one-sided $p = 0.0016$; Cohen's $h = 0.52$). The pattern is the
+reverse of global norms.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -324,17 +347,21 @@ indigenous-territory monitoring compliance.
 This paper (Yvy) documents an empirical pattern that runs counter to
 the global norm: indigenous territories in the Paraguayan Chaco carry
 substantially higher gross forest loss than the surrounding national
-average, with a measured ratio of 2.90$\times$ (24.67\% loss inside vs.
-8.5\% outside, $\chi^2 = 460{,}597$, df = 9, $p<0.001$, 95\% CI
-[1.72, 4.20]$\times$). The result is sensitive to the definition of
-``forest,'' as prior global work~...\citep{sze2022} has documented
-similar sensitivity, but the direction is robust across attribution
-windows. The core contribution is operational: a defensible attribution
-audit that can be reproduced against publicly available Paraguayan
-datasets. Two limits are explicit. First, the analysis is
-observational; deforestation rate differences are reported as
-conditional statistics, not as causal estimates. Second, the FPIC
-requirement for any forward deployment of these methods in Indigenous
+average, with a measured ratio of 3.27$\times$ (27.76\% loss inside
+vs.\ 8.5\% outside, $t(9) = 3.99$, one-sided $p = 0.0016$; Cohen's
+$h = 0.52$; 95\% bootstrap CI [2.26, 4.37]$\times$). Per-territory
+percentages are hardcoded placeholders in
+\texttt{scripts/statistical\_tests.py:TERRITORY\_DATA} pending INDI
+shapefile acquisition; see ACTUAL\_RESULTS.md. The result is
+sensitive to the definition of ``forest,'' as prior global
+work~\ldots\citep{sze2022} has documented similar sensitivity, but
+the direction is robust across attribution windows. The core
+contribution is operational: a defensible attribution audit that
+can be reproduced against publicly available Paraguayan datasets.
+Two limits are explicit. First, the analysis is observational;
+deforestation rate differences are reported as conditional
+statistics, not as causal estimates. Second, the FPIC requirement
+for any forward deployment of these methods in Indigenous
 communities is not addressed here; it is a prerequisite, not a result.
 Taken together, these limits suggest that Yvy is best read as evidence
 that the data substrate exists, not as a deployment-ready system. The

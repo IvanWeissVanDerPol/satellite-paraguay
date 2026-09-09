@@ -1,0 +1,12 @@
+OpenAQ v3 /countries probe — 2026-09-08T19:50Z
+  endpoint: https://api.openaq.org/v3/countries
+  auth: X-API-Key (BWS hermes)
+  status: 200
+  total_countries: 100
+  paraguay_match: 0
+  sample (5 countries with pm25): ID, MY, CL, BO, PE
+  conclusion: OpenAQ v3 does not list Paraguay. The P0035 Tatakua
+  paper's "12 OpenAQ stations across Paraguay" claim (ACTUAL_RESULTS.md)
+  cannot be reproduced via v3. The substrate needs an alternate
+  PM2.5 source (TROPOMI AOD already integrated; could also use
+  Sentinel-5P for ground-station-proxy estimates).

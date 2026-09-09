@@ -27,11 +27,11 @@ results:
 | Soybean-pixel classification F1 | 0.83 | **0.497** |
 | AGB regression R² | 0.62 | **undefined** |
 | Yield regression MAE (t/ha) | 0.74 | **3.20** (4.3× worse) |
-| Cross-domain transfer ratio | 0.74 | **0.082** |
+| Cross-domain transfer ratio | 0.74 | **[transfer ratio: undefined — CNN did not converge]** |
 
 **The hypothesis was not validated.** The multi-task CNN did not
 converge under the tested conditions (8 CPU epochs, batch=1,
-synthetic labels). The cross-domain transfer ratio measured 0.082,
+synthetic labels). The cross-domain transfer ratio measured [transfer ratio: undefined — CNN did not converge],
 well below the typical weak-transfer threshold of 0.50.
 
 We attribute the failure to **three specific causes** that are
@@ -101,7 +101,7 @@ companion files. Read in order:
 | Soybean-pixel classification F1 | **0.497** | Synthetic, 8 CPU epochs |
 | AGB regression R² | **undefined** (constant prediction) | Synthetic |
 | Yield regression MAE (t/ha) | **3.20** | Synthetic, Head 3 |
-| Cross-domain transfer ratio | **0.082** | Yvutu source (not actually run) vs from-scratch |
+| Cross-domain transfer ratio | **undefined (CNN did not converge)** | Yvutu source (not actually run) vs from-scratch |
 | Training wall clock | 7 minutes | 8 epochs × 1 batch × 4 scenes |
 | Synthetic dataset size | 4 scenes × 18 months | NDVI phenology profile |
 | **F1 = 0.83 soybean classification** | **NOT MEASURED** | Aspirational target from earlier drafts |
@@ -114,7 +114,7 @@ companion files. Read in order:
 
 - **The headline metrics were not achieved.** F1 = 0.497 vs. 0.83
   target. R² undefined vs. 0.62 target. MAE 3.20 vs. 0.74 target.
-  Transfer ratio 0.082 vs. 0.74 target.
+  Transfer ratio [transfer ratio: undefined — CNN did not converge] vs. 0.74 target.
 - **The synthetic dataset is inadequate** for the cross-domain
   transfer hypothesis to be tested. Real INBIO yield labels
   + real Sentinel-2 imagery are required.

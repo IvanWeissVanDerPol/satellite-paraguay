@@ -4,9 +4,24 @@ This document records the **actual measured metrics** from the PM₂.₅
 forecasting experiment run on 2026-08-03. These replace the placeholder
 metrics in `paper.md` / `paper.tex`.
 
+**Data integrity caveat (2026-09-09 audit):** The "12 stations" number
+reported in this document is NOT verifiable from the current OpenAQ v3
+API. As of 2026-09-09, `GET /v3/countries` returns 100 countries and
+Paraguay is not in the list; `GET /v3/locations?country=PY` returns
+Ghana stations (the country code filter is silently ignored, suggesting
+OpenAQ v3 has no PY-tagged data). The "12 stations" claim comes from
+an older OpenAQ snapshot (likely OpenAQ v2, which was decommissioned in
+2024) and the 12 specific stations named in this document are not
+listed in the current API. The LSTM model architecture + training
+procedure are real (model checkpoints in `models/lstm_tatakua/`), but
+the 12-station claim should be treated as historical pending
+re-verification against a working OpenAQ snapshot (or a successor
+data source such as the WHO Ambient Air Quality Database, which does
+not currently list PY stations either).
+
 ## Experimental Setup (actual)
 
-- **Data:** OpenAQ PM₂.₅ hourly (12 stations, 2019-2025 partial)
+- **Data:** OpenAQ PM₂.₅ hourly (12 stations reported, 2019-2025 partial; **see caveat above**)
 - **Satellite:** TROPOMI AOD daily (downloaded 1 month subset)
 - **Period analyzed:** April 2025 — March 2026 (single year, retrospective)
 - **LSTM architecture:** 3 layers, 64 hidden units (CPU constraint)

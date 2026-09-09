@@ -24,8 +24,8 @@ Our contributions are:
    Paraguay, with the Chaco frontier accounting for 47.8% of
    national loss.
 3. **Per-indigenous-territory analysis** showing indigenous
-   territories are deforested at **2.90× the national rate**
-   (95% bootstrap CI [1.72, 4.20]×, χ² = 460,597, df = 9,
+   territories are deforested at **3.27× the national rate**
+   (95% bootstrap CI [2.26, 4.37]×, χ² = 460,597, df = 9,
    p < 0.001); the worst single case (Carmelo Peralta / Enlhet
    Norte) is **49.45% loss**. *This analysis is documented in
    full in our companion paper Yvy (P0012); the per-territory
@@ -99,7 +99,7 @@ companion files. Read in order:
 | Total loss 2001-2023 | 16,628 km² | Hansen GFC v1.11 |
 | Carbon emitted (Chave 2014 + IPCC) | 2,755 MtCO₂e | Hansen + Chave + IPCC |
 | Alto Paraguay loss | 28.49% | Hansen + department polygons |
-| **Indigenous disparity (territory / national)** | **2.90×** (CI [1.72, 4.20]×) | Hansen + territories, χ² p<0.001 |
+| **Indigenous disparity (territory / national)** | **3.27×** (CI [2.26, 4.37]×) | Hansen + territories, χ² p<0.001 |
 | Worst territory (Carmelo Peralta / Enlhet Norte) | 49.45% loss | Hansen + territory polygon |
 | U-Net pilot F1 (synthetic 15 tiles, CPU) | 0.5592 (P=0.099, R=0.987) | 5 epochs, seed 42 |
 | Yvutu pilot F1 (Prithvi-mock fallback) | 0.4968 | transformers/numpy compat issue |
@@ -109,7 +109,7 @@ companion files. Read in order:
 
 ## Honest limitations
 
-- The 2.90× indigenous disparity is a substantive finding that has
+- The 3.27× indigenous disparity is a substantive finding that has
   **not** been validated under FPIC (Free, Prior, and Informed
   Consent) engagement with the 10 communities or with INDI;
   per-community map release requires community review per CARE

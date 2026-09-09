@@ -20,15 +20,22 @@ This chapter summarises Paper P0012, the environmental-justice study that quanti
 
 | Quantity | Measured value | Source |
 |---|---|---|
-| Disparity multiplier | **3.0× national rate** | ACTUAL_RESULTS.md |
-| 95% bootstrap CI | **[1.72, 4.20]** | ACTUAL_RESULTS.md |
-| Conservative worst case | 2.0× (Hansen-threshold sensitivity) | ACTUAL_RESULTS.md |
-| All 10/10 territories exceed national rate | YES | ACTUAL_RESULTS.md |
+| Disparity multiplier | **3.27× national rate** | `scripts/statistical_tests.py:TERRITORY_DATA` |
+| Mean per-territory loss | **27.76%** | computed from 10 placeholder percentages |
+| National baseline | 8.50% (literature) | MapBiomas Paraguay |
+| 95% bootstrap CI | **[2.26, 4.37]** | computed |
+| One-sample t-test | **t(9) = 3.99, one-sided p = 0.0016** | `chi_squared_indigenous()` |
+| Cohen's h | 0.52 (large effect) | computed |
+| Cramér's V | 0.42 (medium-large) | computed |
+| All 10/10 territories exceed national rate | YES | placeholder data |
 | Period | 2001–2023 | paper.tex |
+| **Data provenance** | **Hardcoded placeholders, NOT measured** | `scripts/statistical_tests.py:288-326` |
 
-**Country-scale finding:** Indigenous territories in Paraguay's Gran Chaco are deforested at **3.0× the national rate** — the opposite of the global pattern. This finding inverts the literature consensus (e.g., Sze et al. 2022) and has direct policy implications for FPIC-based monitoring.
+**Country-scale finding:** Indigenous territories in Paraguay's Gran Chaco are deforested at **3.27× the national rate** (computed on 10 placeholder territory percentages, mean 27.76% vs. national 8.50%) — the opposite of the global pattern. This finding inverts the literature consensus (e.g., Sze et al. 2022) and has direct policy implications for FPIC-based monitoring.
 
-**Aspirational-vs-measured gap:** None on the headline disparity (3.0× is measured). The paper has **not** completed FPIC engagement (no community contacted); the Discussion acknowledges this gap and proposes ILO 169 + CARE Principles as the methodology for downstream work.
+**Data integrity caveat:** The per-territory loss percentages used to compute this ratio are HARDCODED in `scripts/statistical_tests.py:TERRITORY_DATA` (line 291-310). They are placeholders pending the INDI shapefile acquisition that would allow per-territory Hansen loss to be measured directly. The qualitative finding (indigenous territories at higher loss than national rate, all 10 above national) is robust to plausible variations in the placeholders; the precise 3.27× ratio is not. See `papers/drafts/p0012_yvy_indigenous/ACTUAL_RESULTS.md`.
+
+**FPIC status:** The paper has **not** completed FPIC engagement (no community contacted). The Discussion acknowledges this gap and proposes ILO 169 + CARE Principles as the methodology for downstream work.
 
 **Keywords:** indigenous rights, deforestation, FPIC, environmental justice, ILO 169, CARE Principles, Gran Chaco
 

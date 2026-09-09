@@ -49,17 +49,17 @@ This paper addresses three questions:
   in Section 3.)
 - **RQ2:** What is the disparity ratio between the territories and
   the national rate? How robust is the disparity to bootstrapping?
-  (Answered in Section 3 with χ² and 1,000-resample bootstrap.)
+  (Answered in Section 3 with one-sample t-test (n=10) and 10,000-resample bootstrap.)
 - **RQ3:** How do individual territories differ in magnitude, and
   what is the spatial pattern of under- and over-performance?
   (Answered in Section 4.)
 
 ### 1.4 Substantive contributions
 
-1. **A measured 2.90× disparity ratio** between indigenous-territory
+1. **A measured 3.27× disparity ratio** between indigenous-territory
    deforestation and the national sample rate, with a 95% bias-
-   corrected-and-accelerated (BCa) bootstrap CI of [1.72, 4.20]× and
-   χ² = 460,597 (df = 9, p < 0.001). All **10 of 10** territories are
+   corrected-and-accelerated (BCa) bootstrap CI of [2.26, 4.37]× and
+   One-sample t-test on per-territory proportions: t(9) = 3.99, one-sided p = 0.0016; Cohen's h = 0.52; 95% bootstrap CI [2.26, 4.37]. All **10 of 10** territories are
    above the national rate; the worst single territory (Carmelo
    Peralta / Enlhet Norte) is at **49.45% loss** — almost half
    deforested over 23 years.
@@ -78,7 +78,7 @@ This paper addresses three questions:
 
 4. **An explicit FPIC (Free, Prior, and Informed Consent) gap
    acknowledgment** under the CARE Principles for Indigenous Data
-   Governance [Carroll et al. 2020]. The substantive finding (2.90×
+   Governance [Carroll et al. 2020]. The substantive finding (3.27×
    disparity) is empirically defensible from the public data; the
    *per-community map release* is not, because no community has
    been engaged. Section 5 documents the prerequisite work for any
@@ -101,7 +101,7 @@ forest governance gap in the Chaco) is the operational follow-on.
   INDI-recognized indigenous territory polygons) and the analysis
   protocol.
 - **Section 3** reports the per-territory findings and the
-  disparity statistical tests (χ² and bootstrap CI).
+  disparity statistical tests (one-sample t-test and bootstrap CI).
 - **Section 4** discusses the per-territory heterogeneity and what
   the magnitude of the disparity implies for policy.
 - **Section 5** is the honest assessment: what the analysis shows,

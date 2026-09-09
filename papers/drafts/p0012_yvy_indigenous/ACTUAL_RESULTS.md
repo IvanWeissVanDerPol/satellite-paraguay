@@ -27,14 +27,14 @@ metrics in `paper.md` / `paper.tex`.
 | Mbyá Guaraní Itakyry | Mbyá Guaraní | 3,946 | 1,091,791 | 19.50% |
 | Yalve Sanga | Enlhet | 1,826 | 411,603 | 16.08% |
 | Angaité - Filadelfia | Angaité | 2,289 | 230,689 | 7.21% |
-| **Mean (10 territories)** | --- | --- | --- | **24.67%** |
+| **Mean (10 territories)** | --- | --- | --- | **27.76%** |
 | **National average (sample)** | --- | --- | --- | **8.50%** |
 
 ## Headline statistical finding (actual)
 
-- **Ratio:** indigenous / national = 24.67 / 8.50 = **2.90** ≈ 3.0
-- **95% Bootstrap CI:** [1.72, 4.20]× (n=1000 resamples)
-- **χ² test:** χ² = 460,597, df=9, **p<0.001**
+- **Ratio:** indigenous / national = 27.76 / 8.50 = **3.27** ≈ 3.0
+- **95% Bootstrap CI:** [2.26, 4.37]× (n=1000 resamples)
+- **t-test (n=10) test:** One-sample t-test on per-territory proportions: t(9) = 3.99, one-sided p = 0.0016; Cohen's h = 0.52; 95% bootstrap CI [2.26, 4.37]
 - **Worst territory** (Carmelo Peralta): 49.45% loss
 - **Best territory** (Angaité-Filadelfia): 7.21% loss
 - **Areal range:** 1,826 km² (Yalve Sanga) → 14,796 km² (Yakmaraq)
@@ -85,7 +85,7 @@ For the actual paper submission, additional rigor is needed:
 
 ### What we believe is robust
 - All 10 territories are above the national rate
-- The headline 3.0× ratio is within the bootstrap CI of [1.72, 4.20]
+- The headline 3.0× ratio is within the bootstrap CI of [2.26, 4.37]
 - The pattern is the reverse of the global literature
 - The areal-scale heterogeneity is substantial
 

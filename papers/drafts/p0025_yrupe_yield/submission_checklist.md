@@ -14,7 +14,7 @@ numbers; aspirational targets are explicitly refuted.
 
 1. **Measured multi-task CNN pilot F1 = 0.497 (Head 1 classification), R² undefined (Head 2 AGB regression), MAE = 3.20 t/ha (Head 3 yield regression).**
 
-2. **Cross-domain transfer ratio = 0.082 (vs. aspirational 0.74) — below the 0.50 weak-transfer threshold. The from-scratch-to-from-scratch pipeline does not exhibit the predicted cross-domain signal.**
+2. **Cross-domain transfer ratio = undefined (vs. aspirational 0.74) — below the 0.50 weak-transfer threshold. The from-scratch-to-from-scratch pipeline does not exhibit the predicted cross-domain signal.**
 
 3. **Three specific causes of the failure documented: (i) synthetic labels with no seasonal dynamics, (ii) 8 CPU epochs is below the standard 30+ recipe, (iii) the Yvutu-source encoder was not exercised.**
 

@@ -96,7 +96,7 @@ examples in this thesis substrate:
   F1 = 0.85" (which was the aspirational headline in earlier
   drafts).
 - **Yrupe (this paper)** — measured F1 = 0.497, R² undefined,
-  transfer ratio 0.082, MAE 3.20 t/ha, all below the published
+  CNN did not converge (transfer ratio undefined), MAE 3.20 t/ha on the trivial baseline, all below the published
   targets. The paper is the worked example of the project
   convention applied to a paper where the headline metrics are
   falsified.

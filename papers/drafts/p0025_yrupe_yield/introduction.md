@@ -57,7 +57,7 @@ synthetic soybean data did **not** validate P1-P3:
 
 - The multi-task CNN did **not converge** in 8 CPU epochs. The
   loss settled on a degenerate all-zero solution.
-- The **transfer ratio measured 0.082**, not the r=0.74 target.
+- The **transfer ratio measured [transfer ratio: undefined — CNN did not converge]**, not the r=0.74 target.
   This is below the typical weak-transfer threshold of 0.50.
 - The **yield MAE was 3.20 t/ha**, not the 0.74 target — ~4×
   worse, consistent with the convergence failure.
@@ -112,7 +112,7 @@ short.
   CNN architecture, and the evaluation protocol.
 - **Section 3** reports the measured pilot results honestly
   (F1 = 0.497, R² undefined, MAE = 3.20 t/ha, transfer ratio
-  0.082).
+  [transfer ratio: undefined — CNN did not converge]).
 - **Section 4** analyzes what went wrong and what would have to
   change for the hypothesis to hold.
 - **Section 5** positions the work against the broader transfer-

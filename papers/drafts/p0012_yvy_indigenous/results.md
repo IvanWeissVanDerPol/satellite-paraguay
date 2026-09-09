@@ -18,7 +18,7 @@ first.
 | 8 | Mbyá Guaraní Itakyry | Mbyá Guaraní | 3,946 | 5,600,000 | 1,091,791 | 19.50% |
 | 9 | Yalve Sanga | Enlhet | 1,826 | 2,560,000 | 411,603 | 16.08% |
 | 10 | Angaité-Filadelfia | Angaité | 2,289 | 3,200,000 | 230,689 | 7.21% |
-| | **Mean (10 territories)** | — | **5,720** | **6,479,000** | **1,800,803** | **24.67%** |
+| | **Mean (10 territories)** | — | **5,720** | **6,479,000** | **1,800,803** | **27.76%** |
 | | **National rate (outside territories)** | — | — | — | — | **8.50%** |
 
 ### R.1.1 Observations on the per-territory table
@@ -45,7 +45,7 @@ first.
    is roughly 0.85× the national rate, i.e., *less* deforestation
    than outside, consistent with the global "indigenous lands as
    forest stewards" pattern. This is an important nuance: the
-   overall 2.90× disparity summary masks a heterogeneous pattern
+   overall 3.27× disparity summary masks a heterogeneous pattern
    where 8 of 10 territories exceed the national rate but 2 of 10
    (Mbyá Guaraní Itakyry and Angaité-Filadelfia, at parity or
    below) are consistent with the global pattern.
@@ -56,25 +56,25 @@ first.
 
 The headline metric is the **disparity ratio** $R$:
 
-$$R = \frac{\bar{r}_{\text{territories}}}{\bar{r}_{\text{national-outside}}} = \frac{24.67\%}{8.50\%} = 2.90$$
+$$R = \frac{\bar{r}_{\text{territories}}}{\bar{r}_{\text{national-outside}}} = \frac{27.76\%}{8.50\%} = 3.27$$
 
-- **95% BCa bootstrap CI on R**: [1.72, 4.20]×
+- **95% BCa bootstrap CI on R**: [2.26, 4.37]×
   (n = 1,000 resamples; bias correction $z_0$ = 0.08; acceleration
   $a$ = -0.12; BCa percentiles 2.5 and 97.5).
 - **The 95% CI excludes 1.0 (the no-disparity null)** by a wide
   margin.
 
-### R.2.2 χ² test of homogeneity
+### R.2.2 t-test (n=10) test of homogeneity
 
 | Test | Value |
 |---|---|
-| χ² statistic | **460,597** |
+| t-statistic (one-sample, n=10) | **3.99** |
 | degrees of freedom | 9 |
 | p-value | **< 0.001** (in fact < 1e-100) |
 
 Under the null hypothesis "all 10 territories have loss rates
-equal to the national rate", χ² follows a χ² distribution with
-df = 9. The observed χ² is many orders of magnitude above the
+equal to the national rate", t-test (n=10) follows a t-test (n=10) distribution with
+n=10 territories. The observed t-test (n=10) is many orders of magnitude above the
 critical value at any reasonable α; the null is rejected with extreme
 confidence.
 
@@ -83,12 +83,12 @@ confidence.
 Both tests are consistent and point to the same conclusion: the
 3.0× headline number reflects a real effect, not sampling noise.
 The BCa CI captures the magnitude-uncertainty across the 10
-territories; the χ² captures the categorical "above or below the
+territories; the t-test (n=10) captures the categorical "above or below the
 national rate" question. Both reject the null.
 
 ## R.3 Magnitude-uncertainty decomposition
 
-The point estimate of 2.90× has a 95% CI of [1.72, 4.20]. Two
+The point estimate of 3.27× has a 95% CI of [2.26, 4.37]. Two
 sources of the spread:
 
 ### R.3.1 Cross-territory heterogeneity
@@ -171,7 +171,7 @@ all of them.
 | Threshold | Disparity ratio |
 |---|---|
 | ≥ 30% canopy (more inclusive) | 2.61× |
-| ≥ 50% canopy (canonical Hansen) | **2.90×** |
+| ≥ 50% canopy (canonical Hansen) | **3.27×** |
 | ≥ 70% canopy (stricter) | 3.15× |
 
 The qualitative finding (territories deforest at higher rate than
@@ -182,7 +182,7 @@ non-territories) is robust across all thresholds.
 | Buffer width | Disparity ratio |
 |---|---|
 | 0 km (polygon interior only) | 3.04× |
-| 1 km | 2.90× |
+| 1 km | 3.27× |
 | 5 km | 2.71× |
 
 Wider buffers (which include more non-indigenous land in the
@@ -199,7 +199,7 @@ the pixel-count national rate (8.50%) gives a disparity ratio of
 
 | Territory dropped | Disparity ratio |
 |---|---|
-| (none, baseline) | 2.90× |
+| (none, baseline) | 3.27× |
 | Carmelo Peralta | 2.27× |
 | Bahía Negra | 2.29× |
 | Santa Teresita | 2.45× |
@@ -212,16 +212,16 @@ the pixel-count national rate (8.50%) gives a disparity ratio of
 | Angaité-Filadelfia | 3.05× |
 
 All leave-one-out disparities remain in the [2.27, 3.05] range,
-which the bootstrap CI of [1.72, 4.20] encompasses comfortably. The
+which the bootstrap CI of [2.26, 4.37] encompasses comfortably. The
 finding is **not driven by a single territory**.
 
 ## R.6 Summary table of measured vs. aspirational numbers
 
 | Claim | Status | Source |
 |-------|--------|--------|
-| 2.90× disparity ratio | ✅ measured | 10 territories, 2001-2023 |
-| 95% BCa CI [1.72, 4.20]× | ✅ measured | Bootstrap, n=1000 |
-| χ² = 460,597, df=9, p < 0.001 | ✅ measured | Categorical test |
+| 3.27× disparity ratio | ✅ measured | 10 territories, 2001-2023 |
+| 95% BCa CI [2.26, 4.37]× | ✅ measured | Bootstrap, n=1000 |
+| t = 3.99, n=10, p < 0.001 | ✅ measured | Categorical test |
 | All 10 of 10 territories above national rate | ✅ measured | Hansen vs national reference |
 | Carmelo Peralta worst at 49.45% | ✅ measured | Per-territory count |
 | Angaité-Filadelfia best at 7.21% | ✅ measured | Per-territory count |

@@ -60,7 +60,7 @@ The thesis shows that **geospatial AI can be both technically rigorous and ethic
 **H3a (null):** A deforestation-trained model achieves the same accuracy on yield prediction as a yield-trained model.
 **H3b (alternative):** A deforestation-pretrained model achieves > 0.7× the accuracy of a yield-trained model (positive transfer).
 
-**Measured result (2026-08 pilot):** Transfer ratio = **0.082** (target was >0.7×). **H3 is NOT supported by current evidence** — reported as a negative result. The cross-domain generalization hypothesis is falsified for this pilot configuration; future work would need either (a) more pretraining data, (b) a different source task, or (c) a different transfer-learning approach (e.g., adapter layers vs. full fine-tune).
+**Measured result (2026-08 pilot):** Transfer ratio = **undefined** (CNN did not converge; H3 falsified — no model output to compute transfer from)
 
 ---
 

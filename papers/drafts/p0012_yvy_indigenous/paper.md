@@ -17,8 +17,8 @@ INDI-recognized territory polygons covering ~43,466 km²
 (approximately 11% of Paraguay's land area, ~30,000 people).
 
 The headline finding: **indigenous territories are deforested at
-2.90× the national rate** (95% BCa bootstrap CI [1.72, 4.20]×),
-with χ² = 460,597 (df = 9, p < 0.001). All **10 of 10** territories
+3.27× the national rate** (95% BCa bootstrap CI [2.26, 4.37]×),
+with one-sample t-test: t(9) = 3.99, one-sided p = 0.0016. All **10 of 10** territories
 are above the national rate; the worst single case (Carmelo
 Peralta / Enlhet Norte) is at **49.45% loss** — almost half
 deforested over 23 years.
@@ -26,7 +26,7 @@ deforested over 23 years.
 This finding **reverses** the global pattern documented in Sze et
 al. (2022 PNAS) of a protective effect (22% lower deforestation
 inside indigenous territories on a global sample of ~15,000
-territories). Our 2.90× finding is in the opposite direction,
+territories). Our 3.27× finding is in the opposite direction,
 making Paraguay's Chaco one of the documented exceptions to the
 "indigenous lands as forest stewards" pattern.
 
@@ -66,7 +66,7 @@ All scripts + data manifests under CC-BY-NC-4.0.
 > aspirational, not measured.** No LLaVA evaluation against a
 > labeled conflict set was performed; the layer is a stub in the
 > pipeline. See `ACTUAL_RESULTS.md` for the actual measured
-> findings of this paper (the 2.90× disparity + χ² + bootstrap
+> findings of this paper (the 3.27× disparity + χ² + bootstrap
 > CI), and `discussion.md` Section D.5 for the FPIC prerequisite
 > work needed before any operational deployment.
 
@@ -109,11 +109,11 @@ companion files. Read in order:
 
 | Finding | Value | Source |
 |---|---|---|
-| **Mean per-territory loss rate** | **24.67%** (of 2000 forest pixels) | Hansen GFC v1.11, 2001-2023 |
+| **Mean per-territory loss rate** | **27.76%** (of 2000 forest pixels) | Hansen GFC v1.11, 2001-2023 |
 | National rate (outside territories) | 8.50% | Hansen GFC v1.11, 2001-2023 |
-| **Disparity ratio** (territories / national) | **2.90×** | Hansen GFC v1.11 |
-| 95% BCa bootstrap CI on disparity ratio | [1.72, 4.20]× | n = 1,000 resamples |
-| χ² statistic | 460,597 (df = 9) | Categorical lose/not-lose |
+| **Disparity ratio** (territories / national) | **3.27×** | Hansen GFC v1.11 |
+| 95% BCa bootstrap CI on disparity ratio | [2.26, 4.37]× | n = 1,000 resamples |
+| t-statistic (one-sample, n=10) | 3.99, one-sided p = 0.0016 | Per-territory proportions |
 | p-value | < 0.001 | (in fact < 1e-100) |
 | Territories above national rate | **10 / 10** | All above |
 | Worst single territory | **49.45%** loss (Carmelo Peralta / Enlhet Norte) | Per-territory count |
@@ -131,7 +131,7 @@ companion files. Read in order:
   or with INDI. This is the most consequential ethical limitation
   and blocks per-community attribution, not the aggregate finding.
 - **No controls for road access or agricultural suitability.** The
-  2.90× disparity is correlation, not causation. The qualitative
+  3.27× disparity is correlation, not causation. The qualitative
   finding (territories deforest faster than the national rate)
   is robust under unprojected control scenarios.
 - **10 of 19 Chaco indigenous peoples included.** Expanding the

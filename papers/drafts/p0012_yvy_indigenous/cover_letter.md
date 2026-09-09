@@ -13,7 +13,7 @@ We are pleased to submit our manuscript "**Yvy: Indigenous land rights and defor
 
 ## Significance
 
-Globally, indigenous lands have **lower** deforestation than comparable non-indigenous areas. We document, for the first time at this precision in the Paraguayan Chaco, the **opposite** pattern: ten indigenous territories experience 3.0× the national deforestation rate (95% CI [1.72, 4.20]×, p<0.001). Two territories lost approximately half their forest (Carmelo Peralta 49.45%, Bahía Negra 49.43%).
+Globally, indigenous lands have **lower** deforestation than comparable non-indigenous areas. We document, for the first time at this precision in the Paraguayan Chaco, the **opposite** pattern: ten indigenous territories experience 3.0× the national deforestation rate (95% CI [2.26, 4.37]×, p<0.001). Two territories lost approximately half their forest (Carmelo Peralta 49.45%, Bahía Negra 49.43%).
 
 ## Key contributions
 

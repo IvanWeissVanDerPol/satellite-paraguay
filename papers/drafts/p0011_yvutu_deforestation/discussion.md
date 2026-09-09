@@ -2,7 +2,7 @@
 
 ## D.1 The headline disparity finding (3.0×)
 
-The most consequential finding of this paper is the 2.90× disparity
+The most consequential finding of this paper is the 3.27× disparity
 ratio between Chaco indigenous-territory deforestation and the
 national rate. This is a published-figurable number that
 contributes to the international evidence base on environmental

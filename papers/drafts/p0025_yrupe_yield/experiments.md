@@ -123,7 +123,7 @@ transfer_ratio = (Yrupe R² on synthetic target) /
 
 A ratio ≥ 0.7 is the conventional threshold for "positive
 transfer" in the transfer-learning literature. The measured
-0.082 is far below this threshold.
+the CNN did not converge; transfer ratio is undefined (no converged model to compute it from).
 
 ## E.4 Results summary
 
@@ -135,7 +135,7 @@ The full results table is in `results.md`. Headline numbers
 | Head 1: Soybean-pixel classification | F1 | 0.83 | **0.497** | Far below |
 | Head 2: AGB regression | R² | 0.62 | **undefined** | Constant prediction |
 | Head 3: Yield regression | MAE (t/ha) | 0.74 | **3.20** | 4.3× worse |
-| Cross-domain transfer ratio | — | 0.74 | **0.082** | Below threshold |
+| Cross-domain transfer ratio | — | 0.74 | **undefined (CNN did not converge)** | Below threshold |
 
 The multi-task CNN did **not converge** under the tested
 conditions. The losses settled on degenerate solutions (all-zero

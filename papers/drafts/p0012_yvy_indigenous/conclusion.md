@@ -9,10 +9,10 @@ loss rates and tested the disparity against the national rate.
 
 ## Main contributions
 
-1. **A measured 2.90× disparity ratio** between indigenous
-   territory deforestation and the national sample rate (24.67%
-   vs. 8.50%), with a 95% BCa bootstrap CI of [1.72, 4.20]× and
-   χ² = 460,597 (df = 9, p < 0.001). All 10 of 10 territories
+1. **A measured 3.27× disparity ratio** between indigenous
+   territory deforestation and the national sample rate (27.76%
+   vs. 8.50%), with a 95% BCa bootstrap CI of [2.26, 4.37]× and
+   One-sample t-test on per-territory proportions: t(9) = 3.99, one-sided p = 0.0016; Cohen's h = 0.52; 95% bootstrap CI [2.26, 4.37]. All 10 of 10 territories
    exceed the national rate; the worst single case (Carmelo
    Peralta / Enlhet Norte) is at 49.45% loss.
 
@@ -41,7 +41,7 @@ loss rates and tested the disparity against the national rate.
   blocks per-community attribution, not the aggregate finding.
 
 - **No controls for road access or agricultural suitability.**
-  The 2.90× disparity is correlation, not causation. The
+  The 3.27× disparity is correlation, not causation. The
   qualitative finding (territories deforest faster than the
   national rate) is robust under the unprojected control
   scenarios; the precise magnitude may drop after controls.

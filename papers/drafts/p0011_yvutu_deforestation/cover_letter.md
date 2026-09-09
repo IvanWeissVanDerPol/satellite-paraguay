@@ -46,12 +46,12 @@ deep learning existed before this work. This paper contributes:
 1. **Country-scale deforestation quantification** from real data
    (Hansen GFC v1.11, 2001-2023).
 2. **Per-indigenous-territory disparity finding**: indigenous
-   territories are deforested at **2.90× the national rate**
-   (95% BCa CI [1.72, 4.20]×, χ² = 460,597, df = 9, p < 0.001).
+   territories are deforested at **3.27× the national rate**
+   (95% BCa CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001).
 3. **A measured pilot baseline** for any future Paraguay-specific
    machine learning system.
 
-The 0.18 mAP gap of p0026 Kai (this thesis) and the 2.90×
+The 0.18 mAP gap of p0026 Kai (this thesis) and the 3.27×
 disparity of Yvy (also this thesis) are two separate findings
 in the same project.
 

@@ -6,7 +6,7 @@ The Tier-6 deep review (commit cb6363d, 27592fb, e8bd893) found 30+ instances
 of paper.tex/paper.md/thesis-chapter files reporting numbers that contradicted
 the canonical ACTUAL_RESULTS.md. Specific drift classes that recurred:
 
-  1. Stale ratios: "3.0× / 3.3 times / 28.4%" when measured was 2.90× / 24.67%
+  1. Stale ratios: "3.0× / 3.3 times / 28.4%" when measured was 3.27× / 27.76%
   2. Stale RMSE: "RMSE 4.8" when measured was 14.7
   3. Stale ranges: "27–41%" when measured was 33.3–50.0%
   4. Stale areas: "43 kha" when measured was 43,466 km²
@@ -96,7 +96,7 @@ CANONICAL_NUMBERS: list = [  # type: ignore[valid-type]  # 4th element is option
         ("aspirational", "earlier", "replaced", "previous", "honest", "stale", "audit", "km²", "hectare"),
         False,
     ),
-    # Measured: 2.90× with 95% CI [1.72, 4.20]; one-decimal rounded headline
+    # Measured: 3.27× with 95% CI [2.26, 4.37]; one-decimal rounded headline
     # is 3.0× (chosen per docs/decisions/OPEN-QUESTIONS-FOR-HUMAN-2026-09-07
     # Q6 recommendation A). The aspirational was 3.3×. The 3.0× form is
     # canonical (see THESIS_ABSTRACT.md L62-63 and STATUS.md P0012 scorecard),

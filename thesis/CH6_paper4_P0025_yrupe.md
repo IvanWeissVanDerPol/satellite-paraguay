@@ -19,12 +19,12 @@ This chapter summarises Paper P0025, the cross-domain transfer experiment that t
 
 | Quantity | Measured value | Target | Status |
 |---|---|---|---|
-| Cross-domain transfer ratio | **0.082** | > 0.7 | ❌ **H3 falsified** |
+| Cross-domain transfer ratio | **undefined (CNN did not converge)** | > 0.7 | ❌ **H3 falsified** |
 | Yield regression MAE | **3.20 t/ha** | < 5 t/ha | ✅ (within target) |
 | Test-set separation | Not held-out (data leakage risk) | Required | ⚠ acknowledged |
 | Hardware | CPU, 8 epochs, batch=1 | GPU, 30+ epochs, batch=32 | ⚠ acknowledged |
 
-**Country-scale finding:** The cross-domain generalization hypothesis (H3) is **falsified** in the current pilot configuration: the measured transfer ratio of 0.082 is far below the conventional 0.7× threshold. The Yrupe architecture is sound, but the cross-domain transfer claim does not survive measurement.
+**Country-scale finding:** The cross-domain generalization hypothesis (H3) is **falsified** in the current pilot configuration: the measured transfer ratio ≈ 0.0 (CNN did not converge; no model output to compute transfer from) is far below the conventional 0.7× threshold. The Yrupe architecture is sound, but the cross-domain transfer claim does not survive measurement.
 
 **Aspirational-vs-measured gap:** Earlier-draft headline numbers (F1=0.83 classification; R²=0.62 biomass regression; MAE=0.74 t/ha yield regression) were placeholders, not measurements, and have been removed. Real Sentinel-2 + INBIO ground-truth yield runs are the next step — blocked on GPU budget + INBIO partnership.
 

@@ -7,7 +7,7 @@ This chapter summarises Paper~P0025, the soybean-yield prediction study.
 Unlike the other five papers in this thesis, Yrupe reports a
 \emph{negative} pilot result: the multi-task CNN did not converge under
 the synthetic-data, CPU-only training budget available, and the
-measured cross-domain transfer ratio of 0.082 is far below the typical
+measured cross-domain transfer ratio of undefined is far below the typical
 threshold for meaningful transfer. We frame this as a deliberate
 failure-mode analysis and a baseline against which future INBIO-trained
 experiments can be compared.
@@ -89,7 +89,7 @@ regression MAE = 3.20\,t/ha (claimed 0.74\,t/ha).
 \centering
 \caption{Yrupe task-head performance: claimed (earlier draft) versus
 measured (pilot run). All three heads failed to converge in 8 CPU
-epochs on synthetic labels; the cross-domain transfer ratio of 0.082
+epochs on synthetic labels; the cross-domain transfer ratio of undefined
 is far below the 0.74 aspirational value and far below the typical
 $r > 0.80$ threshold for meaningful transfer.}
 \label{tab:yrupe-main}
@@ -100,7 +100,7 @@ Task & Metric & Claimed & Measured \\
 Soybean classification (Head 1) & F$_1$ & 0.83 & 0.000 \\
 AGB regression (Head 2) & R$^2$ & 0.62 & 0.000 \\
 Yield regression (Head 3) & MAE (t/ha) & 0.74 & 3.20 \\
-Cross-domain transfer ratio & --- & 0.74 & \textbf{0.082} \\
+Cross-domain transfer ratio & --- & 0.74 & \textbf{undefined} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -113,12 +113,12 @@ synthetic pattern; the U-Net over-predicts the positive class with
 precision 0.0992 and recall 0.9873. The Yrupe multi-task CNN
 collapsed to a constant output on every head.
 
-\paragraph{Cross-domain transfer ratio.} The measured cross-domain
-transfer ratio (0.082) is the principal negative finding. The ratio
+\paragraph{Data integrity note.} The 0.082 transfer ratio reported in earlier drafts of this chapter is NOT backed by any script output in this repository. The multi-task CNN did not converge under CPU-only training on synthetic labels; without a converged model there is no transfer ratio to compute. The 0.082 figure should be treated as a placeholder pending a working multi-task implementation. \paragraph{Cross-domain transfer ratio.} The measured cross-domain
+transfer ratio (undefined) is the principal negative finding. The ratio
 compares the AGB-head gradient norm under deforestation pre-training
 versus random initialisation; a value near 1.0 would indicate strong
 transfer, near 0.0 would indicate none, and negative values would
-indicate interference. The measured 0.082 is below the conventional
+indicate interference. The measured undefined is below the conventional
 threshold of 0.50 that the cross-domain transfer learning literature
 uses to declare ``meaningful'' transfer \citep{russwurm2020}, and far
 below the 0.74 claimed in earlier drafts of this paper.
@@ -146,7 +146,7 @@ inter-annual variability. Real Sentinel-2 time series paired with
 INBIO ground-truth yields are required before any quantitative claim
 about Paraguay soybean yield prediction can be defended.
 
-\paragraph{Cross-domain transfer is task-dependent.} The 0.082 ratio
+\paragraph{Cross-domain transfer is task-dependent.} The undefined ratio
 indicates that the deforestation pre-training signal does not transfer
 to the soybean AGB head at the scale tested. This is consistent with
 the general finding that transfer signal in remote sensing is
@@ -171,7 +171,7 @@ more labelled data than were available here.
 Yrupe presents a multi-task CNN for satellite-based soybean yield
 prediction in Paraguay. In the measured pilot, the multi-task CNN
 failed to converge (F$_1$ = 0.000, R$^2$ = 0.000, MAE = 3.20\,t/ha) and
-the cross-domain transfer ratio measured 0.082, well below the 0.74
+the cross-domain transfer ratio measured undefined, well below the 0.74
 figure quoted in earlier drafts and far below the typical threshold
 for meaningful transfer. The F$_1$ = 0.83, R$^2$ = 0.62, and
 MAE = 0.74\,t/ha numbers in earlier drafts were aspirational targets,

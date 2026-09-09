@@ -34,7 +34,7 @@ against encroachment.
 ## R.2 Exceptions to the global pattern
 
 Our finding — that the Paraguayan Chaco shows the *opposite* pattern,
-with 2.90× higher deforestation inside territories versus outside —
+with 3.27× higher deforestation inside territories versus outside —
 adds to a small but growing literature on **exceptions to the global
 pattern**. Key exceptions and their interpretations:
 
@@ -79,9 +79,9 @@ relevant to our analysis:
   precedent for our pixel-level matching approach.
 
 Our statistical contribution is more modest than these — we use
-the standard χ² test for the categorical lose/not-lose question
+the standard one-sample t-test on per-territory proportions (n=10)
 and a BCa bootstrap for the magnitude. The relative simplicity is
-justified by the magnitude of the effect: at 2.90× with all 10
+justified by the magnitude of the effect: at 3.27× with all 10
 territories above the national rate, more sophisticated matching
 methods would tighten CIs but not change the qualitative finding.
 
@@ -133,7 +133,7 @@ Yvy is best understood as:
 
 The novelty over Sze et al. (2022) is **direction of effect**:
 Sze documents a protective effect on a global scale; we document
-a 2.90× reversal at country scale in Paraguay. The contribution
+a 3.27× reversal at country scale in Paraguay. The contribution
 is not just the magnitude but the direction.
 
 The contribution to the **Paraguayan operational MRV system** is

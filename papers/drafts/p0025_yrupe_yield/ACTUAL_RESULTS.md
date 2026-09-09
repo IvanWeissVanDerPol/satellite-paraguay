@@ -22,7 +22,7 @@ placeholder metrics in `paper.md` / `paper.tex`.
 | Head 1: Soybean classification | F1 | 0.83 | 0.000 | ❌ Far below |
 | Head 2: AGB regression (Pixel) | R² | 0.62 | 0.000 | ❌ Failed |
 | Head 3: Yield regression (Pixel) | MAE (t/ha) | 0.74 | 0.000 | ❌ Failed |
-| Cross-domain transfer ratio | — | 0.74 | 0.082 | ❌ Below threshold |
+| Cross-domain transfer ratio | — | 0.74 | undefined | ❌ Below threshold |
 
 ### Performance breakdowns (actual)
 
@@ -43,7 +43,7 @@ placeholder metrics in `paper.md` / `paper.tex`.
    or not deforested — predicting "no change" yields 99% accuracy but ~50%
    F1 on a balanced subset (effectively a constant bias).
 
-3. **Cross-domain transfer ratio of 0.082** is far below the published
+3. **Cross-domain transfer ratio of undefined** is far below the published
    claim of 0.74. The actual transfer is weak (under-trained source
    encoder → untrained target head) and would not be expected to yield
    useful transfer signal in a real-world setting.
