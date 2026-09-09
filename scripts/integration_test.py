@@ -140,9 +140,8 @@ def main():
     gt = np.random.randint(0, 5, (64, 64), dtype=np.int64)
     baseline_results["p0011_baselines"] = p0011_yvytu_baselines.run_all_baselines(ndvi, gt)
 
-    # P0100 baselines (synthetic)
-    features = np.random.randn(100, 50).astype(np.float32)
-    target = features[:, 0] * 1000 + np.random.randn(100) * 100
+    # P0010 baselines removed in Round-12 audit (np.random.normal
+    # fabrication). Replaced with P0030 in Phase 10.
 
     # P0035 baselines (synthetic)
     historical = np.random.rand(30) * 25 + 5

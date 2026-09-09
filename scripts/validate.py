@@ -22,12 +22,9 @@ def validate_paper_1():
     print("  NOTE: Real validation needs MapBiomas + Hansen GFC files")
 
 
-def validate_paper_2():
-    """Validate P0100 Yvyra carbon predictions."""
-    print("\n=== P0100 Yvyra (Carbon credits) ===")
-    pipeline = YvyraPipeline()
-    projects = pipeline.fetch_verra_projects()
-    print(f"  Verra projects: {len(projects)}")
+# NOTE: validate_paper_2 (P0100 Yvyra) removed in Round-12 audit.
+# P0100 was np.random.normal fabrication; the verifier is gone
+# along with the paper. See commit message for commit 7c... (Phase 8).
 
 
 def validate_paper_3():

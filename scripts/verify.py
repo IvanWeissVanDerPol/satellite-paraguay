@@ -37,16 +37,16 @@ def verify_imports():
 
 
 def verify_pipelines():
-    """Verify all 6 paper pipelines instantiate."""
+    """Verify all 5 paper pipelines instantiate (P0010 removed in Round-12 audit)."""
     print("[verify] Importing paper pipelines...")
     try:
-        from src.papers.p0011_yvytu_deforestation import YvytuPipeline
+        from src.papers.p0011_yvutu_deforestation import YvutuPipeline
         from src.papers.p0012_yvy_indigenous import YvyPipeline
         from src.papers.p0025_yrupe_yield import YrupePipeline
         from src.papers.p0026_kai_poaching import KaiPipeline
         from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
 
-        for cls in [YvytuPipeline, YvyraPipeline, YrupePipeline, YvyPipeline, KaiPipeline, TatakuaPipeline]:
+        for cls in [YvutuPipeline, YrupePipeline, YvyPipeline, KaiPipeline, TatakuaPipeline]:
             cls()
             print(f"  OK: {cls.__name__} instantiated")
         return True
