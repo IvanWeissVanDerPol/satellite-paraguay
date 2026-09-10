@@ -111,7 +111,7 @@ class TestPaperValidators:
 
         with (
             patch(
-                "src.papers.p0011_yvutu_deforestation.YvytuPipeline",
+                "src.papers.p0011_yvytu_deforestation.YvytuPipeline",
                 return_value=mock_pipeline,
             ),
             # p0010_yvyra_carbon_credits.YvyraPipeline removed in Round-12
@@ -142,7 +142,7 @@ class TestPaperValidators:
         from src.utils.paper_validators import validate_all
 
         with patch(
-            "src.papers.p0011_yvutu_deforestation.YvytuPipeline",
+            "src.papers.p0011_yvytu_deforestation.YvytuPipeline",
             side_effect=Exception("boom"),
         ):
             results = validate_all()

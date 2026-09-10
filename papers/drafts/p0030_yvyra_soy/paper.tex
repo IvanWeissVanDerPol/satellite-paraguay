@@ -1,0 +1,286 @@
+% P0030 Yvyra Soy — LaTeX submission template
+%
+% Compile: latexmk -pdf paper.tex
+%
+% Target journal: Computers and Electronics in Agriculture (Elsevier)
+% Subject: Indigenous territory × soybean frontier in Paraguay
+%
+% Data lineage (all real, public):
+%   - INE 2022 census (557 communities, 19 pueblos)
+%   - OSM indigenous community polygons (30 features, admin_level 10/11)
+%   - MAG cereal yield 2007/08-2024/25 (soybean by department)
+%   - Hansen GFC v1.11 (off-repo, ~56 km^2 tile used as anchor)
+%
+% Data integrity note (2026-09-09): The thesis author has not contacted
+% any indigenous community; this is a public-data analysis only.
+% No FPIC engagement has been conducted. See ACTUAL_RESULTS.md for
+% data provenance and the audit 15-hat document for ethics context.
+
+\documentclass[preprint,linenumbers]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+\bibliographystyle{elsarticle-num}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Yvyra Soy: Indigenous territory presence and soybean frontier
+expansion in Paraguay's Gran Chaco and Eastern regions --- \\nA public-data
+analysis using INE 2022 census, OSM community polygons, and MAG
+department yield (2007/08--2024/25)}
+
+\author[una]{Iv\'an Weiss Van der Pol}
+\affiliation[una]{organization={FP-UNA (Facultad Polit\'ecnica), Universidad Nacional de Asunci\'on},addressline={Asunci\'on},country={Paraguay}}
+
+\begin{abstract}
+We present \textbf{Yvyra Soy}, a public-data analysis of the
+relationship between indigenous territory presence and soybean
+frontier expansion across Paraguay's 16 soy-producing departments,
+2007/08--2024/25. The pipeline joins three openly-published data
+sources: the \textbf{INE 2022 indigenous communities census}
+(557 communities across 19 pueblos), \textbf{OSM community polygons}
+(30 features with admin\_level 10/11), and \textbf{MAG cereal yield}
+records for soybean (\textit{Glycine max}) by department-year.
+
+\textbf{Measured pilot results (see \texttt{ACTUAL\_RESULTS.md}):}
+\begin{itemize}
+\item \textbf{Top pueblos by community count:} Mbya Guaran\'i (200),
+Ava Guaran\'i (150), Pai Tavytera (61), Ayoreo (26), Nivacle (23).
+\item \textbf{National mean soy yield (5-year):} \SI{2429}{kg/ha}
+(weighted by department area; range \SI{1900}{kg/ha}--\SI{3100}{kg/ha}).
+\item \textbf{Top departments by yield:} Amambay (\SI{3095}{kg/ha}),
+Alto Paraguay (\SI{2982}{kg/ha}), Paraguar\'i (\SI{2930}{kg/ha}),
+Cordillera (\SI{2742}{kg/ha}), Guair\'a (\SI{2662}{kg/ha}).
+\end{itemize}
+
+We \textbf{do not} claim a causal link between indigenous territory
+presence and soybean expansion. The headline contribution is
+\emph{infrastructure}: a reproducible, public-data pipeline that
+joins administrative census records with agricultural statistics
+and OpenStreetMap community polygons, all under MIT license.
+This infrastructure can be reused by Paraguayan agencies (INFONA,
+INDI, MAG) for evidence-based monitoring of the agricultural
+frontier in indigenous lands, in compliance with CARE Principles
+once FPIC engagement is established (currently zero per the 2026-09-09
+audit; see \texttt{ACTUAL\_RESULTS.md}).
+
+This work is positioned as a \emph{methodology paper}: the pipeline
+is the contribution; the specific findings are illustrative and
+limited by the public-data granularity (no per-community loss rates
+without INDI shapefile acquisition, which is outside the scope of
+public-data analysis).
+\end{abstract}
+
+\begin{keyword}
+indigenous lands \sep soybean \sep Paraguay \sep Gran Chaco \sep public data
+\sep OSM \sep INE \sep CARE Principles \sep FPIC \sep Gran Chaco
+\sep soybean frontier
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+\label{sec:intro}
+
+Paraguay's Gran Chaco is simultaneously the country's primary
+deforestation frontier, the location of all 19 recognized indigenous
+pueblos (with 557 communities as of the 2022 census), and the fastest-growing
+soybean frontier in the country. Understanding the relationship
+between indigenous territory presence and agricultural expansion
+is policy-relevant for Paraguay's environmental governance and
+constitutionally required for compliance with ILO Convention 169
+(ratified 1993) \citep{ilo169,un2007,ifc2012,carroll2020care}.
+
+\citet{sze2022} documented the global baseline that indigenous
+land tenure is protective against deforestation, with notable
+exceptions; this paper contributes a Paraguayan public-data
+infrastructure for the indigenous $\times$ soybean frontier analysis.
+
+This paper presents a public-data infrastructure
+for joining the three datasets that are necessary to begin this
+analysis: census records, administrative boundary polygons, and
+agricultural yield statistics.
+
+We do not make claims about specific communities or specific parcels.
+We do not collect FPIC engagement (the thesis author has not
+contacted any community; this is documented in the audit at
+\texttt{outputs/DEFENSE\_PREP\_15\_HAT\_AUDIT\_2026-09-09.md} Hat~7).
+What we present is a reproducible pipeline that future
+ethics-approved studies can build on.
+
+% --- Related Work section (auto-generated from related_work.md) ---
+\section{Related Work}
+
+We organize prior work into four threads relevant to Yvyra Soy.
+
+\subsection{Indigenous land tenure and deforestation}
+
+Indigenous land tenure has been documented globally as protective
+against deforestation in some studies and as a site of land
+grabbing pressure in others. See the related work section in
+\texttt{related\_work.md} for the full literature review.
+
+\subsection{Soybean expansion in Paraguay and the Gran Chaco}
+
+The Gran Chaco is the primary agricultural frontier for soybean
+expansion in Paraguay. Department-level yield records are publicly
+available through the Direcci\'on de Censos y Estad\'isticas Agropecuarias
+(DCEA) of the Ministerio de Agricultura y Ganader\'ia (MAG).
+See the related work section for full citations.
+
+\subsection{Public-data pipelines for Paraguay}
+
+A growing number of analyses combine INE census records with
+remote-sensing datasets (Hansen, MapBiomas, Sentinel-2) for
+Paraguay-scale environmental monitoring. This paper contributes a
+specific join between INE census, OSM community polygons, and MAG
+yield data that has not been previously published.
+
+% --- Method ---
+\section{Method}
+\label{sec:method}
+
+\subsection{Data sources}
+
+\textbf{INE 2022 indigenous communities census.} The Instituto
+Nacional de Estad\'istica publishes a community-level census of
+indigenous communities every 10 years. The 2022 census lists
+557 communities across 19 pueblos. We use the per-pueblo aggregation
+(\texttt{data/raw/ine\_indi/indigenous\_communities\_2022\_summary.csv}).
+
+\textbf{OSM community polygons.} The OpenStreetMap Foundation
+hosts 30 polygon features at admin\_level 10/11 with names matching
+\textit{Comunidad Ind\'igena \ldots} patterns, scraped via the Overpass
+API. This is a partial coverage of the 557 communities in the census.
+
+\textbf{MAG cereal yield 2007/08--2024/25.} The Ministerio de
+Agricultura y Ganader\'ia publishes annual cereal yield by department
+including soybean (\textit{Glycine max}). We use the
+\texttt{mag\_soja\_*.csv} series for rendimiento (kg/ha) and
+superficie (ha).
+
+\textbf{Hansen GFC v1.11.} The NASA Hansen Global Forest Change
+dataset provides 30~m resolution forest loss at yearly intervals
+from 2001--2023. We use the 256$\times$256 tile (~56~km$^2$) included
+in \texttt{data/cache/hansen/} as a territorial anchor only;
+full Paraguay coverage is off-repo and would require $\sim$6~GB download.
+
+\subsection{Pipeline}
+
+The \texttt{src/papers/p0030\_yvyra\_soy/pipeline.py} module
+implements four joins:
+\begin{enumerate}
+\item INE census: per-pueblo communities\_count (n=19 pueblos).
+\item MAG yield: per-department mean yield, total area, over 5-year
+window (n=16 soy-producing departments).
+\item OSM polygons: bounding box of community polygons (n=30 features).
+\item Joint table: department + (pueblo presence) + soy yield.
+\end{enumerate}
+
+Output written to \texttt{outputs/p0030/p0030\_analysis.json}
+(machine-readable) and \texttt{outputs/p0030/p0030\_analysis.md}
+(human-readable report).
+
+% --- Results ---
+\section{Results}
+\label{sec:results}
+
+\textbf{Pueblo distribution (INE 2022):} 19 pueblos, 557 communities.
+The five largest pueblos are Mbya Guaran\'i (200, 35.9\% of communities),
+Ava Guaran\'i (150, 26.9\%), Pai Tavytera (61, 10.9\%), Ayoreo (26, 4.7\%),
+and Nivacle (23, 4.1\%). Together these five account for 82.6\% of all
+indigenous communities in Paraguay. See \texttt{ACTUAL\_RESULTS.md}
+for the full per-pueblo breakdown.
+
+\textbf{Soy yield by department (MAG, 5-year mean):} 16 departments
+with positive yield. The five highest-yield departments are
+Amambay (\SI{3095}{kg/ha}), Alto Paraguay (\SI{2982}{kg/ha}),
+Paraguar\'i (\SI{2930}{kg/ha}), Cordillera (\SI{2742}{kg/ha}),
+and Guair\'a (\SI{2662}{kg/ha}). National mean \SI{2429}{kg/ha}.
+
+\textbf{OSM coverage:} 30 community polygons with admin\_level 10/11.
+Bbox: [$-58.5$, $-25.5$, $-54.5$, $-19.5$] (lon min/max, lat min/max)
+covering the Gran Chaco and Eastern regions.
+
+\textbf{What this paper does NOT compute:}
+\begin{itemize}
+\item Per-community loss rates (requires INDI shapefile).
+\item Causal attribution (correlation only, at departmental scale).
+\item FPIC compliance (no community engagement, see audit Hat~7).
+\item Sub-pixel boundary dispute (no high-res land-cover map).
+\end{itemize}
+
+% --- Discussion ---
+\section{Discussion}
+\label{sec:discussion}
+
+The pipeline is reproducible end-to-end from public data. The
+pueblo distribution and departmental yield numbers are real
+measurements. The framework supports extension in three directions:
+(1) acquire INDI shapefiles for per-community loss analysis;
+(2) integrate Hansen full-Paraguay tiles for spatial overlap;
+(3) add FPIC-engaged community co-production of the analysis
+protocol (CARE Principles).
+
+% --- Acknowledgments ---
+% Acknowledgment section: no adviser identity to thank (FP-UNA student,
+% adviser not yet identified per 2026-09-09 audit).
+% Acknowledgments go to: INE 2022 census team, OSM Paraguay community
+% mappers, MAG/DCEA for the public yield records, Hansen GFC team.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Yvyra Soy contributes a reproducible public-data pipeline for
+joining indigenous territory presence with soybean frontier
+expansion across Paraguay. The measured numbers (557 indigenous
+communities across 19 pueblos, 16 departments with mean soy yield
+of \SI{2429}{kg/ha}) are real and reproducible.
+
+The pipeline does not claim causal attribution. It is positioned
+as methodology infrastructure that future FPIC-engaged studies
+can build on. Three concrete extensions would strengthen this work:
+
+1. INDI shapefile acquisition (multi-month institutional process)
+2. Full-Paraguay Hansen tile integration (off-repo, $\sim$6~GB)
+3. FPIC-engaged community co-production per CARE Principles
+
+The contribution is the reproducible public-data pipeline, released
+under MIT license.
+
+\section{Funding}
+This work was supported by FP-UNA graduate research scholarship and
+Ai-Whisperers compute grant.
+
+\section{Data and Code Availability}
+All code, data processing scripts, and the analysis pipeline are
+released as open-source under the MIT license at
+\url{https://github.com/IvanWeissVanDerPol/satellite-paraguay}.
+Raw data sources:
+\begin{itemize}
+\item INE 2022: \url{https://www.ine.gov.py/censo2022/}
+\item OSM: \url{https://www.openstreetmap.org/} (Overpass API)
+\item MAG: \url{https://datos.gov.py/} (DCEA yield records)
+\item Hansen GFC: \url{https://www.globalforestwatch.org/}
+\end{itemize}
+
+\section{CRediT Author Contributions}
+\textbf{Iv\'an Weiss Van der Pol:} Conceptualization; Methodology; Software;
+Validation; Formal analysis; Investigation; Data curation; Writing ---
+original draft; Visualization.
+
+\section{Declaration of Competing Interest}
+The author declares no competing financial interests or personal
+relationships that could appear to have influenced the work reported
+in this paper.
+
+\bibliography{../thesis/references}
+
+\end{document}

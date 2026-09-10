@@ -26,11 +26,12 @@ def main():
         "papers": {},
     }
 
-    # Load all 5 pipelines (P0010 Yvyra removed in Round-12 audit)
+    # Load all 6 pipelines (P0010 Yvyra replaced by P0030 Yvyra Soy)
     from src.papers.p0011_yvutu_deforestation import YvutuPipeline
     from src.papers.p0012_yvy_indigenous import YvyPipeline
     from src.papers.p0025_yrupe_yield import YrupePipeline
     from src.papers.p0026_kai_poaching import KaiPipeline
+    from src.papers.p0030_yvyra_soy import YvyraSoyPipeline
     from src.papers.p0035_tatakua_air_quality import TatakuaPipeline
 
     paper_pipelines = [
@@ -38,6 +39,7 @@ def main():
         ("P0012_Yvy", YvyPipeline, "indigenous_conflict"),
         ("P0025_Yrupe", YrupePipeline, "soybean_yield"),
         ("P0026_Kai", KaiPipeline, "poaching"),
+        ("P0030_Yvyra_Soy", YvyraSoyPipeline, "indigenous_x_soybean"),
         ("P0035_Tatakua", TatakuaPipeline, "air_quality"),
     ]
 

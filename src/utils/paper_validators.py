@@ -38,7 +38,7 @@ PAPER_NAMES = {
 
 def validate_paper_1() -> dict[str, Any]:
     """Validate P0011 Yvutu deforestation predictions."""
-    from src.papers.p0011_yvutu_deforestation import YvytuPipeline
+    from src.papers.p0011_yvytu_deforestation import YvytuPipeline
 
     YvytuPipeline()
     import numpy as np

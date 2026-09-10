@@ -175,7 +175,8 @@ def test_thesis_main_tex_no_typos_in_input_refs():
             _resolve_tex_target(base_dir, rel_path)  # exercise for coverage
             basename = Path(rel_path).name
             # Check for digit-transposition typos (e.g. p0100 vs p0010)
-            # Paper IDs (Round-12): p0011/p0012/p0025/p0026/p0035 (p0010 removed)
+            # Paper IDs (Round-12 + Round-13): p0011/p0012/p0025/p0026/p0030/p0035
+            # (p0010 removed in Round-12; p0030 added in Round-13 to replace)
             if "p00" in basename and not any(
                 pid in basename
                 for pid in (
@@ -183,6 +184,7 @@ def test_thesis_main_tex_no_typos_in_input_refs():
                     "p0012",
                     "p0025",
                     "p0026",
+                    "p0030",
                     "p0035",
                 )
             ):
@@ -190,7 +192,7 @@ def test_thesis_main_tex_no_typos_in_input_refs():
 
     assert not typo, (
         f"Found {len(typo)} suspicious chapter filename reference(s). "
-        f"Paper IDs are p0010/p0011/p0012/p0025/p0026/p0035.\n"
+        f"Paper IDs are p0011/p0012/p0025/p0026/p0030/p0035.\n"
         + "\n".join(f"  {p}: \\input{{{r}}}" for p, _start, r in typo[:20])
     )
 

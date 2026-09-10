@@ -25,12 +25,12 @@ def test_yvutu_pipeline_instantiates():
     """P0011 pipeline can be created.
 
     Note (2026-09-08, Round-12 audit): the live directory is
-    p0011_yvutu_deforestation (y-v-u-t-y, double-y). The duplicate
-    p0011_yvutu_deforestation directory (y-v-u-t-u) is being
+    p0011_yvytu_deforestation (y-v-u-t-y, double-y). The duplicate
+    p0011_yvytu_deforestation directory (y-v-u-t-u) is being
     consolidated in Phase 9; for now the live import uses the
     actual class name `YvytuPipeline` (not the typo'd version).
     """
-    from src.papers.p0011_yvutu_deforestation import YvytuPipeline
+    from src.papers.p0011_yvytu_deforestation import YvytuPipeline
 
     pipeline = YvytuPipeline()
     assert pipeline is not None
@@ -79,7 +79,7 @@ def test_yvutu_select_chaco_tiles():
     """P0011 selects Chaco tiles."""
     if not _HAS_DATA:
         pytest.skip("paraguay-geodata not readable (set PARAGUAY_GEODATA_DIR)")
-    from src.papers.p0011_yvutu_deforestation import YvytuPipeline
+    from src.papers.p0011_yvytu_deforestation import YvytuPipeline
 
     pipeline = YvytuPipeline()
     tiles = pipeline.select_tiles()

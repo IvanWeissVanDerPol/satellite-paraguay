@@ -1,0 +1,271 @@
+{
+  "census": {
+    "pueblos": [
+      {
+        "pueblo": "Mbya Guarani",
+        "ine_communities_2022": 200
+      },
+      {
+        "pueblo": "Ava Guarani",
+        "ine_communities_2022": 150
+      },
+      {
+        "pueblo": "Pai Tavytera",
+        "ine_communities_2022": 61
+      },
+      {
+        "pueblo": "Ayoreo",
+        "ine_communities_2022": 26
+      },
+      {
+        "pueblo": "Nivacle",
+        "ine_communities_2022": 23
+      },
+      {
+        "pueblo": "Enxet Sur",
+        "ine_communities_2022": 14
+      },
+      {
+        "pueblo": "Angaite",
+        "ine_communities_2022": 13
+      },
+      {
+        "pueblo": "Qom",
+        "ine_communities_2022": 12
+      },
+      {
+        "pueblo": "Enlhet Norte",
+        "ine_communities_2022": 11
+      },
+      {
+        "pueblo": "Sanapana",
+        "ine_communities_2022": 8
+      },
+      {
+        "pueblo": "Ybytoso",
+        "ine_communities_2022": 8
+      },
+      {
+        "pueblo": "Guarani Nandeva",
+        "ine_communities_2022": 7
+      },
+      {
+        "pueblo": "Ache",
+        "ine_communities_2022": 6
+      },
+      {
+        "pueblo": "Guarani Occidental / Pueblo Guarani",
+        "ine_communities_2022": 6
+      },
+      {
+        "pueblo": "Maka",
+        "ine_communities_2022": 4
+      },
+      {
+        "pueblo": "Toba Maskoy / Toba Enenlhet",
+        "ine_communities_2022": 3
+      },
+      {
+        "pueblo": "Guana",
+        "ine_communities_2022": 2
+      },
+      {
+        "pueblo": "Manjui",
+        "ine_communities_2022": 2
+      },
+      {
+        "pueblo": "Tomaraho",
+        "ine_communities_2022": 1
+      }
+    ],
+    "national_total_2022": 557,
+    "n_pueblos": 19
+  },
+  "soy_by_department": {
+    "CONCEPCION": {
+      "mean_yield_kg_per_ha_5yr": 2522.2655511538046,
+      "total_area_ha_5yr": 112754.4306720346,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "SAN PEDRO": {
+      "mean_yield_kg_per_ha_5yr": 2199.60237068561,
+      "total_area_ha_5yr": 1935513.5239514853,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "CORDILLERA": {
+      "mean_yield_kg_per_ha_5yr": 2741.5500776983527,
+      "total_area_ha_5yr": 6487.182724328422,
+      "yield_years": [
+        "2010/11",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "GUAIRA": {
+      "mean_yield_kg_per_ha_5yr": 2661.666219380343,
+      "total_area_ha_5yr": 91609.81584914695,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "CAAGUAZU": {
+      "mean_yield_kg_per_ha_5yr": 2431.156822567482,
+      "total_area_ha_5yr": 2053993.6551364674,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "CAAZAPA": {
+      "mean_yield_kg_per_ha_5yr": 2528.8293475903456,
+      "total_area_ha_5yr": 969937.4433328346,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "ITAPUA": {
+      "mean_yield_kg_per_ha_5yr": 2338.1552478493227,
+      "total_area_ha_5yr": 3314715.926010701,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "MISIONES": {
+      "mean_yield_kg_per_ha_5yr": 2117.566329771042,
+      "total_area_ha_5yr": 223041.24520500062,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "PARAGUARI": {
+      "mean_yield_kg_per_ha_5yr": 2929.908423058176,
+      "total_area_ha_5yr": 22108.961686019735,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "ALTO PARANA": {
+      "mean_yield_kg_per_ha_5yr": 2318.4885371060573,
+      "total_area_ha_5yr": 5183406.909775182,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "\u00d1EEMBUCU": {
+      "mean_yield_kg_per_ha_5yr": 1733.1327244500897,
+      "total_area_ha_5yr": 514.0,
+      "yield_years": [
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "AMAMBAY": {
+      "mean_yield_kg_per_ha_5yr": 3095.1846685217415,
+      "total_area_ha_5yr": 863308.3347569196,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "CANINDEYU": {
+      "mean_yield_kg_per_ha_5yr": 1893.8525263907009,
+      "total_area_ha_5yr": 2946262.4160829214,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "PTE. HAYES": {
+      "mean_yield_kg_per_ha_5yr": 2317.479714537121,
+      "total_area_ha_5yr": 23725.0,
+      "yield_years": [
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "ALTO PARAGUAY": {
+      "mean_yield_kg_per_ha_5yr": 2981.9934236803224,
+      "total_area_ha_5yr": 86765.0,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    },
+    "BOQUERON": {
+      "mean_yield_kg_per_ha_5yr": 2050.5363580193025,
+      "total_area_ha_5yr": 235653.62999999998,
+      "yield_years": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ]
+    }
+  },
+  "osm_polygons": {
+    "n_features": 30,
+    "bbox": [
+      -61.71916,
+      -25.3302786,
+      -54.6470175,
+      -20.248774
+    ]
+  },
+  "national_mean_yield_kg_per_ha": 2428.8355214037383,
+  "national_total_communities_2022": 557
+}
