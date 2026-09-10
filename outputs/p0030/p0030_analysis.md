@@ -53,4 +53,5 @@
 ## OSM indigenous community polygons
 
 - Features: 30
-- BBox: [-61.719, -25.330, -54.647, -20.249] (lon_min, lat_min, lon_max, lat_max)
+- BBox: [-61.719, -25.330, -54.647, -20.249]
+  (lon_min, lat_min, lon_max, lat_max)
