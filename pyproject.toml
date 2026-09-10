@@ -24,7 +24,7 @@ packages = [
     "src.timeseries",
     "src.evaluation",
     "src.papers",
-    "src.papers.p0011_yvutu_deforestation",
+    "src.papers.p0011_yvytu_deforestation",
     "src.papers.p0025_yrupe_yield",
     "src.papers.p0012_yvy_indigenous",
     "src.papers.p0026_kai_poaching",

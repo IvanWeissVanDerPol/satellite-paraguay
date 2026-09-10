@@ -58,7 +58,7 @@ class YvyraSoyPipeline:
             # Find columns
             pueblo_idx = header.index("pueblo")
             count_idx = header.index("comunidades_count_2022")
-            region_idx = header.index("region") if "region" in header else None
+
             for line in fp:
                 parts = line.strip().split(",")
                 if len(parts) <= max(pueblo_idx, count_idx):
@@ -180,10 +180,12 @@ class YvyraSoyPipeline:
         census = self.load_ine_census()
         pueblos = []
         for pueblo, count in sorted(census.items(), key=lambda x: -x[1]):
-            pueblos.append({
-                "pueblo": pueblo,
-                "ine_communities_2022": count,
-            })
+            pueblos.append(
+                {
+                    "pueblo": pueblo,
+                    "ine_communities_2022": count,
+                }
+            )
         return {
             "pueblos": pueblos,
             "national_total_2022": sum(census.values()),
@@ -260,8 +262,9 @@ class YvyraSoyPipeline:
         if result["soy_by_department"]:
             lines.append("| Department | Mean yield (kg/ha) | Total area (ha) |")
             lines.append("|---|---:|---:|")
-            for dept, info in sorted(result["soy_by_department"].items(),
-                                      key=lambda x: -(x[1]["mean_yield_kg_per_ha_5yr"] or 0)):
+            for dept, info in sorted(
+                result["soy_by_department"].items(), key=lambda x: -(x[1]["mean_yield_kg_per_ha_5yr"] or 0)
+            ):
                 rend = info["mean_yield_kg_per_ha_5yr"]
                 sup = info["total_area_ha_5yr"] or 0
                 lines.append(f"| {dept} | {rend:.0f} | {sup:,.0f} |")
@@ -271,9 +274,12 @@ class YvyraSoyPipeline:
 
         lines.append("## OSM indigenous community polygons\n")
         lines.append(f"- Features: {result['osm_polygons']['n_features']}")
-        if result['osm_polygons'].get('bbox'):
-            bbox = result['osm_polygons']['bbox']
-            lines.append(f"- BBox: [{bbox[0]:.3f}, {bbox[1]:.3f}, {bbox[2]:.3f}, {bbox[3]:.3f}] (lon_min, lat_min, lon_max, lat_max)")
+        if result["osm_polygons"].get("bbox"):
+            bbox = result["osm_polygons"]["bbox"]
+            lines.append(
+                f"- BBox: [{bbox[0]:.3f}, {bbox[1]:.3f}, {bbox[2]:.3f}, {bbox[3]:.3f}]\n"
+                f"  (lon_min, lat_min, lon_max, lat_max)"
+            )
         return "\n".join(lines) + "\n"
 
     def validate(self, predictions, ground_truth) -> dict:
