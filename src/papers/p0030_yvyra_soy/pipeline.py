@@ -383,7 +383,8 @@ def run_p0030_regression(repo_root: Path | None = None) -> dict:
     region_indi = {"Oriental": 428, "Occidental": 129}
     regional_data = {}
     for region, depts in REGIONS.items():
-        slopes = [dept_yields.get(d, {}).get("slope_kg_per_ha_per_year") for d in depts if d in dept_yields]
+        slopes_raw = [dept_yields.get(d, {}).get("slope_kg_per_ha_per_year") for d in depts if d in dept_yields]
+        slopes = [s for s in slopes_raw if s is not None]
         mean_slope = sum(slopes) / len(slopes) if slopes else None
         regional_data[region] = {
             "n_departments": len(depts),
@@ -420,10 +421,10 @@ def run_p0030_regression(repo_root: Path | None = None) -> dict:
                 "Occidental Chaco departments show {:.1f}x the mean MAG soy yield "
                 "trajectory of Oriental departments, despite hosting only "
                 "24% of Paraguay's indigenous communities."
-            ).format(ratio),
+            ).format(ratio if ratio is not None else 0.0),
             "occidental_slope_kg_per_ha_per_yr": occ_slope,
             "oriental_slope_kg_per_ha_per_yr": ori_slope,
-            "ratio_occident_vs_orient": round(ratio, 2) if ratio else None,
+            "ratio_occident_vs_orient": round(ratio, 2) if ratio is not None else None,
             "occidental_indi_density": regional_data["Occidental"]["indi_density_per_dept"],
             "oriental_indi_density": regional_data["Oriental"]["indi_density_per_dept"],
         },
