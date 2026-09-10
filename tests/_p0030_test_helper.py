@@ -60,7 +60,8 @@ sys.path.insert(0, str(REPO_ROOT))
 
 # Import the P0030 pipeline (this triggers src.papers.__init__.py
 # which loads p0011 -> paraguay_admin -> uses our stubs)
-import src.papers.p0030_yvyra_soy.pipeline as p0030_pipeline
+# noqa: E402  -- stub modules must be inserted before package import
+import src.papers.p0030_yvyra_soy.pipeline as p0030_pipeline  # noqa: E402
 
 result = p0030_pipeline.run_p0030_demo()
 print(json.dumps(result, default=str))
