@@ -188,7 +188,7 @@ class TestP0030RegressionFinding:
         import sys
         from pathlib import Path
 
-        REPO_ROOT = Path("/opt/data/work/satellite-paraguay")
+        REPO_ROOT = Path(__file__).resolve().parent.parent
         result = subprocess.run(
             [sys.executable, str(REPO_ROOT / "tests" / "_p0030_test_helper.py")],
             capture_output=True,
