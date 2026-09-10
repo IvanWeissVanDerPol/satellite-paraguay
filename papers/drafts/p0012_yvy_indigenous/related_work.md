@@ -140,3 +140,17 @@ The contribution to the **Paraguayan operational MRV system** is
 the per-territory ranking (Section R.4 of `results.md`) that gives
 INFONA + INDI a quantitative basis for prioritizing monitoring
 resources toward the 5 worst-performing territories.
+
+
+**Recent Paraguayan-context literature (2024-2026).** Galeana
+\cite{galeana2024} documents the legal mechanisms by which
+indigenous land rights are contested in the Chaco, framing
+this struggle as environmental justice. Wesz Junior
+\cite{wesz2026} characterizes the Paraguayan agricultural
+commodity frontier as state-enabled illegality. Jennings et al.
+\cite{jennings2025} provide the first peer-reviewed
+framework for CARE Principles in earth systems science. These
+three papers postdate the experimental setup that produced this
+paper's headline number; we include them to acknowledge that the
+contemporary context of the Paraguayan Chaco has changed since
+2024.

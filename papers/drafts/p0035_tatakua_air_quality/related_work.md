@@ -103,3 +103,15 @@ without claiming the GPU-trained headline. We expect this to be
 more useful to the regional research community than yet another
 "we trained a huge model and got great numbers" paper that doesn't
 ship its code.
+
+
+**Paraguayan-specific wildfire smoke literature.** Mendez and
+Mendez \cite{mendezmendez2024} document the impact of
+biomass-burning smoke from the Pantanal on Paraguayan air quality
+2010-2022, providing the local-context backdrop that this paper's
+forecast model sits within. Palmeiro-Silva et al.
+\cite{palmeirosilva2025} document the health impacts of the
+2024 South American wildfire season in *The Lancet Regional
+Health - Americas*. Together these establish that PM2.5
+monitoring in Paraguay is a public-health concern, not just a
+remote-sensing concern.

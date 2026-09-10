@@ -199,3 +199,25 @@ by the P0030 pipeline. The literature above provides:
 
 The actual measured numbers in P0030 are unique to this thesis and
 must be re-derived from the public datasets to be reproduced.
+
+
+**Recent (2024-2026) literature on this question.** The Paraguayan
+Chaco indigenous-rights literature has expanded substantially since
+2024. Galeana \cite{galeana2024} documents the legal and
+institutional mechanisms by which indigenous land rights are
+contested in the Chaco, framing the struggle as environmental
+justice. Wesz Junior \cite{wesz2026} extends this analysis to the
+agrarian-political dimension, characterizing the soy/agricultural
+commodity frontier as a land rush enabled by state illegality.
+Ioris \cite{ioris2024} treats the socio-economic geography of
+indigenous land rights in Paraguay. Together with
+\citet{sze2022}, these papers provide the contemporary
+context for the quantitative analysis in this paper.
+
+On indigenous data governance, Jennings et al. \cite{jennings2025}
+provide the first peer-reviewed framework for CARE Principles
+applied to earth systems science; Newing et al. \cite{newing2024}
+enumerate fourteen principles for participatory conservation
+research with indigenous communities. We cite these as the
+operational framework that any future FPIC-engaged extension
+of this work must satisfy.

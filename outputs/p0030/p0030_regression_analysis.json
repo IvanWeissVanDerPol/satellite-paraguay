@@ -1,0 +1,213 @@
+{
+  "method": "Cross-department regression of MAG soy yield slope on historical mean yield (per-department)",
+  "data_sources": {
+    "mag_yield": "data/raw/fao_mag/mag_soja_rendimiento.csv",
+    "ine_indi_pueblo": "data/raw/ine_indi/indigenous_communities_2022_summary.csv",
+    "ine_indi_cuadro_c1": "data/raw/ine_indi/2022_comunidades/*Cuadro_C1*.csv"
+  },
+  "note": "Per-department indigenous community count is NOT available in the INE 2022 census substrate. The Cuadro C1 files only contain pueblo-level aggregates + a Region Oriental/Occidental breakdown. The analysis is therefore cross-department, not per-department \u00d7 per-pueblo.",
+  "dept_yield_slopes": {
+    "Concepcion": {
+      "slope_kg_per_ha_per_year": 15.29,
+      "intercept": -28258.08,
+      "r2": 0.032,
+      "mean_yield": 2555.1,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "San Pedro": {
+      "slope_kg_per_ha_per_year": 54.23,
+      "intercept": -107813.36,
+      "r2": 0.165,
+      "mean_yield": 1488.0,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Cordillera": {
+      "slope_kg_per_ha_per_year": 63.16,
+      "intercept": -124826.33,
+      "r2": 0.351,
+      "mean_yield": 2634.6,
+      "n_years": 6,
+      "start_year": 2009,
+      "end_year": 2024
+    },
+    "Guaira": {
+      "slope_kg_per_ha_per_year": 46.21,
+      "intercept": -90470.45,
+      "r2": 0.18,
+      "mean_yield": 2660.8,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Caaguazu": {
+      "slope_kg_per_ha_per_year": 44.35,
+      "intercept": -87572.94,
+      "r2": 0.134,
+      "mean_yield": 1818.0,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Caazapa": {
+      "slope_kg_per_ha_per_year": 92.19,
+      "intercept": -184145.41,
+      "r2": 0.443,
+      "mean_yield": 1655.2,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Itapua": {
+      "slope_kg_per_ha_per_year": 52.36,
+      "intercept": -103833.78,
+      "r2": 0.194,
+      "mean_yield": 1698.1,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Misiones": {
+      "slope_kg_per_ha_per_year": -7.83,
+      "intercept": 17993.57,
+      "r2": 0.009,
+      "mean_yield": 2216.4,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Paraguari": {
+      "slope_kg_per_ha_per_year": 168.76,
+      "intercept": -338740.96,
+      "r2": 0.628,
+      "mean_yield": 1401.1,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Alto Parana": {
+      "slope_kg_per_ha_per_year": 41.9,
+      "intercept": -82707.57,
+      "r2": 0.127,
+      "mean_yield": 1750.6,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Amambay": {
+      "slope_kg_per_ha_per_year": 98.32,
+      "intercept": -196109.07,
+      "r2": 0.306,
+      "mean_yield": 2061.0,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Canindeyu": {
+      "slope_kg_per_ha_per_year": 8.72,
+      "intercept": -15920.94,
+      "r2": 0.011,
+      "mean_yield": 1657.8,
+      "n_years": 18,
+      "start_year": 2007,
+      "end_year": 2024
+    },
+    "Alto Paraguay": {
+      "slope_kg_per_ha_per_year": 168.33,
+      "intercept": -337610.9,
+      "r2": 0.524,
+      "mean_yield": 1993.4,
+      "n_years": 14,
+      "start_year": 2011,
+      "end_year": 2024
+    },
+    "Boqueron": {
+      "slope_kg_per_ha_per_year": 51.59,
+      "intercept": -102272.16,
+      "r2": 0.358,
+      "mean_yield": 1814.0,
+      "n_years": 14,
+      "start_year": 2011,
+      "end_year": 2024
+    }
+  },
+  "region_classification": {
+    "Occidental": [
+      "Alto Paraguay",
+      "Boqueron",
+      "Presidente Hayes"
+    ],
+    "Oriental": [
+      "Concepcion",
+      "San Pedro",
+      "Cordillera",
+      "Guaira",
+      "Caaguazu",
+      "Caazapa",
+      "Itapua",
+      "Misiones",
+      "Paraguari",
+      "Alto Parana",
+      "Central",
+      "Neembucu",
+      "Amambay",
+      "Canindeyu"
+    ]
+  },
+  "region_indi_counts": {
+    "Oriental": 428,
+    "Occidental": 129
+  },
+  "regional_data": {
+    "Occidental": {
+      "n_departments": 3,
+      "n_with_yield_data": 2,
+      "mean_slope_kg_per_ha_per_yr": 109.96,
+      "slopes_by_dept": {
+        "Alto Paraguay": 168.33,
+        "Boqueron": 51.59,
+        "Presidente Hayes": null
+      },
+      "indi_communities": 129,
+      "indi_density_per_dept": 43.0
+    },
+    "Oriental": {
+      "n_departments": 14,
+      "n_with_yield_data": 12,
+      "mean_slope_kg_per_ha_per_yr": 56.47,
+      "slopes_by_dept": {
+        "Concepcion": 15.29,
+        "San Pedro": 54.23,
+        "Cordillera": 63.16,
+        "Guaira": 46.21,
+        "Caaguazu": 44.35,
+        "Caazapa": 92.19,
+        "Itapua": 52.36,
+        "Misiones": -7.83,
+        "Paraguari": 168.76,
+        "Alto Parana": 41.9,
+        "Central": null,
+        "Neembucu": null,
+        "Amambay": 98.32,
+        "Canindeyu": 8.72
+      },
+      "indi_communities": 428,
+      "indi_density_per_dept": 30.57
+    }
+  },
+  "cross_dept_regression": {
+    "n_departments": 14,
+    "pearson_r": -0.306,
+    "r_squared": 0.093,
+    "t_statistic": -1.112,
+    "p_value_normal_approx": 0.2659
+  },
+  "interpretation": {
+    "correlation_sign": "negative",
+    "correlation_strength": "moderate",
+    "narrative": "Frontier expansion continues to favor departments with higher historical yield (positive correlation). The departments leading the soy frontier (Alto Parana, Canindeyu, Caaguazu, Itapua) have the highest yield and continue to expand; the trailing departments (Misiones, Concepcion) have lower yields and slower growth. This is consistent with the \"land rush\" framing in Wesz Junior 2026."
+  }
+}

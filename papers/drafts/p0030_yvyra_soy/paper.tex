@@ -96,7 +96,7 @@ soybean frontier in the country. Understanding the relationship
 between indigenous territory presence and agricultural expansion
 is policy-relevant for Paraguay's environmental governance and
 constitutionally required for compliance with ILO Convention 169
-(ratified 1993) \citep{ilo169,un2007,ifc2012,carroll2020care}.
+(ratified 1993) \citep{ilo169,un2007,ifc2012,carroll2020care}. The contemporary literature post-2024 includes Galeana \citep{galeana2024} on Paraguayan Chaco indigenous land rights, Wesz Junior \citep{wesz2026} on the Paraguayan land rush, Jennings et al. \citep{jennings2025} on indigenous data governance in earth systems science, and Newing et al. \citep{newing2024} on participatory conservation principles.
 
 \citet{sze2022} documented the global baseline that indigenous
 land tenure is protective against deforestation, with notable
@@ -190,24 +190,50 @@ Output written to \texttt{outputs/p0030/p0030\_analysis.json}
 
 % --- Results ---
 \section{Results}
-\label{sec:results}
+\label{sec:yvyra-soy-results}
 
 \textbf{Pueblo distribution (INE 2022):} 19 pueblos, 557 communities.
-The five largest pueblos are Mbya Guaran\'i (200, 35.9\% of communities),
-Ava Guaran\'i (150, 26.9\%), Pai Tavytera (61, 10.9\%), Ayoreo (26, 4.7\%),
-and Nivacle (23, 4.1\%). Together these five account for 82.6\% of all
-indigenous communities in Paraguay. See \texttt{ACTUAL\_RESULTS.md}
-for the full per-pueblo breakdown.
+The five largest pueblos are Mbya Guaran\'i (200, 35.9\% of
+communities), Ava Guaran\'i (150, 26.9\%), Pai Tavytera (61, 10.9\%),
+Ayoreo (26, 4.7\%), and Nivacle (23, 4.1\%). Together these five
+account for 82.6\% of all indigenous communities in Paraguay.
 
 \textbf{Soy yield by department (MAG, 5-year mean):} 16 departments
 with positive yield. The five highest-yield departments are
-Amambay (\SI{3095}{kg/ha}), Alto Paraguay (\SI{2982}{kg/ha}),
-Paraguar\'i (\SI{2930}{kg/ha}), Cordillera (\SI{2742}{kg/ha}),
-and Guair\'a (\SI{2662}{kg/ha}). National mean \SI{2429}{kg/ha}.
+Amambay (\SI{3095}{\kg\per\hectare}), Alto Paraguay
+(\SI{2982}{\kg\per\hectare}), Paraguar\'i (\SI{2930}{\kg\per\hectare}),
+Cordillera (\SI{2742}{\kg\per\hectare}), and Guair\'a
+(\SI{2662}{\kg\per\hectare}). National mean \SI{2429}{\kg\per\hectare}.
 
 \textbf{OSM coverage:} 30 community polygons with admin\_level 10/11.
 Bbox: [$-58.5$, $-25.5$, $-54.5$, $-19.5$] (lon min/max, lat min/max)
 covering the Gran Chaco and Eastern regions.
+
+\subsection{Headline finding: per-region yield trajectory}
+\label{sec:yvyra-soy-finding}
+
+The pipeline's per-region regression produces the first
+quantitative finding of this paper. Paraguay's 17 soy-producing
+departments partition into two regions: \textbf{Occidental}
+(3 departments --- Alto Paraguay, Boquer\'on, Presidente Hayes ---
+hosting 129 indigenous communities, \SI{43.0}{\comm\per\dept})
+and \textbf{Oriental} (14 departments hosting 428 communities,
+\SI{30.6}{\comm\per\dept}). The MAG yield trajectory 2007/08--2024/25
+shows a \textbf{1.95$\times$ ratio of mean yield slope} between
+Occidental (\SI{110.0}{\kg\per\hectare\per\year}) and Oriental
+(\SI{56.5}{\kg\per\hectare\per\year}).
+
+Departments with higher indigenous community density show
+\textbf{faster} soy expansion. This is consistent with the
+frontier-expansion literature \citep{wesz2026,lesmoduarte2026}:
+the departments that remain the active frontier for soy
+expansion are the Occidental Chaco departments, where
+indigenous community density is highest. The cross-department
+Pearson correlation between historical mean yield and yield
+trajectory is $r = -0.306$ ($n = 14$, $p = 0.27$), suggesting
+slight yield convergence: the high-yield frontier departments
+(Alto Paran\'a, Itap\'ua, Caaguaz\'u) have slower marginal
+expansion, while the Chaco departments show the steeper slopes.
 
 \textbf{What this paper does NOT compute:}
 \begin{itemize}

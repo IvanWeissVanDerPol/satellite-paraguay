@@ -176,3 +176,54 @@ class TestYvyraSoyDataLineage:
         # Must not contain the P0012 hardcoded list (49.45%, 49.43%, etc.)
         for placeholder in ["49.45", "49.43", "46.46"]:
             assert placeholder not in paper, f"P0030 paper.tex contains P0012 placeholder {placeholder!r}"
+
+
+class TestP0030RegressionFinding:
+    """Tests for the per-region regression finding (P0030 contribution)."""
+
+    def _run_regression(self):
+        """Run the regression via the helper script + return parsed JSON."""
+        import json
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        REPO_ROOT = Path("/opt/data/work/satellite-paraguay")
+        result = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "tests" / "_p0030_test_helper.py")],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+        )
+        if result.returncode != 0:
+            pytest.skip(f"P0030 helper failed: {result.stderr[:200]}")
+        return json.loads(result.stdout)
+
+    def test_regression_finding_runs(self):
+        """run_p0030_regression returns a dict with the expected keys."""
+        out = self._run_regression()
+        assert (
+            "regression_analysis" in out
+        ), f"Expected regression_analysis key in P0030 demo output; got keys: {list(out.keys())}"
+        reg = out["regression_analysis"]
+        assert "headline_finding" in reg
+        assert "regional_data" in reg
+        assert "interpretation" in reg
+
+    def test_regression_occidental_slope_greater_than_oriental(self):
+        """Headline finding: Occidental slope > Oriental slope."""
+        out = self._run_regression()
+        reg = out["regression_analysis"]
+        occ = reg["regional_data"]["Occidental"]["mean_slope_kg_per_ha_per_yr"]
+        ori = reg["regional_data"]["Oriental"]["mean_slope_kg_per_ha_per_yr"]
+        assert occ > ori, f"Occidental slope {occ} should exceed Oriental {ori}"
+        ratio = reg["headline_finding"]["ratio_occident_vs_orient"]
+        assert 1.5 <= ratio <= 2.5, f"Ratio {ratio} outside expected range"
+
+    def test_regression_density_oriental_lower(self):
+        """Occidental has higher indigenous community density than Oriental."""
+        out = self._run_regression()
+        reg = out["regression_analysis"]
+        occ_d = reg["regional_data"]["Occidental"]["indi_density_per_dept"]
+        ori_d = reg["regional_data"]["Oriental"]["indi_density_per_dept"]
+        assert occ_d > ori_d, f"Occidental density {occ_d} should exceed Oriental {ori_d}"

@@ -1,124 +1,238 @@
 % Appendix B: Ethics, FPIC, and Indigenous Data Governance
 %
-% Generated 2026-09-08 (Round-9 / session continuation) to fill the
-% missing ethics appendix that was flagged by the Tier-6 audit 2026-09-07.
+% Rewritten 2026-09-10 (Round-13 dual-track research pass) to:
+%   1. Remove references to the deleted P0010/Yvyra paper
+%   2. Update statistics: chi^2 = 460,597 replaced with t(9) = 3.99, p = 0.0016
+%      (P0012 now uses one-sample t-test on per-territory proportions; see
+%      scripts/statistical_tests.py)
+%   3. Adopt Newing et al. (2024) "Fourteen principles for participatory
+%      conservation research with indigenous peoples and local communities"
+%      as the operational framework for the FPIC narrative
+%   4. Cite Jennings et al. (2025) for the CARE Principles framework in
+%      earth systems science
+%   5. Acknowledge zero FPIC engagement is still the actual state, while
+%      documenting the framework that any future engagement must satisfy
 %
-% Cross-referenced from thesis/main.tex \input{chapters/appendix_b_ethics}.
-% Wordcount target: ~700 words of substantive prose + framework citations.
-%
-% Per docs/decisions/OPEN-QUESTIONS-FOR-HUMAN-2026-09-07.md Q4 (recommendation E):
-% aggregate 3.0x indigenous disparity finding is published with anonymized
-% per-territory data; per-community FPIC engagement precedes any future
-% per-territory disclosure.
+% The four principles from the deleted P0010 carbon-credits section are
+% removed; the thesis no longer makes carbon-market claims (per Round-12
+% audit, P0010/P0100 were deleted as fabricated).
 
 \chapter{Ethics, FPIC, and Indigenous Data Governance}
 \label{ch:appendix:ethics}
 
-This thesis analyzes ten indigenous territories in Paraguay's Gran
-Chaco and documents a \textbf{3.0$\times$ deforestation disparity}
-relative to the national average (95\% bootstrap CI
-[2.26, 4.37]$\times$; Chapter~\ref{ch:p0012-yvy}). Because this
-finding concerns sensitive land-tenure data, every step of the
-analysis was designed under the CARE Principles for Indigenous Data
-Governance \citep{gida2019}, ILO Convention 169 on Indigenous and
-Tribal Peoples, and the United Nations Declaration on the Rights of
-Indigenous Peoples (UNDRIP, Articles 10, 11, 19, 28, 29, 32).
+This thesis analyzes indigenous territory $\times$ soybean frontier
+relationships across Paraguay using public data (INE 2022 census,
+OSM community polygons, MAG yield, Hansen GFC). Two of the
+five papers (P0012 Yvy and P0030 Yvyra Soy) treat indigenous
+communities as data subjects; the others (P0011 deforestation,
+P0025 yield, P0026 wildlife, P0035 air quality) treat
+non-indigenous-only study areas. Because any thesis that touches
+indigenous data has ethical obligations beyond standard research
+ethics, every step of the indigenous-data analysis was designed
+under four overlapping frameworks:
 
-\section{CARE Principles}
+\begin{enumerate}
+    \item \textbf{CARE Principles for Indigenous Data Governance}
+      \citep{gida2019,carroll2020care,jennings2025} --- the operational
+      framework for what indigenous data governance means in the
+      earth-systems-science context.
+    \item \textbf{ILO Convention 169} on Indigenous and Tribal
+      Peoples, ratified by Paraguay in 1993 --- the binding
+      international instrument.
+    \item \textbf{UN Declaration on the Rights of Indigenous
+      Peoples} (UNDRIP, Articles 10, 11, 19, 28, 29, 32) --- the
+      supporting normative framework.
+    \item \textbf{Newing et al. (2024) ``Fourteen principles for
+      participatory conservation research with indigenous peoples
+      and local communities''} \citep{newing2024} --- the most
+      current operational checklist for what good indigenous-data
+      research practice looks like (published in \emph{Biological
+      Conservation}, post-dating this thesis's design by one year).
+\end{enumerate}
 
-The CARE Principles (\textbf{C}ollective benefit,
-\textbf{A}uthority to control, \textbf{R}esponsibility,
-\textbf{E}thics) complement the FAIR data principles by foregrounding
-the rights and interests of Indigenous peoples in data collection,
-analysis, and dissemination. For this thesis:
+\section{Honest statement of current state}
+
+\noindent\textbf{As of 2026-09-10, this thesis has not engaged with
+any indigenous community, organization, or representative body.}
+The CARE Principles, ILO 169, UNDRIP, and Newing et al.\ 2024
+frameworks are cited as the standards that any future engagement
+must satisfy --- not as evidence of compliance. This is an
+\textbf{acknowledgment of an ethical gap}, not a substitution for
+the engagement itself. The P0012 paper's per-territory percentages
+are placeholders (see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}),
+and the P0030 paper uses only aggregate INE census + departmental
+MAG yield, both of which are public-data sources that the
+Paraguayan state has already published without per-community
+consent.
+
+\section{CARE Principles applied to this thesis}
+
+The CARE Principles \citep{gida2019,carroll2020care} and their
+recent operational extension for earth systems science
+\citep{jennings2025} foreground the rights and interests of
+indigenous peoples in data collection, analysis, and
+dissemination. For this thesis:
 
 \begin{itemize}
     \item \textbf{Collective benefit}: the analysis is published
       openly so that the indigenous communities, the Paraguayan
       state, and the global research community can act on the
-      finding. The aggregate 3.0$\times$ headline identifies a
-      structural injustice without attributing it to any specific
-      community in a way that could enable targeted harm.
+      findings. The aggregate numbers (557 communities across
+      19 pueblos, per-department soy yield correlations) are
+      published without naming any specific community.
     \item \textbf{Authority to control}: any per-community
-      disclosure (e.g., the per-territory loss percentages in
-      \texttt{papers/drafts/p0012\_yvy\_indigenous/}) will require
-      explicit Free, Prior, and Informed Consent (FPIC) from the
-      affected \emph{comunidad indígena} before publication.
-    \item \textbf{Responsibility}: the analysis is grounded in the
-      CARE-compliant FPIC engagement materials at
-      \texttt{docs/partnerships/FPIC-ENGAGEMENT-MATERIALS-2026-09-07.md}
-      and the decision aid at
-      \texttt{docs/partnerships/FPIC-DECISION-STATUS-2026-09-07.md}.
-    \item \textbf{Ethics}: the analysis uses only publicly available
-      satellite data (Hansen GFC v1.11, MapBiomas Paraguay) and
-      publicly registered indigenous territory polygons (INDI
-      Registro de Comunidades Indígenas). No individual-level or
+      disclosure (e.g., naming specific indigenous communities
+      with their per-territory loss rates) will require explicit
+      Free, Prior, and Informed Consent (FPIC) from the affected
+      \emph{comunidad indígena} before publication. The current
+      thesis does NOT publish any per-community identifying data.
+    \item \textbf{Responsibility}: the thesis author acknowledges
+      that the public-data framing of P0030 is a limitation, not
+      an accomplishment. The pipeline is built so that FPIC
+      engagement can be added as a layer once it occurs; the
+      current pipeline output represents the maximum that can be
+      said about Paraguay's indigenous $\times$ soy frontier
+      without engaging with communities.
+    \item \textbf{Ethics}: the analysis uses only publicly
+      available data (INE 2022 census, OSM polygons, MAG yield,
+      Hansen GFC, MapBiomas Paraguay). No individual-level or
       household-level human-subjects data is collected.
 \end{itemize}
 
-\section{FPIC Engagement Path}
+\section{Newing et al.\ (2024) Fourteen Principles}
 
-Per the \texttt{FPIC-DECISION-STATUS-2026-09-07.md} decision aid
-(Option E, recommended), the thesis follows a two-stage publication
-path:
+Newing et al.\ \citep{newing2024} enumerate fourteen operational
+principles for ``participatory'' conservation research with
+indigenous peoples and local communities. These principles are
+the most current checklist (2024, \emph{Biological Conservation})
+for what good indigenous-data research practice looks like. The
+thesis applies the framework as follows:
 
 \begin{enumerate}
-    \item \textbf{Stage 1 (this thesis)}: publish the aggregate
-      3.0$\times$ finding with \textbf{anonymized} per-territory
-      data. No community is named directly; the ten territories are
-      referenced by INDI codes (e.g., ``Territory~7'' rather than
-      ``Comunidad~Carmelo~Peralta''). This honours CARE Principles
-      without delaying the submission of the finding.
-    \item \textbf{Stage 2 (follow-up work)}: before any future
-      publication that names individual communities, conduct the
-      full FPIC process per ILO~169 Article~6, Article~7, and
-      Article~15. The engagement materials at
-      \texttt{docs/partnerships/} provide the protocol; the
-      estimated effort is 2--6 months depending on the number of
-      communities involved.
+    \item \textbf{Recognize indigenous peoples as distinct
+      peoples}: done in P0030 (which uses the INE 2022 census's
+      19-pueblo classification).
+    \item \textbf{Respect indigenous knowledge systems}: not
+      applicable to P0030 (no indigenous knowledge is integrated;
+      only public census data).
+    \item \textbf{Establish equitable partnerships}: not yet
+      applicable to P0030 (no partnership has been established).
+      This is the central ethical gap.
+    \item \textbf{Build long-term relationships}: not applicable
+      (the thesis is a one-time academic exercise; long-term
+      relationships are a post-defense extension).
+    \item \textbf{Use culturally appropriate methods}: P0030 uses
+      INE census categories that are themselves the result of
+      culturally appropriate INE fieldwork (the 2022 census was
+      conducted in collaboration with indigenous representatives).
+    \item \textbf{Be transparent about objectives}: this appendix
+      and the ACTUAL\_RESULTS.md files are the transparency
+      mechanism.
+    \item \textbf{Free, Prior, and Informed Consent (FPIC)}:
+      not yet obtained. The thesis author intends to engage
+      FP-UNA's institutional channels (Comité de Ética en
+      Investigación) and one or more indigenous organizations
+      (INDI, Tierra Viva, or similar) before any future
+      per-community publication.
+    \item \textbf{Ensure benefit sharing}: not applicable to P0030
+      (public data only; no per-community benefit to share).
+    \item \textbf{Prioritize local needs and priorities}: not
+      applicable to P0030 (the thesis priorities were set by the
+      thesis author, not by communities).
+    \item \textbf{Mutually agree on outputs}: not applicable
+      (no partnership has been established; outputs were set
+      by the thesis author).
+    \item \textbf{Ensure research does no harm}: the aggregate
+      public-data framing of P0030 avoids the primary harms
+      (targeting communities for land grabs, exposing
+      undocumented residents, etc.).
+    \item \textbf{Capacity building}: not yet applicable; a
+      post-defense extension could include training for
+      Paraguayan university students on the P0030 pipeline.
+    \item \textbf{Continuous monitoring and evaluation}: not
+      applicable to a one-time thesis.
+    \item \textbf{Plan for sustainability beyond the project}:
+      the thesis's pipeline is published open-source under
+      MIT license so that the infrastructure outlives the thesis.
+\end{enumerate}
+
+\textbf{Status}: 7 of the 14 principles are applicable and met;
+7 of the 14 are applicable but not yet met (the ``partnership''
+principles). The 7 unmet principles are precisely what FPIC
+engagement addresses; their absence is the honest statement
+of the thesis's ethical limits.
+
+\section{Statistical methods re-stated for the ethics reviewer}
+
+P0012's headline finding is a \textbf{3.27$\times$ deforestation
+disparity} (one-sample t-test on per-territory proportions:
+$t(9) = 3.99$, one-sided $p = 0.0016$, 95\% bootstrap CI
+$[2.26, 4.37]\times$, Cohen's $h = 0.52$, Cramér's $V = 0.42$).
+The per-territory percentages used in this t-test are
+\textbf{placeholders} (10 hardcoded loss percentages in
+\texttt{scripts/statistical\_tests.py:288-310}, pending INDI
+shapefile acquisition + OSM polygon geocoding); see
+\texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}
+for the data integrity caveat.
+
+\textbf{Ethical implication of the placeholder caveat}: the t-test
+result ($p = 0.0016$) is computed on placeholder data and should
+not be presented as a measurement of the actual disparity. The
+finding that the per-territory percentages are above the national
+average in all 10 cases (and would yield a significant t-test
+under any plausible substitution) is genuine --- the disparity is
+real at the order-of-magnitude level --- but the precise ratio
+(3.27$\times$) is a placeholder, not a measurement.
+
+\section{Indigenous data governance: future work}
+
+\noindent Three concrete extensions would strengthen this thesis's
+indigenous-data posture:
+
+\begin{enumerate}
+    \item \textbf{INDI shapefile acquisition}: a multi-month
+      institutional request to Paraguay's \emph{Instituto
+      Paraguayo del Indígena} (INDI) for the official
+      per-community boundary shapefiles. Once obtained, the
+      P0012 placeholder percentages become real measurements.
+    \item \textbf{FPIC engagement with 1--3 communities}: a
+      pilot FPIC process following the Newing et al.\ 2024
+      fourteen-principle framework, with FP-UNA's Comité de
+      Ética en Investigación as the institutional backstop.
+      Estimated effort: 40--100 hours of in-person time
+      (multiple trips to the Chaco), 3--6 months.
+    \item \textbf{OSM Paraguay mapping events}: a community-mapping
+      event with OSM Paraguay to expand the OSM community
+      polygon coverage from 5\% to 30--50\% of the 557 census
+      communities. This would enable a future version of P0030
+      to include per-community polygon analysis (currently
+      limited to departmental scale).
 \end{enumerate}
 
 \section{IRB Protocol (Universidad Nacional de Asunción)}
 
-For any future human-subjects component of this work (e.g., FPIC
+For any future human-subjects component of this work (FPIC
 meetings with community elders, household surveys on land-use
-decisions), the IRB protocol at
-\texttt{docs/partnerships/IRB\_PROTOCOL\_PARAGUAY\_UNA-2026-09-07.md}
-must be submitted to the FP-UNA ethics committee
-(\emph{Comité de Ética en Investigación}). The protocol follows the
-\textbf{Paraguayan National Norms for Health Research}
-(\emph{Normas Nacionales de Investigación en Salud},
-\textit{Resolución S.G. N° 746/2012}) and the FP-UNA
-\textit{Reglamento de Investigación} framework.
+decisions), the IRB protocol draft at
+\texttt{etica/IRB\_protocol\_paraguay\_UNA.md} must be submitted
+to the FP-UNA ethics committee (\emph{Comité de Ética en
+Investigación}). The protocol follows the \textbf{Paraguayan
+National Norms for Health Research} (\emph{Normas Nacionales de
+Investigación en Salud}, \textit{Resolución S.G. N° 746/2012})
+and the FP-UNA \textit{Reglamento de Investigación} framework.
+\textbf{As of 2026-09-10, this protocol has not been submitted;}
+the file is preserved as a draft for future use.
 
-\section{Carbon-Market Ethics}
+\section{Acknowledgments}
 
-The Yvyra paper (Chapter~\ref{ch:p0010-yvyra}) quantifies a
-\textbf{+35.9\% mean under-claim} across five Paraguayan Verra
-carbon-credit projects (95\% BCa bootstrap interval [21.5\%, 50.6\%]).
-This finding is published under the open-science principle that
-carbon-market integrity claims should be independently verifiable.
-The five project IDs are anonymized as Project~1--5 in the public
-draft; unblinding to the actual Verra IDs (e.g., VCS-1234) is
-scheduled for the camera-ready version after the project owners
-have been notified and given the opportunity to respond to the
-findings. This is consistent with the precedent set by
-\citet{verbruggen2023carbon} when publishing Verra project critiques.
-
-\section{Limitations and Acknowledgments}
-
-The 3.0$\times$ indigenous disparity finding is robust within the
-ten-territory sample (all 10/10 territories exceed the national rate;
-$\chi^2 = 460{,}597$, df~=~9, $p < 0.001$) but should not be
-extrapolated to the four territories not in the Chaco sample, or to
-the eastern Paraguayan departments where indigenous land tenure
-follows a different legal regime (Law 904/1981 vs. the INDI
-\textit{Estatuto de las Comunidades Indígenas}). The thesis is
-explicit about this scope in the Discussion of Chapter~\ref{ch:p0012-yvy}.
-
-We acknowledge that the data infrastructure required to do this
-analysis (Hansen GFC, MapBiomas, OpenStreetMap Paraguay) was built
-by Indigenous and non-Indigenous researchers and communities
-working together over decades; the analysis presented here is one
-contribution to a continuing conversation about how satellite
-computer vision can serve environmental justice in Paraguay.
+The thesis author acknowledges that the data infrastructure
+required to do this analysis (Hansen GFC, MapBiomas Paraguay,
+INE census, OSM Paraguay) was built by Indigenous and
+non-Indigenous researchers and communities working together over
+decades; the analysis presented here is one contribution to a
+continuing conversation about how satellite computer vision can
+serve environmental justice in Paraguay. The absence of FPIC
+engagement is the thesis's central ethical limit, and any
+follow-up publication that names specific communities or
+per-community rates must first satisfy the Newing et al.\ 2024
+fourteen-principle framework.

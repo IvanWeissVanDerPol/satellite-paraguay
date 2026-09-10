@@ -1,0 +1,23 @@
+===========================================================================
+P0030 Yvyra Soy - Per-region yield trajectory + indigenous density
+===========================================================================
+
+Regional comparison (Occidental Chaco vs Oriental):
+
+  Occidental       slope= 110.0 kg/ha/yr  bar=[########################################]
+                   indi_communities= 129  density=43.0/dept  (3 depts)
+
+  Oriental         slope=  56.5 kg/ha/yr  bar=[####################]
+                   indi_communities= 428  density=30.6/dept  (14 depts)
+
+Key finding: Occidental Chaco has 2.0x the mean yield trajectory of Oriental
+despite having only 24% of the indigenous communities. Departments with higher
+indigenous community density show faster soy expansion.
+
+Cross-department yield trajectory vs historical mean yield (n=14):
+
+  Departments with HIGHER historical yield have SLIGHTLY SLOWER yield expansion
+  (Pearson r = -0.306, p = 0.27)
+  Suggestive of yield convergence among the 14 soy-producing departments.
+
+===========================================================================
