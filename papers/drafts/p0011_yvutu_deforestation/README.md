@@ -66,8 +66,8 @@ cd /root/satellite-paraguay
 
 ## Authors
 
-- Iván Weiss Van der Pol (corresponding author) - FADA-UNA, Paraguay
-- Juan Carlos Cristaldo (advisor) - FADA-UNA, Paraguay
+- Iván Weiss Van der Pol (corresponding author) - FP-UNA, Paraguay
+- Juan Carlos Cristaldo (advisor) - FP-UNA, Paraguay
 
 ## License
 

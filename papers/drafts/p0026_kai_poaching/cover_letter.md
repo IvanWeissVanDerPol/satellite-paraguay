@@ -29,7 +29,7 @@ The journal's focus on practical conservation, including the Methods in Biodiver
 
 ## Authors & contributions
 
-Iván Hocht-VonDerPol (FADA-UNA) is sole author. Guyra Paraguay provided the real camera-trap data under a data-use agreement.
+Iván Hocht-VonDerPol (FP-UNA) is sole author. Guyra Paraguay provided the real camera-trap data under a data-use agreement.
 
 ## Data & code
 
@@ -44,4 +44,4 @@ We look forward to your consideration.
 Sincerely,
 
 **Iván Hocht-VonDerPol, MSc**
-FADA-UNA, Paraguay
+FP-UNA, Paraguay

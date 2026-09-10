@@ -39,4 +39,4 @@ We look forward to your consideration.
 Sincerely,
 
 **Iván Hocht-VonDerPol, MSc**
-FADA-UNA, Paraguay
+FP-UNA, Paraguay

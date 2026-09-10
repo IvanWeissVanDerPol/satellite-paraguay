@@ -28,7 +28,7 @@ Globally, indigenous lands have **lower** deforestation than comparable non-indi
 
 ## Authors & contributions
 
-Iván Hocht-VonDerPol (FADA-UNA) is sole lead author with co-authorship offered to one indigenous community council member (anonymous per FPIC requirements). Lead author conducted all analyses.
+Iván Hocht-VonDerPol (FP-UNA) is sole lead author with co-authorship offered to one indigenous community council member (anonymous per FPIC requirements). Lead author conducted all analyses.
 
 ## Data & code
 
@@ -43,4 +43,4 @@ We look forward to your consideration.
 Sincerely,
 
 **Iván Hocht-VonDerPol, MSc**
-FADA-UNA, Paraguay
+FP-UNA, Paraguay
