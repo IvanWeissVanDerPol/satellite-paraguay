@@ -11,6 +11,7 @@
 
 - **M.Sc. candidate** — Universidad Nacional de Asunción, FADA-UNA (2024-2026)
   - Thesis: SatelliteCV-Paraguay: Multi-temporal Earth Observation of Paraguay
+<!-- ⚠️ UNVERIFIED — Juan Carlos Cristaldo adviser identity not confirmed by user (2026-09-09). See outputs/DEFENSE_PREP_15_HAT_AUDIT_2026-09-09.md Hat 7. -->
   - Advisor: Prof. Juan Carlos Cristaldo
 - **B.Sc. Computer Science** — Universidad Nacional de Asunción (2020-2024)
 

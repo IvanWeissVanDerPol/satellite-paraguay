@@ -16,6 +16,7 @@ This thesis is a **single research project** spanning **two GitHub repos**:
 
 **Thesis title (official):** *Multi-Temporal Satellite Computer Vision for Paraguay: A Foundation-Model Approach to Land-Use, Climate, and Environmental Justice*
 **Author:** Iván Hocht-VonDerPol (Universidad Nacional de Asunción, FADA)
+<!-- ⚠️ UNVERIFIED — Juan Carlos Cristaldo adviser identity not confirmed by user (2026-09-09). -->
 **Adviser:** Prof. Dr. Juan Carlos Cristaldo (pending co-sign)
 
 The **second repo** (`paraguay-geodata-vlm` / `P1 GeoData v2`) was originally framed as a standalone thesis by the autonomous agent (Erebus, 2026-08-10). After review, we treat it as the **data substrate + autonomous infrastructure** that feeds the main thesis. Both repos share infrastructure (cron jobs, agents, scripts).
@@ -43,7 +44,7 @@ If you only have **30 minutes**, follow this order. Every doc is short, every do
 | [`docs/THREATS_TO_VALIDITY.md`](docs/THREATS_TO_VALIDITY.md) | Threats to validity across all 6 papers |
 | [`papers/drafts/P0011_yvutu_deforestation/paper.md`](papers/drafts/P0011_yvutu_deforestation/paper.md) | The deforestation paper (P0011) |
 | [`papers/drafts/P0012_yvy_indigenous/paper.md`](papers/drafts/P0012_yvy_indigenous/paper.md) | The indigenous rights paper (P0012) — note: **blocked by ethics**, 0/10 communities contacted for FPIC |
-| [`etica/IRB_protocol_paraguay_UNA.md`](etica/IRB_protocol_paraguay_UNA.md) | IRB protocol |
+| [`etica/IRB_protocol_paraguay_UNA.md`](etica/IRB_protocol_paraguay_UNA.md) | IRB protocol — **UNVERIFIED DRAFT** |
 | The substrate repo ([`paraguay-geodata-vlm`](https://github.com/IvanWeissVanDerPol/paraguay-geodata-vlm)) | The data acquisition + web-demo half. Public web app: <https://paraguay-mapa.paragu-ai.com> |
 
 **What this thesis is *not*:** it is **not** the AIW Paraguay CivicTech project (`salud-abierta`, `corrupcion-cero`, `transito-seguro`, etc. — that is a different AIW product). If you see references to "8 sitios live" or "ENSIMUP / DNCP" data, that is a separate project; the thesis uses satellite + earth-observation data only.

@@ -1,3 +1,18 @@
+> **⚠️ UNVERIFIED DOCUMENT — PENDING INSTITUTIONAL REVIEW**
+>
+> This file was added to the repo on or before 2026-09-08 by an unspecified author (the file's git history shows commits under "Iván Weiss Van der Pol" but the user has stated they did not write it themselves; the content appears to be AI-generated or template-based).
+>
+> **Status as of 2026-09-09:**
+> - No IRB submission has been filed with FP-UNA or any other institution.
+> - No FPIC engagement has been conducted with any indigenous community.
+> - The contact information, adviser names, and FPIC community contacts in this document are placeholders and have NOT been verified.
+>
+> **This file is preserved as a working draft for future use**, NOT as evidence of an institutional submission. Before any of this content is acted upon, every name, address, contact, and institutional reference must be re-verified by the user.
+>
+> See `outputs/DEFENSE_PREP_15_HAT_AUDIT_2026-09-09.md` Hat 7 for the full audit context.
+
+---
+
 # IRB Protocol — Universidad Nacional de Asunción (UNA)
 
 **Title:** *Multi-Temporal Satellite Computer Vision for Paraguay: A Foundation-Model Approach to Land-Use, Climate, and Environmental Justice*

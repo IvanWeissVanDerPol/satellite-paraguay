@@ -273,7 +273,9 @@ Top-level files, then key subdirectories. Use `grep -r` on this file to find wha
 | `thesis/preamble.tex` | (LaTeX source) |
 | `thesis/references.bib` | (BibTeX references) |
 
-### `etica/` (3 entries)
+### `etica/` (3 entries, **ALL UNVERIFIED — see Round-12 audit Hat 7**)
+
+**Note (2026-09-09):** All files in `etica/` and `docs/partnerships/` are AI-generated drafts whose content (names, contacts, adviser references) has NOT been verified by the user. They are preserved as templates for future use, not as evidence of institutional submission. Each file carries an UNVERIFIED banner at the top.
 
 | Path | Description |
 |---|---|

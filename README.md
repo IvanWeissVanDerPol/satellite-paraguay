@@ -1,3 +1,16 @@
+> **⚠️ FACULTY NAME PENDING VERIFICATION**
+>
+> This document references "FADA-UNA" (Universidad Nacional de Asunción). Per the 2026-09-09 audit, the user's actual faculty/program at FP-UNA has NOT been verified. Possible interpretations of FADA at UNA:
+>
+> - **FCA** (Facultad de Ciencias Agrarias) — agriculture faculty; matches the deforestation/indigenous/agriculture research topics in this thesis
+> - **FACEN** (Facultad de Ciencias Exactas y Naturales) — exact & natural sciences faculty; mentioned in some paper.tex files
+> - **FADA** (Facultad de Arquitectura, Diseño y Arte) — architecture/design/art faculty; doesn't match the research topics
+>
+> The acronym "FADA-UNA, Facultad de Ciencias Agrarias" appearing in some places is internally inconsistent (FADA is not FCA). The user's actual program must be confirmed before this document is submitted anywhere.
+>
+> See `outputs/DEFENSE_PREP_15_HAT_AUDIT_2026-09-09.md` Hat 8 for full context.
+
+---
 # SatelliteCV-Paraguay (Yvutu)
 
 [![CI/CD](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml/badge.svg)](https://github.com/IvanWeissVanDerPol/satellite-paraguay/actions/workflows/cicd.yml)
