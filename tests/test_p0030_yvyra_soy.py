@@ -16,15 +16,16 @@ if not Path(PYTHON).exists():
 
 
 def run_p0030_demo():
-    """Run the demo end-to-end via subprocess so we don't pollute sys.path."""
+    """Run the demo end-to-end via subprocess so we don't pollute sys.path.
+
+    Uses a helper script (tests/_p0030_test_helper.py) that stubs
+    geopandas/rasterio/shapely before importing src.papers.p0030_yvyra_soy
+    so the pipeline runs in CI Python 3.10 (which doesn't have those
+    deps installed).
+    """
+    helper = REPO_ROOT / "tests" / "_p0030_test_helper.py"
     result = subprocess.run(
-        [
-            PYTHON,
-            "-c",
-            "import sys; sys.path.insert(0, '.'); "
-            "from src.papers.p0030_yvyra_soy import run_p0030_demo; "
-            "import json; print(json.dumps(run_p0030_demo(), default=str))",
-        ],
+        [PYTHON, str(helper)],
         capture_output=True,
         text=True,
         cwd=str(REPO_ROOT),
@@ -81,9 +82,8 @@ class TestYvyraSoyPipeline:
         assert result["osm_polygons"]["n_features"] == 30
         bbox = result["osm_polygons"]["bbox"]
         assert bbox is not None and len(bbox) == 4
-        # Bbox should be in Paraguay bounding box
-        lon_min, lat_min, lon_max, lat_max = bbox
         # Paraguay bbox: lon ~-63 to -54, lat ~-28 to -19 (Gran Chaco extends west)
+        lon_min, lat_min, lon_max, lat_max = bbox
         assert -63 < lon_min < -54
         assert -28 < lat_min < -19
         assert -63 < lon_max < -54
