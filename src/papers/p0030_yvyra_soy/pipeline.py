@@ -300,7 +300,7 @@ def run_p0030_demo() -> dict:
     return result
 
 
-def run_p0030_regression(repo_root: Path = None):
+def run_p0030_regression(repo_root: Path | None = None) -> dict:
     """Per-region indigenous-community density vs MAG soy yield trajectory.
 
     This is the "findings" function of P0030. It uses:
@@ -322,24 +322,26 @@ def run_p0030_regression(repo_root: Path = None):
     with open(rend_path) as f:
         header = next(f).split(",")
         year_cols = [(i, h.strip()) for i, h in enumerate(header) if i > 0]
-    dept_yields = {}
+    dept_yields: dict = {}
     with open(rend_path) as f:
         next(f)
         for row in csv.reader(f):
             if not row or not row[0].strip():
                 continue
             dept = row[0].strip()
-            years = []
-            yields = []
+            years: list = []
+            yields: list = []
             for idx, year_str in year_cols:
                 if idx >= len(row):
                     continue
                 try:
                     v = float(row[idx])
                     if v > 0:
-                        years.append(int(re.match(r"(\d{4})", year_str).group(1)))
-                        yields.append(v)
-                except (ValueError, AttributeError):
+                        m = re.match(r"(\d{4})", year_str)
+                        if m is not None:
+                            years.append(int(m.group(1)))
+                            yields.append(v)
+                except ValueError:
                     continue
             if len(years) >= 5:
                 n = len(years)
@@ -407,7 +409,10 @@ def run_p0030_regression(repo_root: Path = None):
     # Headline finding: per-region yield trajectory ratio
     occ_slope = regional_data["Occidental"]["mean_slope_kg_per_ha_per_yr"]
     ori_slope = regional_data["Oriental"]["mean_slope_kg_per_ha_per_yr"]
-    ratio = occ_slope / ori_slope if ori_slope else None
+    if occ_slope is None or ori_slope is None or ori_slope == 0:
+        ratio = None
+    else:
+        ratio = round(occ_slope / ori_slope, 2)
 
     return {
         "headline_finding": {
