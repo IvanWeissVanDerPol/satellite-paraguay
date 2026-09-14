@@ -73,7 +73,7 @@ mypy>=1.6
 jupyter>=1.0
 ipykernel>=6.25
 ipywidgets>=8.1
-nbconvert>=7.11
+nbconvert>=7.17.1
 
 # Optional but recommended
 dvc>=3.67.1
