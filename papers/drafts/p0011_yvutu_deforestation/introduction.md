@@ -8,7 +8,10 @@ significant share of regional forest loss [Hansen et al. 2013].
 Between 2001 and 2023, Paraguay lost approximately **16,628 km²** of
 forest cover — a figure derived from a direct, reproducible analysis
 of Hansen Global Forest Change (GFC) v1.11 in this work and
-corresponding to approximately **2,755 MtCO₂e** of carbon emitted using
+corresponding to approximately **~122 Mt CO₂e** of carbon emitted
+(range 34–192 Mt at 30–60% canopy, per honest computation; see
+`thesis/CH1_introduction.md §1.1` for provenance and the correction
+of the previous 2,755 Mt figure per Round-12 audit) using
 the Chave et al. (2014) allometric model and IPCC carbon fraction.
 The loss is geographically concentrated in the Chaco frontier:
 **Alto Paraguay** alone accounts for 28.49% of national loss.
@@ -67,8 +70,11 @@ This paper addresses four questions:
 ### Substantive contributions
 
 1. **Country-scale deforestation quantification using real Hansen
-   GFC data**: 16,628 km² total loss (2001-2023), 2,755 MtCO₂e
-   emitted, per-department and per-indigenous-territory breakdowns.
+   GFC data**: 16,628 km² total loss (2001-2023); carbon emitted
+   **~122 Mt CO₂e** (range 34–192 Mt at 30–60% canopy, per honest
+   computation; see `thesis/CH1_introduction.md §1.1` for the
+   correction of the previous 2,755 Mt figure per Round-12 audit),
+   per-department and per-indigenous-territory breakdowns.
    The quantification is reproducible from the open Hansen v1.11
    data and the published Chave 2014 allometric model.
 

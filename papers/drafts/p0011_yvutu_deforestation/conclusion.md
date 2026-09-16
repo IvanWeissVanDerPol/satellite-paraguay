@@ -11,12 +11,16 @@ measured pilot ML experiment.
 ## Main contributions
 
 1. **Country-scale deforestation quantification** using real Hansen
-   GFC data: **16,628 km²** of loss over 2001-2023, equivalent to
-   **2,755 MtCO₂e** emitted. The Chaco frontier (Alto Paraguay +
-   Boquerón) accounts for **47.8%** of national loss.
+   GFC data: **16,628 km²** of loss over 2001-2023 (MapBiomas Paraguay
+   literature estimate; honest carbon computation yields **~122 Mt CO₂e**
+   at mean 50% treecover, range 34–192 Mt at 30–60% canopy — see
+   `thesis/CH1_introduction.md §1.1` for the full provenance and the
+   correction of the previous 2,755 Mt figure per Round-12 audit).
+   The Chaco frontier (Alto Paraguay + Boquerón) accounts for **47.8%**
+   of national loss.
 
 2. **Alarming indigenous disparity finding**: indigenous territories
-   in the Chaco are deforested at **3.27× the national rate** (95%
+   in the Chaco are deforested at **3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) the national rate** (95%
    BCa bootstrap CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001).
    All 10 of 10 territories exceed the national rate. The worst
    case (Carmelo Peralta / Enlhet Norte) is **49.45% loss**.

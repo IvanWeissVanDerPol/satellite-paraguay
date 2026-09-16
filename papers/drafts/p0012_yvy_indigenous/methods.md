@@ -38,7 +38,7 @@ approximations**, not legal boundaries. They are sourced from a
 secondary open-data project that aggregated INDI's polygon
 information without re-engaging each community. The disparity
 finding (Section 3) is **robust to ±1-km boundary shifts** because
-the disparity is large (3.27×); per-community attribution to a
+the disparity is large (3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)); per-community attribution to a
 specific polygon is **not** the contribution of this paper and
 should not be cited as such. Any operational use of the per-
 community polygons requires INDI + community engagement per CARE
@@ -129,7 +129,7 @@ We complement the headline disparity with a within-territory
 heterogeneity analysis: per-territory loss rates (Section 3),
 within-territory spatial concentration of loss (where in the
 territory is the loss concentrated), and the cross-territory
-standard deviation. The headline 3.27× disparity may mask
+standard deviation. The headline 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity may mask
 substantial variation between 7.21% (Angaité-Filadelfia) and 49.45%
 (Carmelo Peralta).
 

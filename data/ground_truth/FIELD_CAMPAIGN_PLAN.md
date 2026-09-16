@@ -10,7 +10,7 @@
 
 ## 1. WHY FIELD CAMPAIGN
 
-The thesis' headline finding — 16,628 km² forest loss, 2,755 Mt CO₂e emitted, 3.0× indigenous disparity (CI [1.7, 4.2]×) — is computed from public satellite data (Hansen GFC v1.11). All numbers are reproducible but **not validated against on-the-ground measurement**.
+The thesis' headline finding — 16,628 km² forest loss, **~122 Mt CO₂e emitted (range 34–192 Mt, 30–60% canopy; the previous 2,755 Mt figure was 22.7× too high per Round-12 audit)**, 3.0× indigenous disparity (CI [1.7, 4.2]×) — is computed from public satellite data (Hansen GFC v1.11). All numbers are reproducible but **not validated against on-the-ground measurement**.
 
 This plan delivers the anchor: ground-truthed Hansen detection rates. Specifically:
 - **Precision** (sensitivity to declared loss events being real)

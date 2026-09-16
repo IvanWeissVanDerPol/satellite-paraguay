@@ -62,7 +62,7 @@ Only this audit document still references 0.09 ha, and only as a historical reco
 
 **Headline numbers DO NOT CHANGE.** 266,048,608 loss pixels × 0.0625 ha = 16,628,038 ha = **16,628 km²** ✓ matches P0011.
 - 266,048,608 loss pixels × 0.0625 ha = 16,628,038 ha = 16,628 km² ✓
-- 16,628,038 ha × 165.7 tCO₂e/ha = **2,755 MtCO₂e** (matches P0011 headline)
+- 16,628,038 ha × 165.7 tCO₂e/ha = **2,755 MtCO₂e** (matches P0011 headline — **NOTE: this is the WRONG value; the corrected value per Round-12 audit is ~122 Mt CO₂e at mean 50% treecover, range 34–192 Mt at 30–60% canopy; see `thesis/CH1_introduction.md §1.1`**)
 - P0010: 4.49 MtCO₂e over 124,310 ha × 23 years = 1.57 tCO₂e/ha/yr (consistent with ~22% total loss in frontier Chaco)
 
 **Headline numbers DO NOT CHANGE.** Only the methods.md text was wrong.
@@ -125,7 +125,7 @@ Only this audit document still references 0.09 ha, and only as a historical reco
 - `tests/test_stat_uncertainty.py:181` — change 0.09 → 0.0625
 - `tests/test_performance.py:115` — already 0.0625, no change
 
-**Re-run `scripts/per_pixel_carbon.py`** to confirm the 2,755 MtCO₂e headline. Expected number: **~1,910 MtCO₂e** (30% reduction).
+**Re-run `scripts/per_pixel_carbon.py`** to confirm the 2,755 MtCO₂e figure (**NOTE: this is the WRONG value; the corrected value per Round-12 audit is ~122 Mt CO₂e at mean 50% treecover, range 34–192 Mt at 30–60% canopy; see `thesis/CH1_introduction.md §1.1`**). Expected corrected number: **~122 MtCO₂e**.
 
 **Add to `ACTUAL_RESULTS.md`**: a "Pixel area corrected" entry with the new measured number.
 

@@ -65,7 +65,7 @@ The thesis relies primarily on **publicly available satellite data** (Hansen GFC
 ### 3.2 Aggregate-only data analysis
 
 Per the FPIC decision (`docs/partnerships/FPIC-DECISION-STATUS-2026-09-07.md`), all per-community analyses are **deferred** until Free, Prior, and Informed Consent is obtained from each community. The thesis contains only:
-- National-level statistics (16,628 km² loss 2001-2023, 2,755 MtCO₂e)
+- National-level statistics (16,628 km² loss 2001-2023, **~122 Mt CO₂e emitted** — the previous 2,755 Mt figure was 22.7× too high per Round-12 audit; see `thesis/CH1_introduction.md §1.1`)
 - Aggregate statistics across all 10 territories (mean 24.7% loss vs national 8.5%, ratio 3.0×, 95% bootstrap CI [1.72, 4.20]×)
 - Anonymized summaries (no community names in P0012 except in examples)
 

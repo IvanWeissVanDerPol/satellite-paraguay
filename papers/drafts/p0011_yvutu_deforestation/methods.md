@@ -118,7 +118,10 @@ The Chave 2014 model we use is the wet-forest form with
 environmental adjustment (eqn. 4 in Chave et al. 2014); the Chaco
 is classified as tropical dry forest by Holdridge life zones.
 This is a parameter choice; a wetter-form assumption would give a
-~25% higher estimate. National total: ~**2,755 MtCO₂e**.
+~25% higher estimate. National total: **~122 Mt CO₂e** (range 34–192 Mt
+at 30–60% canopy, per the honest computation in
+`thesis/CH1_introduction.md §1.1`; the previous 2,755 Mt figure was
+22.7× too high per Round-12 audit).
 
 ### M.2.3 Per-department breakdown
 

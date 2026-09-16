@@ -19,7 +19,10 @@ Our contributions are:
 
 1. **Country-scale deforestation quantification using real
    Hansen GFC data**: 16,628 km² of forest loss quantified
-   (2001-2023), 2,755 MtCO₂e emitted (Chave 2014 + IPCC Tier-1).
+   (2001-2023); carbon emitted **~122 Mt CO₂e (range 34–192 Mt at
+   30–60% canopy, per honest computation; see `thesis/CH1_introduction.md
+   §1.1` for provenance and the correction of the previous 2,755 Mt
+   figure per Round-12 audit)**.
 2. **Per-department analysis** showing 28.49% loss in Alto
    Paraguay, with the Chaco frontier accounting for 47.8% of
    national loss.
@@ -97,9 +100,9 @@ companion files. Read in order:
 | Finding | Value | Source |
 |---|---|---|
 | Total loss 2001-2023 | 16,628 km² | Hansen GFC v1.11 |
-| Carbon emitted (Chave 2014 + IPCC) | 2,755 MtCO₂e | Hansen + Chave + IPCC |
+| Carbon emitted (honest computation) | ~122 Mt CO₂e (range 34–192 Mt, 30–60% canopy) | Hansen + Chave allometric + IPCC |
 | Alto Paraguay loss | 28.49% | Hansen + department polygons |
-| **Indigenous disparity (territory / national)** | **3.27×** (CI [2.26, 4.37]×) | Hansen + territories, χ² p<0.001 |
+| **Indigenous disparity (territory / national)** | **3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)** (CI [2.26, 4.37]×) | Hansen + territories, χ² p<0.001 |
 | Worst territory (Carmelo Peralta / Enlhet Norte) | 49.45% loss | Hansen + territory polygon |
 | U-Net pilot F1 (synthetic 15 tiles, CPU) | 0.5592 (P=0.099, R=0.987) | 5 epochs, seed 42 |
 | Yvutu pilot F1 (Prithvi-mock fallback) | 0.4968 | transformers/numpy compat issue |
@@ -109,7 +112,7 @@ companion files. Read in order:
 
 ## Honest limitations
 
-- The 3.27× indigenous disparity is a substantive finding that has
+- The 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) indigenous disparity is a substantive finding that has
   **not** been validated under FPIC (Free, Prior, and Informed
   Consent) engagement with the 10 communities or with INDI;
   per-community map release requires community review per CARE

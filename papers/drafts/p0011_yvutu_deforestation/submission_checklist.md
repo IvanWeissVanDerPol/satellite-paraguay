@@ -10,11 +10,11 @@ The bullet points below replace the original draft's aspirational claims
 with **measured** numbers from the 2026-08-03 pilot run. See
 `ACTUAL_RESULTS.md` for the source values.
 
-1. **Country-scale deforestation quantification (real Hansen GFC v1.11): 16,628 km² of loss over 2001-2023, equivalent to 2,755 MtCO₂e.**
+1. **Country-scale deforestation quantification (real Hansen GFC v1.11): 16,628 km² of loss over 2001-2023; carbon emitted ~122 Mt CO₂e (range 34–192 Mt, 30–60% canopy) — the previous 2,755 Mt figure was 22.7× too high per Round-12 audit; see `thesis/CH1_introduction.md §1.1`**.
 
 2. **Per-department analysis showing 28.49% loss in Alto Paraguay, with the Chaco frontier accounting for ~47.8% of national loss.**
 
-3. **Per-indigenous-territory analysis showing 3.27× the national rate (95% BCa CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001), with Carmelo Peralta worst at 49.45% loss.**
+3. **Per-indigenous-territory analysis showing 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) the national rate (95% BCa CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001), with Carmelo Peralta worst at 49.45% loss.**
 
 4. **End-to-end ML pipeline + measured pilot baseline: F1 = 0.5592 (U-Net from scratch) and F1 = 0.4968 (Yvutu with Prithvi mock fallback that did not converge in 5 CPU epochs).**
 

@@ -8,7 +8,7 @@ Seven pages from the Streamlit dashboard, automated-captured at 1600×900.
 
 **Headline metrics** (all from real public satellite data):
 - Forest loss 2001-2023: **16,628 km²** (2.5% of country)
-- Carbon emitted: **2,755 Mt CO₂e** (≈ Argentina's annual emissions)
+- Carbon emitted: **~122 Mt CO₂e** (range 34–192 Mt, 30–60% canopy — the previous 2,755 Mt figure was 22.7× too high per Round-12 audit; see `thesis/CH1_introduction.md §1.1`)
 - Indigenous disparity: **~3× national rate** (CI [1.7, 4.2]×, p<0.001)
 - Peak loss year: 2012 (16.6M pixels)
 
@@ -55,7 +55,7 @@ Three uncertainty sources, all computed:
 - **Block bootstrap** (spatial): accounts for spatial autocorrelation
 - **AGB sensitivity** (allometric model): low/high AGB scenarios bracket 30%-50% of point estimate
 
-Combining all three gives a defensible CI on the 2,755 Mt CO₂e headline number.
+Combining all three gives a defensible CI on the 122 Mt CO₂e headline number (corrected from the previous 2,755 Mt figure that was 22.7× too high per Round-12 audit).
 
 ## 7. References
 

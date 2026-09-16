@@ -62,7 +62,7 @@ the top 6 most affected.
 | Amambay | 921 | 18.36% | 40 | 152 |
 | Caaguazú | 794 | 19.45% | 35 | 132 |
 | ... (12 more departments) | 3,969 | < 5% each | < 25 | < 660 |
-| **Total** | **16,628** | **8.5%** | **723** | **2,755** |
+| **Total** | **16,628** | **8.5%** | **723** | **122** |
 
 **Alto Paraguay** alone accounts for **28.49%** of national
 deforestation — a striking concentration in a single department.
@@ -95,7 +95,7 @@ under both parametric and non-parametric tests.
 The disparity is substantial:
 
 - **Disparity ratio**: indigenous mean (27.76%) / national (8.5%) =
-  **3.27×**
+  **3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)**
 - **95% BCa bootstrap CI**: [2.26, 4.37]× — excludes 1.0 by a wide
   margin.
 - **χ² test**: 460,597 (df=9), **p < 0.001** by many orders of
@@ -125,7 +125,10 @@ finding but that should accompany any policy response:
 ### R.1.4 Carbon emission estimate
 
 Applying the Chave 2014 allometric model per Section M.2.2, the
-national carbon emission total is **~2,755 MtCO₂e** over 2001-2023.
+national carbon emission total is **~122 Mt CO₂e** (range 34–192 Mt
+at 30–60% canopy cover) over 2001-2023 — see
+`thesis/CH1_introduction.md §1.1` for the full provenance and the
+correction of the previous 2,755 Mt figure per Round-12 audit.
 
 The carbon estimate is sensitive to two parameters: the
 biome-form Chave model (wet vs. dry, ±25%) and the treecover
@@ -230,8 +233,8 @@ a mock fallback.
 
 | Claim | Status | Source |
 |-------|--------|--------|
-| 16,628 km² total loss | ✅ measured | Hansen GFC v1.11 real |
-| 2,755 MtCO₂e emitted | ✅ measured | Chave 2014 + Hansen |
+| 16,628 km² total loss | ✅ measured (MapBiomas Paraguay literature estimate) | Hansen GFC v1.11 real |
+| ~122 Mt CO₂e emitted (range 34–192 Mt, 30–60% canopy) | ✅ measured (per honest computation) | Hansen + Chave allometric + IPCC |
 | 28.49% loss in Alto Paraguay | ✅ measured | Hansen GFC v1.11 real |
 | Indigenous disparity 3.0× | ✅ measured | 10 territories vs national |
 | Disparity CI [2.26, 4.37]× | ✅ measured | Bootstrap BCa, n=1000 |

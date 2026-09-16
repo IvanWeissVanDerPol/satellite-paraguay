@@ -40,7 +40,7 @@ Estimado/a Director/a,
 
 Soy Iván Hocht-VonDerPol, estudiante de tesis de la Facultad de Ciencias Agrarias (FADA-UNA). Mi tesis doctoral analiza la deforestación del Chaco paraguayo mediante sensores remotos (Hansen GFC v1.11, 2001-2023) y validación con datos de campo.
 
-**Hallazgo clave:** 16,628 km² de bosque perdido entre 2001-2023 (2,755 MtCO₂e), con los departamentos de Boquerón y Alto Paraguay concentrando el 73% de la pérdida.
+**Hallazgo clave:** 16,628 km² de bosque perdido entre 2001-2023 (**~122 Mt CO₂e emitidos, rango 34–192 Mt a 30–60% de cobertura de copa; el valor previo de 2,755 Mt era 22.7× demasiado alto según la auditoría Round-12; ver `thesis/CH1_introduction.md §1.1`**), con los departamentos de Boquerón y Alto Paraguay concentrando el 73% de la pérdida.
 
 **Lo que solicito:**
 1. Acceso a datos de inventario forestal de las parcelas permanentes del INFONA en el Chaco (2015-2024)

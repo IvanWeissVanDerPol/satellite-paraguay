@@ -45,7 +45,7 @@ first.
    is roughly 0.85× the national rate, i.e., *less* deforestation
    than outside, consistent with the global "indigenous lands as
    forest stewards" pattern. This is an important nuance: the
-   overall 3.27× disparity summary masks a heterogeneous pattern
+   overall 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity summary masks a heterogeneous pattern
    where 8 of 10 territories exceed the national rate but 2 of 10
    (Mbyá Guaraní Itakyry and Angaité-Filadelfia, at parity or
    below) are consistent with the global pattern.
@@ -56,7 +56,7 @@ first.
 
 The headline metric is the **disparity ratio** $R$:
 
-$$R = \frac{\bar{r}_{\text{territories}}}{\bar{r}_{\text{national-outside}}} = \frac{27.76\%}{8.50\%} = 3.27$$
+$$R = \frac{\bar{r}_{\text{territories}}}{\bar{r}_{\text{national-outside}}} = \frac{27.76\%}{8.50\%} = 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$$
 
 - **95% BCa bootstrap CI on R**: [2.26, 4.37]×
   (n = 1,000 resamples; bias correction $z_0$ = 0.08; acceleration
@@ -88,7 +88,7 @@ national rate" question. Both reject the null.
 
 ## R.3 Magnitude-uncertainty decomposition
 
-The point estimate of 3.27× has a 95% CI of [2.26, 4.37]. Two
+The point estimate of 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) has a 95% CI of [2.26, 4.37]. Two
 sources of the spread:
 
 ### R.3.1 Cross-territory heterogeneity
@@ -171,7 +171,7 @@ all of them.
 | Threshold | Disparity ratio |
 |---|---|
 | ≥ 30% canopy (more inclusive) | 2.61× |
-| ≥ 50% canopy (canonical Hansen) | **3.27×** |
+| ≥ 50% canopy (canonical Hansen) | **3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)** |
 | ≥ 70% canopy (stricter) | 3.15× |
 
 The qualitative finding (territories deforest at higher rate than
@@ -182,7 +182,7 @@ non-territories) is robust across all thresholds.
 | Buffer width | Disparity ratio |
 |---|---|
 | 0 km (polygon interior only) | 3.04× |
-| 1 km | 3.27× |
+| 1 km | 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) |
 | 5 km | 2.71× |
 
 Wider buffers (which include more non-indigenous land in the
@@ -199,7 +199,7 @@ the pixel-count national rate (8.50%) gives a disparity ratio of
 
 | Territory dropped | Disparity ratio |
 |---|---|
-| (none, baseline) | 3.27× |
+| (none, baseline) | 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) |
 | Carmelo Peralta | 2.27× |
 | Bahía Negra | 2.29× |
 | Santa Teresita | 2.45× |

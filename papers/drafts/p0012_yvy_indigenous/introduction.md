@@ -78,7 +78,7 @@ This paper addresses three questions:
 
 4. **An explicit FPIC (Free, Prior, and Informed Consent) gap
    acknowledgment** under the CARE Principles for Indigenous Data
-   Governance [Carroll et al. 2020]. The substantive finding (3.27×
+   Governance [Carroll et al. 2020]. The substantive finding (3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)
    disparity) is empirically defensible from the public data; the
    *per-community map release* is not, because no community has
    been engaged. Section 5 documents the prerequisite work for any

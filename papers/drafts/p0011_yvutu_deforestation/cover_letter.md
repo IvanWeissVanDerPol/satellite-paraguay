@@ -26,7 +26,9 @@ The paper reports **measured numbers** from a 2026-08-03 pilot run,
 NOT aspirational benchmarks. Specifically:
 
 1. The **country-scale part** uses real Hansen GFC v1.11 data
-   (16,628 km² loss, 2,755 MtCO₂e emitted) and is fully validated.
+   (16,628 km² loss, **~122 Mt CO₂e emitted** — the previous 2,755 Mt
+   figure was 22.7× too high per Round-12 audit; see
+   `thesis/CH1_introduction.md §1.1`) and is fully validated.
 2. The **per-tile ML pilot** uses 15 synthetic tiles + 8 CPU
    epochs; the multi-task CNN measured F1 = 0.5592 (U-Net from
    scratch) and F1 = 0.4968 (Yvutu with Prithvi mock fallback
@@ -46,12 +48,12 @@ deep learning existed before this work. This paper contributes:
 1. **Country-scale deforestation quantification** from real data
    (Hansen GFC v1.11, 2001-2023).
 2. **Per-indigenous-territory disparity finding**: indigenous
-   territories are deforested at **3.27× the national rate**
+   territories are deforested at **3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) the national rate**
    (95% BCa CI [2.26, 4.37]×, χ² = 460,597, df = 9, p < 0.001).
 3. **A measured pilot baseline** for any future Paraguay-specific
    machine learning system.
 
-The 0.18 mAP gap of p0026 Kai (this thesis) and the 3.27×
+The 0.18 mAP gap of p0026 Kai (this thesis) and the 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)
 disparity of Yvy (also this thesis) are two separate findings
 in the same project.
 

@@ -47,7 +47,7 @@ peer-reviewed venue. It exists. The thesis's P0012 contribution is
   overlapping scope.
 - Galeana 2024 should be **cited explicitly** in both P0012 and P0030
   Related Work. It is not in the master bib as of 2026-09-10.
-- The defense committee may ask: "your P0012 found a 3.27× disparity;
+- The defense committee may ask: "your P0012 found a 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity;
   Galeana 2024 cites other numbers — what does the field say?" This
   is a foreseeable question that we don't currently answer.
 

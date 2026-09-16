@@ -2,7 +2,7 @@
 
 ## D.1 The headline disparity finding (3.0×)
 
-The most consequential finding of this paper is the 3.27× disparity
+The most consequential finding of this paper is the 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity
 ratio between Chaco indigenous-territory deforestation and the
 national rate. This is a published-figurable number that
 contributes to the international evidence base on environmental
@@ -129,7 +129,9 @@ MapBiomas team.
 
 ## D.3 The carbon estimate
 
-The 2,755 MtCO₂e figure is a point estimate based on the Chave
+The ~122 Mt CO₂e figure (per honest computation in
+`thesis/CH1_introduction.md §1.1`; range 34–192 Mt at 30–60% canopy
+cover) is a point estimate based on the Chave
 2014 dry-forest allometric model and the IPCC Tier-1 carbon
 fraction (0.47). Two sources of uncertainty:
 

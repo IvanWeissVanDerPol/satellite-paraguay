@@ -17,7 +17,7 @@ INDI-recognized territory polygons covering ~43,466 km²
 (approximately 11% of Paraguay's land area, ~30,000 people).
 
 The headline finding: **indigenous territories are deforested at
-3.27× the national rate** (95% BCa bootstrap CI [2.26, 4.37]×),
+3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) the national rate** (95% BCa bootstrap CI [2.26, 4.37]×),
 with one-sample t-test: t(9) = 3.99, one-sided p = 0.0016. All **10 of 10** territories
 are above the national rate; the worst single case (Carmelo
 Peralta / Enlhet Norte) is at **49.45% loss** — almost half
@@ -66,7 +66,7 @@ All scripts + data manifests under CC-BY-NC-4.0.
 > aspirational, not measured.** No LLaVA evaluation against a
 > labeled conflict set was performed; the layer is a stub in the
 > pipeline. See `ACTUAL_RESULTS.md` for the actual measured
-> findings of this paper (the 3.27× disparity + χ² + bootstrap
+> findings of this paper (the 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity + χ² + bootstrap
 > CI), and `discussion.md` Section D.5 for the FPIC prerequisite
 > work needed before any operational deployment.
 
@@ -131,7 +131,7 @@ companion files. Read in order:
   or with INDI. This is the most consequential ethical limitation
   and blocks per-community attribution, not the aggregate finding.
 - **No controls for road access or agricultural suitability.** The
-  3.27× disparity is correlation, not causation. The qualitative
+  3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity is correlation, not causation. The qualitative
   finding (territories deforest faster than the national rate)
   is robust under unprojected control scenarios.
 - **10 of 19 Chaco indigenous peoples included.** Expanding the

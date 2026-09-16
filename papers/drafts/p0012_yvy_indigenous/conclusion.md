@@ -41,7 +41,7 @@ loss rates and tested the disparity against the national rate.
   blocks per-community attribution, not the aggregate finding.
 
 - **No controls for road access or agricultural suitability.**
-  The 3.27× disparity is correlation, not causation. The
+  The 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) disparity is correlation, not causation. The
   qualitative finding (territories deforest faster than the
   national rate) is robust under the unprojected control
   scenarios; the precise magnitude may drop after controls.

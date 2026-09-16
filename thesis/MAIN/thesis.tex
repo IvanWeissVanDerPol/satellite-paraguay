@@ -28,7 +28,7 @@ of Paraguay from Foundation Models to Field Deployment}
 \maketitle
 
 \chapter*{Abstract}
-This thesis presents five journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, $\sim$122 MtCO$_2$e of carbon emitted (corrected from earlier 2,755 Mt figure that was 22.7$\times$ too high --- see Round-12 audit), 3.27$\times$ indigenous-territory deforestation disparity, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
+This thesis presents five journal papers built on a shared Python infrastructure (\texttt{satellite-paraguay}) for multi-temporal Earth observation of Paraguay. Each paper addresses one environmental monitoring task: P0011 \textit{Yvutu} (Chaco deforestation); P0012 \textit{Yvy} (indigenous territory deforestation); P0025 \textit{Yrupe} (cross-domain transfer for soybean yield); P0026 \textit{Kai} (synthetic-to-real wildlife CV gap); P0035 \textit{Tatakua} (air-quality LSTM). Together they cover 16,628 km$^2$ of measured forest loss, $\sim$122 MtCO$_2$e of carbon emitted (corrected from earlier 2,755 Mt figure that was 22.7$\times$ too high --- see Round-12 audit), 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$\times$ indigenous-territory deforestation disparity, mAP@0.5 0.50$\to$0.18 synthetic-to-real gap, and RMSE 14.7 µg/m$^3$ on air-quality forecasting.
 
 This thesis applies an honest-reporting convention across all 5 papers (see \texttt{docs/CONVENTIONS.md}). The 2026-08-10 + 2026-08-11 passes replaced aspirational headline numbers (F1 = 0.876 / R$^2$ = 0.79 / MAE = 11.72 µg/m$^3$ \textit{etc.}) with measured pilot numbers and explicit Honest Reporting Notes appended to each paper. The work is novel in: (i) geographic focus (Latin American dry forest, underexplored in foundation-model literature); (ii) honest failure-mode analysis for cross-domain transfer (P0025) and synthetic-to-real gap measurement (P0026) as publications in their own right; (iii) CARE Principles-compliant design for indigenous data; (iv) open-source release of all code + data under CC-BY-NC-4.0 license. The contribution is a \textbf{reproducible baseline collection}, not a set of forward-claim operational deployments; per-paper GPU re-runs + partnership engagements are documented as future work in \texttt{docs/AGENT\_TODO.md}. The P0010 Yvyra carbon-credit paper was removed entirely in Round-12 after the audit identified it as 	exttt{np.random.normal}-driven; see commit message for commit 7c... [replaced with replacement paper in Phase 10].
 
@@ -68,7 +68,7 @@ This thesis makes 6 contributions:
 
 \begin{enumerate}
 \item \textbf{P0011 Yvutu}: First Paraguay-specific Prithvi fine-tuning for deforestation detection. \textbf{Measured CPU pilot result (see \texttt{papers/drafts/p0011\_yvutu\_deforestation/ACTUAL\_RESULTS.md}):} F1 = 0.559 (U-Net from scratch), F1 = 0.497 (Prithvi mock fallback). The F1 = 0.876 figure in earlier drafts of this chapter was aspirational.
-\item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 claim in earlier drafts was aspirational, not measured; see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md} for the measured 3.27$\times$ disparity from 10 territories with 95\% BCa bootstrap CI [2.26, 4.37]).
+\item \textbf{P0012 Yvy}: First AI indigenous land tenure conflict detector (84 conflicts detected, CARE-compliant; the LLaVA F1>0.80 claim in earlier drafts was aspirational, not measured; see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md} for the measured 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$\times$ disparity from 10 territories with 95\% BCa bootstrap CI [2.26, 4.37]).
 \item \textbf{P0025 Yrupe}: First Paraguay-specific soybean yield predictor. \textbf{Measured (see \texttt{papers/drafts/p0025\_yrupe\_yield/ACTUAL\_RESULTS.md}):} multi-task CNN did not converge (F1 = 0.497, MAE = 3.20 t/ha); transfer ratio: undefined (CNN did not converge). The R$^2$ = 0.78 figure in earlier drafts was aspirational.
 \item \textbf{P0026 Kai}: First YOLOv8 wildlife detector for Paraguay's national parks. \textbf{Measured synthetic-vs-real gap (see \texttt{papers/drafts/p0026\_kai\_poaching/ACTUAL\_RESULTS.md}):} mAP@0.5 = 0.50 synthetic, 0.18 real (Guyra 5,000 images).
 \item \textbf{P0035 Tatakua}: First LSTM air quality forecaster for Asunción. \textbf{Measured mean RMSE = 14.7 µg/m$^3$ across 12 stations (24\% over persistence); the MAE = 11.72 µg/m$^3$ figure in earlier drafts was aspirational. See \texttt{papers/drafts/p0035\_tatakua\_air\_quality/ACTUAL\_RESULTS.md}.}
@@ -91,7 +91,7 @@ Basso et al. [2013] review remote sensing for yield. Transformer-based forecasti
 
 \section{Indigenous Land Tenure}
 
-Latin America has 825 indigenous groups. Paraguay has lowest titling rate in South America [Hall 2012]. The measured 3.27$\times$ disparity in P0012 of this thesis is consistent with global patterns documented by Sze et al. (2022) but reverses the "indigenous lands as forest stewards" pattern in the Paraguayan Chaco.
+Latin America has 825 indigenous groups. Paraguay has lowest titling rate in South America [Hall 2012]. The measured 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$\times$ disparity in P0012 of this thesis is consistent with global patterns documented by Sze et al. (2022) but reverses the "indigenous lands as forest stewards" pattern in the Paraguayan Chaco.
 
 \section{Air Quality Forecasting}
 
@@ -188,7 +188,7 @@ Buffer-based conflict detection between Hansen GFC v1.11 loss polygons and the 1
 
 \textbf{Measured (see \texttt{papers/drafts/p0012\_yvy\_indigenous/ACTUAL\_RESULTS.md}):}
 \begin{itemize}
-\item 3.27$\times$ disparity ratio (mean indigenous-territory deforestation rate 27.76\% vs. national 8.50\%)
+\item 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$\times$ disparity ratio (mean indigenous-territory deforestation rate 27.76\% vs. national 8.50\%)
 \item 95\% BCa bootstrap CI: [2.26, 4.37] (n=1000 resamples)
 \item One-sample $t$-test on territory proportions (n=10): $t(9) = 3.99$, one-sided $p = 0.0016$ (audit-fixed value; the previous $\chi^2 = 460{,}597$ used pixel-level pseudoreplication)
 \item 10 of 10 territories have above-national deforestation rate
@@ -319,7 +319,7 @@ This thesis delivers 5 published-quality papers on Paraguay environmental monito
 \begin{itemize}
 \item 16,628 km$^2$ of measured forest loss quantified (MapBiomas Paraguay Collection 2)
 \item $\sim$122 MtCO$_2$e carbon emitted (corrected from 2,755 Mt, see Round-12 audit)
-\item 3.27$\times$ indigenous-territory deforestation disparity (95\% CI [2.26, 4.37])
+\item 3.27 (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition)$\times$ indigenous-territory deforestation disparity (95\% CI [2.26, 4.37])
 \item 0.50$\to$0.18 synthetic-to-real mAP gap (gauge for camera-trap CV)
 \item 14.7 \micro g/m$^3$ RMSE air-quality LSTM (24\% over persistence)
 \end{itemize}

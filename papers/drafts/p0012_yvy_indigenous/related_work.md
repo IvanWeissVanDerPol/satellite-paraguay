@@ -34,7 +34,7 @@ against encroachment.
 ## R.2 Exceptions to the global pattern
 
 Our finding — that the Paraguayan Chaco shows the *opposite* pattern,
-with 3.27× higher deforestation inside territories versus outside —
+with 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) higher deforestation inside territories versus outside —
 adds to a small but growing literature on **exceptions to the global
 pattern**. Key exceptions and their interpretations:
 
@@ -81,7 +81,7 @@ relevant to our analysis:
 Our statistical contribution is more modest than these — we use
 the standard one-sample t-test on per-territory proportions (n=10)
 and a BCa bootstrap for the magnitude. The relative simplicity is
-justified by the magnitude of the effect: at 3.27× with all 10
+justified by the magnitude of the effect: at 3.27× (placeholder caveat: per-territory percentages are hardcoded in scripts/statistical_tests.py:TERRITORY_DATA, pending INDI shapefile acquisition) with all 10
 territories above the national rate, more sophisticated matching
 methods would tighten CIs but not change the qualitative finding.
 
