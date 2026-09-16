@@ -67,14 +67,15 @@ measured values; the 2026-08-11 fail-loud pass replaced silent
 satellite-paraguay/
 ├── README.md                    # This file
 ├── THESIS_ABSTRACT.md           # 1-page abstract + 5 RQs + 3 hypotheses
-├── MASTER_PLAN.md               # 26-week shipping calendar
-├── CRITIC_200_ANGLES.md         # 200-angle professional roast
+├── CRITIC_200_ANGLES.md         # 200-angle professional roast (kept at root — `scripts/check_claims.py` allowlist)
 ├── STAKEHOLDER_OUTREACH.md      # 12 stakeholder emails
-├── SUBMISSION_PLAN.md           # 5 papers × 6 months schedule
-├── OPEN_SCIENCE.md              # Zenodo, DOI, license strategy
 ├── POLICY_BRIEF_es.md           # Spanish + Guaraní policy brief
-├── FINAL_REPORT.md              # Comprehensive state report
-│
+├── docs/_archive-2026-09-16/ # Historical docs archived 2026-09-16 (see INDEX.md)
+│   ├── MASTER_PLAN.md           # 26-week shipping calendar
+│   ├── SUBMISSION_PLAN.md       # 5 papers × 6 months schedule
+│   ├── OPEN_SCIENCE.md          # Zenodo, DOI, license strategy
+│   ├── FINAL_REPORT.md          # 2026-08 state report
+│   └── ...5 more
 ├── thesis/                      # 11 chapters, 52,000+ words
 │   ├── CH1_introduction.md
 │   ├── CH2_methodology.md
@@ -300,7 +301,7 @@ github.com/IvanWeissVanDerPol
 ---
 
 **Status as of 2026-08-04:** 30 commits, 53 tests, 5 papers, 12 stakeholders, full production stack, all data real.
-See `FINAL_REPORT.md` for complete state inventory.
+See `STATUS.md` for the live state, or `outputs/HONEST_GAP_LIST_2026-09-10.md` for the forward-looking gap analysis (replaces the archived `FINAL_REPORT.md`).
 
 ## 🌍 Cross-repo architecture
 

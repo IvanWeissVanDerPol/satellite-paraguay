@@ -178,7 +178,7 @@ Three state files act as the cross-repo "memory bus":
 When `aiw-thesis-tracker-daily` runs, it reads:
 - `STATUS.md` → paper scorecard (P0010-P0035 metrics, ethics)
 - `PROGRESS.md` → what substrate ran today
-- `MASTER_PLAN.md` → 26-week shipping calendar
+- `docs/_archive-2026-09-16/MASTER_PLAN.md` → 26-week shipping calendar (archived 2026-09-16; see also `docs/12-week-roadmap-2026-Q3.md`)
 - `thesis/CH9_cross-cutting.md` → cross-paper findings
 
 ---
@@ -191,8 +191,8 @@ When one changes, the other should too. These are the cross-reference docs:
 | |
 | **Thesis title** | `THESIS_ABSTRACT.md` | `FORMAL_PROPOSAL.md` |
 | **Status snapshot** | `STATUS.md` | `PROGRESS.md` |
-| **Headline findings** | `README.md` (TL;DR table) | `THESIS_SUMMARY.md` |
-| **Roadmap** | `docs/12-week-roadmap-2026-Q3.md` | `MASTER_PLAN.md` (autonomous 30-day) |
+| **Headline findings** | `README.md` (TL;DR table) | `docs/_archive-2026-09-16/THESIS_SUMMARY.md` (archived) |
+| **Roadmap** | `docs/12-week-roadmap-2026-Q3.md` | `docs/_archive-2026-09-16/MASTER_PLAN.md` (autonomous 30-day, archived) |
 | **Defense plan** | `DEFENSE_PLAN.md` | (substrate side has none yet — gap) |
 | **References** | `references.bib` (182 entries) | `REFERENCES.bib` (24 entries, starter) |
 

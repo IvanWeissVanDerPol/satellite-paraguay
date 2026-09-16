@@ -1,8 +1,8 @@
 # SatelliteCV-Paraguay — Real TODO (2026-08-10 trim)
 
 **Previous version:** `docs/COMPREHENSIVE_TODO.md` (587 lines, ~345 items,
-generated 2026-07-31). Largely out of date per `GAP_AUDIT_2026-08-04.md`.
-This file replaces it. Keep this ≤30 items.
+generated 2026-07-31). Largely out of date per `docs/_archive-2026-09-16/GAP_AUDIT_2026-08-04.md`
+(archived 2026-09-16). This file replaces it. Keep this ≤30 items.
 
 **Status legend:** `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked
 
@@ -56,7 +56,7 @@ This file replaces it. Keep this ≤30 items.
       `.gitignore` or generated only in CI artifacts.
 - [ ] Verify `models/cards/` are not stale (model cards should reference
       measured, not expected, performance).
-- [ ] Add Zenodo integration per `OPEN_SCIENCE.md` — release v0.1 with the
+- [ ] Add Zenodo integration per `docs/_archive-2026-09-16/OPEN_SCIENCE.md` (archived 2026-09-16) — release v0.1 with the
       six ACTUAL_RESULTS.md snapshots.
 
 ## Tier 4 — Decline (low leverage) (6 items)
@@ -76,6 +76,6 @@ This file replaces it. Keep this ≤30 items.
 
 ## See also
 
-- `WORKLOG_2026-08-10.md` — what changed today and why.
-- `GAP_AUDIT_2026-08-04.md` — original audit that motivated the trim.
+- `outputs/SESSION_2026-09-08_summary.md` — what changed today and why.
+- `docs/_archive-2026-09-16/GAP_AUDIT_2026-08-04.md` — original audit that motivated the trim (archived 2026-09-16; current gap list at `outputs/HONEST_GAP_LIST_2026-09-10.md`).
 - `ROAST.md` — kept as honest counterweight; read first before submitting.

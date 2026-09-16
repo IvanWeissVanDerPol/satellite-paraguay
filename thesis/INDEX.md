@@ -72,6 +72,6 @@ camera-ready submission to UNA FADA.
 
 ## Related
 
-- [`../SUBMISSION_PLAN.md`](../SUBMISSION_PLAN.md) — Six-paper submission schedule
+- [`../docs/_archive-2026-09-16/SUBMISSION_PLAN.md`](../docs/_archive-2026-09-16/SUBMISSION_PLAN.md) — Six-paper submission schedule (archived 2026-09-16)
 - [`../PAPER_SUBMISSION_TRACKER.md`](../PAPER_SUBMISSION_TRACKER.md) — (when created) Per-paper submission state
-- [`../GAP_AUDIT_2026-08-04.md`](../GAP_AUDIT_2026-08-04.md) — Gap analysis as of 2026-08-04
+- [`../docs/_archive-2026-09-16/GAP_AUDIT_2026-08-04.md`](../docs/_archive-2026-09-16/GAP_AUDIT_2026-08-04.md) — Gap analysis as of 2026-08-04 (archived 2026-09-16; current gap list at `../outputs/HONEST_GAP_LIST_2026-09-10.md`)

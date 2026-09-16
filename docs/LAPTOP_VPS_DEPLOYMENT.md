@@ -200,7 +200,7 @@ make run-paper-6  # Tatakua
 
 ### 3. Read the docs
 - `README.md` — project overview
-- `AUTONOMOUS_30_DAY_PLAN.md` — 30-day execution plan
+- `docs/_archive-2026-09-16/AUTONOMOUS_30_DAY_PLAN.md` — 30-day execution plan (archived 2026-09-16)
 - `docs/COMPREHENSIVE_TODO.md` — comprehensive TODO list
 - `docs/STAKEHOLDERS.md` — stakeholder engagement
 - `docs/FAQ.md` — frequently asked questions

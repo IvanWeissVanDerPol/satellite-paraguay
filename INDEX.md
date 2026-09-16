@@ -9,32 +9,21 @@ Top-level files, then key subdirectories. Use `grep -r` on this file to find wha
 | Path | Size | Description |
 |---|---|---|
 | `AGENT_TODO.md` | 18,769 B | AGENT_TODO.md — Operational plan for the autonomous agent |
-| `AUTONOMOUS_30_DAY_PLAN.md` | 6,732 B | 30-DAY AUTONOMOUS EXECUTION PLAN |
-| `BRUTAL_ROAST.md` | 12,036 B | BRUTAL ROAST 2 — 2026-08-11 (autonomous self-audit) |
+| `BRUTAL_ROAST.md` | 12,036 B | BRUTAL ROAST 2 — 2026-08-11 (autonomous self-audit) — kept at root because `scripts/check_claims.py` allowlist cites it |
 | `CHANGELOG.md` | 9,740 B | Changelog — SatelliteCV-Paraguay |
 | `CITATION.cff` | 3,295 B |  |
+| `CLAUDE.md` | 13,058 B | Agent instructions (read first per the orientation skill) |
 | `CONTRIBUTING.md` | 3,158 B | Contributing — SatelliteCV-Paraguay |
-| `CRITIC_200_ANGLES.md` | 45,620 B | 🔥 200-ANGLE PROFESSIONAL ROAST & GAP ANALYSIS |
-| `CV.md` | 2,799 B | Iván Weiss Van der Pol — Curriculum Vitae |
-| `Dockerfile` | 1,879 B |  |
-| `Dockerfile.production` | 539 B |  |
-| `EMAIL_OUTREACH.md` | 5,168 B | Email outreach — ready to send |
-| `FINAL_REPORT.md` | 4,697 B | SatelliteCV-Paraguay — FINAL STATE REPORT (v2) |
-| `GAP_AUDIT_2026-08-04.md` | 6,442 B | Gap Audit — satellite-paraguay (2026-08-04) |
-| `LICENSE` | 1,500 B |  |
-| `MASTER_PLAN.md` | 10,547 B | 🎯 MASTER AUTONOMOUS EXECUTION PLAN |
-| `Makefile` | 7,579 B |  |
-| `OPEN_SCIENCE.md` | 4,569 B | Open Science Plan |
-| `POLICY_BRIEF_es.md` | 5,573 B | POLICY BRIEF: Monitoreo Satelital de la Deforestación en Paraguay |
-| `README.md` | 13,078 B | SatelliteCV-Paraguay (Yvutu) |
-| `ROAST.md` | 14,838 B | 🔥 ROAST — Honest critique of the satellite-paraguay project |
-| `STAKEHOLDER_OUTREACH.md` | 6,681 B | Stakeholder Engagement Plan |
-| `STATUS.md` | 8,597 B | Submission Readiness Status — 2026-08-13 (CI green-build pass) |
-| `SUBMISSION_PLAN.md` | 6,072 B | Paper Submission Plan |
+| `CRITIC_200_ANGLES.md` | 45,620 B | 🔥 200-ANGLE PROFESSIONAL ROAST & GAP ANALYSIS — kept at root because `scripts/check_claims.py` allowlist cites it |
+| `POLICY_BRIEF_es.md` | 5,573 B | POLICY BRIEF: Monitoreo Satelital de la Deforestación en Paraguay — kept at root because `tests/test_thesis_structure.py` asserts it exists |
+| `README.md` | 13,078 B | SatelliteCV-Paraguay (Yvutu) — start here |
+| `ROAST.md` | 14,838 B | 🔥 ROAST — Honest critique — kept at root because `scripts/check_claims.py` allowlist cites it |
+| `STAKEHOLDER_OUTREACH.md` | 6,681 B | Stakeholder Engagement Plan — kept at root because `tests/test_thesis_structure.py` asserts it exists |
+| `STATUS.md` | 8,597 B | Submission Readiness Status — live state |
+| `TODO.md` | 5,506 B | Thesis-defense checklist — kept at root because `scripts/check_claims.py` allowlist cites it |
 | `THESIS_ABSTRACT.md` | 5,656 B | Thesis Abstract — Hocht-VonDerPol (2026) |
 | `THESIS_ARCHITECTURE.md` | 14,628 B | THESIS ARCHITECTURE — Cross-Repo Map |
-| `THESIS_SUMMARY.md` | 1,753 B | 🛰️ SatelliteCV-Paraguay — Full Thesis Autonomous Build — Summary |
-| `WORKLOG_2026-08-10.md` | 7,037 B | Worklog — 2026-08-10 (autonomous honesty pass) |
+| `EMAIL_OUTREACH.md` | 5,168 B | Email outreach — ready to send — kept at root because `scripts/setup_real_execution.sh` references it |
 | `configs/` | dir (6 entries) | (see below) |
 | `coverage.xml` | 372,138 B |  |
 | `dashboard/` | dir (1 entries) | (see below) |
@@ -57,6 +46,26 @@ Top-level files, then key subdirectories. Use `grep -r` on this file to find wha
 | `thesis/` | dir (18 entries) | (see below) |
 
 ## Subdirectories
+
+### `docs/_archive-2026-09-16/` (9 entries — historical, archived 2026-09-16)
+
+The 2026-09-16 audit (the Round-13 honest-gap-list + Tier-2 polish
+pass) identified these as historical planning/critique docs whose
+content is either superseded by newer `outputs/` versions or
+replaced by `docs/REAL_TODO.md`. Moved out of the repo root to
+keep the surface area small; **kept in git history** via `git mv`.
+
+| Path | Reason for archival |
+|---|---|
+| `docs/_archive-2026-09-16/AUTONOMOUS_30_DAY_PLAN.md` | 2026-Q3 plan, superseded by `outputs/COMPLETE_PLAN_2026-09-08.md` |
+| `docs/_archive-2026-09-16/CV.md` | Author CV — move to author-personal repo, not thesis repo |
+| `docs/_archive-2026-09-16/FINAL_REPORT.md` | 2026-08 state report, superseded by `STATUS.md` + session summaries in `outputs/` |
+| `docs/_archive-2026-09-16/GAP_AUDIT_2026-08-04.md` | Original gap audit; the trim is at `docs/REAL_TODO.md`; the honest forward-list is at `outputs/HONEST_GAP_LIST_2026-09-10.md` |
+| `docs/_archive-2026-09-16/MASTER_PLAN.md` | 30-day autonomous execution plan, superseded by session summaries in `outputs/` |
+| `docs/_archive-2026-09-16/OPEN_SCIENCE.md` | Open-science plan (Zenodo, DOI); concrete next-step is at `AGENT_TODO.md` (Zenodo v0.1) |
+| `docs/_archive-2026-09-16/SUBMISSION_PLAN.md` | 5-paper × 6-month schedule; superseded by per-paper `submission_checklist.md` + `outputs/SESSION_2026-09-16_thesis-tier1-summary.md` |
+| `docs/_archive-2026-09-16/THESIS_SUMMARY.md` | Single-page summary, redundant with `README.md` TL;DR |
+| `docs/_archive-2026-09-16/WORKLOG_2026-08-10.md` | One-off worklog; superseded by `CHANGELOG.md` + session summaries in `outputs/` |
 
 ### `docs/` (19 entries)
 
