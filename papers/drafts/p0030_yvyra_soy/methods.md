@@ -67,3 +67,31 @@ are inherent to that constraint:
 3. **No causal claim.** Departmental correlation is not causation.
 4. **Pilot scope.** The Hansen tile is a single 256\times256 sample
    (~56 km² of the ~250,000 km² Chaco).
+
+## CARE Principles — non-compliance statement
+
+P0030 does **not** claim CARE Principles for Indigenous Data
+Governance \citep{gida2019, carroll2020care} compliance, and it
+does **not** claim compliance with the earth-observation
+operationalization by \citet{jennings2025}. CARE compliance
+requires demonstrated engagement with affected communities —
+Collective benefit, Authority to control, Responsibility, and
+Ethics in practice, not just citation. As of 2026-09-16, this
+paper has not engaged with any indigenous community,
+organization, or representative body in Paraguay. The 19-pueblo
+plus 557-community aggregate numbers come from Paraguay's
+public 2022 census (INE), which the Paraguayan state published
+without per-community consent. The per-region regression
+(Occidental vs Oriental soy-yield trajectory) and the
+indigenous-community-density computation are descriptive public-data
+analyses only; they are not participatory research outputs and
+they must not be cited as such. The thesis author is committed
+to FPIC engagement as a post-defense extension and has flagged
+the institutional pathway (FP-UNA Comité de Ética en
+Investigación; INDI; Tierra Viva) for any such engagement. Any
+follow-up work that publishes per-community identifying data,
+per-community polygon analysis, or per-territory deforestation
+rates must first satisfy the Newing et al.\ (2024) fourteen-
+principle framework and obtain explicit FPIC. The reader is
+referred to the thesis-level `appendix_b_ethics.tex` for the
+full ethics framework statement.
