@@ -93,6 +93,30 @@ Pre-Aug 12 commits — see `git log --reverse` for full history. Key ones:
 
 ---
 
+## Theme: Tier-1+Tier-2 thesis defense prep (Sep 16, 2026)
+
+| Commit | Date | Theme | Affects | Thesis section |
+|---|---|---|---|---|
+| `2473de3` | 2026-09-16 | **Prose sync:** 14 files: 2,755 Mt CO₂e → ~122 Mt (corrected 22.7× too high per Round-12 audit); 47 inline caveats: "3.27× (placeholder caveat: per-territory percentages are hardcoded in `scripts/statistical_tests.py:TERRITORY_DATA`, pending INDI shapefile acquisition)" added across 24 files | All carbon/P0012 claims in prose | CH1; P0011 prose; P0012 prose; thesis/MAIN |
+| `2473de3` | 2026-09-16 | New `papers/MEASURED_NUMBERS.md` (canonical measured-numbers reference) | Single source of truth for prose numbers | All |
+| `2473de3` | 2026-09-16 | New `tests/test_numerical_consistency_prose.py` (5 failure-injection classes, 2,473 tests) | Guards against future drift of aspirational numbers into prose | All |
+| `0a7783c` | 2026-09-16 | **paper.tex:** P0030 prose synced to corrected regression interpretation (1.95× not 2.0×, n=2 disclosure, cross-dept r=-0.306 contradicts causal narrative) | `papers/drafts/p0030_yvyra_soy/paper.tex` | CH5 |
+| `80d3d42` | 2026-09-16 | **fix(p0030):** regression headline 1.95× (was 2.0× via banker's rounding); interpretation reflects actual data (cross-dept r NOT significant); 2 new failure-injection tests | `src/papers/p0030_yvyra_soy/pipeline.py` + tests | CH5 |
+| `d517764` | 2026-09-16 | **CARE Principles non-compliance statement:** explicit section in `appendix_b_ethics.tex` + `p0030_yvyra_soy/methods.md` | Thesis ethics framework | Appendix B |
+| `9410d64` | 2026-09-16 | **Tier-2 polish:** archive 9 stale root `.md` files to `docs/_archive-2026-09-16/` (preserved via git history); update INDEX/README/THESIS_ARCHITECTURE/REAL_TODO to point at archive; new `REPRODUCE.md` (truthful reproducibility statement) | Repo surface cleanup | All |
+| `ca613f9` | 2026-09-16 | **docs(session):** Tier-1 session summary (per Pitfall #31 cadence) | `outputs/SESSION_2026-09-16_thesis-tier1-summary.md` | — |
+| `b155968` | 2026-09-16 | **docs(session):** Tier-2 prose sync summary | `outputs/SESSION_2026-09-16_thesis-tier2-prose-sync.md` | — |
+
+### Verification at HEAD `b155968`
+
+- 3,569 pytest cases pass, 57 skipped (~123s)
+- `defense_check.py`: 13/13 structural checks pass
+- `scripts/check_claims.py`: 0 unsanctioned high-headline claims
+- 0 LaTeX errors across 6 papers
+- Branch is in sync with `origin/main` (pushed via `github-push-from-bws`)
+
+---
+
 ## How to use this file
 
 1. **Reviewer asks:** "Where did the citations come from?"

@@ -300,6 +300,12 @@ class TestP0030RegressionFinding:
         assert "r_squared" in cross, "cross_dept_regression must include r_squared for transparency"
         assert "p_value_two_sided" in cross, "cross_dept_regression must include p_value_two_sided"
         assert cross["pearson_r"] == -0.306, f"pearson_r drift: got {cross['pearson_r']}, expected -0.306"
+        # math.erfc normal approximation for the unrounded pearson_r
+        # (-0.30576...) at n=14 → 0.2659 after round(_, 4).
+        # (If you call _pearson_p_value(-0.306, 14) directly you get 0.2655
+        # — that uses the rounded r, which is wrong. The pipeline correctly
+        # passes the unrounded r.) See tests/test_pearson_p_value.py for
+        # the direct unit test on the helper.
         assert abs(cross["p_value_two_sided"] - 0.2659) < 0.01, (
             f"p_value drift: got {cross['p_value_two_sided']}, expected ~0.2659"
         )

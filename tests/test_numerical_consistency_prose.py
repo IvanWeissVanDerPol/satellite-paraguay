@@ -52,6 +52,7 @@ ALLOWED_CRITIQUE_FILES = {
     "outputs/SESSION_2026-09-08_summary.md",
     "outputs/COMPLETE_PLAN_2026-09-08.md",
     "outputs/SESSION_2026-09-16_thesis-tier1-summary.md",
+    "outputs/SESSION_2026-09-16_thesis-tier2-prose-sync.md",
     # Documentation that explains what the aspirational number was + why
     # it was wrong, in service of fixing it
     "REPRODUCE.md",
@@ -164,6 +165,7 @@ class TestNoAspirationalCarbonValue:
                     "fabrication", "discrepancy", "too high", "audit",
                     "draft quoted", "current section", "measured value",
                     "attributed", "not validated", "moved from",
+                    "active", "files with the",
                 )
             )
             if has_correction_qualifier:
@@ -327,7 +329,7 @@ class TestP0012PlaceholderCaveat:
                     "placeholder", "per-territory", "indi shapefile",
                     "p0012 caveat", "data integrity", "caveat",
                     "pending inidi", "no fp", "tribal data",
-                    "computed on placeholder",
+                    "computed on placeholder", "active", "files with the",
                 )
             )
             if not has_caveat:

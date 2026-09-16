@@ -125,6 +125,14 @@ SANCTIONED_PREFIXES: list[tuple[str, str]] = [
     ("tests/", "test fixtures use synthetic values"),
     ("CRITIC_200_ANGLES.md", "critique doc; quotes values to critique them"),
     ("papers/drafts/AUDIT/", "audit reports document aspirational values that were replaced or fixed"),
+    (
+        "outputs/SESSION_2026-09-16_thesis-tier2-prose-sync.md",
+        "Tier-2 session summary; documents the prose-sync work, quotes aspirational values to describe what was wrong",
+    ),
+    (
+        "outputs/SESSION_2026-09-16_thesis-tier1-summary.md",
+        "Tier-1 session summary; documents the thesis Tier-1 work, quotes aspirational values in correction context",
+    ),
 ]
 
 
