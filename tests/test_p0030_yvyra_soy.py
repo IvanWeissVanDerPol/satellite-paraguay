@@ -227,3 +227,79 @@ class TestP0030RegressionFinding:
         occ_d = reg["regional_data"]["Occidental"]["indi_density_per_dept"]
         ori_d = reg["regional_data"]["Oriental"]["indi_density_per_dept"]
         assert occ_d > ori_d, f"Occidental density {occ_d} should exceed Oriental {ori_d}"
+
+    def test_regression_ratio_exact_value(self):
+        """Failure-injection (Pitfall #36 Layer 3): ratio must equal 1.95.
+
+        Catches regressions where anyone (or any auto-formatter) re-introduces
+        the {:.1f}-formatted "2.0x" version of the headline. The pipeline
+        computes 109.96 / 56.47 = 1.9472... which rounds to 1.95 with 2 decimal
+        places, but to "2.0" via banker's rounding at 1 decimal place. The
+        ratio_display string is the version the headline reports.
+        """
+        out = self._run_regression()
+        reg = out["regression_analysis"]
+        ratio = reg["headline_finding"]["ratio_occident_vs_orient"]
+        assert ratio == 1.95, (
+            f"Expected ratio=1.95 (actual 109.96/56.47=1.9472...), got {ratio}. "
+            f"This test would catch a return to the misleading 2.0x headline."
+        )
+        ratio_display = reg["headline_finding"].get("ratio_display")
+        assert ratio_display == "1.95x", (
+            f"Expected ratio_display='1.95x' (NOT '2.0x' via {{:.1f}} banker's "
+            f"rounding), got {ratio_display!r}"
+        )
+
+    def test_regression_interpretation_reflects_data(self):
+        """Failure-injection (Pitfall #36 Layer 3): interpretation must
+        acknowledge the negative cross-dept r and NOT claim indigenous-density
+        causes faster expansion.
+
+        Catches regressions where the narrative is softened back to the
+        earlier (incorrect) "higher density → faster expansion" claim. The
+        measured data shows r=-0.306, p=0.27 — not significant, and the sign
+        contradicts the older causal-sounding narrative.
+        """
+        out = self._run_regression()
+        reg = out["regression_analysis"]
+        interp = reg["interpretation"]
+        # Must contain the descriptive-not-inferential caveat
+        assert "DESCRIPTIVE" in interp or "descriptive" in interp, (
+            "Interpretation must explicitly state the per-region comparison "
+            "is descriptive (n=2 Occidental), not inferential."
+        )
+        # Must contain the actual measured r value (with a tolerance for
+        # re-formatting: -0.306, -0.31, etc.)
+        assert "-0.306" in interp or "-0.31" in interp, (
+            f"Interpretation must report the measured r value; got: {interp[:200]}"
+        )
+        # Must NOT contain the old (incorrect) phrasings
+        forbidden = [
+            "higher indigenous community density show faster",
+            "Departments with higher indigenous community density show faster",
+        ]
+        for phrase in forbidden:
+            assert phrase not in interp, (
+                f"Interpretation still contains the discredited causal claim "
+                f"{phrase!r}. The cross-dept r is negative; the old narrative "
+                f"contradicts the data."
+            )
+        # Must mention limitations or p-value to flag the non-significance
+        assert ("limitations" in reg) or ("p=" in interp) or ("NOT statistically" in interp), (
+            "Interpretation must report p-value or explicitly state 'NOT "
+            "statistically significant'. The cross-dept regression is n=14, "
+            "r=-0.306, p=0.27 — not significant."
+        )
+        # n-with-data fields must be present and accurate
+        n_occ = reg["headline_finding"].get("n_occidental_with_data")
+        n_ori = reg["headline_finding"].get("n_oriental_with_data")
+        assert n_occ == 2, f"n_occidental_with_data should be 2 (Alto Paraguay, Boqueron); got {n_occ}"
+        assert n_ori == 12, f"n_oriental_with_data should be 12; got {n_ori}"
+        # Cross-dept regression must include r^2 and p_value (Paper #36 Layer 2 requirement)
+        cross = reg["cross_dept_regression"]
+        assert "r_squared" in cross, "cross_dept_regression must include r_squared for transparency"
+        assert "p_value_two_sided" in cross, "cross_dept_regression must include p_value_two_sided"
+        assert cross["pearson_r"] == -0.306, f"pearson_r drift: got {cross['pearson_r']}, expected -0.306"
+        assert abs(cross["p_value_two_sided"] - 0.2659) < 0.01, (
+            f"p_value drift: got {cross['p_value_two_sided']}, expected ~0.2659"
+        )

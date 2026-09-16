@@ -4,20 +4,29 @@ P0030 Yvyra Soy - Per-region yield trajectory + indigenous density
 
 Regional comparison (Occidental Chaco vs Oriental):
 
-  Occidental       slope= 110.0 kg/ha/yr  bar=[########################################]
-                   indi_communities= 129  density=43.0/dept  (3 depts)
+  Occidental       slope= 109.96 kg/ha/yr  bar=[########################################]
+                   indi_communities= 129  density=43.0/dept  (2 depts with yield data, out of 3)
 
-  Oriental         slope=  56.5 kg/ha/yr  bar=[####################]
-                   indi_communities= 428  density=30.6/dept  (14 depts)
+  Oriental         slope=  56.47 kg/ha/yr  bar=[####################]
+                   indi_communities= 428  density=30.57/dept  (12 depts with yield data, out of 14)
 
-Key finding: Occidental Chaco has 2.0x the mean yield trajectory of Oriental
-despite having only 24% of the indigenous communities. Departments with higher
-indigenous community density show faster soy expansion.
+Key finding (descriptive, n=2 Occidental):
+  Occidental Chaco has 1.95x the mean yield trajectory of Oriental (per-region ratio,
+  n=2/3 Occidental depts with yield data; NOT inferential).
+  Occidental hosts 24% of Paraguay's indigenous communities (129 of 557).
 
 Cross-department yield trajectory vs historical mean yield (n=14):
+  Pearson r = -0.306, r^2 = 0.093, p = 0.2659
+  NOT statistically significant (p > 0.05).
+  Departments with higher historical yield have SLIGHTLY SLOWER yield expansion
+  (negative r) — consistent with yield convergence, NOT with indigenous-density
+  causation.
 
-  Departments with HIGHER historical yield have SLIGHTLY SLOWER yield expansion
-  (Pearson r = -0.306, p = 0.27)
-  Suggestive of yield convergence among the 14 soy-producing departments.
-
+===========================================================================
+Honest caveats (Pitfall #36 Layer 2 / Layer 3 verification, 2026-09-16):
+  - Per-region ratio rests on n=2 (Alto Paraguay, Boqueron). Presidente Hayes
+    has no continuous yield data and is excluded.
+  - Per-department indigenous community count is unknown — only Region
+    Oriental/Occidental totals exist in the INE 2022 substrate.
+  - No causal inference. Departmental correlation is not causation.
 ===========================================================================
