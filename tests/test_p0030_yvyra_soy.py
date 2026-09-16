@@ -303,3 +303,85 @@ class TestP0030RegressionFinding:
         assert abs(cross["p_value_two_sided"] - 0.2659) < 0.01, (
             f"p_value drift: got {cross['p_value_two_sided']}, expected ~0.2659"
         )
+
+    def test_paper_tex_does_not_contain_discredited_causal_claim(self):
+        """Failure-injection (Pitfall #36 Layer 3): paper.tex must not contain
+        the older 'higher density → faster expansion' causal-sounding
+        phrasing that contradicted the cross-dept data (r=-0.306, p=0.27).
+
+        Catches regressions where the prose is reverted to the old narrative
+        while the JSON output is correctly calibrated.
+        """
+        from pathlib import Path
+        paper_dir = Path(__file__).resolve().parent.parent / "papers" / "drafts"
+        paper_tex = paper_dir / "p0030_yvyra_soy" / "paper.tex"
+        assert paper_tex.exists(), f"paper.tex not found at {paper_tex}"
+        text = paper_tex.read_text()
+        forbidden_phrases = [
+            "Departments with higher indigenous community density show",
+            "higher indigenous community density show\n\\textbf{faster}",
+            "higher indigenous community density show faster",
+        ]
+        for phrase in forbidden_phrases:
+            assert phrase not in text, (
+                f"paper.tex still contains the discredited causal claim "
+                f"{phrase!r}. The cross-dept regression is r=-0.306 (negative "
+                f"and not significant); the older narrative contradicts the "
+                f"data the pipeline itself computes."
+            )
+        # The corrected prose must be present (idempotent positive check)
+        assert "not statistically significant" in text, (
+            "paper.tex must explicitly state the cross-dept r is NOT "
+            "statistically significant (Pitfall #36 Layer 2 disclosure)."
+        )
+        # The Presidente Hayes disclosure must be present
+        assert "Presidente Hayes has no" in text, (
+            "paper.tex must disclose that Presidente Hayes is excluded from "
+            "the Occidental slope mean (it has no continuous MAG yield data)."
+        )
+
+    def test_paper_tex_reports_correct_n_with_yield_data(self):
+        """Failure-injection: paper.tex must say '2 of 3' for Occidental
+        and '12 of 14' for Oriental, not '3 departments' / '14 departments'
+        (which would imply all 3 Occidental depts have yield data, when in
+        fact Presidente Hayes has null yield data and is excluded).
+        """
+        from pathlib import Path
+        paper_dir = Path(__file__).resolve().parent.parent / "papers" / "drafts"
+        paper_tex = paper_dir / "p0030_yvyra_soy" / "paper.tex"
+        text = paper_tex.read_text()
+        # Correct framing
+        assert "2 of 3 Occidental departments" in text, (
+            "paper.tex must say '2 of 3 Occidental departments with yield "
+            "data', not '3 departments' (Presidente Hayes has null data)."
+        )
+        assert "12 of 14 departments" in text, (
+            "paper.tex must say '12 of 14' Oriental departments with yield "
+            "data (Central and Neembucu have null data)."
+        )
+        # Old framing must be gone
+        assert "3 departments --- Alto Paraguay, Boquer" not in text, (
+            "paper.tex still has the old '3 departments --- Alto Paraguay, "
+            "Boquer\\'on, Presidente Hayes ---' framing. Presidente Hayes "
+            "has no continuous yield data."
+        )
+
+    def test_p0030_paper_tex_ratio_is_1_95_not_2_0(self):
+        """Failure-injection: paper.tex must report 1.95x (the actual
+        measured ratio 109.96/56.47=1.9472), not the banker's-rounded or
+        hardcoded '2.0x' values from earlier drafts.
+        """
+        from pathlib import Path
+        paper_dir = Path(__file__).resolve().parent.parent / "papers" / "drafts"
+        paper_tex = paper_dir / "p0030_yvyra_soy" / "paper.tex"
+        text = paper_tex.read_text()
+        assert "1.95$\\times$" in text, (
+            "paper.tex must report '1.95$\\\\times$' as the per-region ratio "
+            "(actual 109.96/56.47=1.9472). Older drafts hardcoded '2.0x' or "
+            "used {:.1f} banker's rounding (1.95 → '1.9x')."
+        )
+        # Make sure no stale 2.0x framing
+        assert "2.0$\\times$" not in text, (
+            "paper.tex still has the older '2.0$\\\\times$' hardcoded ratio. "
+            "Use '1.95$\\\\times$' to match the measured value."
+        )
