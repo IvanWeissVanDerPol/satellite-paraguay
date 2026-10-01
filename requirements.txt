@@ -35,7 +35,7 @@ accelerate>=0.24
 
 # Geo-specific
 geemap>=0.32
-earthengine-api>=1.7.39
+earthengine-api>=1.7.43
 xarray>=2023.10
 rioxarray>=0.14
 
