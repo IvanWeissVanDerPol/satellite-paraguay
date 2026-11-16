@@ -37,7 +37,7 @@ accelerate>=0.24
 geemap>=0.32
 earthengine-api>=1.7.43
 xarray>=2023.10
-rioxarray>=0.14
+rioxarray>=0.19.0
 
 # Visualization
 matplotlib>=3.7
